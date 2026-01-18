@@ -1,0 +1,451 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+  <!-- Helper: Two-column bilingual table (kept for simple static use) -->
+  <template id="contract_two_col_table">
+    <table style="width:100%; border-collapse:collapse;" border="1">
+      <tr>
+        <td style="width:50%; vertical-align:top; direction:ltr; text-align:left; padding:10px;">
+          <t t-raw="en"/>
+        </td>
+        <td style="width:50%; vertical-align:top; direction:rtl; text-align:right; padding:10px;">
+          <t t-raw="ar"/>
+        </td>
+      </tr>
+    </table>
+  </template>
+
+  <!-- MAIN REPORT: Sales Order + 4 pages contract terms -->
+  <template id="report_saleorder_with_terms">
+    <t t-call="web.external_layout">
+
+      <style>
+        .page { font-size:11pt; line-height:1.15; }
+        .contract-body p { margin:4px 0; }
+        .contract-clauses b { display:block; margin:6px 0 3px; }
+        .signature-block { font-size:10pt; page-break-inside: avoid; margin-top:6px; }
+        .keep-with-next { page-break-inside: avoid; -webkit-column-break-inside: avoid; -moz-page-break-inside: avoid; }
+        table { border-collapse: collapse; }
+        .bilingual-table td { padding:8px; vertical-align:top; }
+        .bilingual-table tr { border-bottom: 1px solid #cccccc; }
+        .bilingual-table tr:last-child { border-bottom: none; }
+      </style>
+
+      <main>
+        <t t-foreach="docs" t-as="o">
+
+          <!-- Page 0: Sales Order -->
+            <div class="page contract-body">
+              <h2 style="text-align:center; margin:6px 0;">Sales Order / أمر بيع</h2>
+              <table style="width:100%; border-collapse:collapse; margin-bottom:6px;">
+                <tr>
+                  <td style="width:50%; direction:ltr; text-align:left; vertical-align:top;">
+                    <p style="margin:2px 0;"><b>Order:</b> <span t-esc="o.name"/></p>
+                    <p style="margin:2px 0;"><b>Date:</b> <span t-field="o.date_order" t-options="{'widget': 'date'}"/></p>
+                    <p style="margin:2px 0;"><b>Customer:</b> <span t-esc="o.partner_id.name"/></p>
+                  </td>
+                  <td style="width:50%; direction:rtl; text-align:right; vertical-align:top;">
+                    <p style="margin:2px 0;"><b>رقم الأمر:</b> <span t-esc="o.name"/></p>
+                    <p style="margin:2px 0;"><b>التاريخ:</b> <span t-field="o.date_order" t-options="{'widget': 'date'}"/></p>
+                    <p style="margin:2px 0;"><b>العميل:</b> <span t-esc="o.partner_id.name"/></p>
+                  </td>
+                </tr>
+              </table>
+
+              <hr style="margin:6px 0;"/>
+
+              <table style="width:100%; border-collapse:collapse; margin-top:6px; font-size:10.5pt;" border="1">
+                <thead>
+                  <tr>
+                    <th style="padding:6px; text-align:left;">Description</th>
+                    <th style="padding:6px; text-align:left;">Technical Spacification</th>
+                    <th style="padding:6px; text-align:center;">Qty</th>
+                    <th style="padding:6px; text-align:right;">Unit Price</th>
+                    <th style="padding:6px; text-align:right;">Subtotal</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <t t-foreach="o.order_line" t-as="l">
+                    <tr>
+                      <td style="padding:6px; vertical-align:top;"><span t-esc="l.name"/></td>
+                      <td style="padding:6px; vertical-align:top;"><span t-esc="l.technical_specification_id"/></td>
+                      <td style="padding:6px; vertical-align:top; text-align:center;"><span t-esc="l.product_uom_qty"/></td>
+                      <td style="padding:6px; vertical-align:top; text-align:right;"><span t-field="l.price_unit"/></td>
+                      <td style="padding:6px; vertical-align:top; text-align:right;"><span t-field="l.price_subtotal"/></td>
+                    </tr>
+                  </t>
+                </tbody>
+              </table>
+            </div>
+<!-- إجمالي بدون ضريبة -->
+              <table style="width:100%; border-collapse:collapse; margin-top:6px; font-size:10.5pt;" border="1">
+                <tbody>
+                  <tr>
+                    <td style="padding:6px; text-align:center; font-weight:bold;" colspan="4">Total  / الإجمالي </td>
+                    <td style="padding:6px; text-align:right;">
+                      <span t-field="o.amount_untaxed"/>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+
+          <!-- Page 1 -->
+          <t t-call="sale_order_contract_terms.contract_terms_page_1"/>
+          <!-- Page 2 -->
+          <t t-call="sale_order_contract_terms.contract_terms_page_2"/>
+          <!-- Page 3 -->
+          <t t-call="sale_order_contract_terms.contract_terms_page_3"/>
+          <!-- Page 4 -->
+          <t t-call="sale_order_contract_terms.contract_terms_page_4"/>
+
+        </t>
+      </main>
+
+    </t>
+  </template>
+
+  <!-- PAGE 1 -->
+  <template id="contract_terms_page_1">
+    <div style="page-break-before: always;"></div>
+    <div class="page contract-body">
+
+      <table style="width:100%; border-collapse:collapse; margin-bottom:6px;">
+        <tr>
+          <td style="width:50%; vertical-align:top; direction:ltr; text-align:center; padding:8px;">
+            <div style="font-weight:bold;">Supply and Installation Contract</div>
+            <div style="margin-top:4px;"><span t-field="o.date_order" t-options="{'widget': 'date'}"/></div>
+          </td>
+          <td style="width:50%; vertical-align:top; direction:rtl; text-align:center; padding:8px;">
+            <div style="font-weight:bold;">عقد توريد وتنفيذ</div>
+            <div style="margin-top:4px;"><span t-field="o.date_order" t-options="{'widget': 'date'}"/></div>
+          </td>
+        </tr>
+      </table>
+
+      <table style="width:100%; border-collapse:collapse; margin-bottom:6px;">
+        <tr>
+          <!-- English -->
+          <td style="width:50%; vertical-align:top; direction:ltr; text-align:left; padding:8px;">
+            <div style="margin-bottom:6px;">
+              <div style="margin-bottom:4px;">Thursday, <span t-field="o.date_order" t-options="{'widget': 'date'}"/></div>
+              <div style="font-weight:bold; margin-bottom:4px;">
+                an agreement was made between: <span t-esc="o.company_id.name or ''"/> First Party
+              </div>
+              <div>Email: <span t-esc="o.company_id.email or ''"/></div>
+              <div>Establishment Registration: <span t-esc="o.company_id.x_establishment_registration or '30 - 1595 - 17'"/></div>
+              <div>Commercial Registration No: <span t-esc="o.company_id.company_registry or '115135'"/></div>
+              <div>Represented by: <span t-esc="o.company_id.x_represented_by or 'Amr Jasim Salim'"/></div>
+              <div>ID No: <span t-esc="o.company_id.x_representative_id_no or '28881807895'"/></div>
+              <div>Tel: <span t-esc="o.company_id.phone or '44830384'"/></div>
+              <div>PO Box: <span t-esc="o.company_id.x_po_box or '91791'"/></div>
+            </div>
+
+            <div style="margin-top:6px;">
+              <div style="white-space:nowrap;">
+                <span style="font-weight:bold;">MR / <span t-esc="o.partner_id.name or ''"/></span>
+                <span style="margin-left:10px; font-weight:normal;">Second Party</span>
+              </div>
+              <div>ID No: <span t-esc="o.partner_id.x_id_no or ''"/></div>
+              <div>Email: <span t-esc="o.partner_id.email or ''"/></div>
+              <div>Tel: <span t-esc="o.partner_id.phone or ''"/></div>
+              <div>PO Box: <span t-esc="o.partner_id.zip or ''"/> <span t-esc="o.partner_id.city or ''"/> <span t-esc="(o.partner_id.country_id and o.partner_id.country_id.name) or ''"/></div>
+            </div>
+          </td>
+
+          <!-- Arabic -->
+          <td style="width:50%; vertical-align:top; direction:rtl; text-align:right; padding:8px;">
+            <div style="margin-bottom:6px;">
+              <div><b>التاريخ: </b><span t-esc="o.get_date_arabic()"/></div>
+              <div style="margin-top:6px;">
+                تم عقد اتفاق بين كل من : <b><span t-esc="o.company_id.name or ''"/></b> طرف أول<br/>
+                Email: <span t-esc="o.company_id.email or ''"/><br/>
+                قيد المنشأة : <span t-esc="o.company_id.x_establishment_registration or ' 30 - 1595 - 17'"/><br/>
+                سجل تجاري رقم : <span t-esc="o.company_id.company_registry or ' 115135'"/><br/>
+                ويمثلها: <span t-esc="o.company_id.x_represented_by or 'عمرو جاسر سالم'"/><br/>
+                بطاقة شخصية رقم: <span t-esc="o.company_id.x_representative_id_no or '28881807895'"/><br/>
+                هاتف: <span t-esc="o.company_id.phone or '44830384'"/><br/>
+                ص. ب: <span t-esc="o.company_id.x_po_box or '91791'"/>
+              </div>
+            </div>
+
+            <div style="margin-top:6px;">
+              السيد / <b><span t-esc="o.partner_id.name or ''"/></b> طرف ثاني<br/>
+              بطاقة شخصية رقم : <span t-esc="o.partner_id.x_id_no or ''"/><br/>
+              البريد الإلكتروني: <span t-esc="o.partner_id.email or ''"/><br/>
+              هاتف : <span t-esc="o.partner_id.phone or ''"/><br/>
+              ص . ب : <span t-esc="o.partner_id.zip or ''"/> <span t-esc="o.partner_id.city or ''"/> <span t-esc="(o.partner_id.country_id and o.partner_id.country_id.name) or ''"/>
+            </div>
+          </td>
+        </tr>
+      </table>
+
+      <!-- Preface + Technical -->
+      <table class="bilingual-table" style="width:100%; border-collapse:collapse; margin-top:6px;">
+        <tr>
+          <td style="width:50%; direction:ltr; text-align:left;">
+            <div><b>Preface:</b></div>
+            <div>The second party owns site in the area specified in the quotation, as it desires to supply and install required works according to attached quotation, and since the first party has expressed its desire to carry out supply and implementation work, considering that it has the experience and qualified labour.</div>
+            <div>The second party assigned the first party to supply, implement, and supervise all those agreed-upon works, in accordance with what was agreed upon between the two parties.</div>
+            <div>The first party agreed to the task assigned to it based on the terms of this present contract and its details as follows:</div>
+          </td>
+          <td style="width:50%; direction:rtl; text-align:right;">
+            <div><b>التمهيد :</b></div>
+            <div>يملك الطرف الثاني المكان المؤهل في المنطقة المحددة في عرض السعر، حيث يرغب في توريد وتركيب الاعمال المطلوبة طبقا لعرض السعر المرفق وحيث أن الطرف الأول ابدى رغبته في القيام بأعمال التوريد والتنفيذ باعتبار انه يملك الخبرة والعمالة المؤهلة .</div>
+            <div>فقد قام الطرف الثاني بتكليف الطرف الاول بالتوريد والتنفيذ والاشراف على جميع تلك الأعمال المتفق عليها، وذلك طبقا للمتفق عليه بين الطرفين وافق الطرف الأول على المهمة المكلف بها سنداً لشروط هذا العقد الحاضر وتفاصيلها كالاتي</div>
+          </td>
+        </tr>
+        <tr>
+          <td style="width:50%; direction:ltr; text-align:left;">
+            <div><b>Required Works:</b></div>
+            <div>The required works is set according to attached quotation.</div>
+          </td>
+          <td style="width:50%; direction:rtl; text-align:right;">
+            <div><b>الأعمال المطلوبة :</b></div>
+            <div>تحدد المواصفات الفنية للأعمال المطلوبة طبقا لعرض السعر المرفق</div>
+          </td>
+        </tr>
+        <tr>
+          <td style="width:50%; direction:ltr; text-align:left;">
+            <div><b>Technical Specifications:</b></div>
+            <div>The technical specification is set according to attached quotation.</div>
+          </td>
+          <td style="width:50%; direction:rtl; text-align:right;">
+            <div><b>المواصفات الفنية :</b></div>
+            <div>تحدد الاعمال المطلوبة طبقا لعرض السعر المرفق</div>
+          </td>
+        </tr>
+      </table>
+
+      <div class="keep-with-next" style="margin-top:6px;">
+        <table class="signature-block" style="width:100%; font-size:10pt; page-break-inside:avoid; margin-top:6px;">
+          <tr>
+            <td style="width:50%; direction:ltr; text-align:left; vertical-align:top;">
+              <b>Second Party</b><br/>Name:<br/>Signature:<br/><br/><br/>
+            </td>
+            <td style="width:50%; direction:ltr; text-align:left; vertical-align:top;">
+              <b>First Party</b><br/><span t-esc="o.company_id.name"/><br/><br/><br/>
+            </td>
+          </tr>
+        </table>
+      </div>
+
+    </div>
+  </template>
+
+
+  <!-- PAGE 2: Clauses 1-4 -->
+  <template id="contract_terms_page_2">
+    <div style="page-break-before: always;"></div>
+    <div class="page contract-body">
+
+      <table class="bilingual-table" style="width:100%; border-collapse:collapse; padding:8px;">
+        <tr>
+          <td style="width:50%; direction:ltr; text-align:left;">
+            <div><b>First clause:</b></div>
+            <div>The foregoing preamble is considered an integral part of this contract and shall be read and interpreted with it.</div>
+          </td>
+          <td style="width:50%; direction:rtl; text-align:right;">
+            <div><b>البند الأول</b></div>
+            <div>يعتبر التمهيد السابق جزءًا لا يتجزأ من هذا العقد ويُقرأ ويُفسر معه.</div>
+          </td>
+        </tr>
+
+        <tr>
+          <td style="width:50%; direction:ltr; text-align:left;">
+            <div><b>Second clause:</b></div>
+            <div>The two parties agreed on the value of the works according to the attached quotation.</div>
+          </td>
+          <td style="width:50%; direction:rtl; text-align:right;">
+            <div><b>البند الثاني: قيمة العقد</b></div>
+            <div>اتفق الطرفان على قيمة الأعمال طبقًا لعرض السعر المرفق، وتدفع على دفعات حسب العمل المنجز طبقا للدفعات المذكورة في عرض السعر المرفق</div>
+          </td>
+        </tr>
+
+        <tr>
+          <td style="width:50%; direction:ltr; text-align:left;">
+            <div><b>Third clause:</b></div>
+            <div>The First Party undertakes to supply, implement, and supervise all required works listed in this contract and its annexes without exception.</div>
+          </td>
+          <td style="width:50%; direction:rtl; text-align:right;">
+            <div><b>البند الثالث:</b></div>
+            <div>يتعهد الطرف الأول بالتوريد والتنفيذ والإشراف على جميع الأعمال ومرفقاتها دون استثناء.</div>
+          </td>
+        </tr>
+
+        <tr>
+          <td style="width:50%; direction:ltr; text-align:left;">
+            <div><b>Fourth clause:</b></div>
+            <div><b>Starting date and implementation period</b></div>
+            <div>-The start date is set according to attached quotation starting from the date of the first party receiving the advance payment and handing over the site in a condition that allows the start of work and is prepared to start work.</div>
+            <div>-The implementation period is set according to attached quotation from the start date within the site, except in the case of force majeure circumstances or the presence of disruption by the second party or a delay in the payment of the due payments.</div>
+            <div>-The second party must receive the place after completion and sign the receipt of the works and make his observations, and in the event of receipt, the warranty period begins, except for damage, fractures and misuse</div>
+            <div>- In the event that part of the work is executed, the first party has the right to deduct what it sees as money in return for what has been</div>
+          </td>
+          <td style="width:50%; direction:rtl; text-align:right;">
+            <div><b>البند الرابع</b></div>
+            <div><p>تاريخ البدأ ومدة التنفيذ</p></div>
+            <div>-تحدد موعد البدء طبقا لعرض السعر تبدأ من تاريخ استلام الطرف الأول للدفعة المقدمة وتسليم الموقع بحالة تسمح ببدء العمل ومعد لبدء العمل .</div>
+            <div>-تحدد مدة التنفيذ طبقا لعرض السعر من موعد البدء داخل الموقع الا في حالة الظروف القهرية او وجود تعطيل من قبل الطرف الثاني او تأخير في سداد الدفعات المستحقة</div>
+            <div>- يلتزم الطرف الثاني بتجهيز الموقع بشكل كامل لاستلام الاعمال قبل الانتهاء من التصنيع</div>
+            <div>-على الطرف الثاني استلام المكان بعد الانتهاء والتوقيع على استلام الاعمال وابدا ء ملاحظاته وفي حالة استلامه تبدأ فترة الضمان ما عدا التلفيات والكسور وسوء الاستخدام</div>
+            <div>- وفي حالة تنفيذ جزء من الاعمال للطرف الاول الحق في خصم ما يراه من اموال مقابل ما تم تنفيذه مضاف اليها الخسائر المحتمله للطرف الاول. </div>
+          </td>
+        </tr>
+      </table>
+
+      <!-- signature kept with clauses -->
+      <div class="keep-with-next" style="padding:8px; margin-top:6px;">
+        <t t-call="sale_order_contract_terms.contract_two_col_table"/>
+        <table class="signature-block" style="width:100%; font-size:10pt; page-break-inside:avoid; margin-top:6px;">
+          <tr>
+            <td style="width:50%; direction:ltr; text-align:left; vertical-align:top;">
+              <b>Second Party</b><br/>Name:<br/>Signature:<br/><br/><br/>
+            </td>
+            <td style="width:50%; direction:ltr; text-align:left; vertical-align:top;">
+              <b>First Party</b><br/><span t-esc="o.company_id.name"/><br/><br/><br/>
+            </td>
+          </tr>
+        </table>
+      </div>
+
+    </div>
+  </template>
+
+
+  <!-- PAGE 3: Clauses 5-7 -->
+  <template id="contract_terms_page_3">
+    <div style="page-break-before: always;"></div>
+    <div class="page contract-body">
+
+      <table class="bilingual-table" style="width:100%; border-collapse:collapse; padding:8px;">
+        <tr>
+          <td style="width:50%; direction:ltr; text-align:left;">
+            <div><b>Fifth clause:</b></div>
+            <div><b>Work schedule</b></div>
+            <div>The first party is committed to the schedule of execution dates of the contracted works within the framework of the work execution period, the agreed drawings and technical specifications and the attached price offer.</div>
+            <div>- In the event that the second party withdraws from the contract before the start of implementation, all administrative expenses, inspections and transfers to the work crew, as well as what may have been purchased of materials and supplies for the benefit of the client, shall be deducted.</div>
+            <div>-In the event that part of the work is executed, the first party has the right to deduct what it sees as money in return for what has been implemented in addition to the potential losses of the first party</div>
+            <div>- Site unavailability shall release the first party from any liability for delay, and the execution period shall be automatically extended.</div>
+          </td>
+          <td style="width:50%; direction:rtl; text-align:right;">
+            <div><b>البند الخامس :</b></div>
+            <div><b>البرنامج الزمني للأعمال</b></div>
+            <div>-يلتزم الطرف الأول بالبرنامج الزمني لمواعيد تنفيذ الأعمال المتعاقد عليها ضمن إطار مدة تنفيذ الأعمال والرسومات والمواصفات الفنية المتفق عليها وعرض السعر المرفق .</div>
+            <div>-وفي حالة تراجع الطرف الثاني عن التعاقد قبل بدء التنفيذ يتم خصم جميع المصاريف الإدارية والمعاينات والانتقالات لطاقم العمل وكذا ما يكون قد تم شراؤه من موا د ومستلزمات لصالح العميل .</div>
+            <div>-وفي حالة تنفيذ جزء من الاعمال للطرف الأول الحق في خصم ما يراه من أموال مقابل ما تم تنفيذه مضافا اليها الخسائر المحتملة للطرف الأول</div>
+            <div>- عدم جاهزية الموقع يعفي الطرف الاول من أي مسؤوليه عن التأخير مع تمديد مدة التنفيذ تلقائيا.</div>
+          </td>
+        </tr>
+
+        <tr>
+          <td style="width:50%; direction:ltr; text-align:left;">
+            <div><b>Sixth clause:</b></div>
+            <div><b>Payment method</b></div>
+            <div>-The two parties agreed that the payment should be by bank transfer and the payment system.</div>
+            <div>- According to attached quotation.</div>
+            <div>- The first part (AL Zhbya International) has the right not to complete the work or stop it in case the second party is late in fulfilling the high payments on the predetermined dates without any responsibility on the first part.</div>
+          </td>
+          <td style="width:50%; direction:rtl; text-align:right;">
+            <div><b>البند السادس :</b></div>
+            <div><b>طريق الدفع</b></div>
+            <div>- اتفق الطرفان على ان يكون الدفع بنظام التقسيط :</div>
+            <div>- طبقا لعرض السعر المرفق ومن حق الطرف الأول (الذهبية إنترناشونال) عدم استكمال الأعمال او وقفها في حالة تأخر الطرف الثاني في الوفاء بالدفعات بعالية في المواعيد المحددة سلفا دون أي مسئولية على الطرف الأول</div>
+          </td>
+        </tr>
+
+        <tr>
+          <td style="width:50%; direction:ltr; text-align:left;">
+            <div><b>Seventh clause:</b></div>
+            <div><b>Warranty period:</b></div>
+            <div>-The warranty period is set at 3 years for the product starting from the date of the second party’s receipt of the agreed works, and the first part is responsible for any defects in the agreed works, except for damage, fractures and misuse. The maintenance period is also extended after the warranty period and for a fee.</div>
+            <div>-If the works are completed and the second party refuses to sign the receipt, the second party is notified (email - excellent or registered)</div>
+          </td>
+          <td style="width:50%; direction:rtl; text-align:right;">
+            <div><b>البند السابع</b></div>
+            <div><b>فترة الضمان</b></div>
+            <div>- تم تحديد فترة الضمان ب 3 سنوات للمنتج تبدأ من تاريخ استلام الطرف الثاني للأعمال المتفق عليها ويكون الطرف الاول مسؤول عن اية عيوب تشوب الاعمال المتفق عليها ما عدا التلفيات والكسور وسوء الاستخدام. كما تمتد فترة الصيانة بعد فترة الضمان وبمقابل مادي .</div>
+            <div>- في حالة الانتهاء من الاعمال ورفض الطرف الثاني التوقيع بالاستلام يتم اخطار الطرف الثاني (بريد الكتروني – بريد ممتاز او مسجل – أحد وسائل التواصل) يعتبر ذلك إقرار استلام من الطرف الثاني وانتهاء الاعمال من قبل الطرف الأول</div>
+          </td>
+        </tr>
+      </table>
+
+      <div class="keep-with-next" style="padding:8px; margin-top:6px;">
+        <t t-call="sale_order_contract_terms.contract_two_col_table"/>
+        <table class="signature-block" style="width:100%; font-size:10pt; page-break-inside:avoid; margin-top:6px;">
+          <tr>
+            <td style="width:50%; direction:ltr; text-align:left; vertical-align:top;">
+              <b>Second Party</b><br/>Name:<br/>Signature:<br/><br/><br/>
+            </td>
+            <td style="width:50%; direction:ltr; text-align:left; vertical-align:top;">
+              <b>First Party</b><br/><span t-esc="o.company_id.name"/><br/><br/><br/>
+            </td>
+          </tr>
+        </table>
+      </div>
+
+    </div>
+  </template>
+
+
+  <!-- PAGE 4: Clauses 8-9 + Jurisdiction + customer service + copies -->
+  <template id="contract_terms_page_4">
+    <div style="page-break-before: always;"></div>
+    <div class="page contract-body" style="padding-bottom:6px;">
+
+      <table class="bilingual-table" style="width:100%; border-collapse:collapse; padding:8px;">
+        <tr>
+          <td style="width:50%; direction:ltr; text-align:left;">
+            <div><b>Eighth clause:</b></div>
+            <div>- A delivery notice will be sent to the registered email of the Second Party, and failure to respond within one week will be considered acknowledgment of receipt of the agreed works.</div>
+            <div>- The First Party has the right to stop the work if the Second Party delays payment, and the delay period will be added to the execution time.</div>
+            <div>- First Party has the right to photograph the completed works for documentation or marketing purposes.</div>
+            <div>- The First Party shall have the right, at its discretion, to deliver the fabricated works to the site without installation, and such delivery shall be at the Second Party's risk.</div>
+            <div>- If the Second Party fails to receive the fabricated works within (7) days from the date of official notification, the First Party shall be entitled to charge storage and space occupation fees at a rate of (100 QAR) per day or part thereof until delivery or installation.</div>
+          </td>
+          <td style="width:50%; direction:rtl; text-align:right;">
+            <div><b>البند الثامن :</b></div>
+            <div>- يتم إرسال إشعار بتسليم الأعمال على البريد الإلكتروني المسجل للطرف الثاني، ويعتبر عدم الرد خلال أسبوع من الإرسال إقراراً باستلام الأعمال المتفق عليها .</div>
+            <div>-يحق للطرف الأول ( الذهبية إنترناشونال ) إيقاف الأعمال في حال تأخر الطرف الثاني في السداد، وتضاف مدة التأخير إلى مدة التنفيذ  .</div>
+            <div>-يحق للطرف الأول ( الذهبية إنترناشونال ) تصوير الأعمال المنفذة بعد الانتهاء منها لأغراض التوثيق أو التسويق</div>
+            <div>- يحق للطرف الاول, وفق تقديره, تسليم الأعمال المصنعة الي الموقع بدون تركيب, ويكون ذلك علي مسؤولية الطرف الثاني. </div>
+            <div>- في حال عدم قيام الطرف الثاني باستلام الاعمال المصنعة خلال مدة (7) أيام من تاريخ الإخطار الرسمي, يحق للطرف الأول احتساب رسوم تخزين وإشغال حيز بمعدل ( مائة ريال قطري) عن كل يوم أو جزء منه حتي يتم التسليم أو التركيب.  </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td style="width:50%; direction:ltr; text-align:left;">
+            <div><b>Ninth clause:</b></div>
+            <div><b>Jurisdiction</b></div>
+            <div>The courts of the State of Qatar have jurisdiction to consider or decide on any dispute or disagreement that may arise between the two parties, God forbid, about the validity, implementation or interpretation of any of the terms or conditions of this contract.</div>
+            <div>For inquiries, complaints, and after-sales service, please contact customer service at the unified number: +974 66753636 , either by phone or via WhatsApp.</div>
+            <div>This contract has been issued in three copies, with each party holding a copy and a copy for authentication.</div>
+          </td>
+          <td style="width:50%; direction:rtl; text-align:right;">
+            <div><b>البند التاسع :</b></div>
+            <div><b>الاختصاص القضائي</b></div>
+            <div>-تختص محاكم دولة قطر ذات الصلاحية بالنظر أو الفصل في أي نزاع أو خلاف قد ينشأ بين الطرفين حول صحة أو تنفيذ أو تفسير أي شرط من شروط هذا العقد او بنوده .</div>
+            <div>- للاستفسارات والشكاوي وخدمة ما بعد البيع ، التكرم بالتواصل مع خدمة العملاء رقم : 66753636 974+ الموحد تليفونياً او واتس أب</div>
+            <div>-حرر هذا العقد من ثلاث نسخ بيد كل طرف نسخة ونسخة للتوثيق</div>
+          </td>
+        </tr>
+      </table>
+
+      <div class="keep-with-next" style="padding:8px; margin-top:6px;">
+        <t t-call="sale_order_contract_terms.contract_two_col_table"/>
+        <table class="signature-block" style="width:100%; font-size:10pt; page-break-inside:avoid; margin-top:6px;">
+          <tr>
+            <td style="width:50%; direction:ltr; text-align:left; vertical-align:top;">
+              <b>Second Party</b><br/>Name:<br/>Signature:<br/><br/><br/>
+            </td>
+            <td style="width:50%; direction:ltr; text-align:left; vertical-align:top;">
+              <b>First Party</b><br/><span t-esc="o.company_id.name"/><br/><br/><br/>
+            </td>
+          </tr>
+        </table>
+      </div>
+
+    </div>
+  </template>
+
+</odoo>

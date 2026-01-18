@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <record id="view_users_preview_print_form" model="ir.ui.view">
+        <field name="name">res.users.form.inherit</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='preferences']" position="after">
+                <page string="Preview" name="preview_settings">
+                    <group>
+                        <group string="Report Settings">
+                            <field name="preview_print"/>
+                            <field name="automatic_printing"/>
+                            <button class="btn btn-secondary fa fa-refresh" name="preview_reload" type="object" string=" Refresh Interface"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+
+    <record id="short_preview_print_from" model="ir.ui.view">
+        <field name="name">res.users.preview_print.form</field>
+        <field name="model">res.users</field>
+        <field eval="18" name="priority"/>
+        <field name="arch" type="xml">
+            <form string="Preview Settings" create="false" edit="true">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="preview_print"/>
+                            <field name="automatic_printing"/>
+                        </group>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="preview_print_save" type="object" string="Save" class="btn-primary" data-hotkey="q"/>
+                    <button string="Discard" class="btn-secondary" special="cancel" data-hotkey="x"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_short_preview_print" model="ir.actions.act_window">
+        <field name="name">Preview Print Settings</field>
+        <field name="res_model">res.users</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="view_id" ref="short_preview_print_from"/>
+    </record>
+
+</odoo>

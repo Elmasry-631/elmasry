@@ -1,0 +1,254 @@
+<odoo>
+
+
+    <!-- Inherit Form View to Modify it -->
+    <record id="sale_inherit_form_profuct" model="ir.ui.view">
+        <field name="name">sale_inherit_form_profuct</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="priority" eval="20"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//notebook/page/field[@name='order_line']/tree/field[@name='product_id']" position="attributes">
+
+                <attribute name="options">{'no_quick_create': True, 'no_create_edit' : True}</attribute>
+
+            </xpath>
+            <xpath expr="//field[@name='partner_id']" position="attributes">
+
+                <attribute name="options">{'no_quick_create': True, 'no_create_edit' : True}</attribute>
+
+            </xpath>
+
+        </field>
+    </record>
+    <record id="purchase_inherit_form_product" model="ir.ui.view">
+        <field name="name">purchase_inherit_form_product</field>
+        <field name="model">purchase.order</field>
+        <field name="priority" eval="20"/>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//notebook/page/field[@name='order_line']/tree/field[@name='product_id']" position="attributes">
+
+                <attribute name="options">{'no_quick_create': True, 'no_create_edit' : True}</attribute>
+
+            </xpath>
+            <xpath expr="//field[@name='partner_id']" position="attributes">
+
+                <attribute name="options">{'no_quick_create': True, 'no_create_edit' : True}</attribute>
+
+            </xpath>
+
+        </field>
+    </record>
+    <record id="invoice_inherit_form_profuct" model="ir.ui.view">
+        <field name="name">invoice_inherit_form_profuct</field>
+        <field name="model">account.move</field>
+        <field name="priority" eval="20"/>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='partner_id']" position="attributes">
+
+                <attribute name="options">{'no_quick_create': True, 'no_create_edit' : True}</attribute>
+
+            </xpath>
+            <xpath expr="//notebook/page/field[@name='invoice_line_ids']/tree/field[@name='product_id']" position="attributes">
+
+                <attribute name="options">{'no_quick_create': True, 'no_create_edit' : True}</attribute>
+
+            </xpath>
+
+        </field>
+    </record>
+    <record id="stock_picking_inherit_form_profuct" model="ir.ui.view">
+        <field name="name">stock_picking_inherit_form_profuct</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="priority" eval="20"/>
+        <field name="arch" type="xml">
+             <xpath expr="//field[@name='partner_id']" position="attributes">
+
+                <attribute name="options">{'no_quick_create': True, 'no_create_edit' : True}</attribute>
+
+            </xpath>
+            <xpath expr="//notebook/page[2]/field[@name='move_ids_without_package']/tree/field[@name='product_id']" position="attributes">
+
+                <attribute name="options">{'no_quick_create': True, 'no_create_edit' : True}</attribute>
+
+            </xpath>
+
+        </field>
+    </record>
+   <record id="inherit_product_form_create_group" model="ir.ui.view">
+        <field name="name">inherit_product_form_create_group</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+		<field name="priority" eval="20"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="attributes">
+				<t groups="access_right_product_partner.group_product_create">
+					<attribute name="create">true</attribute>
+				</t>
+            </xpath>
+        </field>
+    </record>
+    <record id="inherit_product_template_tree_view_group" model="ir.ui.view">
+        <field name="name">inherit_product_template_tree_view_group</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_tree_view"/>
+        <field name="priority" eval="20"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+				<t groups="access_right_product_partner.group_product_create">
+					<attribute name="create">true</attribute>
+				</t>
+            </xpath>
+        </field>
+    </record>
+    <record id="inherit_product_template_kanban_view_group" model="ir.ui.view">
+        <field name="name">inherit_product_template_kanban_view_group</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_kanban_view"/>
+        <field name="priority" eval="20"/>
+        <field name="arch" type="xml">
+            <xpath expr="//kanban" position="attributes">
+				<t groups="access_right_product_partner.group_product_create">
+                <attribute name="create">true</attribute>
+				</t>
+            </xpath>
+        </field>
+    </record>
+
+
+
+   <record id="inherit_product_form__product_create_group" model="ir.ui.view">
+        <field name="name">inherit_product_form__product_create_group</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="attributes">
+			<t groups="access_right_product_partner.group_product_create">
+                <attribute name="create">true</attribute>
+				</t>
+            </xpath>
+        </field>
+    </record>
+    <record id="inherit_product_product_tree_view_group" model="ir.ui.view">
+        <field name="name">inherit_product_product_tree_view_group</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_product_tree_view"/>
+        <field name="priority" eval="55"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+			<t groups="access_right_product_partner.group_product_create">
+                <attribute name="create">true</attribute>
+				</t>
+            </xpath>
+        </field>
+    </record>
+
+
+
+
+
+    <record id="inherit_product_form_create_custom" model="ir.ui.view">
+        <field name="name">inherit_product_form_create_custom</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="attributes">
+                <attribute name="create">false</attribute>
+            </xpath>
+        </field>
+    </record>
+    <record id="inherit_product_template_tree_view_custom" model="ir.ui.view">
+        <field name="name">inherit_product_template_tree_view_custom</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_tree_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="create">false</attribute>
+            </xpath>
+        </field>
+    </record>
+    <record id="inherit_product_template_kanban_view_custom" model="ir.ui.view">
+        <field name="name">inherit_product_template_kanban_view_custom</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_kanban_view"/>
+
+        <field name="arch" type="xml">
+            <xpath expr="//kanban" position="attributes">
+                <attribute name="create">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+
+
+   <record id="inherit_product_form_product_no" model="ir.ui.view">
+        <field name="name">inherit_product_form_product_no</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view"/>
+       <field name="priority" eval="20"/>
+
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="attributes">
+                <attribute name="create">false</attribute>
+            </xpath>
+        </field>
+    </record>
+     <record id="inherit_product_form_product_group" model="ir.ui.view">
+        <field name="name">inherit_product_form_product_no</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view"/>
+       <field name="priority" eval="33"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="attributes">
+			<t groups="access_right_product_partner.group_product_create">
+                <attribute name="create">true</attribute>
+				</t>
+            </xpath>
+        </field>
+    </record>
+    <record id="inherit_product_product_tree_view" model="ir.ui.view">
+        <field name="name">inherit_product_product_tree_view_group</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_product_tree_view"/>
+        <field name="priority" eval="20"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="create">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+
+    <record id="account_inherit_product_product_tree_view_group" model="ir.ui.view">
+        <field name="name">account_inherit_product_product_tree_view_group</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_product_tree_view"/>
+        <field name="priority" eval="53"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+				<t groups="access_right_product_partner.group_product_create">
+                <attribute name="create">true</attribute>
+				</t>
+            </xpath>
+        </field>
+    </record>
+     <record id="account_inherit_product_product_tree_view" model="ir.ui.view">
+        <field name="name">account_inherit_product_product_tree_view_group</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_product_tree_view"/>
+           <field name="priority" eval="20"/>
+
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="create">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

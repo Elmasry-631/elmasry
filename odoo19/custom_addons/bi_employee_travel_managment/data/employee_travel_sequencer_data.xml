@@ -1,0 +1,9 @@
+<?xml version="1.0"  encoding="utf-8"?>
+<odoo>
+    <record id="seq_idea" model="ir.sequence">
+        <field name="name">travel_sequence</field>
+        <field name="code">travel.request</field>
+        <field name="prefix">TR/</field>
+        <field name="padding">4</field>
+    </record>
+</odoo>

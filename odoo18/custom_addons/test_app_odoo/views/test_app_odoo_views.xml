@@ -1,0 +1,146 @@
+<odoo>
+    <record id="test_app_odoo_list_view" model="ir.ui.view">
+        <field name="name">test.app.odoo.list</field>
+        <field name="model">test.app.odoo</field>
+        <field name="arch" type="xml">
+            <list class="header_custom" decoration-danger="is_late">
+                <field name="name"/>
+                <field name="description" readonly="state in ['closed']"/>
+                <field name="value"/>
+                <field name="is_late" invisible="1"/>
+                <field name="test_app_two_id"/>
+                <field name="tag_ids" widget="many2many_tags"/>
+                <field name="active"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+    <record id="test_app_odoo_form_view" model="ir.ui.view">
+        <field name="name">test.app.odoo.form</field>
+        <field name="model">test.app.odoo</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_draft" type="object" class="btn-primary" string="Set to draft" invisible = "state in [ 'closed', 'draft' ]" confirm="Are you Sure to change that for draft?"/>
+                    <button name="action_pending" type="object" class="btn-secondary" string="Set To Pending" invisible = "state != 'draft'" />
+                    <button name="action_sold" type="object" class="btn-success" string="Set To Sold" invisible="state != 'pending'"/>
+                    <button name="action_open_invoice_account" type="object" string="open accounting"/>
+                    <field name="state" widget="statusbar" options="{'clickable':1}"/>
+
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="ref"/>
+                        <h1>
+                            <field name="ref"/>
+
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                        <field name="name" readonly="state in ['closed']"/>
+
+                        <field name="description"/>
+                        <field name="value" readonly="state in ['closed']"/>
+                        <field name="expected_date" readonly="state in ['closed']"/>
+                        <field name="selling_date" readonly="state in ['closed']"/>
+                        <field name="is_late" readonly="state in ['closed']"/>
+                        </group>
+                            <group>
+                        <field name="test_app_two_id" readonly="state == 'closed'"/>
+                        <field name="tag_ids" widget="many2many_tags" readonly="state != 'draft'"/>
+                        <field name="active" readonly="state != 'draft'"/>
+                        <field name="expected_price" readonly="state != 'draft'"/>
+                        <field name="sales_price" readonly="state != 'draft'"/>
+                        <field name="deference" readonly="state != 'draft'"/>
+                            </group>
+                    </group>
+                    <notebook>
+                        <page string="Test Line">
+                            <field name="line_ids" readonly="state != 'draft'">
+                                <list editable="bottom">
+                                    <field name="description"/>
+                                    <field name="area"/>
+                                </list>
+                            </field>
+
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+
+
+
+            </form>
+
+        </field>
+    </record>
+
+
+    <record id="test_app_two_list_view" model="ir.ui.view">
+        <field name="name">test.app.two.list</field>
+        <field name="model">test.app.two</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="phone"/>
+                <field name="address"/>
+            </list>
+        </field>
+    </record>
+    <record id="test_app_two_form_view" model="ir.ui.view">
+        <field name="name">test.app.two.form</field>
+        <field name="model">test.app.two</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <header>
+                        <button name="test_action" type="object" string="Test Action" class="btn-primary"/>
+                    </header>
+                    <group>
+                        <group>
+                        <field name="name"/>
+                        <field name="phone"/>
+                        <field name="address"/>
+                        <field name="test_app_odoo_ids" widget="many2many_tags"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+<!--    Server Action-->
+    <record id="test_app_odoo_server_action" model="ir.actions.server">
+        <field name="name">Closed</field>
+        <field name="model_id" ref="model_test_app_odoo"/>
+        <field name="binding_model_id" ref="model_test_app_odoo"/>
+        <field name="state">code</field>
+        <field name="code">
+            action = records.action_closed()
+        </field>
+    </record>
+
+
+    <record id="action_change_state" model="ir.actions.server">
+        <field name="name">Change State</field>
+        <field name="model_id" ref="model_test_app_odoo"/>
+        <field name="binding_model_id" ref="model_test_app_odoo"/>
+        <field name="state">code</field>
+        <field name="code">
+            action = records.action_open_change_wizard()
+        </field>
+    </record>
+
+
+<!--    Automated Action-->
+    <record id="expected_date_automated_action" model="ir.cron">
+        <field name="name">Test App : Expected Date </field>
+        <field name="model_id" ref="model_test_app_odoo"/>
+        <field name="state">code</field>
+        <field name="code">model._check_expected_date()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+
+    </record>
+</odoo>

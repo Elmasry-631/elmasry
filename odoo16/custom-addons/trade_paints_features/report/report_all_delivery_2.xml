@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+        <template id="report_all_picking">
+            <t t-call="web.html_container">
+                <div class="page">
+                   <t t-foreach="docs[0]" t-as="o">
+                    <t t-call="web.internal_layout">
+                            <table class="table table-sm" t-if="o.driver_name">
+                                <thead>
+                                    <tr>
+                                        <th>السائق</th>
+                                        <th>رقم الشاحنة</th>
+                                        <th>اجمالي الوزن</th>
+                                        <t t-if="o.neighborhood_id">
+                                            <th>الحي</th>
+                                        </t>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    <td>
+                                        <span t-field="o.driver_name.name"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="o.car_number"/>
+                                    </td>
+                                    <td>
+                                        <t t-set="total_weight" t-value="sum(int(doc.total_weight) for doc in docs)"/>
+                                        <span t-esc="total_weight"/>
+                                    </td>
+                                    <t t-if="o.neighborhood_id">
+                                        <td>
+                                            <span t-field="o.neighborhood_id.name"/>
+                                        </td>
+                                    </t>
+                                </tbody>
+                            </table>
+                            <table class="table table-sm" t-if="o.move_line_ids">
+                                <t t-set="has_barcode" t-value="any([move_ids_without_package.product_id and move_ids_without_package.product_id.sudo().barcode or move_ids_without_package.package_id for move_ids_without_package in o.move_line_ids])"/>
+                                <t t-set="has_serial_number" t-value="o.move_line_ids.filtered(lambda ml: ml.lot_id or ml.lot_name)" groups="stock.group_production_lot"/>
+                                 <thead>
+                                    <tr>
+                                        <th><strong>المنتج</strong></th>
+                                        <th><strong>الوزن</strong></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                   <t t-set="product_lst" t-value="[]"/>
+                                   <t t-foreach="docs" t-as="o">
+                                    <t t-foreach="o.move_ids_without_package" t-as="move">
+                                        <t t-foreach="move.move_line_ids" t-as="ml">
+                                                <t t-set="product_lst" t-value="product_lst + [ml.product_id]"/>
+                                        </t>
+                                    </t>
+                                   </t>
+                                    <t t-foreach="set(product_lst)" t-as="product">
+                                        <tr>
+                                            <td>
+                                                <span t-field="product.display_name"/><br/>
+                                            </td>
+                                            <td>
+                                            <t t-set="weight_total" t-value="0"/>
+                                            <t t-foreach="o.move_ids_without_package" t-as="move">
+                                                <t t-foreach="move.move_line_ids" t-as="ml">
+                                                    <t t-if="ml.product_id.id == product.id">
+                                                        <t t-set="weight_total" t-value="2" />
+                                                    </t>
+                                                </t>
+                                            </t>
+                                            <span t-esc="weight_total"/>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                  </tbody>
+                            </table>
+                    </t>
+                </t>
+                </div>
+            </t>
+        </template>
+
+        <report
+            string="طباعة اذون الصرف"
+            id="action_report_all_picking"
+            model="stock.picking"
+            report_type="qweb-pdf"
+            name="trade_paints_features.report_all_picking"
+            file="trade_paints_features.report_all_picking_operations"
+        />
+</odoo>

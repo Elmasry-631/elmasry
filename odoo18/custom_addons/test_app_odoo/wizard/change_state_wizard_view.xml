@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="change_state_wizard_form" model="ir.ui.view">
+        <field name="name">change.state.wizard</field>
+        <field name="model">change.state</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="property_id" readonly="1"/>
+                        <field name="state"/>
+                        <field name="date_today"/>
+                        <field name="reason"/>
+
+                    </group>
+                    <footer>
+                        <button string="Cancel" special="cancel" class="btn-secondary"/>
+                        <button string="Confirm" type="object" class="btn-primary" name="action_confirm"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="action_open_wizard" model="ir.actions.act_window">
+        <field name="name">open Wizard</field>
+        <field name="res_model">change.state</field>
+        <field name="target">new</field>
+        <field name="view_mode">form</field>
+    </record>
+
+
+
+
+</odoo>

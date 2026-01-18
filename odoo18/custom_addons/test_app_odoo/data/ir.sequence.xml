@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="test_app_odoo_sequence" model="ir.sequence">
+        <field name="name">Test seq</field>
+        <field name="code">test_seq</field>
+        <field name="prefix">tst</field>
+        <field name="padding">5</field>
+    </record>
+</odoo>

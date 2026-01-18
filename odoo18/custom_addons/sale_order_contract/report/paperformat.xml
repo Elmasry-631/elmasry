@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+        <record id="paperformat_supply_contract" model="report.paperformat">
+            <field name="name">Supply  Installation Contract A4</field>
+            <field name="default" eval="False"/>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+
+            <!-- Margins (mm) -->
+            <field name="margin_top">30</field>
+            <field name="margin_bottom">20</field>
+            <field name="margin_left">12</field>
+            <field name="margin_right">12</field>
+
+            <!-- Header / Footer -->
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">10</field>
+
+            <!-- DPI -->
+            <field name="dpi">90</field>
+        </record>
+</odoo>

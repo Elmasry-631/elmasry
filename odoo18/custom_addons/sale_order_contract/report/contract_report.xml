@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_supply_contract" model="ir.actions.report">
+        <field name="name">Supply and Installation Contract</field>
+        <field name="model">sale.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">sale_order_contract.report_supply_installation_contract</field>
+        <field name="report_file">sale_order_contract.report_supply_installation_contract</field>
+        <field name="binding_model_id" ref="sale.model_sale_order"/>
+        <field name="binding_type">report</field>
+<!--        <field name="paperformat_id" ref="sale_order_contract.paperformat_supply_contract"/>-->
+
+    </record>
+</odoo>

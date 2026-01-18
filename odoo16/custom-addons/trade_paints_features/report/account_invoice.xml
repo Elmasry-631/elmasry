@@ -1,0 +1,54 @@
+<odoo>
+    <!-- Inherit Form View to Modify it -->
+    <record id="account_invoice_inherit" model="ir.ui.view">
+        <field name="name">account.invoice.inherit</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='discount_type']" position="before">
+                <field name="before_discount"/>
+                <field name="discount_amount"/>
+            </xpath>
+        </field>
+    </record>
+
+	<template id="account_invoice_temp" inherit_id="account.report_invoice_document">
+		<xpath expr="//div[@id='total']" position="replace">
+            <div class="clearfix">
+                        <div id="total" class="row">
+                            <div t-attf-class="#{'col-4' if report_type != 'html' else 'col-sm-7 col-md-5'} ml-auto">
+                                <table class="table table-sm">
+                                    <tr  style="">
+                                        <td><strong>Before Discount</strong></td>
+                                        <td class="text-right">
+                                            <span t-field="o.before_discount"/>
+                                        </td>
+                                    </tr>
+                                    <tr  style="">
+                                        <td><strong>Discount Amount</strong></td>
+                                        <td class="text-right">
+                                            <span t-field="o.discount_amount"/>
+                                        </td>
+                                    </tr>
+                                    <tr class="border-black o_subtotal" style="">
+                                        <td><strong>Subtotal</strong></td>
+                                        <td class="text-right">
+                                            <span t-field="o.amount_untaxed"/>
+                                        </td>
+                                    </tr>
+
+                                    <tr class="border-black o_total">
+                                        <td><strong>Total</strong></td>
+                                        <td class="text-right">
+                                            <span t-field="o.amount_total"/>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+        </xpath>
+    </template>
+
+
+</odoo>

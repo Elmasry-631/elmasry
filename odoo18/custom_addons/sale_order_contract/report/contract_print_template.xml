@@ -1,0 +1,533 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_supply_installation_contract">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.basic_layout">
+                    <div class="header">
+                        <div style="width:100%; text-align:center; margin-bottom:15px;">
+                            <img src="/sale_order_contract/static/src/img/contract_header.png"
+                                 style="width:100%; max-height:120px; object-fit:cover;"/>
+                        </div>
+                    </div>
+                    <div class="footer">
+                        <div style="width:100%; text-align:center; margin-bottom:15px;">
+                            <img src="/sale_order_contract/static/src/img/contract_footer.png"
+                                 style="width:100%; max-height:120px; object-fit:cover;"/>
+                        </div>
+                    </div>
+
+                    <div class="page">
+                        <p style="text-align: center; font-size: 14px;">
+                            <strong>Date:</strong>
+                            <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%A, %m/%d/%Y')"/>
+                        </p>
+                        <table>
+                            <tr>
+                                <td>
+                                    <h2 style="text-align:center;">Supply and
+                                        Installation contract
+                                    </h2>
+                                </td>
+                                <td>
+                                    <h2 style="text-align:center;">عقد توريد وتنفيذ</h2>
+                                </td>
+                            </tr>
+                            <tbody>
+
+                                <tr>
+                                    <td>
+                                        <div>
+                                            <h4 >First Party</h4>
+                                            <p>
+                                                <strong t-esc="o.company_id.name"/>
+                                                <br/>
+                                                Email:
+                                                <span t-esc="o.company_id.email"/>
+                                                <br/>
+                                                Establishment Registration:
+                                                <span t-esc="o.company_id.company_registry or ''"/>
+                                                <br/>
+                                                Commercial Registration No:
+                                                <span t-esc="o.company_id.vat or ''"/>
+                                                <br/>
+                                                Represented by:
+                                                <span t-esc="o.company_id.partner_id.name or o.company_id.name"/>
+                                                <br/>
+                                                ID No:
+                                                <span t-esc="o.company_id.partner_id.vat or ''"/>
+                                                <br/>
+                                                Tel:
+                                                <span t-esc="o.company_id.phone"/>
+                                                PO Box:
+                                                <span t-esc="o.company_id.street or ''"/>
+                                            </p>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <h4 style="direction:rtl;">أول طرف</h4>
+                                        <p style="direction: rtl; text-align: right; font-weight: bold;">
+                                            <span t-esc="o.company_id.name"/>
+                                            <br/>
+                                            <span t-esc="o.company_id.email"/>
+                                            :Email
+                                            <br/>
+                                            <span t-esc="o.company_id.company_registry or ''"/>
+                                            :المنشأة تسجيل
+                                            <br/>
+                                            <span t-esc="o.company_id.vat or ''"/>
+                                            :رقم تجاري سجل
+                                            <br/>
+                                            <span t-esc="o.company_id.partner_id.name or o.company_id.name"/>
+                                            :ويمثلها
+                                            <br/>
+                                            <span t-esc="o.company_id.partner_id.vat or ''"/>
+                                            :رقم شخصية بطاقة
+                                            <br/>
+                                            <span t-esc="o.company_id.phone"/>
+                                            :هاتف
+                                            <br/>
+                                            <span t-esc="o.company_id.street or ''"/>
+                                            :ب .ص
+                                        </p>
+                                    </td>
+                                </tr>
+
+                                <tr>
+
+                                    <td>
+                                        <h4>Second Party</h4>
+                                        <p>
+                                            Mr/Mrs
+                                            <strong t-esc="o.partner_id.name"/>
+                                            <br/>
+                                            ID No:
+                                            <span t-esc="o.partner_id.vat or ''"/>
+                                            <br/>
+                                            Email:
+                                            <span t-esc="o.partner_id.email"/>
+                                            <br/>
+                                            Tel:
+                                            <span t-esc="o.partner_id.phone or o.partner_id.mobile"/>
+                                            PO Box:
+                                            <span t-esc="o.partner_id.city or ''"/>
+                                            -
+                                            <span t-esc="o.partner_id.country_id.name or ''"/>
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <h4 style="direction: rtl;">ثاني طرف</h4>
+                                        <p style="direction: rtl; text-align: right; font-weight: bold;">
+                                            <span t-esc="o.partner_id.name"/>
+                                            /السيد ثاني طرف
+                                            <br/>
+                                            <span t-esc="o.partner_id.vat or ''"/>
+                                            :بطاقة شخصية رقم
+                                            <br/>
+                                            <span t-esc="o.partner_id.email or ''"/>
+                                            :الإلكتروني البريد
+                                            <br/>
+                                            <span t-esc="o.partner_id.phone or o.partner_id.mobile"/>
+                                            :هاتف
+                                            <br/>
+                                            <span t-esc="o.partner_id.city or ''"/>
+                                            -
+                                            <span t-esc="o.partner_id.country_id.name or ''"/>
+                                            :ب.ص
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr>
+
+
+                                    <td>
+                                        <h3>Preface:</h3>
+
+                                        <p>
+                                            The second party owns site in the area specified in the quotation, as it
+                                            desires
+                                            to supply and install required works according attached quotation, and since
+                                            the
+                                            first party has expressed its desire to carry out supply and implementation
+                                            work, considering that it has the experience and qualified labor.
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <h3 style="direction: rtl; text-align: right;">التمهيــد:</h3>
+                                        الثاني الطرف يملك المكان المؤهل في المنطقة المحددة في العرض، حيث يرغب في توريد
+                                        وتركيب الأعمال المطلوبة طبقاً لعرض السعر المرفق، وحيث أن الطرف الأول أبدى رغبته
+                                        في
+                                        القيام بأعمال التوريد والتنفيذ باعتباره يملك الخبرة والعمالة المؤهلة.
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p>
+                                            The second party assigned the first party to supply, implement, and
+                                            supervise
+                                            all those agreed-upon works, in accordance with what was agreed upon between
+                                            the
+                                            two parties. The first party agreed to the task assigned to it based on the
+                                            terms of this present contract and its details as follows:
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <p>
+                                            فقد قام الثاني الطرف بتكليف الأول الطرف بالتوريد والتنفيذ والإشراف على جميع
+                                            تلك
+                                            الأعمال المتفق عليها، وذلك وفقاً لما تم الاتفاق عليه بين الطرفين. وافق الأول
+                                            الطرف على المهمة المكلف بها سنداً لشروط هذا العقد الحاضر وتفاصيلها كالآتي:
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <h4>Required Works:</h4>
+                                        <p>The required works is set according attached quotation.</p>
+                                    </td>
+                                    <td>
+                                        <h4 style="direction: rtl; text-align: right;">الأعمال المطلوبة:</h4>
+                                        <p style="direction: rtl; text-align: right;">المرفق السعر لعرض طبقا المطلوبة
+                                            للأعمال تحدد
+                                        </p>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <h4>Technical Specifications:</h4>
+                                        <p>The technical specification is set according attached quotation.</p>
+
+                                    </td>
+                                    <td>
+                                        <h4 style="direction: rtl; text-align: right;">المواصفات الفنية:</h4>
+                                        <p style="direction: rtl; text-align: right;">المرفق السعر لعرض طبقا المطلوبة
+                                            الاعمال تحدد
+                                        </p>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <h3>
+                                            Clauses
+                                        </h3>
+                                        <p>
+                                            <strong>First clause:</strong>
+                                            The foregoing preamble is considered an integral part of this contract and
+                                            shall
+                                            be read and interpreted with it.
+                                        </p>
+
+                                    </td>
+                                    <td>
+                                        <h3 style="direction: rtl; text-align: right;">
+                                            البنود
+                                        </h3>
+                                        <p style="direction: rtl; text-align: right;">
+                                            <strong>:الأول البنــد</strong>
+                                            ويفسـر ويقرأ العقـد هذا من يتجزأ لا جزءا السابـق التمهيــد يعتبر .معـه
+                                        </p>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p>
+                                            <strong>Second clause:</strong>
+                                            Contract Value. The two parties agreed on the value of the mentioned works
+                                            according attached quotation.
+                                        </p>
+
+                                    </td>
+                                    <td>
+                                        <p style="direction: rtl; text-align: right;">
+                                            <strong>:الثاني البنــد</strong>
+                                            العقــد قيمــة. اتفق الطرفان على قيمة الأعمال المذكورة طبقا لعرض السعر و في
+                                            المذكورة للدفعات طبقا المنجز العمل حسب دفعات على تدفع عرض السعر المرفق
+                                        </p>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p>
+                                            <strong>Third clause:</strong>
+                                            The first party undertakes to supply, implement, and supervise all the
+                                            required
+                                            works listed in this contract and its annexes without exception.
+                                        </p>
+
+                                    </td>
+                                    <td>
+                                        <p style="direction: rtl; text-align: right;">
+                                            <strong>:الثالث البند</strong>
+                                            تعهد الطرف الأول بالتوريد والتنفيذ والاشراف على جميع الاعمال المطلوبـة
+                                            المدرجة
+                                            بهذا العقـد ومرفقاتـه دون استثناء
+                                        </p>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p>
+                                            <strong>Fourth clause:</strong>
+                                            Starting date and implementation period
+                                        </p>
+                                        <ul>
+                                            <li>The start date is set according attached quotation starting from the
+                                                date of
+                                                the first party receiving the advance payment and handing over the site
+                                                in a
+                                                condition that allows the start of work and is prepared to start work.
+                                            </li>
+                                            <li>The implementation period is set according attached quotation from the
+                                                start
+                                                date within the site, except in the case of force majeure circumstances
+                                                or
+                                                the presence of disruption by the second party or a delay in the payment
+                                                of
+                                                the due payments.
+                                            </li>
+                                            <li>The second party must receive the place after completion and sign the
+                                                receipt of the works and make his observations, and in the event of
+                                                receipt,
+                                                the warranty period begins, except for damage, fractures and misuse.
+                                            </li>
+                                        </ul>
+                                    </td>
+                                    <td>
+                                        <p style="direction: rtl; text-align: right;">
+                                            <strong>:الرابع البنــد</strong>
+                                            التنفيذ ومدة البدء تاريخ. تحدد موعد البدء طبقا لعرض السعر تبدأ من تاريخ
+                                            استلام
+                                            الطرف الأول والمقدمة للدفعة ومعد العمل ببدء تسمح بحالة الموقع وتسليم .لبدء
+                                            العمل. تحدد مدة التنفيذ طبقا لعرض السعر من موعد البدء داخل الموقع - الثاني
+                                            الطرف
+                                            قبل من تعطيل وجود او القهرية الظروف حالة في الا او تأخير في سداد الدفعات
+                                            المستحقة. على الطرف الثاني استلام المكان بعد الانتهاء والتوقيع على استلام -
+                                            عدا
+                                            ما الضمان فترة تبدأ استلامه حالة وفي ملاحظاته وابداء الاعمال .التلفيات
+                                            والكسور
+                                            وسوء الاستخدام
+                                        </p>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p>
+                                            <strong>Fifth clause:</strong>
+                                            Work schedule
+                                        </p>
+                                        <ul>
+                                            <li>The first party is committed to the schedule of execution dates of the
+                                                contracted works within the framework of the work execution period, the
+                                                agreed drawings and technical specifications and the attached price
+                                                offer.
+                                            </li>
+                                            <li>In the event that the second party withdraws from the contract before
+                                                the
+                                                start of implementation, all administrative expenses, inspections and
+                                                transfers to the work crew, as well as what may have been purchased of
+                                                materials and supplies for the benefit of the client, shall be deducted.
+                                            </li>
+                                            <li>In the event that part of the work is executed, the first party has the
+                                                right to deduct what it sees as money in return for what has been
+                                                implemented in addition to the potential losses of the first party.
+                                            </li>
+                                        </ul>
+                                    </td>
+                                    <td>
+                                        <p style="direction: rtl; text-align: right;">
+                                            <strong>:الخامس البند</strong>
+                                            للأعمال الزمني البرنامج. يلتزم الطرف الأول بالبرنامج الزمني لمواعيد تنفيذ
+                                            الأعمال - المتعاقد عليها ضمن إطار مدة تنفيذ الأعمال والرسومات .والمواصفات
+                                            الفنية
+                                            المتفق عليها وعرض السعر المرفق. يتم التنفيذ بدء قبل التعاقد عن الثاني الطرف
+                                            تراجع حالة وفي - لطاقم والانتقالات والمعاينات الإدارية المصاريف جميع خصم
+                                            لصالح
+                                            ومستلزمات مواد من شراؤه تم قد يكون ما وكذا العمل .العميل. ما خصم في الحق
+                                            الأول
+                                            للطرف الاعمال من جزء تنفيذ حالة وفي - يراه من أموال مقابل ما تم تنفيذه مضافا
+                                            اليها الخسائر المحتملة .للطرف الأول
+                                        </p>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p>
+                                            <strong>Sixth clause:</strong>
+                                            Payment method. The two parties agreed that the payment should be by bank
+                                            transfer and the payment system. According attached quotation. The first
+                                            part
+                                            (AL Zhbya International) has the right not to complete the work or stop it
+                                            in
+                                            case the second party is late in fulfilling the high payments on the
+                                            predetermined dates without any responsibility on the first part.
+                                        </p>
+
+                                    </td>
+                                    <td>
+                                        <p style="direction: rtl; text-align: right;">
+                                            <strong>:السادس البنــد</strong>
+                                            الدفع طريق. :التقسيط بنظام الدفع يكون ان على الطرفان اتفق - طبقا لعرض السعر
+                                            المرفق-. الأعمال استكمال عدم )إنترناشونال الذهبية ( الأول الطرف حق من او
+                                            وقفها
+                                            في حالة تأخر الطرف الثاني في الوفاء بالدفعات بعالية في المواعيد المحددة سلفا
+                                            دون
+                                            أي مسئولية على الطرف الأول
+                                        </p>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p>
+                                            <strong>Seventh clause:</strong>
+                                            Warranty period
+                                        </p>
+                                        <ul>
+                                            <li>The warranty period is set at 3 years for the product starting from the
+                                                date
+                                                of the second party’s receipt of the agreed works, and the first part is
+                                                responsible for any defects in the agreed works, except for damage,
+                                                fractures and misuse. The maintenance period is also extended after the
+                                                warranty period and for a fee.
+                                            </li>
+                                            <li>If the works are completed and the second party refuses to sign the
+                                                receipt,
+                                                the second party is notified (email - excellent or registered mail - one
+                                                of
+                                                the means of communication).
+                                            </li>
+                                        </ul>
+                                    </td>
+                                    <td>
+                                        <p style="direction: rtl; text-align: right;">
+                                            <strong>:السابع البند</strong>
+                                            الضمان فترة. استلام تاريخ من تبدأ للمنتج سنوات 3 الضمان فترة تحديد تم- الطرف
+                                            الثاني للأعمال المتفق عليها ويكون الطرف الاول مسؤول عن وسوء والكسور التلفيات
+                                            عدا
+                                            ما عليها المتفق الاعمال تشو عيو اية .مادي وبمقابل الضمان فترة بعد الصيانة
+                                            فترة
+                                            تمتد أيضا .الاستخدام. في حالة الانتهاء من الاعمال ورفض الطرف الثاني التوقيع
+                                            بالاستلام –بريد ممتاز او مسجل –بريد الكتروني (يتم اخطار الطرف الثاني الثاني
+                                            الطرف من استلام إقرار ذلك يعتبر )التواصل وسائل أحد وانتهاء الاعمال من قبل
+                                            الطرف
+                                            الأول
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p>
+                                            <strong>Eighth clause:</strong>
+                                            A delivery notice will be sent to the registered email of the Second Party,
+                                            and
+                                            failure to respond within one week will be considered acknowledgment of
+                                            receipt
+                                            of the agreed works. The First Party has the right to stop the work if the
+                                            Second Party delays payment, and the delay period will be added to the
+                                            execution
+                                            time. First Party has the right to photograph the completed works for
+                                            documentation or marketing purposes.
+                                        </p>
+
+                                    </td>
+                                    <td>
+                                        <p style="direction: rtl; text-align: right;">
+                                            <strong>:الثامن البنــد</strong>
+                                            المسجل الإلكتروني البريد على الأعمال بتسليم إشعار إرسال يتم- للطرف الثاني،
+                                            ويعتبر عدم الرد خلال أسبوع من الإرسال إقراراً .باستلام الأعمال المتفق عليها.
+                                            حال
+                                            في الأعمال إيقاف )إنترناشونال الذهبية( الأول للطرف يحق - تأخر الطرف الثاني
+                                            في
+                                            السداد، وتضاف مدة التأخير إلى مدة .التنفيذ. بعد المنفذة الأعمال تصوير
+                                            )إنترناشونال الذهبية( الأول للطرف يحق - .الانتهاء منها لأغراض التوثيق أو
+                                            التسويق
+                                        </p>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p>
+                                            <strong>Ninth clause:</strong>
+                                            Jurisdiction. The courts of the State of Qatar have jurisdiction to consider
+                                            or
+                                            decide on any dispute or disagreement that may arise between the two
+                                            parties,
+                                            God forbid, about the validity, implementation or interpretation of any of
+                                            the
+                                            terms or conditions of this contract. For inquiries, complaints, and
+                                            after-sales
+                                            service, please contact customer service at the unified number: +974
+                                            66753636,
+                                            either by phone or via WhatsApp. This contract has been issued in three
+                                            copies,
+                                            with each party holding a copy and a copy for authentication.
+                                        </p>
+
+                                    </td>
+                                    <td>
+                                        <p style="direction: rtl; text-align: right;">
+                                            <strong>:التاسع البند</strong>
+                                            القضائي الاختصاص. تختص محاكم دولة قطر ذات الصلاحية بالنظر أو الفصل في أي
+                                            نزاع
+                                            شرط أي تفسير أو تنفيذ أو صحة حول الطرفين بين ينشأ قد خلاف أو .من شروط هذا
+                                            العقد
+                                            او بنوده. بالتواصل التكرم البيع، ما بعد وخدمة للاستفسارات والشكاوي- واتس او
+                                            تليفونياً الموحد +974 66753636 : رقم العملاء خدمة مع. للتوثيق ونسخة نسخة طرف
+                                            كل
+                                            بيد نسخ ثلاث من العقد هذا حرر -
+                                        </p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+
+                                <tr>
+                                    <td>
+                                        <div style="margin-top: 20px; display: flex; justify-content: space-between;">
+                                            <div style="text-align: center;">
+                                                <p>
+                                                    <strong>First Party / الطرف الأول</strong>
+                                                </p>
+                                                <p>
+                                                    <span t-esc="o.company_id.name"/>
+                                                </p>
+                                                <p>__________________________</p>
+                                                <p>Signature / التوقيع</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div style="text-align: center; ">
+                                            <p>
+                                                <strong>Second Party / الطرف الثاني</strong>
+                                            </p>
+                                            <p>
+                                                <span t-esc="o.partner_id.name"/>
+                                            </p>
+                                            <p>__________________________</p>
+                                            <p>Signature / التوقيع</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tfoot>
+
+
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+
+</odoo>

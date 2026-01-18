@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="sale_invoice_create_report" name="Custom Sale Invoice Report">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                        <div class="page">
+                        </div>
+                        <h1 dir="rtl" class="text-center" style="text-align:center; width: 100%; border: 2px solid black; padding: 10px 0;">
+                            اذن تسليم البضاعة
+                        </h1>
+
+                        <table dir="rtl" style="margin-bottom: 15px;text-align:right; width: 100%; border: 1px solid #888888;" class="table">
+                            <tr>
+                                <th style="font-size:30px ; padding: 5px 0;">
+                                <u>اسم العميل:    </u>
+                                    <span t-field="o.partner_id.name"/>
+                                </th>
+                                <t t-if="o.partner_id.mobile and o.partner_id.phone">
+                                    <th style="font-size:20px">
+                                        <span t-field="o.partner_id.phone"/>
+                                        <span>-</span>
+                                        <span t-field="o.partner_id.mobile"/>
+                                    </th>
+                                </t>
+                                <t t-elif="o.partner_id.mobile">
+                                    <th style="font-size:20px">
+                                        <span t-field="o.partner_id.mobile"/>
+                                    </th>
+                                </t>
+                                <t t-elif="o.partner_id.phone">
+                                    <th style="font-size:20px">
+                                        <span t-field="o.partner_id.phone"/>
+                                    </th>
+                                </t>
+                                <t t-else="">
+                                    <th></th>
+                                </t>
+                                <th style="font-size:25px">
+                                <u>رقم:</u>
+                                    <span t-field="o.name"/>
+                                </th>
+                            </tr>
+                        </table>
+                        <table dir="rtl" style="margin-bottom: 15px; text-align:right; width: 100%; border: 1px solid #888888;" class="table table-sm">
+                            <tr>
+                                <th style="font-size:25px" >
+                                <u>البائع:</u>
+                                    <span t-field="o.user_id.name"/>
+                                </th>
+								<th style="font-size:25px">
+									<span t-field="o.user_id.phone"/> / <span t-field="o.user_id.mobile"/>
+								</th>
+                                <th style="text-align:left; font-size:20px">
+                                    <u>التاريخ:</u>
+                                    <span t-field="o.date_order"/>
+                                </th>
+                            </tr>
+                        </table>
+                        <table dir="rtl" style="margin-bottom: 15px; text-align:right; width: 100%; border: 1px solid #888888;" class="table table-sm">
+                            <tr>
+                                <th style="font-size:25px" >
+                                <u>العنوان:</u>
+                                    <span t-field="o.partner_id.street"/>
+                                    <span t-if="o.partner_id.street2">, </span>
+                                    <span t-field="o.partner_id.street2"/>
+                                    <span t-if="o.partner_id.city">, </span>
+                                    <span t-field="o.partner_id.city"/>
+                                    <span t-if="o.partner_id.state_id">, </span>
+                                    <span t-field="o.partner_id.state_id.name"/>
+                                    <span t-if="o.partner_id.country_id">, </span>
+                                    <span t-field="o.partner_id.country_id.name"/>
+                                </th>                               
+                            </tr>
+                        </table>
+                        <table dir="rtl" style="text-align:right; width: 100%; border: 1px solid #888888;" class="table table-sm">
+                            <tr>
+                                <th style="font-size:25px; margin: 0px; padding: 0px; padding: 5px 0;">
+                                <u>اجمالي وزن البضاعة:</u>
+                                    <span t-esc="round(o.weigh_total, 2)"/>
+                                </th>
+                            </tr>
+                        </table>
+                        <table dir="rtl" style="width: 100%; font-size: 26.5px; font-weight: normal; padding: 9px; border-collapse: collapse;">
+                        <!-- <table dir="rtl" class="table table-bordered"> -->
+                            <thead class="thead-dark">
+                                <tr style="border: 2px solid black;">
+                                    <th class="text-center" style="border: 1px solid black; margin: 0px; padding: 5px;">م</th>
+                                    <th class="text-center" style="border: 1px solid black; margin: 0px; padding: 5px;">الصنف</th>
+                                    <th class="text-center" style="border: 1px solid black; margin: 0px; padding: 5px;">الكمية</th>
+                                    <th class="text-center" style="border: 1px solid black; margin: 0px; padding: 5px;">السعر</th>
+                                    <th class="text-center" style="border: 1px solid black; margin: 0px; padding: 5px;">ج الصنف</th>
+                                </tr>
+                            </thead>
+                            <t t-set="x" t-value="0"/>
+                            <tbody>
+                                <tr t-foreach="o.order_line.sorted(key=lambda a: (a.product_id.name))" t-as="l">
+                                    <t t-set="x" t-value="x+1"/>
+                                    <t t-if="x &gt; 100">
+                                        <tr class="text-center" style="border: 2px solid black; font-size: 30px; font-weight: bold; height: 55px">
+                                            <td class="text-center" style="border: 2px solid black; font-size: 24px; font-weight: bold; height: 59px">
+                                                <span t-esc="l_index+1"/>
+                                            </td>
+                                            <td class="text-center" style="border: 2px solid black; font-size: 24px; font-weight: bold; height: 59px">
+                                                <span class="text-center" t-field="l.product_id.name"/>
+                                            </td>
+                                            <td class="text-center" style="text-align:center; border: 2px solid black; font-size: 24px; font-weight: bold; height: 59px">
+                                                <span t-field="l.product_uom_qty"/>
+                                            </td>
+                                            <td class="text-center" style="text-align:center; border: 2px solid black; font-size: 24px; font-weight: bold; height: 59px">
+                                                <span t-field="l.price_unit"/>
+                                            </td>
+                                            <td class="text-center" style="text-align:center; border: 2px solid black; font-size: 24px; font-weight: bold; height: 59px">
+                                                <span t-esc="l.price_subtotal"/>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                    <t t-if="x &lt; 101">
+                                        <tr class="text-center" style="border: 2px solid black; font-size: 30px; font-weight: bold; height: 55px">
+                                            <td class="text-center" style="text-align:right; border: 2px solid black;">
+                                                <span t-esc="l_index+1"/>
+                                            </td>
+                                            <td class="text-center" style="text-align:right; border: 2px solid black;font-weight: bold;">
+                                                <span t-field="l.product_id.name"/>
+                                            </td>
+                                            <td class="text-center" style="text-align:center; border: 2px solid black;">
+                                                <span t-field="l.product_uom_qty"/>
+                                            </td>
+                                            <td class="text-center" style="text-align:center; border: 2px solid black;">
+                                                <span t-field="l.price_unit"/>
+                                            </td>
+                                            <td class="text-center" style="text-align:center; border: 2px solid black;">
+                                                <span t-esc="l.price_subtotal"/>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table dir="rtl" style="width: 100%; margin-left: auto;margin-right: auto;">
+                            <tr style="border: 2px solid black;">
+                                <th class="text-center" style="border: 2px solid black; font-size: 28px; font-weight: bold; height: auto; padding: 5px;" col="6">إجمالي الفاتورة</th>
+                                <th class="text-center" style="border: 2px solid black; font-size: 28px; font-weight: bold; height: auto; padding: 5px;" col="1">
+                                    <span t-esc="round(o.amount_untaxed+o.discount_tot_for_lines, 2)"/>
+                                </th>
+                            </tr>
+                            <t t-if="o.discount_tot_for_lines">
+                                <tr style="border: 2px solid black;">
+                                    <th class="text-center" style="border: 2px solid black; font-size: 28px; font-weight: bold; height: auto; padding: 0px;" col="6">الخصم</th>
+                                    <th class="text-center" style="border: 2px solid black; font-size: 28px; font-weight: bold; height: auto; padding: 0px;" col="1">
+                                        <span t-esc="round(o.discount_tot_for_lines, 2)"/>
+                                    </th>
+                                </tr>
+                            </t>
+                            <t t-if="o.show_discount">
+                                <tr style="border: 2px solid black;">
+                                    <th class="text-center" style="border: 2px solid black; font-size: 28px; font-weight: bold; height: auto" col="6">الخصم الاجمالي</th>
+                                    <th class="text-center" style="border: 2px solid black; font-size: 28px; font-weight: bold; height: auto" col="1">
+                                        <span t-esc="round(o.amount_discount, 2)"/>
+                                    </th>
+                                </tr>
+                            </t>
+                            <t t-if="o.show_discount">
+                                <tr style="border: 2px solid black;">
+                                    <th class="text-center" style="border: 2px solid black; font-size: 28px; font-weight: bold; height: auto" col="6">الاجمالي بعد الخصم</th>
+                                    <th class="text-center" style="border: 2px solid black; font-size: 28px; font-weight: bold; height: auto" col="1">
+                                        <span t-esc="round(o.tax_totals_amount, 2)"/>
+                                    </th>
+                                </tr>
+                            </t>
+                            <tr style="border: 2px solid black;">
+                                <th class="text-center" style="border: 2px solid black; font-size: 28px; font-weight: bold; height: auto" col="6">رصيد سابق</th>
+                                <th class="text-center" style="border: 2px solid black; font-size: 28px; font-weight: bold; height: auto" col="1">
+                                    <span t-esc="round(o.partner_id.credit-o.partner_id.debit, 2)"/>
+                                </th>
+                            </tr>
+                            <tr style="border: 2px solid black;">
+                                <th class="text-center" style="border: 2px solid black; font-size: 28px; font-weight: bold; height: auto" col="6">الاجمالي الكلي</th>
+                                <th class="text-center" style="border: 2px solid black; font-size: 28px; font-weight: bold; height: auto" col="1">
+                                    <span t-esc="round(o.tax_totals_amount+(o.partner_id.credit-o.partner_id.debit), 2)"/>
+                                </th>
+                            </tr>
+                        </table>
+                        <div class="center">
+                            <p class="text-center" style="text-align:center; font-size: 35px; height: 59px">الرجاء استلام البضاعة قبل مغادرة السيارة</p>
+                        </div>
+                </t>
+            </t>
+        </template>
+
+        <template id="sale_invoice_create_report1">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+
+                    <t t-call="tradepaints_saleorder_report.sale_invoice_create_report" t-lang="o.partner_id.lang"/>
+                    <t t-call="tradepaints_saleorder_report.sale_invoice_create_report" t-lang="o.partner_id.lang"/>
+                </t>
+            </t>
+        </template>
+        <report
+                id="sale_order_invoice_create"
+                model="sale.order"
+                string="Sale Order Invoice"
+                report_type="qweb-pdf"
+                name="tradepaints_saleorder_report.sale_invoice_create_report1"
+                file="tradepaints_saleorder_report.sale_invoice_create_report1"
+                attachment_use="False"
+        />
+        <record id="sale_order_format_for_trade_paints" model="report.paperformat">
+            <field name="name">Sale Order Paper Format</field>
+            <field name="default" eval="True"/>
+            <field name="format">custom</field>
+            <field name="page_height">300</field>
+            <field name="page_width">240</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">1</field>
+            <field name="margin_bottom">0</field>
+            <field name="margin_left">0</field>
+            <field name="margin_right">0</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">35</field>
+            <field name="dpi">90</field>
+        </record>
+
+
+    </data>
+</odoo>

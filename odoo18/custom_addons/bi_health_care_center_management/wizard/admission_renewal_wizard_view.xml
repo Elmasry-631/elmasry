@@ -1,0 +1,73 @@
+<odoo>
+    <data>
+        <record id="admission_renewal_wizard_form" model="ir.ui.view">
+            <field name="name">Admission Renewal Wizard</field>
+            <field name="model">admission.renewal.wizard</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <group string="Personal Details">
+                            <field name="admission_id" invisible="1"/>
+                            <field name="client_id"/>
+                        </group>
+
+                        <group string="Registration Details">
+                            <field name="nurse_specialty_id"/>
+                            <field name="trainer_id"/>
+                            <field name="package_id"/>
+                            <field name="package_line_ids"/>
+                        </group>
+
+                    </group>
+                    <group>
+                        <group>
+                            <label for="start_duration" string="Duration"/>
+                            <div class="w-100">
+                                <div class="o_row">
+                                    <field name="start_duration" widget="daterange" required="1" readonly="0"
+                                           options="{'related_end_date': 'end_duration'}"
+                                    />
+                                    <i class="fa fa-long-arrow-right mx-2 oe_edit_only" aria-label="Arrow icon"
+                                       title="Arrow"/>
+                                    <field name="end_duration" widget="daterange" required="1"
+                                           options="{'related_start_date': 'start_duration'}" readonly="1"
+                                    />
+                                </div>
+                            </div>
+                        </group>
+                        <group>
+
+
+
+                            <label for="start_time" string="Reservation Time"/>
+                            <div class="w-100">
+                                <div class="o_row">
+                                    <field name="start_time" widget="float_time" required="1" options="{'related_end_time': 'end_time'}"/>
+                                    <i class="fa fa-long-arrow-right mx-2 oe_edit_only" aria-label="Arrow icon" title="Arrow"/>
+                                    <field name="end_time" widget="float_time" options="{'related_start_time': 'start_time'}" />
+
+                                </div>
+                            </div>
+                        </group>
+
+
+                    </group>
+                    <group>
+                        <group>
+                            <field name="n_of_reservations" readonly="1"/>
+                        </group>
+
+
+                        <group>
+
+                        </group>
+                    </group>
+                    <footer>
+                        <button name="action_confirm" string="Confirm" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

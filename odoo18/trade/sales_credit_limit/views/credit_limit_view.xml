@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- ================== Partner Form: Credit Limit ================== -->
+        <record id="view_customer_form" model="ir.ui.view">
+            <field name="name">res.partner.credit.limit</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='accounting']" position="inside">
+                    <group string="Credit Limit">
+                        <field name="active_limit"/>
+                        <field name="warning_stage" invisible="not active_limit"/>
+                        <field name="blocking_stage" invisible="not active_limit"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- ================== Sale Order Form: Alerts ================== -->
+        <record id="sale_order_credit_alerts" model="ir.ui.view">
+            <field name="name">sale.order.credit.alerts</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+
+                <!-- Hidden fields -->
+                <xpath expr="//field[@name='payment_term_id']" position="after">
+                    <field name="has_due" invisible="1"/>
+                    <field name="is_warning" invisible="1"/>
+                </xpath>
+
+                <!-- Info alert: shows customer's due amount -->
+                <xpath expr="//header" position="after">
+                    <div class="alert alert-info"
+                         role="alert"
+                         style="display: inline-block; margin-bottom:0px;"
+                         invisible="not has_due">
+                        This Customer's due amount is <strong><field name="due_amount"/></strong>.
+                    </div>
+                </xpath>
+
+                <!-- Danger alert: warning stage exceeded -->
+                <xpath expr="//sheet/div[@name='button_box']" position="after">
+                    <div class="alert alert-danger"
+                         role="alert"
+                         style="display: inline-block; margin-bottom:0px;"
+                         invisible="not is_warning">
+                        This customer's <strong>warning limit</strong> has been crossed.
+                    </div>
+                </xpath>
+
+            </field>
+        </record>
+    </data>
+</odoo>

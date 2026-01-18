@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<!--    &#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45; Action & Menu Items &#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;-->
+    <record id="test_app_odoo_action" model="ir.actions.act_window">
+        <field name="name">Test App Odoo</field>
+        <field name="res_model">test.app.odoo</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create and manage your test app odoo records.
+            </p>
+        </field>
+    </record>
+    <record id="test_history_view_action" model="ir.actions.act_window">
+        <field name="name">Test History</field>
+        <field name="res_model">test.history</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create and manage your test history records.
+            </p>
+        </field>
+    </record>
+    <record id="test_app_two_action" model="ir.actions.act_window">
+        <field name="name">People</field>
+        <field name="res_model">test.app.two</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create and manage your contacts.
+            </p>
+        </field>
+    </record>
+       <record id="action_tag" model="ir.actions.act_window">
+        <field name="name">Tags</field>
+        <field name="res_model">tag</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create and manage your tags.
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="test_app_odoo_menu" name="Test App Odoo" web_icon="test_app_odoo,static/description/icon.png"/>
+
+    <menuitem id="test_app_odoo_menu_items" name="Items" parent="test_app_odoo_menu"/>
+    <menuitem id="test_app_odoo_menu_item" name="Item" parent="test_app_odoo_menu_items" action="test_app_odoo_action"/>
+    <menuitem id="test_history_menu_item" name="History" parent="test_app_odoo_menu_items" action="test_history_view_action"/>
+
+    <menuitem id="test_app_two_menu" name="Configuration" parent="test_app_odoo_menu"/>
+    <menuitem id="test_app_two_people_menu" name="People" parent="test_app_two_menu" action="test_app_two_action"/>
+    <menuitem id="test_app_two_tag_menu" name="Tags" parent="test_app_two_menu" action="action_tag"/>
+
+
+
+</odoo>

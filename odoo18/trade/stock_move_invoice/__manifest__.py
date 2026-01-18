@@ -1,0 +1,22 @@
+{
+    'name': "Invoice From Stock Picking",
+    'version': '18.0.1.0.0',
+    'category': 'Extra Tools',
+    'summary': """Create invoice for stock picking""",
+    'description': """In this module creating customer invoice,vendor bill, 
+     customer credit note and refund from stock picking""",
+    'author': "Ibrahim Elmasry",
+    'website': "https://www.woledge.com",
+    'depends': ['stock', 'account'],
+    'data': [
+        'views/account_move_views.xml',
+        'views/stock_picking_views.xml',
+        'views/res_config_settings_views.xml',
+        'wizard/picking_invoice_views.xml',
+    ],
+    'images': ['static/description/banner.jpg'],
+    'license': "AGPL-3",
+    'installable': True,
+    'auto_install': False,
+    'application': False,
+}

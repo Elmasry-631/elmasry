@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="transfer_wizard_view" model="ir.ui.view">
+        <field name="name">transfer.wizard.form.view</field>
+        <field name="model">transfer.wizard</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <group>
+                    <field name="expected_weight" groups="trade_paints_features.trade_paint_expected_weight"/>
+                    <field name="driver_name" string="Driver Name" />
+                    <field name="car_number" string="Car Number"/>
+                </group>
+                <footer>
+                    <button name="validate" string="Validate" type="object" class="oe_highlight" confirm="Are you sure ?"/>
+                    or
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="open_transfer_wizard_action_1" model="ir.actions.act_window">
+        <field name="name">Transfer</field>
+        <field name="res_model">transfer.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="stock.model_stock_picking" />
+        <field name="binding_type">action</field>
+        <field name="context">{'default_picking_id': active_id}</field>
+    </record>
+</odoo>

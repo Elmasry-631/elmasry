@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+    <record id="res_partner_kanban_group_create" model="ir.ui.view">
+        <field name="name">res_partner_kanban_group_create</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.res_partner_kanban_view"/>
+        <field name="priority" eval="20"/>
+          
+        <field name="arch" type="xml">
+            <xpath expr="//kanban" position="attributes">
+			<t groups="access_right_product_partner.group_product_create">
+                <attribute name="create">true</attribute>
+				</t>
+            </xpath>
+        </field>
+    </record>
+    <record id="res_partner_tree_group_create" model="ir.ui.view">
+        <field name="name">res_partner_tree_group_create</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_tree"/>
+        <field name="priority" eval="21"/>
+          
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+			<t groups="access_right_product_partner.group_product_create">
+                <attribute name="create">true</attribute>
+            </t>
+			</xpath>
+        </field>
+    </record>
+    <record id="res_partner_form_group_create" model="ir.ui.view">
+        <field name="name">res_partner_form_group_create</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="priority" eval="20"/>
+          
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="attributes">
+			<t groups="access_right_product_partner.group_product_create">
+                <attribute name="create">true</attribute>
+				</t>
+            </xpath>
+        </field>
+    </record>
+        <record id="res_partner_kanban_custom" model="ir.ui.view">
+        <field name="name">res_partner_kanban_custom</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.res_partner_kanban_view"/>
+
+        <field name="arch" type="xml">
+            <xpath expr="//kanban" position="attributes">
+                <attribute name="create">false</attribute>
+            </xpath>
+        </field>
+    </record>
+    <record id="res_partner_tree_create" model="ir.ui.view">
+        <field name="name">res_partner_tree_group_create</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="create">false</attribute>
+            </xpath>
+        </field>
+    </record>
+    <record id="res_partner_form_create" model="ir.ui.view">
+        <field name="name">res_partner_form_create</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="attributes">
+                <attribute name="create">false</attribute>
+            </xpath>
+        </field>
+    </record>
+    </data>
+</odoo>

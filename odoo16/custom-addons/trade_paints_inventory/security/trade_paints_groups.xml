@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record model="ir.module.category" id="trade_paints_access_rights_categ">
+        <field name="name">Extra Access Rights</field>
+        <field name="description">Extra Access Rights</field>
+        <field name="sequence">1</field>
+    </record>
+
+    <record id="trade_paint_expected_weight" model="res.groups">
+        <field name="name">Expected Weight</field>
+        <field name="category_id" ref="trade_paints_access_rights_categ"/>
+    </record>
+
+    <record id="trade_paint_quotation_menu" model="res.groups">
+        <field name="name">Quotation</field>
+        <field name="category_id" ref="trade_paints_access_rights_categ"/>
+    </record>
+
+    <record id="trade_paint_rfq_menu" model="res.groups">
+        <field name="name">RFQ</field>
+        <field name="category_id" ref="trade_paints_access_rights_categ"/>
+    </record>
+
+    <record id="trade_paint_unit_price_menu" model="res.groups">
+        <field name="name">Order Lines / Unit Price</field>
+        <field name="category_id" ref="trade_paints_access_rights_categ"/>
+    </record>
+
+    <record id="trade_paint_section_prod" model="res.groups">
+        <field name="name">Order lines / section</field>
+        <field name="category_id" ref="trade_paints_access_rights_categ"/>
+    </record>
+
+    <record id="trade_paint_section_prod" model="res.groups">
+        <field name="name">Order lines / section</field>
+        <field name="category_id" ref="trade_paints_access_rights_categ"/>
+    </record>
+
+    <record id="allow_create_without_vendor" model="res.groups">
+        <field name="name">Allow Create Products without vendor</field>
+        <field name="category_id" ref="trade_paints_access_rights_categ"/>
+    </record>
+
+</odoo>

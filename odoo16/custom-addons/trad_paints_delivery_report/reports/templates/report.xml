@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+
+          <report
+            string="طباعة اذون الصرف2"
+            id="trad_paints_delivery_report_action_report_all_picking"
+            model="stock.picking"
+            report_type="qweb-pdf"
+            name="trad_paints_delivery_report.report_all_picking2"
+            file="trad_paints_delivery_report.report_all_picking2"
+        />
+
+    </data>
+</odoo>
