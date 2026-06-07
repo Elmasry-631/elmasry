@@ -1,7 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_test_app_odoo,access_test_app_odoo,model_test_app_odoo,,1,1,1,1
-access_test_app_two,access_test_app_two,model_test_app_two,,1,1,1,1
-access_tag,access_tag,model_tag,,1,1,1,1
-access_test_line,access_test_line,model_test_line,,1,1,1,1
-access_change_state,access_change_state,model_change_state,,1,1,1,1
-access_test_history,access_test_history,model_test_history,,1,1,1,1

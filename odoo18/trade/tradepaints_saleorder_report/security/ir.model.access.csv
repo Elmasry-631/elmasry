@@ -1,2 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_tradepaints_saleorder_report_tradepaints_saleorder_report,tradepaints_saleorder_report.tradepaints_saleorder_report,model_tradepaints_saleorder_report_tradepaints_saleorder_report,,1,0,0,0
