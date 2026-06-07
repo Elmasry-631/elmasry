@@ -1,0 +1,368 @@
+<odoo>
+
+
+
+    <record id="paperformat_contract" model="report.paperformat">
+        <field name="name">Contract Paper Format</field>
+        <field name="default" eval="False"/>
+        <field name="format">A4</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">10</field>
+        <field name="margin_bottom">20</field>
+        <field name="margin_left">10</field>
+        <field name="margin_right">10</field>
+        <field name="dpi">90</field>
+    </record>
+    <!-- Report Action -->
+    <record id="action_report_invoice_saudi" model="ir.actions.report">
+        <field name="name">Saudi Tax Invoice</field>
+        <field name="model">account.move</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">saudi_tax_invoice.stock_movement_report_template</field>
+        <field name="report_file">saudi_tax_invoice.stock_movement_report_template</field>
+        <field name="print_report_name">'%s' % (object.name or 'Invoice')</field>
+        <field name="binding_model_id" ref="account.model_account_move"/>
+        <field name="binding_type">report</field>
+        <field name="paperformat_id" ref="saudi_tax_invoice.paperformat_contract"/>
+    </record>
+
+
+
+    <!-- QWeb Template -->
+    <template id="stock_movement_report_template">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.basic_layout">
+                    <div style="">
+                        <div class="row mb-3" >
+                            <!-- بيانات الشركة (يمين) -->
+                            <div class="col-3 text-start">
+                                <img t-if="o.company_id.logo" t-att-src="'data:image/png;base64,%s' % o.company_id.logo.decode('utf-8')"
+                                     alt="Company Logo" style="max-height:3000px; max-width:100%; border-radius:4px;"/>
+                            </div>
+                            <div class="col-9 text-end">
+                                <h4>
+                                    <strong t-field="o.company_id.name"/>
+                                </h4>
+                                <p>
+                                    <strong>الرقم الضريبي:</strong>
+                                    <span t-field="o.company_id.vat"/>
+                                </p>
+                                <p>
+                                    <strong>السجل التجاري:</strong>
+                                    <span t-esc="o.company_id.company_registry or ''"/>
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Header -->
+                        <div style="
+                        border: 1px solid #ccc;
+                        border-radius: 6px;
+                        padding: 16px 20px;
+                        margin-bottom: 18px;
+                        display: flex;
+                        flex-direction: column;
+                        gap: 16px;
+                        text-align: right;
+                    ">
+
+                            <!-- العنوان -->
+                            <div style="text-align: center; border-bottom: 1px solid #ddd; padding-bottom: 6px;">
+                                <h2 style="margin: 0; font-size: 20px;"><strong>فاتورة ضريبية</strong></h2>
+                            </div>
+
+                            <!-- البيانات -->
+                            <div style="direction: rtl; text-align: right; width: 100%; margin-top: 10px;">
+
+                                <!-- بيانات العميل -->
+                                <div style="display: inline-block; width: 48%; vertical-align: top;">
+                                    <p style="margin: 4px 0;"><strong>اسم العميل:</strong> <span t-field="o.partner_id.name"/></p>
+                                    <p style="margin: 4px 0;"><strong>الرقم الضريبي:</strong> <span t-field="o.partner_id.vat"/></p>
+                                    <p style="margin: 4px 0;"><strong>العنوان:</strong> <span t-field="o.partner_id.street"/>
+                                    <span t-field="o.partner_id.street2"/><br/>
+                                    <span t-field="o.partner_id.city"/>
+                                    <span t-field="o.partner_id.country_id.name"/>
+                                    </p>
+                                    <p style="margin: 4px 0;"><strong>الهاتف:</strong> <span t-field="o.partner_id.phone"/></p>
+                                </div>
+
+                                <!-- بيانات الفاتورة -->
+                                <div style="display: inline-block; width: 48%; vertical-align: top;">
+                                    <p style="margin: 4px 0;"><strong>رقم الفاتورة:</strong> <span t-field="o.name"/></p>
+                                    <p style="margin: 4px 0;"><strong>تاريخ الفاتورة:</strong> <span t-field="o.invoice_date"/></p>
+                                    <p style="margin: 4px 0;"><strong>تاريخ الاستحقاق:</strong> <span t-field="o.invoice_date_due"/></p>
+                                    <p style="margin: 4px 0;"><strong>تاريخ التوريد:</strong> <span t-field="o.invoice_date_due"/></p>
+                                    <p style="margin: 4px 0;"><strong>المصدر:</strong> <span t-field="o.invoice_origin"/></p>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+
+                        <!-- Table -->
+                        <table class="table table-sm table-bordered mt-4" style="width:100%; border-collapse: collapse; font-size: 12px;">
+                            <thead>
+                                <tr style="background: #f7f7f7;">
+                                    <th style="padding:6px; border: 1px solid #ccc; text-align:center;">
+                                        <div style="font-weight:600;">تسلسل</div>
+                                    </th>
+
+
+                                    <th style="padding:6px; border: 1px solid #ccc; text-align:center;">
+                                        <div style="font-weight:600;">الوصف</div>
+                                    </th>
+                                    <th style="padding:6px; border: 1px solid #ccc; text-align:center;">
+                                        <div style="font-weight:600;">الكمية</div>
+                                    </th>
+                                    <th style="padding:6px; border: 1px solid #ccc; text-align:center;">
+                                        <div style="font-weight:600;">سعر الوحدة</div>
+                                    </th>
+                                    <th style="padding:6px; border: 1px solid #ccc; text-align:center;">
+                                        <div style="font-weight:600;">الخصم</div>
+                                    </th>
+                                    <th style="padding:6px; border: 1px solid #ccc; text-align:center;">
+                                        <div style="font-weight:600;">الضريبة</div>
+                                    </th>
+                                    <th style="padding:6px; border: 1px solid #ccc; text-align:center;">
+                                        <div style="font-weight:600;">المبلغ قبل الضريبة</div>
+                                    </th>
+                                    <th style="padding:6px; border: 1px solid #ccc; text-align:center;">
+                                        <div style="font-weight:600;">مبلغ الضريبة</div>
+                                    </th>
+                                    <th style="padding:6px; border: 1px solid #ccc; text-align:center;">
+                                        <div style="font-weight:600;">المجموع</div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="o.invoice_line_ids" t-as="line">
+                                    <td style="padding:6px; border: 1px solid #ccc; text-align:center;">
+                                        <span t-esc="line.sequence"/>
+                                    </td>
+                                    <td style="padding:6px; border: 1px solid #ccc;">
+                                        <span t-field="line.name"/>
+                                    </td>
+                                    <td style="padding:6px; border: 1px solid #ccc; text-align:center;">
+                                        <span t-field="line.quantity"/>
+                                    </td>
+                                    <td style="padding:6px; border: 1px solid #ccc; text-align:center;">
+                                        <span t-field="line.price_unit"/>
+                                    </td>
+                                    <td style="padding:6px; border: 1px solid #ccc; text-align:center;">
+                                        <span t-field="line.discount"/>
+%
+                                    </td>
+                                    <td style="padding:6px; border: 1px solid #ccc; text-align:center;">
+                                        <span t-esc="'%.2f' % (line.tax_ids and line.tax_ids[0].amount or 0)"/>
+%
+                                    </td>
+                                    <td style="padding:6px; border: 1px solid #ccc; text-align:center;">
+                                        <span t-esc="line.price_subtotal"/>
+                                    </td>
+                                    <td style="padding:6px; border: 1px solid #ccc; text-align:center;">
+                                        <span t-esc="'%.2f' % (line.price_total - line.price_subtotal)"/>
+                                    </td>
+                                    <td style="padding:6px; border: 1px solid #ccc; text-align:center; font-weight:600;">
+                                        <span t-field="line.price_total"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <!-- ====== 3 Columns Layout: Bank Info | QR | Totals ====== -->
+                        <table style="width:100%; table-layout:fixed; margin-top:25px; font-size:13px; حشييهىل-ف">
+                            <tr style="vertical-align:top;">
+                                <!-- LEFT: Bank Info -->
+                                <td style="width:33%; text-align:right; line-height:1.6; vertical-align:top; padding:0 10px;">
+                                    <div style="border:1px solid #ccc; border-radius:6px; padding:10px; background:#fff;">
+                                        <div style="font-weight:700; margin-bottom:6px;">معلومات البنك</div>
+                                        <div style="font-size:11px; color:#666; margin-top:-4px; margin-bottom:6px;">Bank Info</div>
+                                        <p style="margin:4px 0;" direction="rtl">
+                                            <strong>اسم البنك:</strong> البنك الأهلي السعودي
+                                        </p>
+                                        <p style="margin:4px 0; direction: rtl;">
+                                            <strong>اسم الحساب:</strong>شركة سلطان الابتكار
+                                        </p>
+                                        <p style="margin:4px 0; direction: rtl;">
+                                            <strong>رقم الحساب:</strong> 15100001674502
+                                        </p>
+                                        <p style="margin:4px 0; direction: rtl;">
+                                            <strong>الآيبان:</strong> SA6710000015100001674502
+                                        </p>
+                                    </div>
+                                </td>
+                                <!-- CENTER: QR Code -->
+                                <td style="width:33%; text-align:center; vertical-align:middle; padding:10px 10px 0;">
+                                    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAIAAABMXPacAAAXlUl
+                                    EQVR4nO1deVBT1/d/CSGEILtsIhAQo6KAiiuiOGO1nbq14tZau7m0drSLdVpbbenUb6tVrNOq1arddKa12q
+                                    lVbEeZEfe6jSMyWEWt4IJgkSFCICEheb8/7s8PR957ZCEYwXz+OhzOO/e+Jefce+6553Kcq3Hp0iX+PlQqF
+                                    WNGRkaCeerUKQhPmTIF/FWrVokq3LNnD98idDodhFNSUsDfs2cP+PPnz29ZCc/zgwYNgnxFRYVQoLi42LXP
+                                    iuM4ucs1ioLn+YfTULvDQ3oBHkhBER0dzSiZTObl5eWcFovFgm9cJpOBHxsb29DQwHFcaGjo9evXGbOqqgq
+                                    N+vj4gG82m8GnkMttfCU8z+PC0NBQ8H19fePi4hgdEhICfnV1dU1NjVBPYGAg9JSXlxuNRnY7sbGxkHH542
+                                    pCXFycTSsphdGjR0MP9QFARUWFc33lHPQBqampNnu7aNEi+1tXqVS48NKlS+CPGTPGwYfUBHwWnKtMEP3qH
+                                    z749uxgPD7AzVCkpqYyqnPnzuDeu3fv/PnzLV+p1WojIyMZHRkZCT3UZB87dsxqtXIcV1tbCwEKb29vtVot
+                                    5BsMBpPJxOibN28eOXKkhZ6YzeYRI0YwOi4uTlS4S5cuiYmJjI6Pj4c8hV6vt1gsjA4ICGA/a6VSCQG5XI6
+                                    7iIqKAr+iouLy5cst9JDjuNTU1MDAQEYnJiYGBQU1l6A+4PDhwy2r4zhu8+bNkJfyAZgHSIHOAyjmz59vsw
+                                    NAYGAgLpT6blwyD5DyAZs2bbLZycOHD7ehD3jM0RoX6HkBboZi2LBhjKIjZYWiiS8Fal40Gg3k6ecwZMgQs
+                                    9ncgpIuXbqA/ueff86ePcvomJiYmTNn2nUHHKdSqbZt28boqqoq0Z6bzWbISCEzM7NHjx6M3r9/P7sRLy+v
+                                    559/njFlMhmUUzOiUqlsPi6FQgE6JSWla9euzSVa4wPGjBkDvtM+gMaC1q5da9NkA3Qe0BqcOnUKOiMiIhj
+                                    TnnmAe3wA355H348OPD7ASbjq+1OMHDmSUXRkqlA08aVAx+/x8fGQp/OAjIyMxsZGjuO8vb0HDx4sVBIUFP
+                                    TZZ59xHMfz/I0bNzIzM5nlLSoq+t///ieUnzt3bnh4eDOmj4/P0qVLGV1XV3fu3LmWex4fHy8adDp69GheX
+                                    h6jU1NT2USE2m65XI7bTEhIAF+tVos+LvqSqJ5+/frFx8c3l27TeUBERISo+d6xY4fNhijOnz/fsj+wOX/k
+                                    OG7VqlWi19J5AGCPD9i8ebPNRj3zgEcUHifsZiiGDx/OqODgYHC1Wq3Nn1VGRgbo+Ph49qdMJqM+4JtvvmH
+                                    RFV9fXzBLSkqWL1/O6JqaGnSgd+/eaWlpLTdKh89vvfVWfX09x3Fqtfqrr76CAHp+69at/Px8Rvfs2RMWhp
+                                    qab7/99uzZs+xjmjVr1pw5c/AvxqRBf7lcjrvWaDT0UYg+LvqNarVa0KmpqTExMc3nz61ZD5CaB4iCrglTL
+                                    Fq0yKFGEduisSAKe9aEp0yZAhk6DxDFo7se4IHT8LwAJ8G7ah4AsyuXy5988knntNTU1EAPNW3jxo1jo+ng
+                                    4OBff/0VDaWlpbEbSE5ORqSluLgYHXjjjTcmTpzI6Ozs7JMnT3Icx/P8xo0bMQBPTk42GAzcgw7m2rVr8+b
+                                    Ng8D+/fsZffXqVdjJOXPmwPJERET079+f9Zl6r+nTp1dXV3Mc5+3tvXfvXtxa//79ccvU8DqEsLAwtnbdJi
+                                    uJNucB9uQF0VjQ+PHjwS8oKAAfPiAoKAhMOg8YP348+GvXrgWfzgOkfIBoLKgd5wW5Cu5dfG4LtLMX0PGgc
+                                    OhnZY/noVGOwsJCtibcLKICmYCAAPB9fHzApyuxQUFB4E+ZMgU/gsOHDzMTZzQae/bsiR5CmEa3lEol+D4+
+                                    PuAHBASAP3PmTCjfu3evv78/96Bj0Gg0dCTqEijoBMHl6N69u5BptVpLSkoYTROkGhoawMeKPMdxOp0OfAq
+                                    NRsPcgE6nE/2M+vTpA9pkMkEJyxVDB0SVx8TEwA0ASqUSKzaugscEuRmeF+BuqBxBdna26Nx67NixkCkuLq
+                                    YjRcaMjY0F8/Tp0w41unv3bsN99O/fv2XhtLQ0CJtMJjS6fv16yOTk5IA/ffp08I8fP45rrVYrEzAYDBBIT
+                                    k4Wvf3vvvvO5l0cPXoU8lqtFnwFS0G1E8hbagaz2Qw91FE3NDQwPjW7PM871KhMJlPdn080Nja2fG1jY6NK
+                                    bCHaarWK9tBisYCvUChEr4UA9UwUVIkU2GCEAY+F85ggt0Mh9PUcx7FfipDv7e0tqiU4OBh6amtr79y5w+j
+                                    w8HD27dN1RJlMFhYWBhojP6lG6UAwICAA14qmrdPkmoaGBiRMyOVy9NDPzw8ygYGB4BsMBvQcMJvNEKC57x
+                                    RqtdrmY9Tr9VAeFBTEAulNQs0gtSS5dOlSUXkKOlAzGAxCgdZsUUpJSQG/urq65Z60ZosSoCKhCEdhT2pTO
+                                    zZBHSMs0Y5fQMdAU4SgoaEBocS7d+/i99jY2IgxjGgqOcdxxcXF9+7dY3RSUhLilOfOnRPu4ykpKenduzcU
+                                    nj59mtH19fXgP9BFEsZITk7GQAWaLRYLchopamtrcRd0EerGjRvYsZOYmAi3ER0dLewAdXtGo7GwsJDRgYG
+                                    BMLaVlZWi0+nIyEhRs1ZfX8/D28FglZaWQmLEiBHgb926FXwpH+B0ero9sLlFiQXuhaDhaAq6RWnHjh3g2/
+                                    QBNOAxevRo8KXWz7du3SraAc+SpJPgJWKRUnx74HkBboZi586djKqpqRk6dCijw8PDwS8pKQFfr9eDT9G/f
+                                    3/EflkUl2HgwIEsNVEKvr6+UoNrgG4GysvLg7MBrFYrFrbMZjOG2zSH5erVq0hZDAsLg7xOp8MdpaenU+PA
+                                    oFA0PaLq6mo8Crp3NSEhga6sAVTboUOHKisrGd2zZ0+al+8C7N+/X9TY2fQBUluUpEDnAYDUFqXWLEkCbNl
+                                    ZCEfTUkR3pXEeE+R2dIQX4JYZGe+qtJTMzMzWa8nPz8cAmeLNN99kUUCz2VxQUCAUoGb6zJkzCIGMGjWqX7
+                                    9+jN61a9e///7L6KysLGEyCE1LkcvluCNqgv38/MC/du1aTk4OoxWKpieQm5uLLa7z5s1jISOZTAYBX19fr
+                                    LKFhoZCSUpKCnp17NgxlkTDcdzTTz+dlJTE6GnTpmGYW1hYSMPDbQjEgqRKFTialuJQerqUD7AH2KZKfUCP
+                                    Hj2gEBlHHMfNmTMHfOxU4DzzgIeG1pgjzwtwMxT4bdbX1//5559Cibi4OBivixcvFhUVMXrAgAEi+2wexOL
+                                    Fi9kiGq0mEBISMmrUKEbLZLIFCxYwurKyEjI0ZB8XFwe+TX/bpUsX3JFcLofyu3fvQklqaqrNXJCcnBy2aO
+                                    Xl5SWqMCIiAnwYeo7jgoKC0BB1ThR9+/ZtskIwTDQWRDFz5kzILFu2DPxNmza1bI55iXnAoEGDICC1RclpH0
+                                    BB1wMopLYoUdjcpkpjQRQPzwd0jHC803DV7bczH8B3uH1RMvzALRbL3bt3hRIqlQrx/czMTFjPgoKCM2fOC
+                                    OU3bNiATaDDhg1jsSA/P7933nmH4zie5/V6/fbt25mA0WhEbGfo0KHwDUVFRSdOnGD0pEmTEC/KzMyk2YwM
+                                    dXV1zz33HKM1Gs3XX3/N6H379mVnZzN64MCByH2/ePHisWPHhD3PycnB3eXl5bGhulwuHzt2LGPq9fqDBw8
+                                    yOiwsbMiQIUIlly5dunLlCqP79euHic4HH3xw4cIFRr/00ks099IBLFmyBIZs9uzZojI0L0hlKz2dgm5RouV
+                                    qXF62Uqpkmc0tSq0BjQWVlpaC73oTxHc4K9GmaGc+oOPBsexoOjzPzs7GoBhgP/AbN26wPxE0p5niffr0QcD
+                                    g5MmTq1evZnSnTp0gs3jxYuwY3bBhA8Z2O3fuRIczMjJqa2vZhQUFBWxYUlFRgapi6enpCEDRgmydOnWCkoUL
+                                    F7IQP8/zy5cvv3jxIuPn5+czx2MymQYOHMiYGo1m9+7djD5x4sTrr78ufETz589Hz5csWYLtTZ9++inmDXSFQ
+                                    2Gz2BlFXV0d6K5du4oUveG4K1euCJPFad6SWq1GWL+4uBgd0Ov1kImOjoYnLysrQ6SPZgAWFRUxBx4UFEQL0k
+                                    E4Li5OtFCdXq9HoyEhIehMSUkJrsU6ktVqBZNG0PR6vWj8kaZ23bx5EzLBwcGiixmOmaBHc+zfrr2Oxwe4GQoM
+                                    q6Ojo//++29Gnz59Gmt1WVlZa9asYfSGDRtE6i0+CJ7nhUN1g8EgeuGECRPYIJLn+e+//x4yK1eunDt3LqN9fH
+                                    wwEaE/QX9/f57nGYfWWYDwkSNHwJ8zZ87KlSsZvWzZMjiVBQsWoKHc3FyWgE6VqFSq6upq1kppaSl6OHLkSKTD0
+                                    F7R6ItSqcSjmDBhgvD2OY5TYJNQcHAwtKtUKvAbGxvRG4vFIlwTbw2MRiOUW61WKKeJ4A0NDeBTa1NbWytaAloUNK
+                                    zPEvPRAUwjlEolOkNBHwt6IvVJUZhMJps9dMwEtWtr61q46lEo8M5pOolMJsNvx8vLC98If397dLPmpZwzFaMy4NMZOTU1zf
+                                    joTH19Pb7BZh0WtkghFRmGlZDJZAaDgSmXUlJXV4eKulShyWRCujn9efn6+uKOpB6FY+npUsjLyxPVYzMUYU9a
+                                    ipT1BKSqpdgD0XweeyCVmrhs2TLRhh5eKOLh49EcHNuJjvAC2jWaMr9NJhNWfG7fvm0zROHt7Y0E8ZqammbT
+                                    Qv5+MRScoIF/yeVyKKfDR4qysrKqqipG08gBhY+PD/v2qTOwB+Xl5cgSVKvVUK5UKm2e1gHExMTglnmSsie6V4n
+                                    juPDwcDQk7gOkliSlQJckpQq3OLRFicKe6uk6nc4xe38fLglHo8Al92BaihQ6sg9wC3gXDUNdsybsqt48hmjyA
+                                    Wq1GsuTJpNJatsJQOfcQ4cOFU2AgJNoaGjAb7a2thYNde/ePTc3l9HdunVDfkdoaKjofpXQ0FDsWAJhNpv37dv
+                                    Xcm81Gk1ycjKjk5KS0AGdTocY57lz5xDLHDNmDC2qwkCXJK9du4Ye0li31JIkze5xzTyAVs61CZqaKJWWIrUkSSGa
+                                    lmJP9XR7qiZSOHSS3uzZsyEjlZbi8QGPKDrCC+Aflgdqi4YU69atE3LlcrnNgaDBYBC99oUXXhCGCdVqNRTSvLDEx
+                                    ETw6SEU4eHholtKaAb53LlzWcjIx8cHSoxGo+gan1RvlUolGkpMTMQ+XNENucHBwWhIr9dfu3aN0Y2NjVAeGhoKGdT
+                                    xYspB2566022qUpBKS7FZOdceOD0PsKd6uhScngdQPI6xoHYNzwtwM2SiW5T8/f1hv9LS0qZPny6UycvLE00LqKurQ
+                                    37D8uXL2Wi9trb2008/FQqnpKSIlhQ5cOCAzYMwFixYIByqV1ZW/vTTT4y+c+cOkifj4+NRhuDixYvY80TRq1cvpM
+                                    Z8/PHHLYeYSktLf/vtNyE/IyNDNGVx+/btt27dYvTcuXOFq7aSoOnp9oAGzhzaouRyOJqaSCE6D2gLeEyQm+F5AW
+                                    6GQnSPSllZGYqd0wD377//jsxyKURERNC6YQyBgYFoqKKi4ueff2a0PTv2v/jiC1SjWbVqlbCaQH19/csvvyy8UKv
+                                    VotH//vtv6tSpjNbpdKJmmkJ0qH779u23337bZocdg6hhorEgqS1K9sDp9QAKm1uU7ClX4/Q2VQpP9XQ3g2+DUITn
+                                    BbgZMrzViooKHFrRu3dv5F5fuHBh48aNjM7KyrJ5wt6HH35YXl7OaD8/P6ExtVgsyFOTqpVKYTQakausVquxbHvg
+                                    wAE2bKcly27duvXRRx8JlZvNZsT9p0+fbvOskH79+glrdF65cuWZZ55hdJ8+fd59911GHzly5IcffmB0VlbWuHH
+                                    jhApXrFghbsFg4FpTsozC5fXFpeB0LMiebaqisOc0VXtiQRQeE+QkeLesCdvTqqt61o7QmswwRWRkJKOio6MRMD
+                                    h//jz4zz77LPg//vgj+KtXr54xYwajp02bhpGr1WpFdWEgNDT00KFDjC4qKsKuUopXXnll4cKF9nddNJySlJQkG
+                                    vb45ZdfPv/8c0ZLFWCmSE5ORu4QBW6toKAAj4LnefDXrl2LtYF169ZNnjyZ0bt27RI9XFyBZWiVSkX354NfV1cH
+                                    Pq3IRhO+q6urhVWXKWjp5uvXr4vem9Vqlcpqsh8KhXg1bIVCgUZbPmWdobKysuU7sgf0EQknpwweH+BmNA3UaGh
+                                    XLpeDTwvX0oEdLYmrVCpbHk3SdHOqnIKmBTY2NmLoSTMGTSYTCvFTJfaU74c8bchsNuNQBNqQzTuyB1K+oaGhgR
+                                    dWzm0LiKanU9iTliJVPR3DUJspTM3g9EFuUqDDUIrHpWKWJz39cUerhqHORfhaaFKj0cDid+/enW23CwkJuXz5M
+                                    s/zHMepVCr8Bv39/TFz9vPzY51hG6TANxgMyDSJjY1tOn3lwSPW0DG0brVaRev2mkwm3HXnzp1ZQzzP63Q6NNSlS
+                                    xeWmULHrPQwMj8/P6Qdent7ixYPo+6TIiEhwSVlzcUhmpYilZpI4XTVRJqamJqaCr5UxSwKh6qn2xOKoJDyARQe
+                                    E+RmeF6Ak+BdeKAzf//0epZS6IRLqampwfRS6nIchRwVFYW0ssjISIws1Wo1ZKqqqiDTo0cPRJJpRZWDBw+azWaZ
+                                    TNbY2MhOkJDJZDExMbhQp9PRkyXQsfr6esxR6QRFo9EID0qjdtzPzw97gdBVjuN8fX3xp1qtxg5Wk8mEztDHMnz4
+                                    cBEfEBcXZ9NgSUHqBA3A0cq5FFIVsxw60JnC6RM0pCC1TVXqFCVPaqID4Ns4AOyaF9Cup0LuhWL48OGMojtGKyoq
+                                    UOpJChkZGUhf1Gg00CO609PX1xfZ1Eaj8fr164xWqVRbtmxhX5BSqUStKfpN0bMqKAYNGsR8A7WnISEhaCg2NnbL
+                                    li2MTkpKSk9Phwx6SyNgWq1WmOvo5eXFLEwLH9nVq1ehsLKyEo326tWLdUYmk924caO+vp4pEVdFfYA9W5Sktqna
+                                    TE+3p2qiPYAPkCpVYE9qok0f0Bp4tii1A3SEF9CuPVDT+RHUB9BzJaRAN/HEx8cjXYX6gE8++YSNrDt16vT+++8zp
+                                    peXF5RHRERg96i/vz8ySihmzJgBZ7N+/XqMaAcMGMBCPbRyTEVFxfr16xkdFBSEVD5UPuQ47qmnnoL5oufO9+zZE6
+                                    pGjBhhf3HbsrIylFvs1q0b4kKVlZW4o4kTJ2Kwvm3bNqPR2Py7cdQH0G2qNk/Ss6dcjT3zANEqiPacomQPqA9wKD1
+                                    dKi2FzgMOHz4MvmvWA/jHL/uhLeDxAW6GAptDqQ/w9vamm0ZFQX2ARqOBPH0cgwcPZmbay8vrxRdfZEyj0Qjhe/fu
+                                    ga/T6cAfNmwYrDOOU+I4TqvV0nAQA50HyOVyKImJiRHt+fbt2//66y8hv1OnTqJ3AZSXl8OT9enT57333mP0yJEjk
+                                    T/Yt29fyL/22mswzjRhcM2aNbRK7f+jTX2Ao6DrARROn6RH4fQWJXtO0HAUrvEB7doIuBcdwQe4Ba765hQY2NGqYq
+                                    mpqTatEN0NGRkZCT10HtC7d++WT1Pt27fvq6++yuj8/Pw//viD0VJVJjUajfDO6WF3FosFPbl9+7bobCYrK0v07la
+                                    vXo0g1eTJk4VBraioKFwopXzWrFnwalKYOnWqSNpda9YDpGJBDp2mKrUmTCE6D3AUUunpNmNBWq0WwvQkPQqp9HSK
+                                    jpYX9NDQFq7O8wLcDBnOSZDJZDTd0yFYLBb+/qAoPz8f7iEhIYGW4RZpnjRqtVqR9ymXy2GCt2zZ8sQTTzC6vLxcq
+                                    FCv12PLUWJiIkoVHD9+HEN1Cqpc6i727t0rLKlZXl6Oqg3p6enLly9ndG5u7ooVK4TKv/zyy0mTJgkbKisrg2tUlJ
+                                    WVCSVaA54MT8vLy22mzdoETfKmh38AOp0OdxEaGgoLW1hY6PTdRUVFCdPc6VKSVqtFQz4+PqIN0QNHKPDRcx4T5HZ
+                                    4XoAL0Brn/H/X/4BQHho1fwAAAABJRU5ErkJggg=="
+                                         alt="QR Code"
+                                         style="width:120px; height:120px; display:block; margin:0 auto;"/>
+                                </td>
+                                <!-- RIGHT: Totals -->
+                                <td style="width:33%; vertical-align:top; padding:10px 10px 0;">
+                                    <table style="width:100%; border-collapse:collapse; border:1px solid #ccc; font-size:13px; direction: rtl;">
+                                        <tbody style="direction: rtl;">
+                                            <tr>
+                                                <td style="padding:8px; border:1px solid #ccc; background:#f8f9fa; font-weight:600; direction: rtl; ">
+                                                    <div>الاجمالي الخاضع للضريبة</div>
+                                                    <div style="font-size:11px; color:#666;">Total Before VAT</div>
+                                                </td>
+                                                <td style="padding:8px; border:1px solid #ccc; text-align:center;">
+                                                    <span t-field="o.amount_untaxed" t-field-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding:8px; border:1px solid #ccc; background:#f8f9fa; font-weight:600; direction: rtl;">
+                                                    <div>اجمالي الضريبة</div>
+                                                    <div style="font-size:11px; color:#666;">Total VAT</div>
+                                                </td>
+                                                <td style="padding:8px; border:1px solid #ccc; text-align:center;">
+                                                    <span t-field="o.amount_tax" t-field-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding:8px; border:1px solid #ccc; background:#e9f2ff; font-weight:700; direction: rtl;">
+                                                    <div>الاجمالي بعد الضريبة</div>
+                                                    <div style="font-size:11px; color:#666;">Total After VAT</div>
+                                                </td>
+                                                <td style="padding:8px; border:1px solid #ccc; text-align:center; font-weight:700;">
+                                                    <span t-field="o.amount_total" t-field-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+
+
+<div style="position: absolute; bottom: -1200px; width: 100%;">
+        <div style="width:100%; border-top:1px solid #ccc; font-size:10px; text-align:center; padding-top:50px; margin-top:10px;">
+                                <p style = "direction: rtl;">
+                                    <strong>العنوان:</strong>
+                                    <br/>
+                                    <t t-if="o.company_id.street">
+                                        <t t-esc="o.company_id.street"/>
+
+                                        <t t-if="o.company_id.street2">,
+                                            <t t-esc="o.company_id.street2"/>
+                                        </t>
+                                    </t>
+                                    <t t-if="o.company_id.city">،
+                                        <t t-esc="o.company_id.city"/>
+                                    </t>
+                                    <t t-if="o.company_id.state_id">،
+                                        <t t-esc="o.company_id.state_id.name"/>
+                                    </t>
+                                    <t t-if="o.company_id.country_id">
+                                    </t>
+                                </p>
+
+                        </div>
+
+</div>
+
+
+
+
+
+                    </div>
+                </t>
+            </t>
+    </template>
+</odoo>
