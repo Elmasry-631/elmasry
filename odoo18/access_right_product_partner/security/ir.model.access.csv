@@ -1,2 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_access_right_product_partner_access_right_product_partner,access_right_product_partner.access_right_product_partner,model_access_right_product_partner_access_right_product_partner,,1,0,0,0
