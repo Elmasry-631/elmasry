@@ -1,0 +1,51 @@
+<odoo>
+    <record id="vendor_code_action" model="ir.actions.act_window">
+        <field name="name">Vendor Code</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">partner.code</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Inherit res partner Form View to Modify it vendor code -->
+    <record id="inherit_res_partner_form_view" model="ir.ui.view">
+        <field name="name">inherit_res_partner_form_view</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='category_id']" position="after">
+                <field name="code_id"
+                />
+            </xpath>
+
+        </field>
+    </record>
+
+
+    <!-- vendor code form view  -->
+    <record id="vedor_code_view_form" model="ir.ui.view">
+        <field name="name">vendor_code_view_form</field>
+        <field name="model">partner.code</field>
+        <field name="arch" type="xml">
+            <form string="_form">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+    <!-- vendor code list view  -->
+    <record id="vendor_code_view_list" model="ir.ui.view">
+        <field name="name">Vendor code</field>
+        <field name="model">partner.code</field>
+        <field name="arch" type="xml">
+            <list string="list">
+                <field name="name"/>
+            </list>
+        </field>
+    </record>
+</odoo>

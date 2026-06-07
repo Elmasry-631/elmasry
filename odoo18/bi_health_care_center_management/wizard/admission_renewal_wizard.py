@@ -34,7 +34,7 @@ class AdmissionRenewalWizard(models.TransientModel):
     end_time = fields.Float(string='End Time', help="Ex: 16.30 for 4:30 PM")
 
     # حقول الحساب
-    n_of_reservations = fields.Integer(string='Number of Reservations', required=True, default=1, readonly=1)
+    n_of_reservations = fields.Integer(string='Number of Reservations', required=True, default=True, readonly=True)
     is_vip = fields.Boolean(string='VIP')
     duration = fields.Integer("Duration (Days)", compute='_compute_duration', store=True)
     end_duration = fields.Date(string='End Date', compute='_compute_end_duration', store=True, readonly=False)

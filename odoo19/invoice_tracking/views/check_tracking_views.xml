@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="check_track_action" model="ir.actions.act_window">
+        <field name="name">Checks</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">check.tracking</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="view_check_tracking_tree" model="ir.ui.view">
+        <field name="name">check.tracking.tree</field>
+        <field name="model">check.tracking</field>
+        <field name="arch" type="xml">
+            <list decoration-danger="status == 'bounced'" decoration-info="status == 'deposited'">
+                <field name="name"/>
+                <field name="check_type"/>
+                <field name="partner_id"/>
+                <field name="date_due"/>
+                <field name="amount" sum="Total Amount"/>
+                <field name="status" widget="badge" decoration-success="status in ('cleared', 'cashed')" decoration-warning="status in ('in_hand', 'issued')"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_check_tracking_form" model="ir.ui.view">
+        <field name="name">check.tracking.form</field>
+        <field name="model">check.tracking</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_confirm" string="Receive Cheque" type="object" invisible="status != 'draft' or check_type != 'incoming'" class="oe_highlight"/>
+                    <button name="action_deposit" string="Deposit Under Collection" type="object" invisible="status != 'in_hand' or check_type != 'incoming'" class="oe_highlight"/>
+                    <button name="action_clear" string="Clear Cheque" type="object" invisible="status != 'deposited' or check_type != 'incoming'" class="oe_highlight"/>
+                    <button name="action_bounce" string="Bounce" type="object" invisible="status != 'deposited' or check_type != 'incoming'"/>
+                    <button name="action_issue" string="Issue Cheque" type="object" invisible="status != 'draft' or check_type != 'outgoing'" class="oe_highlight"/>
+                    <button name="action_cash" string="Cheque Cashed" type="object" invisible="status != 'issued' or check_type != 'outgoing'" class="oe_highlight"/>
+                    <field name="status" widget="statusbar" statusbar_visible="draft,in_hand,deposited,cleared,bounced,issued,cashed"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_entries"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-book"
+                                invisible="move_count == 0">
+                            <field name="move_count" widget="statinfo" string="Entries"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1><field name="name" placeholder="Check Number..." readonly="status != 'draft'"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="company_id" invisible="1"/>
+                            <field name="check_type" readonly="status != 'draft'"/>
+                            <field name="partner_id" readonly="status != 'draft'"/>
+                            <field name="amount" readonly="status != 'draft'"/>
+                            <field name="currency_id" groups="base.group_multi_currency" readonly="status != 'draft'"/>
+                            <field name="secondary_amount" readonly="1"/>
+                            <field name="secondary_currency_id" readonly="status != 'draft'"/>
+                        </group>
+                        <group>
+                            <field name="date_issue" readonly="status != 'draft'"/>
+                            <field name="date_due" readonly="status != 'draft'"/>
+                            <field name="bank_id" readonly="status != 'draft'"/>
+                            <field name="journal_id" readonly="status != 'draft'"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Accounting Setup">
+                            <group>
+                                <group string="Common Accounts">
+                                    <field name="receivable_account_id" readonly="status != 'draft'"/>
+                                    <field name="payable_account_id" readonly="status != 'draft'"/>
+                                    <field name="bank_account_id" readonly="status != 'draft'"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Journal Entries">
+                            <field name="move_ids" readonly="1">
+                                <list>
+                                    <field name="date"/>
+                                    <field name="name"/>
+                                    <field name="ref"/>
+                                    <field name="journal_id"/>
+                                    <field name="check_stage"/>
+                                    <field name="state"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Attachments">
+                            <field name="attachment_ids" widget="many2many_binary" readonly="status != 'draft'"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+</odoo>
+

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- General Ledger Search View -->
+    <record id="view_general_ledger_report_search" model="ir.ui.view">
+        <field name="name">account.move.line.search.gl.report</field>
+        <field name="model">account.move.line</field>
+        <field name="arch" type="xml">
+            <search string="General Ledger">
+                <field name="date"/>
+                <field name="move_id"/>
+                <field name="journal_id"/>
+                <field name="account_id"/>
+                <field name="partner_id"/>
+                <field name="feature_ids"/>
+                <field name="cost_center_ids"/>
+                <filter string="Posted" name="posted" domain="[('parent_state', '=', 'posted')]"/>
+                <filter string="Group by Account" name="groupby_account" context="{'group_by': 'account_id'}"/>
+                <filter string="Group by Date" name="groupby_date" context="{'group_by': 'date'}"/>
+                <filter string="Group by Journal" name="groupby_journal" context="{'group_by': 'journal_id'}"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- Trial Balance Search View -->
+    <record id="view_trial_balance_report_search" model="ir.ui.view">
+        <field name="name">account.move.line.search.tb.report</field>
+        <field name="model">account.move.line</field>
+        <field name="arch" type="xml">
+            <search string="Trial Balance">
+                <field name="account_id"/>
+                <field name="date"/>
+                <field name="journal_id"/>
+                <filter string="Posted" name="posted" domain="[('parent_state', '=', 'posted')]"/>
+                <filter string="Group by Account" name="groupby_account" context="{'group_by': 'account_id'}"/>
+                <filter string="Group by Date" name="groupby_date" context="{'group_by': 'date'}"/>
+            </search>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,14 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_account_feature_readonly,account.feature.readonly,model_account_feature,account.group_account_readonly,1,0,0,0
+access_account_feature_user,account.feature.user,model_account_feature,account.group_account_user,1,1,1,0
+access_account_feature_manager,account.feature.manager,model_account_feature,account.group_account_manager,1,1,1,1
+access_account_cost_center_readonly,account.cost.center.readonly,model_account_cost_center,account.group_account_readonly,1,0,0,0
+access_account_cost_center_user,account.cost.center.user,model_account_cost_center,account.group_account_user,1,1,1,0
+access_account_cost_center_manager,account.cost.center.manager,model_account_cost_center,account.group_account_manager,1,1,1,1
+access_account_patch_number_readonly,account.patch.number.readonly,model_account_patch_number,account.group_account_readonly,1,0,0,0
+access_account_patch_number_user,account.patch.number.user,model_account_patch_number,account.group_account_user,1,1,1,0
+access_account_patch_number_manager,account.patch.number.manager,model_account_patch_number,account.group_account_manager,1,1,1,1
+access_general_ledger_wizard_user,general.ledger.wizard.user,model_general_ledger_wizard,account.group_account_user,1,1,1,0
+access_general_ledger_wizard_manager,general.ledger.wizard.manager,model_general_ledger_wizard,account.group_account_manager,1,1,1,1
+access_trial_balance_wizard_user,trial.balance.wizard.user,model_trial_balance_wizard,account.group_account_user,1,1,1,0
+access_trial_balance_wizard_manager,trial.balance.wizard.manager,model_trial_balance_wizard,account.group_account_manager,1,1,1,1

@@ -1,0 +1,15 @@
+<odoo>
+    <data>
+        <record id="action_export_sif_file" model="ir.actions.server">
+            <field name="name">Export SIF File</field>
+            <field name="model_id" ref="hr_payroll.model_hr_payslip"/>
+            <field name="binding_model_id" ref="hr_payroll.model_hr_payslip"/>
+            <field name="binding_view_types">list,form</field>
+            <field name="state">code</field>
+            <field name="code">
+                if records:
+                    action = records.action_export_sif()
+            </field>
+        </record>
+    </data>
+</odoo>

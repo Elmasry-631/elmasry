@@ -73,8 +73,8 @@ class StudentAdmission(models.Model):
     start_date = fields.Float(string="Start Date")
     end_date = fields.Float(string="End Date")
 
-    start_duration = fields.Date(string='Start Date', default=lambda self: date.today(), store=1)
-    end_duration = fields.Date(string='End Date', compute='_compute_end_duration', store=1)
+    start_duration = fields.Date(string='Start Date', default=lambda self: date.today(), store=True)
+    end_duration = fields.Date(string='End Date', compute='_compute_end_duration', store=True)
     duration = fields.Integer("Duration(Days)", compute='_compute_duration')
 
     is_warning = fields.Boolean(string="Warning", compute="_compute_is_warning", store=True)
@@ -85,10 +85,10 @@ class StudentAdmission(models.Model):
                                                    compute='_compute_n_of_reservations_done_driver')
     reservation_ids = fields.One2many('student.reservation', 'admission_id')
     driver_reservation_ids = fields.One2many('driver.reservation', 'admission_id')
-    is_reservation_done = fields.Boolean(defualt=False, compute='_compute_is_reservation_done')
-    is_driver_reservation_done = fields.Boolean(defualt=False, compute='_compute_is_driver_reservation_done')
+    is_reservation_done = fields.Boolean(default=False, compute='_compute_is_reservation_done')
+    is_driver_reservation_done = fields.Boolean(default=False, compute='_compute_is_driver_reservation_done')
     n_of_reservations_unfinished = fields.Integer(string='UnFinished reservations',
-                                                  compute='_compute_n_of_reservations_unfinished', store=1)
+                                                  compute='_compute_n_of_reservations_unfinished', store=True)
     is_vip = fields.Boolean(string='VIP')
     birth_date = fields.Date(string='Birth Date', )
     age = fields.Integer(string='Age', compute='_compute_age')

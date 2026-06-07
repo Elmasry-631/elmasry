@@ -1,0 +1,776 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#   * advanced_accounting_reports
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-04-30 15:00+0000\n"
+"PO-Revision-Date: 2026-04-30 15:00+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
+"Language: ar\n"
+
+#. module: advanced_accounting_reports
+#: model:ir.model,name:advanced_accounting_reports.model_account_move
+msgid "Journal Entry"
+msgstr "قيد يومية"
+
+#. module: advanced_accounting_reports
+#: model:ir.model,name:advanced_accounting_reports.model_account_move_line
+msgid "Journal Item"
+msgstr "بند القيد"
+
+#. module: advanced_accounting_reports
+#: model:ir.model,name:advanced_accounting_reports.model_account_feature
+msgid "Feature"
+msgstr "البعد"
+
+#. module: advanced_accounting_reports
+#: model:ir.model,name:advanced_accounting_reports.model_account_cost_center
+msgid "Cost Center"
+msgstr "مركز التكلفة"
+
+#. module: advanced_accounting_reports
+#: model:ir.model,name:advanced_accounting_reports.model_account_patch_number
+msgid "Patch Number"
+msgstr "رقم البطاقة"
+
+#. module: advanced_accounting_reports
+#: model:ir.model,name:advanced_accounting_reports.model_res_company
+msgid "Company"
+msgstr "الشركة"
+
+#. module: advanced_accounting_reports
+#: model:ir.model,name:advanced_accounting_reports.model_general_ledger_wizard
+msgid "General Ledger Report Wizard"
+msgstr "معالج تقرير دفتر الأستاذ العام"
+
+#. module: advanced_accounting_reports
+#: model:ir.model,name:advanced_accounting_reports.model_trial_balance_wizard
+msgid "Trial Balance Report Wizard"
+msgstr "معالج تقرير ميزان المراجعة"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_move__secondary_currency_id
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_move_line__secondary_currency_id
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_feature__secondary_currency_id
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_cost_center__secondary_currency_id
+msgid "Secondary Currency"
+msgstr "العملة الثانوية"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,help:advanced_accounting_reports.field_account_move__secondary_currency_id
+msgid "Currency used for secondary amount reporting."
+msgstr "العملة المستخدمة لإظهار المبالغ الثانوية في التقارير."
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_move__manual_rate
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_move_line__manual_rate
+msgid "Rate"
+msgstr "سعر الصرف"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,help:advanced_accounting_reports.field_account_move__manual_rate
+msgid "Manual exchange rate applied to compute secondary amounts."
+msgstr "سعر الصرف اليدوي المستخدم لحساب المبالغ بالعملة الثانوية."
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_move__use_manual_rate
+msgid "Use Manual Rate"
+msgstr "استخدام سعر صرف يدوي"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_move__secondary_debit_total
+msgid "Secondary Debit"
+msgstr "إجمالي المدين - ثانوي"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_move__secondary_credit_total
+msgid "Secondary Credit"
+msgstr "إجمالي الدائن - ثانوي"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_move__secondary_balance_total
+msgid "Secondary Balance"
+msgstr "إجمالي الرصيد - ثانوي"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_move__patch_number_id
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_move_line__patch_number_id
+msgid "Patch Number"
+msgstr "رقم البطاقة"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_move_line__secondary_debit
+msgid "Debit"
+msgstr "مدين"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_move_line__secondary_credit
+msgid "Credit"
+msgstr "دائن"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_move_line__secondary_balance
+msgid "Balance"
+msgstr "الرصيد"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_move_line__secondary_currency_name
+msgid "Secondary Currency Name"
+msgstr "اسم العملة الثانوية"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_move_line__feature_ids
+#: model:ir.ui.menu,name:advanced_accounting_reports.menu_account_feature
+#: model:ir.actions.act_window,name:advanced_accounting_reports.action_account_feature
+msgid "Features"
+msgstr "الأبعاد"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_move_line__cost_center_ids
+#: model:ir.ui.menu,name:advanced_accounting_reports.menu_account_cost_center
+#: model:ir.actions.act_window,name:advanced_accounting_reports.action_account_cost_center
+msgid "Cost Centers"
+msgstr "مراكز التكلفة"
+
+#. module: advanced_accounting_reports
+#: model:ir.ui.menu,name:advanced_accounting_reports.menu_account_patch_number
+#: model:ir.actions.act_window,name:advanced_accounting_reports.action_account_patch_number
+msgid "Patch Numbers"
+msgstr "أرقام البطاقات"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_feature__name
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_cost_center__name
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_patch_number__name
+msgid "Name"
+msgstr "الاسم"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_feature__code
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_cost_center__code
+msgid "Reference"
+msgstr "المرجع"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_feature__parent_id
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_cost_center__parent_id
+msgid "Parent"
+msgstr "الأب"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_feature__parent_path
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_cost_center__parent_path
+msgid "Parent Path"
+msgstr "مسار الأب"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_feature__company_id
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_cost_center__company_id
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_patch_number__company_id
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_general_ledger_wizard__company_id
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_trial_balance_wizard__company_id
+msgid "Company"
+msgstr "الشركة"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_feature__active
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_cost_center__active
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_patch_number__active
+msgid "Active"
+msgstr "نشط"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_feature__notes
+msgid "Notes"
+msgstr "ملاحظات"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_feature__child_ids
+msgid "Sub Features"
+msgstr "أبعاد فرعية"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_cost_center__child_ids
+msgid "Sub Cost Centers"
+msgstr "مراكز تكلفة فرعية"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_feature__debit
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_cost_center__debit
+msgid "Debit"
+msgstr "مدين"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_feature__credit
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_cost_center__credit
+msgid "Credit"
+msgstr "دائن"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_feature__balance
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_cost_center__balance
+msgid "Balance"
+msgstr "الرصيد"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_feature__currency_id
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_cost_center__currency_id
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_general_ledger_wizard__currency_id
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_trial_balance_wizard__currency_id
+msgid "Currency"
+msgstr "العملة"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_feature__secondary_debit
+msgid "Secondary Debit"
+msgstr "مدين ثانوي"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_feature__secondary_credit
+msgid "Secondary Credit"
+msgstr "دائن ثانوي"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_feature__secondary_balance
+msgid "Secondary Balance"
+msgstr "رصيد ثانوي"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_feature__avg_rate
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_cost_center__avg_rate
+msgid "Avg. Rate"
+msgstr "متوسط سعر الصرف"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_patch_number__description
+msgid "Description"
+msgstr "الوصف"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_patch_number__status
+msgid "Status"
+msgstr "الحالة"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,selection,name:advanced_accounting_reports.selection__account_patch_number__status__draft
+msgid "Draft"
+msgstr "مسودة"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,selection,name:advanced_accounting_reports.selection__account_patch_number__status__confirmed
+msgid "Confirmed"
+msgstr "مؤكد"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,selection,name:advanced_accounting_reports.selection__account_patch_number__status__closed
+msgid "Closed"
+msgstr "مغلق"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_res_company__secondary_currency_id
+msgid "Default Secondary Currency"
+msgstr "العملة الثانوية الافتراضية"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,help:advanced_accounting_reports.field_res_company__secondary_currency_id
+msgid "Default secondary currency for reporting purposes."
+msgstr "العملة الثانوية الافتراضية لأغراض التقارير."
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_general_ledger_wizard__date_from
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_trial_balance_wizard__date_from
+msgid "Start Date"
+msgstr "تاريخ البداية"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_general_ledger_wizard__date_to
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_trial_balance_wizard__date_to
+msgid "End Date"
+msgstr "تاريخ النهاية"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_general_ledger_wizard__journal_ids
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_trial_balance_wizard__journal_ids
+msgid "Journals"
+msgstr "الدفاتر"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_general_ledger_wizard__account_ids
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_trial_balance_wizard__account_ids
+msgid "Accounts"
+msgstr "الحسابات"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_general_ledger_wizard__partner_ids
+msgid "Partners"
+msgstr "الشركاء"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_general_ledger_wizard__feature_ids
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_trial_balance_wizard__feature_ids
+msgid "Features"
+msgstr "الأبعاد"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_general_ledger_wizard__cost_center_ids
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_trial_balance_wizard__cost_center_ids
+msgid "Cost Centers"
+msgstr "مراكز التكلفة"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_general_ledger_wizard__target_move
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_trial_balance_wizard__target_move
+msgid "Target Moves"
+msgstr "القيود المستهدفة"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,selection,name:advanced_accounting_reports.selection__general_ledger_wizard__target_move__posted
+#: model:ir.model.fields,selection,name:advanced_accounting_reports.selection__trial_balance_wizard__target_move__posted
+msgid "Posted Entries Only"
+msgstr "القيود المرحلة فقط"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,selection,name:advanced_accounting_reports.selection__general_ledger_wizard__target_move__all
+#: model:ir.model.fields,selection,name:advanced_accounting_reports.selection__trial_balance_wizard__target_move__all
+msgid "All Entries"
+msgstr "جميع القيود"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_general_ledger_wizard__show_secondary_currency
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_trial_balance_wizard__show_secondary_currency
+msgid "Show Secondary Currency"
+msgstr "إظهار العملة الثانوية"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_general_ledger_wizard__opening_balance
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_trial_balance_wizard__opening_balance
+msgid "Opening Balance"
+msgstr "رصيد افتتاحي"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_general_ledger_wizard__ending_balance
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_trial_balance_wizard__ending_balance
+msgid "Ending Balance"
+msgstr "رصيد ختامي"
+
+#. module: advanced_accounting_reports
+#. Dynamic label for secondary_debit in list views
+#: code:addons/advanced_accounting_reports/models/account_move_line.py:0
+#, python-format
+msgid "Debit (%s)"
+msgstr "مدين (%s)"
+
+#. module: advanced_accounting_reports
+#. Dynamic label for secondary_credit in list views
+#: code:addons/advanced_accounting_reports/models/account_move_line.py:0
+#, python-format
+msgid "Credit (%s)"
+msgstr "دائن (%s)"
+
+#. module: advanced_accounting_reports
+#. Dynamic label for secondary_balance in list views
+#: code:addons/advanced_accounting_reports/models/account_move_line.py:0
+#, python-format
+msgid "Balance (%s)"
+msgstr "الرصيد (%s)"
+
+#. module: advanced_accounting_reports
+#. Dynamic label for move-level secondary totals
+#: code:addons/advanced_accounting_reports/models/account_move.py:0
+#, python-format
+msgid "Debit (%s)"
+msgstr "مدين (%s)"
+
+#. module: advanced_accounting_reports
+#: code:addons/advanced_accounting_reports/models/account_move.py:0
+#, python-format
+msgid "Credit (%s)"
+msgstr "دائن (%s)"
+
+#. module: advanced_accounting_reports
+#: code:addons/advanced_accounting_reports/models/account_move.py:0
+#, python-format
+msgid "Balance (%s)"
+msgstr "الرصيد (%s)"
+
+#. module: advanced_accounting_reports
+#: model:ir.ui.menu,name:advanced_accounting_reports.menu_general_ledger_wizard
+msgid "General Ledger (Advanced)"
+msgstr "دفتر الأستاذ العام (متقدم)"
+
+#. module: advanced_accounting_reports
+#: model:ir.ui.menu,name:advanced_accounting_reports.menu_trial_balance_wizard
+msgid "Trial Balance (Advanced)"
+msgstr "ميزان المراجعة (متقدم)"
+
+#. module: advanced_accounting_reports
+#: model:ir.ui.menu,name:advanced_accounting_reports.menu_advanced_accounting_root
+msgid "Advanced Dimensions"
+msgstr "الأبعاد المحاسبية"
+
+#. module: advanced_accounting_reports
+#. Validation messages
+#, python-format
+msgid "Manual exchange rate must be greater than zero when enabled."
+msgstr "يجب أن يكون سعر الصرف اليدوي أكبر من صفر عند التفعيل."
+
+#. module: advanced_accounting_reports
+#, python-format
+msgid "You cannot create recursive features."
+msgstr "لا يمكنك إنشاء أبعاد متداخلة."
+
+#. module: advanced_accounting_reports
+#, python-format
+msgid "You cannot create recursive cost centers."
+msgstr "لا يمكنك إنشاء مراكز تكلفة متداخلة."
+
+#. module: advanced_accounting_reports
+#, python-format
+msgid "The code must be unique per company!"
+msgstr "يجب أن يكون الكود فريداً لكل شركة!"
+
+#. module: advanced_accounting_reports
+#, python-format
+msgid "The patch number must be unique per company!"
+msgstr "يجب أن يكون رقم البطاقة فريداً لكل شركة!"
+
+#. module: advanced_accounting_reports
+#, python-format
+msgid "Start Date must be before End Date."
+msgstr "يجب أن يكون تاريخ البداية قبل تاريخ النهاية."
+
+#. module: advanced_accounting_reports
+#. List view strings
+msgid "Total Debit"
+msgstr "إجمالي المدين"
+
+#. module: advanced_accounting_reports
+msgid "Total Credit"
+msgstr "إجمالي الدائن"
+
+#. module: advanced_accounting_reports
+msgid "Total Balance"
+msgstr "إجمالي الرصيد"
+
+#. module: advanced_accounting_reports
+msgid "Total"
+msgstr "الإجمالي"
+
+#. module: advanced_accounting_reports
+msgid "Total Sec. Debit"
+msgstr "إجمالي المدين الثانوي"
+
+#. module: advanced_accounting_reports
+msgid "Total Sec. Credit"
+msgstr "إجمالي الدائن الثانوي"
+
+#. module: advanced_accounting_reports
+msgid "Total Sec. Balance"
+msgstr "إجمالي الرصيد الثانوي"
+
+#. module: advanced_accounting_reports
+msgid "Total Secondary Debit"
+msgstr "إجمالي المدين الثانوي"
+
+#. module: advanced_accounting_reports
+msgid "Total Secondary Credit"
+msgstr "إجمالي الدائن الثانوي"
+
+#. module: advanced_accounting_reports
+msgid "Total Secondary Balance"
+msgstr "إجمالي الرصيد الثانوي"
+
+#. module: advanced_accounting_reports
+msgid "Company Currency"
+msgstr "عملة الشركة"
+
+#. module: advanced_accounting_reports
+msgid "Secondary Currency"
+msgstr "العملة الثانوية"
+
+#. module: advanced_accounting_reports
+msgid "General Ledger"
+msgstr "دفتر الأستاذ العام"
+
+#. module: advanced_accounting_reports
+msgid "Trial Balance"
+msgstr "ميزان المراجعة"
+
+#. module: advanced_accounting_reports
+msgid "Journal Entries"
+msgstr "قيود اليومية"
+
+#. module: advanced_accounting_reports
+#. Wizard button labels
+msgid "View Report"
+msgstr "عرض التقرير"
+
+#. module: advanced_accounting_reports
+msgid "Export Excel"
+msgstr "تصدير إكسل"
+
+#. module: advanced_accounting_reports
+msgid "Export PDF"
+msgstr "تصدير PDF"
+
+#. module: advanced_accounting_reports
+msgid "Cancel"
+msgstr "إلغاء"
+
+#. module: advanced_accounting_reports
+#. Wizard form strings
+msgid "General Ledger Report"
+msgstr "تقرير دفتر الأستاذ العام"
+
+#. module: advanced_accounting_reports
+msgid "Trial Balance Report"
+msgstr "تقرير ميزان المراجعة"
+
+#. module: advanced_accounting_reports
+msgid "Balances"
+msgstr "الأرصدة"
+
+#. module: advanced_accounting_reports
+#. Search view strings
+msgid "Posted"
+msgstr "مرحل"
+
+#. module: advanced_accounting_reports
+msgid "Group by Account"
+msgstr "تجميع حسب الحساب"
+
+#. module: advanced_accounting_reports
+msgid "Group by Date"
+msgstr "تجميع حسب التاريخ"
+
+#. module: advanced_accounting_reports
+msgid "Group by Journal"
+msgstr "تجميع حسب الدفتر"
+
+#. module: advanced_accounting_reports
+msgid "Archived"
+msgstr "مؤرشف"
+
+#. module: advanced_accounting_reports
+msgid "Parent Feature"
+msgstr "البعد الرئيسي"
+
+#. module: advanced_accounting_reports
+msgid "Parent Cost Center"
+msgstr "مركز التكلفة الرئيسي"
+
+#. module: advanced_accounting_reports
+msgid "Group By"
+msgstr "تجميع حسب"
+
+#. module: advanced_accounting_reports
+#. Form view strings
+msgid "Feature"
+msgstr "البعد"
+
+#. module: advanced_accounting_reports
+msgid "Cost Center"
+msgstr "مركز التكلفة"
+
+#. module: advanced_accounting_reports
+msgid "Features"
+msgstr "الأبعاد"
+
+#. module: advanced_accounting_reports
+msgid "Cost Centers"
+msgstr "مراكز التكلفة"
+
+#. module: advanced_accounting_reports
+msgid "Patch Number"
+msgstr "رقم البطاقة"
+
+#. module: advanced_accounting_reports
+msgid "Patch Numbers"
+msgstr "أرقام البطاقات"
+
+#. module: advanced_accounting_reports
+#. Report action names
+msgid "General Ledger (PDF)"
+msgstr "دفتر الأستاذ العام (PDF)"
+
+#. module: advanced_accounting_reports
+msgid "Trial Balance (PDF)"
+msgstr "ميزان المراجعة (PDF)"
+
+#. module: advanced_accounting_reports
+msgid "General Ledger Lines"
+msgstr "بنود دفتر الأستاذ العام"
+
+#. module: advanced_accounting_reports
+#. PDF report header strings
+msgid "Account"
+msgstr "الحساب"
+
+#. module: advanced_accounting_reports
+msgid "Date"
+msgstr "التاريخ"
+
+#. module: advanced_accounting_reports
+msgid "Move"
+msgstr "القيد"
+
+#. module: advanced_accounting_reports
+msgid "Label"
+msgstr "البيان"
+
+#. module: advanced_accounting_reports
+msgid "Partner"
+msgstr "الشريك"
+
+#. module: advanced_accounting_reports
+msgid "Code"
+msgstr "الكود"
+
+#. module: advanced_accounting_reports
+msgid "Rate"
+msgstr "سعر الصرف"
+
+#. module: advanced_accounting_reports
+msgid "Debit"
+msgstr "مدين"
+
+#. module: advanced_accounting_reports
+msgid "Credit"
+msgstr "دائن"
+
+#. module: advanced_accounting_reports
+msgid "Balance"
+msgstr "الرصيد"
+
+#. module: advanced_accounting_reports
+msgid "Opening Bal"
+msgstr "رصيد افتتاحي"
+
+#. module: advanced_accounting_reports
+msgid "Ending Bal"
+msgstr "رصيد ختامي"
+
+#. module: advanced_accounting_reports
+msgid "Period"
+msgstr "الفترة"
+
+#. module: advanced_accounting_reports
+msgid "From: %s To: %s"
+msgstr "من: %s إلى: %s"
+
+#. module: advanced_accounting_reports
+msgid "All Accounts"
+msgstr "جميع الحسابات"
+
+#. module: advanced_accounting_reports
+msgid "Cost Centers"
+msgstr "مراكز التكلفة"
+
+#. module: advanced_accounting_reports
+msgid "Features"
+msgstr "الأبعاد"
+
+#. module: advanced_accounting_reports
+msgid "Patch Number"
+msgstr "رقم البطاقة"
+
+#. module: advanced_accounting_reports
+msgid "Journals"
+msgstr "الدفاتر"
+
+#. module: advanced_accounting_reports
+#. Help text
+msgid "Create your first Feature"
+msgstr "أنشئ بُعداً محاسبياً جديداً"
+
+#. module: advanced_accounting_reports
+msgid ""
+"Features allow you to categorize journal entries\n"
+"                by business dimension (project, department, etc.)."
+msgstr ""
+"تسمح لك الأبعاد المحاسبية بتصنيف بنود القيود اليومية\n"
+"                حسب البعد التجاري (مشروع، قسم، إلخ)."
+
+#. module: advanced_accounting_reports
+msgid "Create your first Cost Center"
+msgstr "أنشئ مركز تكلفة جديداً"
+
+#. module: advanced_accounting_reports
+msgid ""
+"Cost Centers allow you to track expenses and revenues\n"
+"                by organizational unit (department, branch, etc.)."
+msgstr ""
+"تسمح لك مراكز التكلفة بتتبع المصروفات والإيرادات\n"
+"                حسب الوحدة التنظيمية (قسم، فرع، إلخ)."
+
+#. module: advanced_accounting_reports
+msgid "Create a new Patch Number"
+msgstr "إنشاء رقم بطاقة جديد"
+
+#. module: advanced_accounting_reports
+#. Placeholders
+msgid "e.g. Project Alpha"
+msgstr "مثال: مشروع ألفا"
+
+#. module: advanced_accounting_reports
+msgid "e.g. F001"
+msgstr "مثال: F001"
+
+#. module: advanced_accounting_reports
+msgid "e.g. Head Office"
+msgstr "مثال: المكتب الرئيسي"
+
+#. module: advanced_accounting_reports
+msgid "e.g. CC001"
+msgstr "مثال: CC001"
+
+#. module: advanced_accounting_reports
+msgid "Add notes..."
+msgstr "أضف ملاحظات..."
+
+#. module: advanced_accounting_reports
+msgid "Description..."
+msgstr "الوصف..."
+
+#. module: advanced_accounting_reports
+#. Search filter labels
+msgid "Status"
+msgstr "الحالة"
+
+#. module: advanced_accounting_reports
+msgid "Company"
+msgstr "الشركة"
+
+#. module: advanced_accounting_reports
+#. Journal Entry Form - Secondary Totals
+msgid "Total Secondary Debit"
+msgstr "إجمالي المدين الثانوي"
+
+#. module: advanced_accounting_reports
+msgid "Total Secondary Credit"
+msgstr "إجمالي الدائن الثانوي"
+
+#. module: advanced_accounting_reports
+msgid "Total Secondary Balance"
+msgstr "إجمالي الرصيد الثانوي"
+
+#. module: advanced_accounting_reports
+#. Security rule names
+msgid "Account Feature Multi-Company"
+msgstr "الأبعاد المحاسبية - شركات متعددة"
+
+#. module: advanced_accounting_reports
+msgid "Account Cost Center Multi-Company"
+msgstr "مراكز التكلفة - شركات متعددة"
+
+#. module: advanced_accounting_reports
+msgid "Account Patch Number Multi-Company"
+msgstr "أرقام البطاقات - شركات متعددة"

@@ -1,0 +1,62 @@
+<odoo>
+    <data noupdate="0">
+        <record id="structure_attendance_sheet" model="hr.payroll.structure">
+            <field name="name">Attendance Sheet Structure</field>
+            <field name="payslip_name">Attendance Sheet Payslip</field>
+            <field name="type_id" ref="hr.structure_type_employee"/>
+            <field name="country_id" eval="False"/>
+        </record>
+
+        <record id="salary_rule_attendance_overtime" model="hr.salary.rule">
+            <field name="name">Over Time</field>
+            <field name="code">ATT_OT</field>
+            <field name="sequence">150</field>
+            <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="struct_id" ref="structure_attendance_sheet"/>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = bool(payslip.attendance_sheet_id and payslip.attendance_sheet_id.total_overtime_amount)</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = payslip.attendance_sheet_id.total_overtime_amount if payslip.attendance_sheet_id else 0.0</field>
+        </record>
+
+        <record id="salary_rule_attendance_late" model="hr.salary.rule">
+            <field name="name">Late In Attendance</field>
+            <field name="code">ATT_LATE</field>
+            <field name="sequence">170</field>
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="struct_id" ref="structure_attendance_sheet"/>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = bool(payslip.attendance_sheet_id and payslip.attendance_sheet_id.total_late_penalty)</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = -payslip.attendance_sheet_id.total_late_penalty if payslip.attendance_sheet_id else 0.0</field>
+        </record>
+
+        <record id="salary_rule_attendance_absence" model="hr.salary.rule">
+            <field name="name">Absence</field>
+            <field name="code">ATT_ABS</field>
+            <field name="sequence">171</field>
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="struct_id" ref="structure_attendance_sheet"/>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = bool(payslip.attendance_sheet_id and payslip.attendance_sheet_id.total_absence_penalty)</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = -payslip.attendance_sheet_id.total_absence_penalty if payslip.attendance_sheet_id else 0.0</field>
+        </record>
+
+        <record id="salary_rule_attendance_difference" model="hr.salary.rule">
+            <field name="name">Difference Time</field>
+            <field name="code">ATT_DIFF</field>
+            <field name="sequence">172</field>
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="struct_id" ref="structure_attendance_sheet"/>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = bool(payslip.attendance_sheet_id and payslip.attendance_sheet_id.total_difference_amount)</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = -payslip.attendance_sheet_id.total_difference_amount if payslip.attendance_sheet_id else 0.0</field>
+        </record>
+
+        <function model="hr.salary.rule" name="_rm_configure_attendance_basic_rule">
+            <value model="hr.salary.rule" search="[]"/>
+        </function>
+    </data>
+</odoo>

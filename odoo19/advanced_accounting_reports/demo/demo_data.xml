@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Demo Features -->
+        <record id="demo_feature_1" model="account.feature">
+            <field name="name">Sales Feature</field>
+            <field name="code">SAL001</field>
+            <field name="company_id" ref="base.main_company"/>
+        </record>
+        <record id="demo_feature_2" model="account.feature">
+            <field name="name">Purchase Feature</field>
+            <field name="code">PUR001</field>
+            <field name="company_id" ref="base.main_company"/>
+        </record>
+
+        <!-- Demo Cost Centers -->
+        <record id="demo_cost_center_1" model="account.cost.center">
+            <field name="name">Head Office</field>
+            <field name="code">HO001</field>
+            <field name="company_id" ref="base.main_company"/>
+        </record>
+        <record id="demo_cost_center_2" model="account.cost.center">
+            <field name="name">Branch 1</field>
+            <field name="code">BR001</field>
+            <field name="company_id" ref="base.main_company"/>
+        </record>
+
+        <!-- Demo Patch Numbers -->
+        <record id="demo_patch_1" model="account.patch.number">
+            <field name="name">PATCH-2026-001</field>
+            <field name="description">First quarter patch</field>
+            <field name="status">confirmed</field>
+            <field name="company_id" ref="base.main_company"/>
+        </record>
+    </data>
+</odoo>

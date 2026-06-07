@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_invoice_tracking" model="ir.actions.act_window">
+        <field name="name">Invoice Tracking</field>
+        <field name="res_model">invoice.tracking</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first Invoice Tracking record!
+            </p>
+        </field>
+    </record>
+
+    <record id="view_invoice_tracking_form" model="ir.ui.view">
+        <field name="name">invoice.tracking.form</field>
+        <field name="model">invoice.tracking</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_receive" string="Validate Received Date" type="object"
+                            class="oe_highlight" invisible="status != 'new'"/>
+
+                    <button name="action_del_to_administration" string="Delivered To Administration" type="object"
+                            class="oe_highlight" invisible="status != 'received'"/>
+
+                    <button name="action_rec_from_administration" string="Receive From Admin" type="object"
+                            class="oe_highlight" invisible="status != 'send_to_administration'"/>
+
+                    <button name="action_create_bill_from_invoice_tracking" string="Create Bill" type="object"
+                            class="oe_highlight" invisible="status != 'receive_from_administration'"/>
+
+                    <button name="action_cancel" string="Cancel" type="object"
+                            invisible="status in ('done', 'cancel')"
+                            confirm="Are you sure you want to cancel this record?"/>
+
+                    <button name="action_reset_to_draft" string="Reset To Draft" type="object" invisible="status == 'new'"/>
+
+                    <field name="status" widget="statusbar" statusbar_visible="new,received,send_to_administration,receive_from_administration,done,cancel"/>
+                </header>
+                                <sheet>
+
+                <div class="oe_button_box" name="button_box">
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="مثلاً: INV/2024/001"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Basic Information" >
+                            <field name="bill_reference" readonly="status != 'new'"/>
+                            <field name="code_id" readonly="status != 'new'"/>
+                            <field name="partner_id" readonly="1" force_save="1"/>
+                            <field name="purchase_id" readonly="status != 'new'"/>
+                            <field name="purchase_reference" readonly="status != 'new'"/>
+                            <field name="vendor_bill_id" invisible="1"/>
+                            <field name="well_number" readonly="status != 'new'"/>
+                            <field name="status_id" readonly="status != 'new'"/>
+                            <field name="check_status"/>
+
+                        </group>
+                        <group string="Dates">
+                            <field name="received_date" readonly="status != 'new'"/>
+                            <field name="bill_date" readonly="status not in ('new', 'received')"/>
+                            <field name="del_to_administration" readonly="status not in ('new', 'received')"/>
+                            <field name="rec_from_administration" readonly="status not in ('new', 'received', 'send_to_administration')"/>
+                        </group>
+                    </group>
+                                    <hr/>
+
+                                    <group string="Financial Distribution">
+    <group name="invoice_details" string="Invoice Amounts">
+        <field name="total_invoice_amount" class="oe_inline"/>
+        <field name="total_invoice_amount_egp" decoration-bf="1" readonly="1"/>
+        <field name="total_invoice_amount_usd" decoration-bf="1" readonly="1"/>
+    </group>
+
+    <group name="percentage_distribution" string="Distribution %">
+        <label for="egp_percentage" string="Split Percentages (EGP / USD)"/>
+        <div class="o_row">
+            <field name="egp_percentage" widget="float" placeholder="EGP %" class="oe_inline"/>
+            <span> / </span>
+            <field name="usd_percentage" widget="float" placeholder="USD %" class="oe_inline"/>
+        </div>
+        <field name="egp_currency_id" readonly="1" invisible="1"/>
+        <field name="usd_currency_id" readonly="1" invisible="1"/>
+    </group>
+</group>
+
+    <group string="Approvals &amp; Rates">
+        <group>
+            <field name="rate_today" readonly="0" force_save="1"/>
+            <field name="is_egp_currency" invisible="1"/>
+        </group>
+        <group>
+            <field name="approved_egp_amount" widget="monetary" options="{'currency_field': 'egp_currency_id'}"/>
+            <field name="approved_usd_amount" widget="monetary" options="{'currency_field': 'usd_currency_id'}"/>
+        </group>
+    </group>
+
+
+<!--                -&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;-->
+<!--                        <notebook>-->
+<!--                            <page string="Order Lines" name="order_lines">-->
+<!--                                <field name="purchase_line_ids" readonly="1">-->
+<!--                                    <list>-->
+<!--                                        <field name="product_id"/>-->
+<!--                                        <field name="name"/>-->
+<!--                                        <field name="product_qty"/>-->
+<!--                                        <field name="product_uom_id" groups="uom.group_uom"/>-->
+<!--                                        <field name="price_unit"/>-->
+<!--                                        <field name="tax_ids" widget="many2many_tags"/>-->
+<!--                                        <field name="price_subtotal"/>-->
+<!--                                    </list>-->
+<!--                                </field>-->
+<!--                            </page>-->
+<!--                        </notebook>-->
+
+<!--                -&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;-->
+                </sheet>
+
+
+                <chatter/>
+
+            </form>
+        </field>
+    </record>
+
+    <record id="view_invoice_tracking_tree" model="ir.ui.view">
+        <field name="name">invoice.tracking.tree</field>
+        <field name="model">invoice.tracking</field>
+        <field name="arch" type="xml">
+            <list decoration-info="status == 'new'" decoration-success="status == 'done'">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="bill_reference"/>
+                <field name="received_date"/>
+                <field name="status" widget="badge"
+                       decoration-info="status == 'new'"
+                       decoration-warning="status in ('received', 'send_to_administration')"
+                       decoration-success="status == 'done'"/>
+            </list>
+        </field>
+    </record>
+    <record id="add_purchase_order_button_in_invoice_tracking" model="ir.ui.view">
+        <field name="name">purchase.order.button.inherit</field>
+        <field name="model">invoice.tracking</field>
+        <field name="inherit_id" ref="invoice_tracking.view_invoice_tracking_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_view_purchase_order"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-shopping-cart"
+                        invisible="not purchase_id and not purchase_reference">
+                    <div class="o_stat_info">
+                        <span class="o_stat_text">Purchase</span>
+                        <span class="o_stat_text">Order</span>
+                    </div>
+                </button>
+                <button name="action_view_vendor_bill"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-pencil-square-o"
+                        invisible="not vendor_bill_id"
+                        >
+                    <div class="o_stat_info">
+                        <span class="o_stat_text">Vendor</span>
+                        <span class="o_stat_text">Bill</span>
+                    </div>
+                </button>
+            </xpath>
+        </field>
+    </record>
+</odoo>

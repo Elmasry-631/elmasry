@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="report_trial_balance" model="ir.ui.view">
+            <field name="name">report_trial_balance</field>
+            <field name="type">qweb</field>
+            <field name="arch" type="xml">
+                <t t-name="advanced_accounting_reports.report_trial_balance">
+                    <t t-call="web.html_container">
+                        <t t-call="web.external_layout">
+                            <div class="page">
+                                <div class="oe_structure"/>
+
+                                <!-- Report Title -->
+                                <div style="text-align: center; margin-bottom: 15px;">
+                                    <div style="font-size: 14pt; font-weight: bold; margin-bottom: 4px;" t-esc="company.name"/>
+                                    <div style="font-size: 14pt; font-weight: bold; margin-bottom: 4px;" t-esc="labels['trial_balance_report']"/>
+                                    <div style="font-size: 12pt; font-weight: bold;">
+                                        <span t-esc="'From: %s To: %s' % (date_from, date_to)"/>
+                                    </div>
+                                </div>
+
+                                <!-- Main Report Table - Black & White, no Bootstrap classes -->
+                                <table style="width: 100%; border-collapse: collapse; font-size: 9pt; font-family: Arial, Helvetica, sans-serif;">
+                                    <colgroup>
+                                        <col style="width: 12%;"/>
+                                        <col style="width: 22%;"/>
+                                        <col style="width: 10%;"/>
+                                        <col style="width: 10%;"/>
+                                        <col style="width: 10%;"/>
+                                        <col style="width: 10%;"/>
+                                        <col style="width: 10%;"/>
+                                        <col style="width: 10%;"/>
+                                        <col style="width: 10%;"/>
+                                        <col style="width: 10%;"/>
+                                    </colgroup>
+                                    <thead>
+                                        <!-- Group Header Row -->
+                                        <tr style="background-color: #D9D9D9; font-weight: bold;">
+                                            <td style="border: 1px solid black; text-align: center; padding: 4px 2px;" t-esc="labels['code']"/>
+                                            <td style="border: 1px solid black; text-align: center; padding: 4px 2px;" t-esc="labels['account']"/>
+                                            <td colspan="3" style="border: 1px solid black; text-align: center; padding: 4px 2px;">
+                                                <span t-esc="labels['opening_bal']"/> (<span t-esc="primary_currency_symbol"/>)
+                                            </td>
+                                            <td colspan="2" style="border: 1px solid black; text-align: center; padding: 4px 2px;">
+                                                <span t-esc="labels['period']"/> (<span t-esc="primary_currency_symbol"/>)
+                                            </td>
+                                            <td colspan="3" style="border: 1px solid black; text-align: center; padding: 4px 2px;">
+                                                <span t-esc="labels['ending_bal']"/> (<span t-esc="primary_currency_symbol"/>)
+                                            </td>
+                                        </tr>
+                                        <!-- Detail Header Row -->
+                                        <tr style="background-color: #D9D9D9; font-weight: bold;">
+                                            <td style="border: 1px solid black; text-align: center; padding: 4px 2px; font-size: 8pt;" t-esc="labels['code']"/>
+                                            <td style="border: 1px solid black; text-align: center; padding: 4px 2px; font-size: 8pt;" t-esc="labels['account']"/>
+                                            <!-- Opening Bal sub-headers -->
+                                            <td style="border: 1px solid black; text-align: center; padding: 4px 2px; font-size: 8pt;" t-esc="labels['debit']"/>
+                                            <td style="border: 1px solid black; text-align: center; padding: 4px 2px; font-size: 8pt;" t-esc="labels['credit']"/>
+                                            <td style="border: 1px solid black; text-align: center; padding: 4px 2px; font-size: 8pt;" t-esc="labels['balance']"/>
+                                            <!-- Current Period sub-headers -->
+                                            <td style="border: 1px solid black; text-align: center; padding: 4px 2px; font-size: 8pt;" t-esc="labels['debit']"/>
+                                            <td style="border: 1px solid black; text-align: center; padding: 4px 2px; font-size: 8pt;" t-esc="labels['credit']"/>
+                                            <!-- Ending Bal sub-headers -->
+                                            <td style="border: 1px solid black; text-align: center; padding: 4px 2px; font-size: 8pt;" t-esc="labels['debit']"/>
+                                            <td style="border: 1px solid black; text-align: center; padding: 4px 2px; font-size: 8pt;" t-esc="labels['credit']"/>
+                                            <td style="border: 1px solid black; text-align: center; padding: 4px 2px; font-size: 8pt;" t-esc="labels['balance']"/>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="lines" t-as="line">
+                                            <tr>
+                                                <td style="border: 1px solid black; padding: 3px 4px;">
+                                                    <span t-esc="line['code']"/>
+                                                </td>
+                                                <td style="border: 1px solid black; padding: 3px 4px;">
+                                                    <span t-esc="line['name']"/>
+                                                </td>
+                                                <!-- Opening Bal -->
+                                                <td style="border: 1px solid black; text-align: right; padding: 3px 4px; white-space: nowrap;">
+                                                    <span t-esc="'{:,.2f}'.format(line.get('opening_debit', 0.0))"/>
+                                                </td>
+                                                <td style="border: 1px solid black; text-align: right; padding: 3px 4px; white-space: nowrap;">
+                                                    <span t-esc="'{:,.2f}'.format(line.get('opening_credit', 0.0))"/>
+                                                </td>
+                                                <td style="border: 1px solid black; text-align: right; padding: 3px 4px; white-space: nowrap;">
+                                                    <span t-esc="'{:,.2f}'.format(line['opening_balance'])"/>
+                                                </td>
+                                                <!-- Current Period -->
+                                                <td style="border: 1px solid black; text-align: right; padding: 3px 4px; white-space: nowrap;">
+                                                    <span t-esc="'{:,.2f}'.format(line['debit'])"/>
+                                                </td>
+                                                <td style="border: 1px solid black; text-align: right; padding: 3px 4px; white-space: nowrap;">
+                                                    <span t-esc="'{:,.2f}'.format(line['credit'])"/>
+                                                </td>
+                                                <!-- Ending Bal -->
+                                                <td style="border: 1px solid black; text-align: right; padding: 3px 4px; white-space: nowrap;">
+                                                    <span t-esc="'{:,.2f}'.format(line.get('ending_debit', 0.0))"/>
+                                                </td>
+                                                <td style="border: 1px solid black; text-align: right; padding: 3px 4px; white-space: nowrap;">
+                                                    <span t-esc="'{:,.2f}'.format(line.get('ending_credit', 0.0))"/>
+                                                </td>
+                                                <td style="border: 1px solid black; text-align: right; padding: 3px 4px; white-space: nowrap;">
+                                                    <span t-esc="'{:,.2f}'.format(line['ending_balance'])"/>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                        <!-- Total row - last row in tbody (only on last page) -->
+                                        <tr style="font-weight: bold; background-color: #E8E8E8; border-top: 2px solid black;">
+                                            <td style="border: 1px solid black; padding: 3px 4px;"></td>
+                                            <td style="border: 1px solid black; padding: 3px 4px;" t-esc="labels['total']"/>
+                                            <!-- Opening Bal totals -->
+                                            <td style="border: 1px solid black; text-align: right; padding: 3px 4px; white-space: nowrap;">
+                                                <span t-esc="'{:,.2f}'.format(totals['op_debit'])"/>
+                                            </td>
+                                            <td style="border: 1px solid black; text-align: right; padding: 3px 4px; white-space: nowrap;">
+                                                <span t-esc="'{:,.2f}'.format(totals['op_credit'])"/>
+                                            </td>
+                                            <td style="border: 1px solid black; text-align: right; padding: 3px 4px; white-space: nowrap;">
+                                                <span t-esc="'{:,.2f}'.format(totals['op_balance'])"/>
+                                            </td>
+                                            <!-- Current Period totals -->
+                                            <td style="border: 1px solid black; text-align: right; padding: 3px 4px; white-space: nowrap;">
+                                                <span t-esc="'{:,.2f}'.format(totals['debit'])"/>
+                                            </td>
+                                            <td style="border: 1px solid black; text-align: right; padding: 3px 4px; white-space: nowrap;">
+                                                <span t-esc="'{:,.2f}'.format(totals['credit'])"/>
+                                            </td>
+                                            <!-- Ending Bal totals -->
+                                            <td style="border: 1px solid black; text-align: right; padding: 3px 4px; white-space: nowrap;">
+                                                <span t-esc="'{:,.2f}'.format(totals['end_debit'])"/>
+                                            </td>
+                                            <td style="border: 1px solid black; text-align: right; padding: 3px 4px; white-space: nowrap;">
+                                                <span t-esc="'{:,.2f}'.format(totals['end_credit'])"/>
+                                            </td>
+                                            <td style="border: 1px solid black; text-align: right; padding: 3px 4px; white-space: nowrap;">
+                                                <span t-esc="'{:,.2f}'.format(totals['end_balance'])"/>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </t>
+                    </t>
+                </t>
+            </field>
+        </record>
+    </data>
+</odoo>

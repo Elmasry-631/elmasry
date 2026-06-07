@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_trial_balance_wizard_form" model="ir.ui.view">
+        <field name="name">trial.balance.wizard.form</field>
+        <field name="model">trial.balance.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Trial Balance Report">
+                <group>
+                    <group>
+                        <field name="date_from"/>
+                        <field name="date_to"/>
+                        <field name="company_id" groups="base.group_multi_company"/>
+                        <field name="target_move"/>
+                        <field name="show_secondary_currency"/>
+                    </group>
+                    <group>
+                        <field name="journal_ids" widget="many2many_tags" options="{'no_create': True}"/>
+                        <field name="account_ids" widget="many2many_tags" options="{'no_create': True}"/>
+                        <field name="feature_ids" widget="many2many_tags" options="{'no_create': True}"/>
+                        <field name="cost_center_ids" widget="many2many_tags" options="{'no_create': True}"/>
+                    </group>
+                </group>
+                <!-- Opening / Ending Balance display -->
+                <group string="Balances">
+                    <group>
+                        <field name="opening_balance" readonly="1"/>
+                    </group>
+                    <group>
+                        <field name="ending_balance" readonly="1"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="action_view_report" string="View Report" type="object" class="btn-primary"/>
+                    <button name="action_export_excel" string="Export Excel" type="object" class="btn-secondary"/>
+                    <button name="action_export_pdf" string="Export PDF" type="object" class="btn-secondary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_trial_balance_wizard" model="ir.actions.act_window">
+        <field name="name">Trial Balance (Advanced)</field>
+        <field name="res_model">trial.balance.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

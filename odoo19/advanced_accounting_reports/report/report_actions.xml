@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Search Views FIRST (before they are referenced) -->
+    <record id="view_general_ledger_report_search" model="ir.ui.view">
+        <field name="name">account.move.line.search.gl.report</field>
+        <field name="model">account.move.line</field>
+        <field name="arch" type="xml">
+            <search string="General Ledger">
+                <field name="date"/>
+                <field name="move_id"/>
+                <field name="journal_id"/>
+                <field name="account_id"/>
+                <field name="partner_id"/>
+                <field name="feature_ids"/>
+                <field name="cost_center_ids"/>
+                <separator/>
+                <filter string="Posted" name="posted" domain="[('parent_state', '=', 'posted')]"/>
+                <filter string="Group by Account" name="groupby_account" context="{'group_by': 'account_id'}"/>
+                <filter string="Group by Date" name="groupby_date" context="{'group_by': 'date'}"/>
+                <filter string="Group by Journal" name="groupby_journal" context="{'group_by': 'journal_id'}"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_trial_balance_report_search" model="ir.ui.view">
+        <field name="name">account.move.line.search.tb.report</field>
+        <field name="model">account.move.line</field>
+        <field name="arch" type="xml">
+            <search string="Trial Balance">
+                <field name="account_id"/>
+                <field name="date"/>
+                <field name="journal_id"/>
+                <field name="feature_ids"/>
+                <field name="cost_center_ids"/>
+                <separator/>
+                <filter string="Posted" name="posted" domain="[('parent_state', '=', 'posted')]"/>
+                <filter string="Group by Account" name="groupby_account" context="{'group_by': 'account_id'}"/>
+                <filter string="Group by Date" name="groupby_date" context="{'group_by': 'date'}"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- General Ledger PDF -->
+    <record id="action_report_general_ledger_pdf" model="ir.actions.report">
+        <field name="name">General Ledger (PDF)</field>
+        <field name="model">general.ledger.wizard</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">advanced_accounting_reports.report_general_ledger</field>
+        <field name="report_file">advanced_accounting_reports.report_general_ledger</field>
+        <field name="print_report_name">'General_Ledger_%s_%s' % (object.date_from, object.date_to)</field>
+        <field name="binding_type">report</field>
+    </record>
+
+    <!-- Trial Balance PDF -->
+    <record id="action_report_trial_balance_pdf" model="ir.actions.report">
+        <field name="name">Trial Balance (PDF)</field>
+        <field name="model">trial.balance.wizard</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">advanced_accounting_reports.report_trial_balance</field>
+        <field name="report_file">advanced_accounting_reports.report_trial_balance</field>
+        <field name="print_report_name">'Trial_Balance_%s_%s' % (object.date_from, object.date_to)</field>
+        <field name="binding_type">report</field>
+    </record>
+
+    <!-- Window Actions with Search Views -->
+    <record id="action_general_ledger_report" model="ir.actions.act_window">
+        <field name="name">General Ledger Lines</field>
+        <field name="res_model">account.move.line</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_general_ledger_report_search"/>
+        <field name="context">{'search_default_groupby_account': True}</field>
+    </record>
+
+    <record id="action_trial_balance_report" model="ir.actions.act_window">
+        <field name="name">Trial Balance</field>
+        <field name="res_model">account.move.line</field>
+        <field name="view_mode">list,form,pivot</field>
+        <field name="search_view_id" ref="view_trial_balance_report_search"/>
+        <field name="context">{'search_default_groupby_account': True}</field>
+    </record>
+</odoo>

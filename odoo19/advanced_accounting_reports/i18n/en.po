@@ -1,0 +1,499 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#   * advanced_accounting_reports
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-04-30 15:00+0000\n"
+"PO-Revision-Date: 2026-04-30 15:00+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: en\n"
+
+#. module: advanced_accounting_reports
+#: model:ir.model,name:advanced_accounting_reports.model_account_move
+msgid "Journal Entry"
+msgstr "Journal Entry"
+
+#. module: advanced_accounting_reports
+#: model:ir.model,name:advanced_accounting_reports.model_account_move_line
+msgid "Journal Item"
+msgstr "Journal Item"
+
+#. module: advanced_accounting_reports
+#: model:ir.model,name:advanced_accounting_reports.model_account_feature
+msgid "Feature"
+msgstr "Feature"
+
+#. module: advanced_accounting_reports
+#: model:ir.model,name:advanced_accounting_reports.model_account_cost_center
+msgid "Cost Center"
+msgstr "Cost Center"
+
+#. module: advanced_accounting_reports
+#: model:ir.model,name:advanced_accounting_reports.model_account_patch_number
+msgid "Patch Number"
+msgstr "Patch Number"
+
+#. module: advanced_accounting_reports
+#: model:ir.model,name:advanced_accounting_reports.model_res_company
+msgid "Company"
+msgstr "Company"
+
+#. module: advanced_accounting_reports
+#: model:ir.model,name:advanced_accounting_reports.model_general_ledger_wizard
+msgid "General Ledger Report Wizard"
+msgstr "General Ledger Report Wizard"
+
+#. module: advanced_accounting_reports
+#: model:ir.model,name:advanced_accounting_reports.model_trial_balance_wizard
+msgid "Trial Balance Report Wizard"
+msgstr "Trial Balance Report Wizard"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_move__secondary_currency_id
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_move_line__secondary_currency_id
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_feature__secondary_currency_id
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_cost_center__secondary_currency_id
+msgid "Secondary Currency"
+msgstr "Secondary Currency"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,help:advanced_accounting_reports.field_account_move__secondary_currency_id
+msgid "Currency used for secondary amount reporting."
+msgstr "Currency used for secondary amount reporting."
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_move__manual_rate
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_move_line__manual_rate
+msgid "Rate"
+msgstr "Rate"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,help:advanced_accounting_reports.field_account_move__manual_rate
+msgid "Manual exchange rate applied to compute secondary amounts."
+msgstr "Manual exchange rate applied to compute secondary amounts."
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_move__use_manual_rate
+msgid "Use Manual Rate"
+msgstr "Use Manual Rate"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_move__secondary_debit_total
+msgid "Secondary Debit"
+msgstr "Secondary Debit"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_move__secondary_credit_total
+msgid "Secondary Credit"
+msgstr "Secondary Credit"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_move__secondary_balance_total
+msgid "Secondary Balance"
+msgstr "Secondary Balance"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_move__patch_number_id
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_move_line__patch_number_id
+msgid "Patch Number"
+msgstr "Patch Number"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_move_line__secondary_debit
+msgid "Debit"
+msgstr "Debit"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_move_line__secondary_credit
+msgid "Credit"
+msgstr "Credit"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_move_line__secondary_balance
+msgid "Balance"
+msgstr "Balance"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_move_line__secondary_currency_name
+msgid "Secondary Currency Name"
+msgstr "Secondary Currency Name"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_move_line__feature_ids
+#: model:ir.ui.menu,name:advanced_accounting_reports.menu_account_feature
+#: model:ir.actions.act_window,name:advanced_accounting_reports.action_account_feature
+msgid "Features"
+msgstr "Features"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_move_line__cost_center_ids
+#: model:ir.ui.menu,name:advanced_accounting_reports.menu_account_cost_center
+#: model:ir.actions.act_window,name:advanced_accounting_reports.action_account_cost_center
+msgid "Cost Centers"
+msgstr "Cost Centers"
+
+#. module: advanced_accounting_reports
+#: model:ir.ui.menu,name:advanced_accounting_reports.menu_account_patch_number
+#: model:ir.actions.act_window,name:advanced_accounting_reports.action_account_patch_number
+msgid "Patch Numbers"
+msgstr "Patch Numbers"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_feature__name
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_cost_center__name
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_patch_number__name
+msgid "Name"
+msgstr "Name"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_feature__code
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_cost_center__code
+msgid "Reference"
+msgstr "Reference"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_feature__parent_id
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_cost_center__parent_id
+msgid "Parent"
+msgstr "Parent"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_feature__company_id
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_cost_center__company_id
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_patch_number__company_id
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_general_ledger_wizard__company_id
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_trial_balance_wizard__company_id
+msgid "Company"
+msgstr "Company"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_feature__active
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_cost_center__active
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_patch_number__active
+msgid "Active"
+msgstr "Active"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_feature__notes
+msgid "Notes"
+msgstr "Notes"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_feature__child_ids
+msgid "Sub Features"
+msgstr "Sub Features"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_cost_center__child_ids
+msgid "Sub Cost Centers"
+msgstr "Sub Cost Centers"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_feature__debit
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_cost_center__debit
+msgid "Debit"
+msgstr "Debit"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_feature__credit
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_cost_center__credit
+msgid "Credit"
+msgstr "Credit"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_feature__balance
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_cost_center__balance
+msgid "Balance"
+msgstr "Balance"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_feature__currency_id
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_cost_center__currency_id
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_general_ledger_wizard__currency_id
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_trial_balance_wizard__currency_id
+msgid "Currency"
+msgstr "Currency"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_feature__secondary_debit
+msgid "Secondary Debit"
+msgstr "Secondary Debit"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_feature__secondary_credit
+msgid "Secondary Credit"
+msgstr "Secondary Credit"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_feature__secondary_balance
+msgid "Secondary Balance"
+msgstr "Secondary Balance"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_feature__avg_rate
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_cost_center__avg_rate
+msgid "Avg. Rate"
+msgstr "Avg. Rate"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_patch_number__description
+msgid "Description"
+msgstr "Description"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_account_patch_number__status
+msgid "Status"
+msgstr "Status"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,selection,name:advanced_accounting_reports.selection__account_patch_number__status__draft
+msgid "Draft"
+msgstr "Draft"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,selection,name:advanced_accounting_reports.selection__account_patch_number__status__confirmed
+msgid "Confirmed"
+msgstr "Confirmed"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,selection,name:advanced_accounting_reports.selection__account_patch_number__status__closed
+msgid "Closed"
+msgstr "Closed"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_res_company__secondary_currency_id
+msgid "Default Secondary Currency"
+msgstr "Default Secondary Currency"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,help:advanced_accounting_reports.field_res_company__secondary_currency_id
+msgid "Default secondary currency for reporting purposes."
+msgstr "Default secondary currency for reporting purposes."
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_general_ledger_wizard__date_from
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_trial_balance_wizard__date_from
+msgid "Start Date"
+msgstr "Start Date"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_general_ledger_wizard__date_to
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_trial_balance_wizard__date_to
+msgid "End Date"
+msgstr "End Date"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_general_ledger_wizard__journal_ids
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_trial_balance_wizard__journal_ids
+msgid "Journals"
+msgstr "Journals"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_general_ledger_wizard__account_ids
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_trial_balance_wizard__account_ids
+msgid "Accounts"
+msgstr "Accounts"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_general_ledger_wizard__partner_ids
+msgid "Partners"
+msgstr "Partners"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_general_ledger_wizard__target_move
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_trial_balance_wizard__target_move
+msgid "Target Moves"
+msgstr "Target Moves"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_general_ledger_wizard__show_secondary_currency
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_trial_balance_wizard__show_secondary_currency
+msgid "Show Secondary Currency"
+msgstr "Show Secondary Currency"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_general_ledger_wizard__opening_balance
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_trial_balance_wizard__opening_balance
+msgid "Opening Balance"
+msgstr "Opening Balance"
+
+#. module: advanced_accounting_reports
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_general_ledger_wizard__ending_balance
+#: model:ir.model.fields,field_description:advanced_accounting_reports.field_trial_balance_wizard__ending_balance
+msgid "Ending Balance"
+msgstr "Ending Balance"
+
+#. module: advanced_accounting_reports
+#: model:ir.ui.menu,name:advanced_accounting_reports.menu_general_ledger_wizard
+msgid "General Ledger (Advanced)"
+msgstr "General Ledger (Advanced)"
+
+#. module: advanced_accounting_reports
+#: model:ir.ui.menu,name:advanced_accounting_reports.menu_trial_balance_wizard
+msgid "Trial Balance (Advanced)"
+msgstr "Trial Balance (Advanced)"
+
+#. module: advanced_accounting_reports
+#: model:ir.ui.menu,name:advanced_accounting_reports.menu_advanced_accounting_root
+msgid "Advanced Dimensions"
+msgstr "Advanced Dimensions"
+
+#. module: advanced_accounting_reports
+msgid "Total Debit"
+msgstr "Total Debit"
+
+#. module: advanced_accounting_reports
+msgid "Total Credit"
+msgstr "Total Credit"
+
+#. module: advanced_accounting_reports
+msgid "Total Balance"
+msgstr "Total Balance"
+
+#. module: advanced_accounting_reports
+msgid "Total"
+msgstr "Total"
+
+#. module: advanced_accounting_reports
+msgid "Total Secondary Debit"
+msgstr "Total Secondary Debit"
+
+#. module: advanced_accounting_reports
+msgid "Total Secondary Credit"
+msgstr "Total Secondary Credit"
+
+#. module: advanced_accounting_reports
+msgid "Total Secondary Balance"
+msgstr "Total Secondary Balance"
+
+#. module: advanced_accounting_reports
+msgid "Company Currency"
+msgstr "Company Currency"
+
+#. module: advanced_accounting_reports
+msgid "General Ledger"
+msgstr "General Ledger"
+
+#. module: advanced_accounting_reports
+msgid "Trial Balance"
+msgstr "Trial Balance"
+
+#. module: advanced_accounting_reports
+msgid "View Report"
+msgstr "View Report"
+
+#. module: advanced_accounting_reports
+msgid "Export Excel"
+msgstr "Export Excel"
+
+#. module: advanced_accounting_reports
+msgid "Export PDF"
+msgstr "Export PDF"
+
+#. module: advanced_accounting_reports
+msgid "Cancel"
+msgstr "Cancel"
+
+#. module: advanced_accounting_reports
+msgid "Balances"
+msgstr "Balances"
+
+#. module: advanced_accounting_reports
+msgid "Posted"
+msgstr "Posted"
+
+#. module: advanced_accounting_reports
+msgid "Group by Account"
+msgstr "Group by Account"
+
+#. module: advanced_accounting_reports
+msgid "Group by Date"
+msgstr "Group by Date"
+
+#. module: advanced_accounting_reports
+msgid "Group by Journal"
+msgstr "Group by Journal"
+
+#. module: advanced_accounting_reports
+msgid "Archived"
+msgstr "Archived"
+
+#. module: advanced_accounting_reports
+msgid "Parent Feature"
+msgstr "Parent Feature"
+
+#. module: advanced_accounting_reports
+msgid "Parent Cost Center"
+msgstr "Parent Cost Center"
+
+#. module: advanced_accounting_reports
+msgid "General Ledger (PDF)"
+msgstr "General Ledger (PDF)"
+
+#. module: advanced_accounting_reports
+msgid "Trial Balance (PDF)"
+msgstr "Trial Balance (PDF)"
+
+#. module: advanced_accounting_reports
+msgid "General Ledger Lines"
+msgstr "General Ledger Lines"
+
+#. module: advanced_accounting_reports
+msgid "Account"
+msgstr "Account"
+
+#. module: advanced_accounting_reports
+msgid "Date"
+msgstr "Date"
+
+#. module: advanced_accounting_reports
+msgid "Move"
+msgstr "Move"
+
+#. module: advanced_accounting_reports
+msgid "Label"
+msgstr "Label"
+
+#. module: advanced_accounting_reports
+msgid "Partner"
+msgstr "Partner"
+
+#. module: advanced_accounting_reports
+msgid "Code"
+msgstr "Code"
+
+#. module: advanced_accounting_reports
+msgid "Rate"
+msgstr "Rate"
+
+#. module: advanced_accounting_reports
+msgid "Opening Bal"
+msgstr "Opening Bal"
+
+#. module: advanced_accounting_reports
+msgid "Ending Bal"
+msgstr "Ending Bal"
+
+#. module: advanced_accounting_reports
+msgid "Period"
+msgstr "Period"
+
+#. module: advanced_accounting_reports
+msgid "Create your first Feature"
+msgstr "Create your first Feature"
+
+#. module: advanced_accounting_reports
+msgid "Create your first Cost Center"
+msgstr "Create your first Cost Center"
+
+#. module: advanced_accounting_reports
+msgid "Create a new Patch Number"
+msgstr "Create a new Patch Number"

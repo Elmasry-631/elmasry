@@ -1,0 +1,64 @@
+<odoo>
+    <menuitem
+        id="menu_rm_attendance_sheet_root"
+        name="Attendance Sheets"
+        parent="hr_attendance.menu_hr_attendance_root"
+        sequence="7"
+        groups="rm_hr_attendance_sheet.group_attendance_sheet_user"/>
+
+    <menuitem
+        id="menu_rm_attendance_sheet"
+        name="Attendance Sheets"
+        parent="menu_rm_attendance_sheet_root"
+        action="action_rm_attendance_sheet"
+        sequence="10"/>
+
+    <menuitem
+        id="menu_rm_attendance_sheet_batch"
+        name="Batch Attendance Sheets"
+        parent="menu_rm_attendance_sheet_root"
+        action="action_rm_attendance_sheet_batch"
+        sequence="20"/>
+
+    <menuitem
+        id="menu_rm_attendance_config"
+        name="Attendance Policies"
+        parent="hr_attendance.menu_hr_attendance_configuration"
+        sequence="20"
+        groups="rm_hr_attendance_sheet.group_attendance_sheet_manager"/>
+
+    <menuitem
+        id="menu_rm_attendance_policy"
+        name="Attendance Policies"
+        parent="menu_rm_attendance_config"
+        action="action_rm_attendance_policy"
+        sequence="10"/>
+
+    <menuitem
+        id="menu_rm_overtime_rule"
+        name="Overtime Rules"
+        parent="menu_rm_attendance_config"
+        action="action_rm_overtime_rule"
+        sequence="20"/>
+
+    <menuitem
+        id="menu_rm_lateness_rule"
+        name="Lateness Rules"
+        parent="menu_rm_attendance_config"
+        action="action_rm_lateness_rule"
+        sequence="30"/>
+
+    <menuitem
+        id="menu_rm_absence_rule"
+        name="Absence Rules"
+        parent="menu_rm_attendance_config"
+        action="action_rm_absence_rule"
+        sequence="40"/>
+
+    <menuitem
+        id="menu_rm_public_holidays"
+        name="Public Holidays"
+        parent="menu_rm_attendance_config"
+        action="action_rm_public_holidays"
+        sequence="50"/>
+</odoo>

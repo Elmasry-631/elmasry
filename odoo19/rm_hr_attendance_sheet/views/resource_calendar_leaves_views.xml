@@ -1,0 +1,32 @@
+<odoo>
+    <record id="view_resource_calendar_leaves_form_attendance_policy" model="ir.ui.view">
+        <field name="name">resource.calendar.leaves.form.attendance.policy</field>
+        <field name="model">resource.calendar.leaves</field>
+        <field name="inherit_id" ref="resource.resource_calendar_leave_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='leave_details']" position="inside">
+                <field name="rm_public_holiday"/>
+                <field name="active_for_overtime" invisible="not rm_public_holiday"/>
+            </xpath>
+            <xpath expr="//sheet" position="inside">
+                <notebook invisible="not rm_public_holiday">
+                    <page string="Attendance Scope">
+                        <group>
+                            <field name="employee_ids" widget="many2many_tags"/>
+                            <field name="department_ids" widget="many2many_tags"/>
+                            <field name="employee_category_ids" widget="many2many_tags"/>
+                        </group>
+                    </page>
+                </notebook>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_rm_public_holidays" model="ir.actions.act_window">
+        <field name="name">Public Holidays</field>
+        <field name="res_model">resource.calendar.leaves</field>
+        <field name="view_mode">list,form,calendar</field>
+        <field name="domain">[('rm_public_holiday','=',True)]</field>
+        <field name="context">{'default_rm_public_holiday': True, 'default_resource_id': False}</field>
+    </record>
+</odoo>

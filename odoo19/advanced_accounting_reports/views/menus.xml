@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Dimensions under Accounting → Configuration -->
+    <menuitem id="menu_advanced_accounting_root"
+              name="Advanced Dimensions"
+              parent="account.menu_finance_configuration"
+              sequence="50"/>
+
+    <menuitem id="menu_account_feature"
+              name="Features"
+              parent="menu_advanced_accounting_root"
+              action="action_account_feature"
+              sequence="10"/>
+
+    <menuitem id="menu_account_cost_center"
+              name="Cost Centers"
+              parent="menu_advanced_accounting_root"
+              action="action_account_cost_center"
+              sequence="20"/>
+
+    <menuitem id="menu_account_patch_number"
+              name="Patch Numbers"
+              parent="menu_advanced_accounting_root"
+              action="action_account_patch_number"
+              sequence="30"/>
+
+    <!-- Reports under Accounting → Reporting -->
+    <menuitem id="menu_general_ledger_wizard"
+              name="General Ledger (Advanced)"
+              parent="account.menu_finance_reports"
+              action="action_general_ledger_wizard"
+              sequence="25"
+              groups="account.group_account_readonly,account.group_account_invoice,account.group_account_manager"/>
+
+    <menuitem id="menu_trial_balance_wizard"
+              name="Trial Balance (Advanced)"
+              parent="account.menu_finance_reports"
+              action="action_trial_balance_wizard"
+              sequence="26"
+              groups="account.group_account_readonly,account.group_account_invoice,account.group_account_manager"/>
+</odoo>

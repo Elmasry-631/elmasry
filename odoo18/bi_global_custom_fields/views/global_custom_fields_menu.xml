@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+
+		<menuitem id="custom_global_fields_root" name="Custom Fields" sequence="3" groups="bi_global_custom_fields.global_custom_fields_group" />
+		
+		<menuitem id="custom_global_fields" name="Custom Global Fields" sequence="4" parent="custom_global_fields_root" action="global_custom_fields_action"/>
+
+		<menuitem id="custom_global_tabs" name="Custom Global Tabs" sequence="4" parent="custom_global_fields_root" action="global_custom_tabs_action"/>
+
+		
+		
+	</data>
+
+</odoo>
+

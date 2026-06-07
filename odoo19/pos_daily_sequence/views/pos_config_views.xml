@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- POS Config Form View - Add Daily Sequence settings -->
+    <record id="pos_config_view_form_inherit_daily_sequence" model="ir.ui.view">
+        <field name="name">pos.config.form.inherit.daily.sequence</field>
+        <field name="model">pos.config</field>
+        <field name="inherit_id" ref="point_of_sale.pos_config_view_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//setting[@id='other_devices']" position="after">
+                <setting id="daily_order_sequence" string="Daily Order Sequence"
+                         help="Reset POS order numbering by day or by POS session.">
+                    <field name="use_daily_sequence" readonly="has_active_session"/>
+                    <div class="content-group mt16" invisible="not use_daily_sequence">
+                        <div class="row">
+                            <label for="daily_sequence_reset_period" class="col-lg-4 o_light_label"/>
+                            <field name="daily_sequence_reset_period"
+                                   required="use_daily_sequence"
+                                   readonly="has_active_session"/>
+                        </div>
+                        <div class="row">
+                            <label for="daily_sequence_prefix" class="col-lg-4 o_light_label"/>
+                            <field name="daily_sequence_prefix"
+                                   required="use_daily_sequence"
+                                   readonly="has_active_session"
+                                   placeholder="e.g. POS-%%(year)s%%(month)s%%(day)s-"/>
+                        </div>
+                        <div class="row">
+                            <label for="daily_sequence_padding" class="col-lg-4 o_light_label"/>
+                            <field name="daily_sequence_padding"
+                                   required="use_daily_sequence"
+                                   readonly="has_active_session"/>
+                        </div>
+                        <div class="row" invisible="not daily_sequence_id">
+                            <label for="daily_sequence_id" class="col-lg-4 o_light_label"/>
+                            <field name="daily_sequence_id" readonly="1"/>
+                        </div>
+                    </div>
+                    <div class="text-muted" invisible="not use_daily_sequence">
+                        Use placeholders such as %%(year)s, %%(month)s, %%(day)s,
+                        %%(y)s, %%(doy)s, and %%(woy)s in the prefix.
+                    </div>
+                </setting>
+            </xpath>
+
+        </field>
+    </record>
+
+    <!-- POS Order Tree View - Add daily order number column -->
+    <record id="pos_order_view_tree_inherit_daily_sequence" model="ir.ui.view">
+        <field name="name">pos.order.tree.inherit.daily.sequence</field>
+        <field name="model">pos.order</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_order_tree"/>
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="daily_order_number" string="Daily Order #"/>
+            </field>
+        </field>
+    </record>
+
+    <!-- POS Order Form View - Add daily order number field -->
+    <record id="pos_order_view_form_inherit_daily_sequence" model="ir.ui.view">
+        <field name="name">pos.order.form.inherit.daily.sequence</field>
+        <field name="model">pos.order</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="daily_order_number" string="Daily Order #"/>
+            </field>
+        </field>
+    </record>
+
+    <!-- POS Order Search View - Add search by daily order number -->
+    <record id="pos_order_view_search_inherit_daily_sequence" model="ir.ui.view">
+        <field name="name">pos.order.search.inherit.daily.sequence</field>
+        <field name="model">pos.order</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_order_filter"/>
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="daily_order_number" string="Daily Order #"
+                       filter_domain="[('daily_order_number', 'ilike', self)]"/>
+            </field>
+            <separator position="inside">
+                <filter string="Has Daily Order #" name="has_daily_order_number"
+                        domain="[('daily_order_number', '!=', False)]"/>
+            </separator>
+        </field>
+    </record>
+
+</odoo>

@@ -9,7 +9,7 @@ class Package(models.Model):
     _name = 'package.package'
     _description = 'Packages'
 
-    name = fields.Char(string='Name', required=1)
+    name = fields.Char(string='Name', required=True)
     description = fields.Text(string='Description')
     line_ids = fields.One2many('package.package.line', 'package_id')
 
@@ -20,11 +20,11 @@ class PackageLine(models.Model):
 
     name = fields.Char(string='Name', compute='_compute_name', store=True)
     package_id = fields.Many2one('package.package')
-    n_of_session = fields.Integer(string='Days', required=1)
-    n_of_hours_peer_session = fields.Integer(string='Hours', required=1)
+    n_of_session = fields.Integer(string='Days', required=True)
+    n_of_hours_peer_session = fields.Integer(string='Hours', required=True)
     is_with_friday = fields.Boolean(string='With Friday')
-    price = fields.Float(string="Price", required=1)
-    product_id = fields.Many2one('product.template', string="Product", required=1)
+    price = fields.Float(string="Price", required=True)
+    product_id = fields.Many2one('product.template', string="Product", required=True)
 
     @api.constrains('n_of_session', 'n_of_hours_peer_session')
     def check_invalid_session_numbers(self):

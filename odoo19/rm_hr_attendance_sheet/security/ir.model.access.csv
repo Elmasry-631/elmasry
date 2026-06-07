@@ -1,0 +1,19 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_rm_overtime_rule_user,rm.overtime.rule user,model_rm_overtime_rule,group_attendance_sheet_user,1,0,0,0
+access_rm_overtime_rule_manager,rm.overtime.rule manager,model_rm_overtime_rule,group_attendance_sheet_manager,1,1,1,1
+access_rm_lateness_rule_user,rm.lateness.rule user,model_rm_lateness_rule,group_attendance_sheet_user,1,0,0,0
+access_rm_lateness_rule_manager,rm.lateness.rule manager,model_rm_lateness_rule,group_attendance_sheet_manager,1,1,1,1
+access_rm_lateness_step_user,rm.lateness.step user,model_rm_lateness_step,group_attendance_sheet_user,1,0,0,0
+access_rm_lateness_step_manager,rm.lateness.step manager,model_rm_lateness_step,group_attendance_sheet_manager,1,1,1,1
+access_rm_absence_rule_user,rm.absence.rule user,model_rm_absence_rule,group_attendance_sheet_user,1,0,0,0
+access_rm_absence_rule_manager,rm.absence.rule manager,model_rm_absence_rule,group_attendance_sheet_manager,1,1,1,1
+access_rm_absence_step_user,rm.absence.step user,model_rm_absence_step,group_attendance_sheet_user,1,0,0,0
+access_rm_absence_step_manager,rm.absence.step manager,model_rm_absence_step,group_attendance_sheet_manager,1,1,1,1
+access_rm_attendance_policy_user,rm.attendance.policy user,model_rm_attendance_policy,group_attendance_sheet_user,1,0,0,0
+access_rm_attendance_policy_manager,rm.attendance.policy manager,model_rm_attendance_policy,group_attendance_sheet_manager,1,1,1,1
+access_rm_attendance_sheet_user,rm.attendance.sheet user,model_rm_attendance_sheet,group_attendance_sheet_user,1,1,1,0
+access_rm_attendance_sheet_manager,rm.attendance.sheet manager,model_rm_attendance_sheet,group_attendance_sheet_manager,1,1,1,1
+access_rm_attendance_sheet_line_user,rm.attendance.sheet.line user,model_rm_attendance_sheet_line,group_attendance_sheet_user,1,1,1,0
+access_rm_attendance_sheet_line_manager,rm.attendance.sheet.line manager,model_rm_attendance_sheet_line,group_attendance_sheet_manager,1,1,1,1
+access_rm_attendance_sheet_change_wizard,rm.attendance.sheet.change.wizard,model_rm_attendance_sheet_change_wizard,group_attendance_sheet_user,1,1,1,1
+access_rm_attendance_sheet_batch_wizard,rm.attendance.sheet.batch.wizard,model_rm_attendance_sheet_batch_wizard,group_attendance_sheet_user,1,1,1,1

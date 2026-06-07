@@ -38,34 +38,37 @@ class ResPartner(models.Model):
 
     patient_loc = fields.Char(string="Client Location", help="Enter the Patient Location URL", widget="url")
     nurse_specialty_id = fields.Many2one('nurse.specialty')
-    is_nurse_occupied = fields.Boolean(default=False, compute='_compute_is_nurse_occupied', store=1)
+    is_nurse_occupied = fields.Boolean(default=False, compute='_compute_is_nurse_occupied', store=True)
 
     admission_ids = fields.One2many('student.admission', 'confirmed_driver_id', string='Admissions')
 
-    is_driver_occupied = fields.Boolean(default=False, compute='_compute_is_driver_occupied', store=1)
+    is_driver_occupied = fields.Boolean(default=False, compute='_compute_is_driver_occupied', store=True)
 
     employee_id = fields.Many2one('hr.employee', string="Employee", ondelete="set null")
     is_create_emp = fields.Boolean(string="Create Employee ?")
 
-    @api.model
-    def create(self, vals):
-        partner = super(ResPartner, self).create(vals)
+    @api.model_create_multi
+    def create(self, vals_list):
+        # 1. إنشاء الشركاء (Partners) بنظام الـ Batch لضمان السرعة
+        partners = super(ResPartner, self).create(vals_list)
 
-        # Create an employee automatically when a partner is created
-        if vals.get('company_type') == 'person' and vals.get('is_create_emp') == True:
-            employee_vals = {
-                'name': partner.name,
-                'work_email': partner.email,
-                'mobile_phone': partner.mobile,
-                'work_phone': partner.phone,  # Linking partner as the home address
-            }
-            employee = self.env['hr.employee'].create(employee_vals)
+        # 2. الربط بين البيانات الجديدة والشركاء الذين تم إنشاؤهم
+        # نستخدم zip لربط كل قاموس بيانات (vals) بالـ partner الذي نتج عنه
+        for partner, vals in zip(partners, vals_list):
+            if vals.get('company_type') == 'person' and vals.get('is_create_emp'):
+                employee_vals = {
+                    'name': partner.name,
+                    'work_email': partner.email,
+                    'mobile_phone': partner.mobile,
+                    'work_phone': partner.phone,
+                }
+                # إنشاء الموظف
+                employee = self.env['hr.employee'].create(employee_vals)
 
-            # Link employee to partner
-            partner.write({'employee_id': employee.id})
+                # ربط الموظف بالشريك (استخدام write مباشرة)
+                partner.employee_id = employee.id
 
-        return partner
-
+        return partners
     @api.depends('admission_ids.state')  # Define correct dependencies
     def _compute_is_driver_occupied(self):
         for record in self:

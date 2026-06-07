@@ -9,7 +9,7 @@ class NurseSpecialty(models.Model):
     _description = 'Nurse Specialty'
     _order = 'id desc'
 
-    name = fields.Char(string='Name', required=1)
+    name = fields.Char(string='Name', required=True)
     description = fields.Text(string='Description')
     nurse_ids = fields.One2many('res.partner','nurse_specialty_id',domain=[('is_coach', '=', True)],string='Nurses')
     # line_ids = fields.One2many('package.package.line', 'package_id')
@@ -21,9 +21,9 @@ class NurseSpecialty(models.Model):
 #
 #     name = fields.Char(string='Name', compute='_compute_name', store=True)
 #     package_id = fields.Many2one('package.package')
-#     n_of_session = fields.Integer(string='Number of Days', required=1)
-#     price = fields.Float(string="Price", required=1)
-#     product_id = fields.Many2one('product.template', string="Product", required=1)
+#     n_of_session = fields.Integer(string='Number of Days', required=True)
+#     price = fields.Float(string="Price", required=True)
+#     product_id = fields.Many2one('product.template', string="Product", required=True)
 #
 #     @api.onchange('price')
 #     def _onchange_price(self):

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- LIST VIEW: Many2many tags for Features and Cost Centers -->
+    <record id="view_move_form_line_list_inherit_advanced" model="ir.ui.view">
+        <field name="name">account.move.form.line.list.inherit.advanced</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='line_ids']/list/field[@name='account_id']" position="after">
+                <field name="feature_ids" optional="show" widget="many2many_tags"
+                       options="{'no_create': True}"/>
+                <field name="cost_center_ids" optional="show" widget="many2many_tags"
+                       options="{'no_create': True}"/>
+            </xpath>
+            <xpath expr="//field[@name='line_ids']/list/field[@name='credit']" position="after">
+                <field name="secondary_debit" optional="show" readonly="1" widget="monetary" sum="Total"/>
+                <field name="secondary_credit" optional="show" readonly="1" widget="monetary" sum="Total"/>
+                <field name="secondary_balance" optional="show" readonly="1" widget="monetary" sum="Total"/>
+            </xpath>
+            <xpath expr="//field[@name='line_ids']/list/field[@name='balance']" position="replace"/>
+        </field>
+    </record>
+
+    <!-- FORM VIEW (popup): Many2many tags for Features and Cost Centers -->
+    <record id="view_move_form_line_form_inherit_advanced" model="ir.ui.view">
+        <field name="name">account.move.form.line.form.inherit.advanced</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='line_ids']/form//field[@name='account_id']" position="after">
+                <field name="feature_ids" widget="many2many_tags"
+                       options="{'no_create': True}"/>
+                <field name="cost_center_ids" widget="many2many_tags"
+                       options="{'no_create': True}"/>
+            </xpath>
+            <xpath expr="//field[@name='line_ids']/form//field[@name='credit']" position="after">
+                <field name="secondary_debit" readonly="1"/>
+                <field name="secondary_credit" readonly="1"/>
+                <field name="secondary_balance" readonly="1"/>
+                <field name="manual_rate" readonly="1"/>
+            </xpath>
+            <xpath expr="//field[@name='line_ids']/form//field[@name='balance']" position="replace"/>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,11 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_meta_app_credential_user,meta.app.credential.user,model_meta_app_credential,archer_meta_lead_ads.group_meta_lead_ads_user,1,0,0,0
+access_meta_app_credential_manager,meta.app.credential.manager,model_meta_app_credential,archer_meta_lead_ads.group_meta_lead_ads_manager,1,1,1,1
+access_meta_page_user,meta.page.user,model_meta_page,archer_meta_lead_ads.group_meta_lead_ads_user,1,1,0,0
+access_meta_page_manager,meta.page.manager,model_meta_page,archer_meta_lead_ads.group_meta_lead_ads_manager,1,1,1,1
+access_meta_lead_form_user,meta.lead.form.user,model_meta_lead_form,archer_meta_lead_ads.group_meta_lead_ads_user,1,1,0,0
+access_meta_lead_form_manager,meta.lead.form.manager,model_meta_lead_form,archer_meta_lead_ads.group_meta_lead_ads_manager,1,1,1,1
+access_meta_lead_field_mapping_user,meta.lead.field.mapping.user,model_meta_lead_field_mapping,archer_meta_lead_ads.group_meta_lead_ads_user,1,1,1,0
+access_meta_lead_field_mapping_manager,meta.lead.field.mapping.manager,model_meta_lead_field_mapping,archer_meta_lead_ads.group_meta_lead_ads_manager,1,1,1,1
+access_meta_sync_log_user,meta.sync.log.user,model_meta_sync_log,archer_meta_lead_ads.group_meta_lead_ads_user,1,0,0,0
+access_meta_sync_log_manager,meta.sync.log.manager,model_meta_sync_log,archer_meta_lead_ads.group_meta_lead_ads_manager,1,0,0,1

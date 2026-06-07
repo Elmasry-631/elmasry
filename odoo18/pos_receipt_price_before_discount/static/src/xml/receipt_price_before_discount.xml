@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+  <t t-name="pos_receipt_price_before_discount.Orderline"
+     t-inherit="point_of_sale.Orderline"
+     t-inherit-mode="extension">
+
+    <!-- نضيف سطر تحت كل منتج داخل Orderline -->
+      <xpath expr="//li/div[3]/ul/li[1]" position="after">
+
+          <li t-if="shouldShowLstPrice(line)" class="w-100 px-0 text-muted" style="font-size: 11px; margin-top: 2px;">
+            Unit Price before discount:<t t-esc="getLstPriceFmt(line)"/>
+          </li>
+    </xpath>
+
+  </t>
+
+</templates>

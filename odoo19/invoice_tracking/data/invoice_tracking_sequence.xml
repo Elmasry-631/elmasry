@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="seq_invoice_tracking" model="ir.sequence">
+            <field name="name">Invoice Tracking Sequence</field>
+            <field name="code">invoice.tracking</field>
+            <field name="prefix">TRK/</field>
+            <field name="padding">4</field>
+        </record>
+    </data>
+</odoo>

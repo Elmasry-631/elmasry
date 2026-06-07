@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="menu_invoice_tracking_main"
+              name="Invoice Tracking"
+              parent="account.menu_finance_payables"
+              action="action_invoice_tracking"
+              sequence="300"/>
+
+
+    <menuitem id="vendor_code_id" name="Vendor Code" parent="account.menu_finance_payables" action="vendor_code_action"/>
+    <menuitem id="well_number_code" name="Well Number" parent="account.menu_finance_payables" action="well_number_action"/>
+    <menuitem id="checks_track" name="Checks" parent="account.menu_finance_payables" action="check_track_action"/>
+</odoo>

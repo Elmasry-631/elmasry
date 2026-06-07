@@ -1,0 +1,60 @@
+# Arabic translation for stock_split_transfer
+# Copyright (C) Ibrahim Elmasry
+msgid ""
+msgstr ""
+"Project-Id-Version: stock_split_transfer\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ar\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
+
+#. module: stock_split_transfer
+#: model:ir.model.fields,field_description:res_users
+msgid "Allowed Locations"
+msgstr "المواقع المسموح بها"
+
+#. module: stock_split_transfer
+#: model:ir.model.fields,help:res_users
+msgid "Warehouse locations this user has access to manage transfers. Leave empty to see all pickings (admin behavior)."
+msgstr "مواقع المستودعات التي يملك المستخدم صلاحية إدارة التحويلات منها. اتركه فارغاً لرؤية جميع التحويلات."
+
+#. module: stock_split_transfer
+#: model:ir.model.fields,field_description:stock_picking
+msgid "Previous Transfer"
+msgstr "التحويل السابق"
+
+#. module: stock_split_transfer
+#: model:ir.model.fields,help:stock_picking
+msgid "For Leg 2 (transit → dest): points to Leg 1 (source → transit)."
+msgstr "للرحلة الثانية (عابر → وجهة): يشير إلى الرحلة الأولى (مصدر → عابر)."
+
+#. module: stock_split_transfer
+#: model:ir.model.fields,field_description:stock_picking
+msgid "Next Transfer"
+msgstr "التحويل التالي"
+
+#. module: stock_split_transfer
+#: model:ir.model.fields,help:stock_picking
+msgid "For Leg 1 (source → transit): points to Leg 2 (transit → dest)."
+msgstr "للرحلة الأولى (مصدر → عابر): يشير إلى الرحلة الثانية (عابر → وجهة)."
+
+#. module: stock_split_transfer
+#: model:ir.model.fields,field_description:stock_picking
+msgid "Visible"
+msgstr "مرئي"
+
+#. module: stock_split_transfer
+#: model:ir.model.fields,help:stock_picking
+msgid "Whether this picking appears in the operations list. Leg 2 starts invisible until Leg 1 is validated."
+msgstr "ما إذا كان هذا التحويل يظهر في قائمة العمليات. الرحلة الثانية تبدأ غير مرئية حتى يتم اعتماد الرحلة الأولى."
+
+#. module: stock_split_transfer
+#: model:ir.model.fields,field_description:stock_picking
+msgid "Split Transfer"
+msgstr "تحويل مقسم"
+
+#. module: stock_split_transfer
+#: view:stock.picking.search
+msgid "Split Transfers"
+msgstr "تحويلات مقسمة"

@@ -1,0 +1,23 @@
+<odoo>
+    <record id="view_rm_attendance_sheet_change_wizard_form" model="ir.ui.view">
+        <field name="name">rm.attendance.sheet.change.wizard.form</field>
+        <field name="model">rm.attendance.sheet.change.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="sheet_id" readonly="1"/>
+                    <field name="line_id"/>
+                    <field name="overtime_hours"/>
+                    <field name="late_in_minutes"/>
+                    <field name="difference_hours"/>
+                    <field name="is_absent"/>
+                    <field name="reason" required="1"/>
+                </group>
+                <footer>
+                    <button name="action_apply" type="object" string="Apply" class="btn-primary"/>
+                    <button string="Cancel" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="report_general_ledger" model="ir.ui.view">
+            <field name="name">report_general_ledger</field>
+            <field name="type">qweb</field>
+            <field name="arch" type="xml">
+                <t t-name="advanced_accounting_reports.report_general_ledger">
+                    <t t-call="web.html_container">
+                        <t t-call="web.external_layout">
+                            <div class="page">
+                                <div class="oe_structure"/>
+
+                                <!-- Header Info Section -->
+                                <div style="text-align: center; margin-bottom: 15px;">
+                                    <div style="font-size: 14pt; font-weight: bold; margin-bottom: 4px;" t-esc="company.name"/>
+                                    <div style="font-size: 14pt; font-weight: bold; margin-bottom: 4px;" t-esc="labels['general_ledger_report']"/>
+                                    <div style="font-size: 12pt; font-weight: bold; margin-bottom: 4px;">
+                                        <span t-esc="labels['from_text']"/> <span t-esc="date_from"/> <span t-esc="labels['to_text']"/> <span t-esc="date_to"/>
+                                    </div>
+                                </div>
+
+                                <!-- Opening/Ending Balance Info -->
+                                <table style="width: 100%; border-collapse: collapse; font-size: 9pt; margin-bottom: 10px; font-family: Arial, Helvetica, sans-serif;">
+                                    <tr>
+                                        <td style="border: 1px solid black; padding: 4px 6px; font-weight: bold; background-color: #D9D9D9; width: 18%;">
+                                            <span t-esc="labels['opening_balance']"/> (<span t-esc="primary_currency_symbol"/>)
+                                        </td>
+                                        <td style="border: 1px solid black; padding: 4px 6px; text-align: right; white-space: nowrap; width: 32%;">
+                                            <span t-esc="'{:,.2f}'.format(opening_balance)"/>
+                                        </td>
+                                        <td style="border: 1px solid black; padding: 4px 6px; font-weight: bold; background-color: #D9D9D9; width: 18%;">
+                                            <span t-esc="labels['ending_balance']"/> (<span t-esc="primary_currency_symbol"/>)
+                                        </td>
+                                        <td style="border: 1px solid black; padding: 4px 6px; text-align: right; white-space: nowrap; width: 32%;">
+                                            <span t-esc="'{:,.2f}'.format(ending_balance)"/>
+                                        </td>
+                                    </tr>
+                                    <tr t-if="show_secondary and secondary_currency_symbol">
+                                        <td style="border: 1px solid black; padding: 4px 6px; font-weight: bold; background-color: #D9D9D9;">
+                                            <span t-esc="labels['opening_balance']"/> (<span t-esc="secondary_currency_symbol"/>)
+                                        </td>
+                                        <td style="border: 1px solid black; padding: 4px 6px; text-align: right;">
+                                            <span t-esc="'{:,.2f}'.format(secondary_opening_balance)"/>
+                                        </td>
+                                        <td style="border: 1px solid black; padding: 4px 6px; font-weight: bold; background-color: #D9D9D9;">
+                                            <span t-esc="labels['ending_balance']"/> (<span t-esc="secondary_currency_symbol"/>)
+                                        </td>
+                                        <td style="border: 1px solid black; padding: 4px 6px; text-align: right;">
+                                            <span t-esc="'{:,.2f}'.format(secondary_ending_balance)"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border: 1px solid black; padding: 4px 6px; font-weight: bold; background-color: #D9D9D9;" t-esc="labels['account']"/>
+                                        <td colspan="3" style="border: 1px solid black; padding: 4px 6px;">
+                                            <span t-esc="account_names or labels['all_accounts']"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border: 1px solid black; padding: 4px 6px; font-weight: bold; background-color: #D9D9D9;" t-esc="labels['journals']"/>
+                                        <td colspan="3" style="border: 1px solid black; padding: 4px 6px;">
+                                            <span t-esc="journal_names"/>
+                                        </td>
+                                    </tr>
+                                </table>
+
+                                <!-- Main Report Table - B&W only, using td instead of th -->
+                                <table style="width: 100%; border-collapse: collapse; font-size: 8pt; font-family: Arial, Helvetica, sans-serif;">
+                                    <colgroup>
+                                        <col style="width: 8%;"/>
+                                        <col style="width: 8%;"/>
+                                        <col style="width: 14%;"/>
+                                        <col style="width: 10%;"/>
+                                        <col style="width: 14%;"/>
+                                        <col style="width: 8%;"/>
+                                        <col style="width: 8%;"/>
+                                        <col style="width: 8%;"/>
+                                        <col style="width: 9%;"/>
+                                        <col style="width: 9%;"/>
+                                        <col style="width: 9%;"/>
+                                    </colgroup>
+                                    <thead>
+                                        <tr style="background-color: #D9D9D9; font-weight: bold;">
+                                            <td style="border: 1px solid black; text-align: center; padding: 4px 2px;" t-esc="labels['date']"/>
+                                            <td style="border: 1px solid black; text-align: center; padding: 4px 2px;" t-esc="labels['move']"/>
+                                            <td style="border: 1px solid black; text-align: center; padding: 4px 2px;" t-esc="labels['label']"/>
+                                            <td style="border: 1px solid black; text-align: center; padding: 4px 2px;" t-esc="labels['partner']"/>
+                                            <td style="border: 1px solid black; text-align: center; padding: 4px 2px;" t-esc="labels['account']"/>
+                                            <td style="border: 1px solid black; text-align: center; padding: 4px 2px;" t-esc="labels['features']"/>
+                                            <td style="border: 1px solid black; text-align: center; padding: 4px 2px;" t-esc="labels['cost_centers']"/>
+                                            <td style="border: 1px solid black; text-align: center; padding: 4px 2px;" t-esc="labels['patch_number']"/>
+                                            <td style="border: 1px solid black; text-align: center; padding: 4px 2px;">
+                                                <span t-esc="labels['debit']"/> (<span t-esc="primary_currency_symbol"/>)
+                                            </td>
+                                            <td style="border: 1px solid black; text-align: center; padding: 4px 2px;">
+                                                <span t-esc="labels['credit']"/> (<span t-esc="primary_currency_symbol"/>)
+                                            </td>
+                                            <td style="border: 1px solid black; text-align: center; padding: 4px 2px;">
+                                                <span t-esc="labels['balance']"/> (<span t-esc="primary_currency_symbol"/>)
+                                            </td>
+                                            <td t-if="show_secondary" style="border: 1px solid black; text-align: center; padding: 4px 2px;">
+                                                <span t-esc="labels['debit']"/> (<span t-esc="secondary_currency_name"/>)
+                                            </td>
+                                            <td t-if="show_secondary" style="border: 1px solid black; text-align: center; padding: 4px 2px;">
+                                                <span t-esc="labels['credit']"/> (<span t-esc="secondary_currency_name"/>)
+                                            </td>
+                                            <td t-if="show_secondary" style="border: 1px solid black; text-align: center; padding: 4px 2px;">
+                                                <span t-esc="labels['balance']"/> (<span t-esc="secondary_currency_name"/>)
+                                            </td>
+                                            <td t-if="show_secondary" style="border: 1px solid black; text-align: center; padding: 4px 2px;" t-esc="labels['rate']"/>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="lines" t-as="line">
+                                            <tr>
+                                                <td style="border: 1px solid black; padding: 3px 4px; text-align: center;">
+                                                    <span t-esc="line['date']"/>
+                                                </td>
+                                                <td style="border: 1px solid black; padding: 3px 4px;">
+                                                    <span t-esc="line['move']"/>
+                                                </td>
+                                                <td style="border: 1px solid black; padding: 3px 4px;">
+                                                    <span t-esc="line['label']"/>
+                                                </td>
+                                                <td style="border: 1px solid black; padding: 3px 4px;">
+                                                    <span t-esc="line['partner']"/>
+                                                </td>
+                                                <td style="border: 1px solid black; padding: 3px 4px;">
+                                                    <span t-esc="line['account']"/>
+                                                </td>
+                                                <td style="border: 1px solid black; padding: 3px 4px;">
+                                                    <span t-esc="line['features']"/>
+                                                </td>
+                                                <td style="border: 1px solid black; padding: 3px 4px;">
+                                                    <span t-esc="line['cost_centers']"/>
+                                                </td>
+                                                <td style="border: 1px solid black; padding: 3px 4px;">
+                                                    <span t-esc="line['patch_number']"/>
+                                                </td>
+                                                <td style="border: 1px solid black; text-align: right; padding: 3px 4px; white-space: nowrap;">
+                                                    <span t-esc="'{:,.2f}'.format(line['debit'])"/>
+                                                </td>
+                                                <td style="border: 1px solid black; text-align: right; padding: 3px 4px; white-space: nowrap;">
+                                                    <span t-esc="'{:,.2f}'.format(line['credit'])"/>
+                                                </td>
+                                                <td style="border: 1px solid black; text-align: right; padding: 3px 4px; white-space: nowrap;">
+                                                    <span t-esc="'{:,.2f}'.format(line['balance'])"/>
+                                                </td>
+                                                <td t-if="show_secondary" style="border: 1px solid black; text-align: right; padding: 3px 4px; white-space: nowrap;">
+                                                    <span t-esc="'{:,.2f}'.format(line['secondary_debit'])"/>
+                                                </td>
+                                                <td t-if="show_secondary" style="border: 1px solid black; text-align: right; padding: 3px 4px; white-space: nowrap;">
+                                                    <span t-esc="'{:,.2f}'.format(line['secondary_credit'])"/>
+                                                </td>
+                                                <td t-if="show_secondary" style="border: 1px solid black; text-align: right; padding: 3px 4px; white-space: nowrap;">
+                                                    <span t-esc="'{:,.2f}'.format(line['secondary_balance'])"/>
+                                                </td>
+                                                <td t-if="show_secondary" style="border: 1px solid black; text-align: right; padding: 3px 4px;">
+                                                    <span t-esc="'%.6f' % line['rate'] if line['rate'] else ''"/>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                        <!-- Total row - placed as last row in tbody (only shows on last page) -->
+                                        <tr style="font-weight: bold; background-color: #E8E8E8; border-top: 2px solid black;">
+                                            <td colspan="8" style="border: 1px solid black; padding: 3px 4px;" t-esc="labels['total']"/>
+                                            <td style="border: 1px solid black; text-align: right; padding: 3px 4px; white-space: nowrap;">
+                                                <span t-esc="'{:,.2f}'.format(totals['debit'])"/>
+                                            </td>
+                                            <td style="border: 1px solid black; text-align: right; padding: 3px 4px; white-space: nowrap;">
+                                                <span t-esc="'{:,.2f}'.format(totals['credit'])"/>
+                                            </td>
+                                            <td style="border: 1px solid black; text-align: right; padding: 3px 4px; white-space: nowrap;">
+                                                <span t-esc="'{:,.2f}'.format(totals['balance'])"/>
+                                            </td>
+                                            <td t-if="show_secondary" style="border: 1px solid black; text-align: right; padding: 3px 4px; white-space: nowrap;">
+                                                <span t-esc="'{:,.2f}'.format(totals['sec_debit'])"/>
+                                            </td>
+                                            <td t-if="show_secondary" style="border: 1px solid black; text-align: right; padding: 3px 4px; white-space: nowrap;">
+                                                <span t-esc="'{:,.2f}'.format(totals['sec_credit'])"/>
+                                            </td>
+                                            <td t-if="show_secondary" style="border: 1px solid black; text-align: right; padding: 3px 4px; white-space: nowrap;">
+                                                <span t-esc="'{:,.2f}'.format(totals['sec_balance'])"/>
+                                            </td>
+                                            <td t-if="show_secondary" style="border: 1px solid black; padding: 3px 4px;"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </t>
+                    </t>
+                </t>
+            </field>
+        </record>
+    </data>
+</odoo>

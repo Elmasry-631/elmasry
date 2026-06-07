@@ -1,0 +1,101 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="view_account_cost_center_list" model="ir.ui.view">
+        <field name="name">account.cost.center.list</field>
+        <field name="model">account.cost.center</field>
+        <field name="arch" type="xml">
+            <list string="Cost Centers" decoration-danger="balance &lt; 0" decoration-success="balance &gt; 0">
+                <field name="name"/>
+                <field name="code" optional="show"/>
+                <field name="parent_id" optional="show"/>
+                <!-- Company Currency -->
+                <field name="debit" sum="Total Debit" widget="monetary"/>
+                <field name="credit" sum="Total Credit" widget="monetary"/>
+                <field name="balance" sum="Total Balance" widget="monetary"/>
+                <!-- Secondary Currency -->
+                <field name="secondary_debit" sum="Total Sec. Debit" widget="monetary" optional="hide"/>
+                <field name="secondary_credit" sum="Total Sec. Credit" widget="monetary" optional="hide"/>
+                <field name="secondary_balance" sum="Total Sec. Balance" widget="monetary" optional="hide"/>
+                <!-- Exchange Rate -->
+                <field name="avg_rate" optional="hide"/>
+                <field name="company_id" groups="base.group_multi_company" optional="show"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_account_cost_center_form" model="ir.ui.view">
+        <field name="name">account.cost.center.form</field>
+        <field name="model">account.cost.center</field>
+        <field name="arch" type="xml">
+            <form string="Cost Center">
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1>
+                            <field name="name" placeholder="e.g. Head Office"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="code" placeholder="e.g. CC001"/>
+                            <field name="parent_id"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                        <group string="Company Currency">
+                            <field name="currency_id" invisible="1"/>
+                            <field name="debit" readonly="1" widget="monetary"/>
+                            <field name="credit" readonly="1" widget="monetary"/>
+                            <field name="balance" readonly="1" widget="monetary"/>
+                        </group>
+                    </group>
+                    <group string="Secondary Currency">
+                        <group>
+                            <field name="secondary_currency_id" readonly="1"/>
+                            <field name="secondary_debit" readonly="1" widget="monetary"/>
+                            <field name="secondary_credit" readonly="1" widget="monetary"/>
+                            <field name="secondary_balance" readonly="1" widget="monetary"/>
+                        </group>
+                        <group>
+                            <field name="avg_rate" readonly="1"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_account_cost_center_search" model="ir.ui.view">
+        <field name="name">account.cost.center.search</field>
+        <field name="model">account.cost.center</field>
+        <field name="arch" type="xml">
+            <search string="Cost Centers">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="parent_id"/>
+                <separator/>
+                <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
+                <separator/>
+                <filter string="Parent Cost Center" name="group_parent" context="{'group_by': 'parent_id'}"/>
+                <filter string="Company" name="group_company" context="{'group_by': 'company_id'}" groups="base.group_multi_company"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_account_cost_center" model="ir.actions.act_window">
+        <field name="name">Cost Centers</field>
+        <field name="res_model">account.cost.center</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_id" ref="view_account_cost_center_list"/>
+        <field name="search_view_id" ref="view_account_cost_center_search"/>
+        <field name="context">{'search_default_inactive': 0}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first Cost Center
+            </p>
+            <p>
+                Cost Centers allow you to track expenses and revenues
+                by organizational unit (department, branch, etc.).
+            </p>
+        </field>
+    </record>
+</odoo>

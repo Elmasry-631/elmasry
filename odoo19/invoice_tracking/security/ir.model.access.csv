@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_invoice_tracking_user,access.invoice.tracking.user,model_invoice_tracking,base.group_user,1,1,1,1
+access_partner_code,access.partner.code,model_partner_code,base.group_user,1,1,1,1
+access_oil_well,access_oil_well,model_oil_well,base.group_user,1,1,1,1
+access_check_tracking,access_check_tracking,model_check_tracking,base.group_user,1,1,1,1
