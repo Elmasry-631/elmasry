@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_cheque_endorsements" name="Endorsements" parent="cheque_tracking.menu_cheque_operations" action="action_cheque_endorsement" sequence="35" groups="cheque_tracking.group_cheque_user"/>
+</odoo>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <!-- ════════════════════════════════════════════════════════════ -->
+    <!-- Default Classifications A-E                                  -->
+    <!-- company_id is auto-set by model default (current company)    -->
+    <!-- noupdate="1" so user customizations survive upgrades          -->
+    <!-- ════════════════════════════════════════════════════════════ -->
+
+    <record id="default_classification_a" model="customer.classification">
+        <field name="name">A</field>
+        <field name="description">Premium Customers — highest tier with maximum credit.</field>
+        <field name="sequence">10</field>
+        <field name="credit_limit">1000000.00</field>
+        <field name="credit_policy">block</field>
+    </record>
+
+    <record id="default_classification_b" model="customer.classification">
+        <field name="name">B</field>
+        <field name="description">Gold Customers — high-value accounts.</field>
+        <field name="sequence">20</field>
+        <field name="credit_limit">500000.00</field>
+        <field name="credit_policy">block</field>
+    </record>
+
+    <record id="default_classification_c" model="customer.classification">
+        <field name="name">C</field>
+        <field name="description">Regular Customers — standard tier.</field>
+        <field name="sequence">30</field>
+        <field name="credit_limit">200000.00</field>
+        <field name="credit_policy">block</field>
+    </record>
+
+    <record id="default_classification_d" model="customer.classification">
+        <field name="name">D</field>
+        <field name="description">Bronze Customers — limited credit.</field>
+        <field name="sequence">40</field>
+        <field name="credit_limit">50000.00</field>
+        <field name="credit_policy">block</field>
+    </record>
+
+    <record id="default_classification_e" model="customer.classification">
+        <field name="name">E</field>
+        <field name="description">Restricted Customers — minimal credit exposure.</field>
+        <field name="sequence">50</field>
+        <field name="credit_limit">10000.00</field>
+        <field name="credit_policy">block</field>
+    </record>
+
+</odoo>

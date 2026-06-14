@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form_endorsement" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.endorsement</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="cheque_tracking.res_config_settings_view_form_inherit_cheque_tracking"/>
+        <field name="arch" type="xml">
+            <xpath expr="//setting[@id='cheque_tracking_rules']/div[hasclass('content-group')]" position="inside">
+                <div class="row">
+                    <label for="cheque_allow_post_dated_endorsement" class="col-lg-5 o_light_label"/>
+                    <field name="cheque_allow_post_dated_endorsement"/>
+                </div>
+                <div class="row">
+                    <label for="cheque_endorsement_reminder_days" class="col-lg-5 o_light_label"/>
+                    <field name="cheque_endorsement_reminder_days"/>
+                </div>
+                <div class="row">
+                    <label for="cheque_endorsement_payable_account_id" class="col-lg-5 o_light_label"/>
+                    <field name="cheque_endorsement_payable_account_id"/>
+                </div>
+                <div class="row">
+                    <label for="cheque_endorsement_bill_account_id" class="col-lg-5 o_light_label"/>
+                    <field name="cheque_endorsement_bill_account_id"/>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

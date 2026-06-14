@@ -1,0 +1,25 @@
+# -*- coding: utf-8 -*-
+{
+    "name": "Cheque Tracking Endorsement",
+    "version": "19.0.1.0.0",
+    "category": "Accounting/Payment",
+    "summary": "Cheque endorsement workflow for cheque tracking",
+    "author": "Ibrahim Elmasry",
+    "website": "https://www.woledge.com",
+    "license": "LGPL-3",
+    "depends": ["cheque_tracking"],
+    "data": [
+        "security/groups.xml",
+        "security/ir.model.access.csv",
+        "security/endorsement_security.xml",
+        "views/account_move_views.xml",
+        "views/cheque_views.xml",
+        "views/endorsement_views.xml",
+        "views/res_config_settings_views.xml",
+        "views/menus.xml",
+        "wizards/endorse_wizard_views.xml",
+    ],
+    "installable": True,
+    "application": False,
+    "auto_install": False,
+}

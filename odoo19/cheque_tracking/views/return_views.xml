@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_cheque_return_list" model="ir.ui.view">
+        <field name="name">cheque.return.list</field>
+        <field name="model">cheque.return</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="return_date"/>
+                <field name="cheque_id"/>
+                <field name="return_reason_id"/>
+                <field name="bank_charges" sum="Charges"/>
+                <field name="penalty_amount" sum="Penalties"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cheque_return_form" model="ir.ui.view">
+        <field name="name">cheque.return.form</field>
+        <field name="model">cheque.return</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="cheque_id" readonly="1"/>
+                            <field name="return_date" readonly="1"/>
+                            <field name="return_reason_id" readonly="1"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                        <group>
+                            <field name="bank_charges" readonly="1"/>
+                            <field name="penalty_amount" readonly="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Journal Entries">
+                            <field name="move_ids" readonly="1">
+                                <list>
+                                    <field name="date"/>
+                                    <field name="name"/>
+                                    <field name="ref"/>
+                                    <field name="journal_id"/>
+                                    <field name="cheque_stage"/>
+                                    <field name="state"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Notes">
+                            <field name="notes" readonly="1" nolabel="1"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_cheque_return" model="ir.actions.act_window">
+        <field name="name">Cheque Returns</field>
+        <field name="res_model">cheque.return</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>
+

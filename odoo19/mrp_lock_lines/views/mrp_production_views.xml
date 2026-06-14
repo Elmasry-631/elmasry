@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Lock component line fields in Manufacturing Order form view.
+         All editable fields become readonly except on the last line.
+         Odoo 19 syntax: readonly="expression" (NOT attrs={}). -->
+
+    <record id="view_mrp_production_lock_lines" model="ir.ui.view">
+        <field name="name">mrp.production.form.lock.lines</field>
+        <field name="model">mrp.production</field>
+        <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
+        <field name="arch" type="xml">
+
+            <!-- Product -->
+            <xpath expr="//field[@name='move_raw_ids']//field[@name='product_id']" position="attributes">
+                <attribute name="readonly">not is_last_line</attribute>
+            </xpath>
+
+            <!-- Lot/Serial Number -->
+            <xpath expr="//field[@name='move_raw_ids']//field[@name='lot_ids']" position="attributes">
+                <attribute name="readonly">not is_last_line</attribute>
+            </xpath>
+
+            <!-- Quantity -->
+            <xpath expr="//field[@name='move_raw_ids']//field[@name='quantity']" position="attributes">
+                <attribute name="readonly">not is_last_line</attribute>
+            </xpath>
+
+            <!-- Unit of Measure -->
+            <xpath expr="//field[@name='move_raw_ids']//field[@name='product_uom']" position="attributes">
+                <attribute name="readonly">not is_last_line</attribute>
+            </xpath>
+
+            <!-- Source Location -->
+            <xpath expr="//field[@name='move_raw_ids']//field[@name='location_id']" position="attributes">
+                <attribute name="readonly">not is_last_line</attribute>
+            </xpath>
+
+            <!-- Destination Location -->
+            <xpath expr="//field[@name='move_raw_ids']//field[@name='location_dest_id']" position="attributes">
+                <attribute name="readonly">not is_last_line</attribute>
+            </xpath>
+
+        </field>
+    </record>
+
+</odoo>

@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_cheque_endorsement_user,cheque.endorsement.user,model_cheque_endorsement,cheque_tracking.group_cheque_user,1,0,0,0
+access_cheque_endorsement_manager,cheque.endorsement.manager,model_cheque_endorsement,cheque_tracking_endorsement.group_cheque_endorse,1,1,1,0
+access_cheque_endorsement_cheque_manager,cheque.endorsement.cheque.manager,model_cheque_endorsement,cheque_tracking.group_cheque_manager,1,1,1,0
+access_cheque_endorsement_cheque_admin,cheque.endorsement.cheque.admin,model_cheque_endorsement,cheque_tracking.group_cheque_admin,1,1,1,1
+access_cheque_endorse_wizard,cheque.endorse.wizard,model_cheque_endorse_wizard,cheque_tracking_endorsement.group_cheque_endorse,1,1,1,1
+access_cheque_endorse_wizard_manager,cheque.endorse.wizard.manager,model_cheque_endorse_wizard,cheque_tracking.group_cheque_manager,1,1,1,1
+access_cheque_endorse_wizard_admin,cheque.endorse.wizard.admin,model_cheque_endorse_wizard,cheque_tracking.group_cheque_admin,1,1,1,1

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ════════════════════════════════════════════════════════════ -->
+    <!-- Sale Order Form: Add classification info in header           -->
+    <!-- Inherit: sale.view_order_form                                -->
+    <!-- ════════════════════════════════════════════════════════════ -->
+    <record id="view_sale_order_form_classification" model="ir.ui.view">
+        <field name="name">sale.order.classification.form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+
+            <!-- Add classification fields in the "Other Information" page -->
+            <xpath expr="//page[@name='other_information']/group[1]" position="inside">
+                <field name="partner_classification_id"
+                       invisible="not partner_classification_id"
+                       readonly="1"/>
+                <field name="partner_effective_credit_limit"
+                       invisible="not partner_classification_id"
+                       readonly="1"/>
+                <field name="partner_credit_policy"
+                       invisible="not partner_classification_id"
+                       readonly="1"/>
+            </xpath>
+
+        </field>
+    </record>
+
+    <!-- ════════════════════════════════════════════════════════════ -->
+    <!-- Sale Order Search: Add classification filter & group          -->
+    <!-- ════════════════════════════════════════════════════════════ -->
+    <record id="view_sale_order_search_classification" model="ir.ui.view">
+        <field name="name">sale.order.classification.search</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_sales_order_filter"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//filter[@name='my_sale_orders_filter']" position="after">
+                <separator/>
+                <filter name="filter_has_classification" string="Has Classification"
+                        domain="[('partner_classification_id', '!=', False)]"/>
+                <filter name="group_classification" string="Classification"
+                        context="{'group_by': 'partner_classification_id'}"/>
+            </xpath>
+
+        </field>
+    </record>
+
+</odoo>

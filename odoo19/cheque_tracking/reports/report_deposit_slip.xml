@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_deposit_slip" model="ir.actions.report">
+        <field name="name">Cheque Deposit Slip</field>
+        <field name="model">cheque.deposit</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">cheque_tracking.report_deposit_slip_document</field>
+        <field name="report_file">cheque_tracking.report_deposit_slip_document</field>
+        <field name="binding_model_id" ref="model_cheque_deposit"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="report_deposit_slip_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>Cheque Deposit Slip</h2>
+                        <p>
+                            <strong>Reference:</strong> <span t-field="doc.name"/>
+                            <br/>
+                            <strong>Date:</strong> <span t-field="doc.deposit_date"/>
+                            <br/>
+                            <strong>Bank Journal:</strong> <span t-field="doc.bank_journal_id"/>
+                        </p>
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Cheque</th>
+                                    <th>Number</th>
+                                    <th>Partner</th>
+                                    <th>Bank</th>
+                                    <th class="text-end">Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="doc.cheque_ids" t-as="cheque">
+                                    <td><span t-field="cheque.name"/></td>
+                                    <td><span t-field="cheque.cheque_number"/></td>
+                                    <td><span t-field="cheque.partner_id"/></td>
+                                    <td><span t-field="cheque.bank_id"/></td>
+                                    <td class="text-end"><span t-field="cheque.amount"/></td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="4" class="text-end"><strong>Total</strong></td>
+                                    <td class="text-end"><span t-field="doc.total_amount"/></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>
+

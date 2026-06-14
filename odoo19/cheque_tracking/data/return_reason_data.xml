@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="return_reason_nsf" model="cheque.return.reason">
+        <field name="name">Insufficient Funds</field>
+        <field name="code">NSF</field>
+        <field name="category">funds</field>
+    </record>
+    <record id="return_reason_signature" model="cheque.return.reason">
+        <field name="name">Signature Mismatch</field>
+        <field name="code">SIG</field>
+        <field name="category">signature</field>
+    </record>
+    <record id="return_reason_closed" model="cheque.return.reason">
+        <field name="name">Account Closed</field>
+        <field name="code">ACCL</field>
+        <field name="category">account</field>
+    </record>
+    <record id="return_reason_stale" model="cheque.return.reason">
+        <field name="name">Stale Cheque</field>
+        <field name="code">STALE</field>
+        <field name="category">date</field>
+    </record>
+    <record id="return_reason_stop" model="cheque.return.reason">
+        <field name="name">Stop Payment</field>
+        <field name="code">STOP</field>
+        <field name="category">other</field>
+    </record>
+    <record id="return_reason_pdc" model="cheque.return.reason">
+        <field name="name">Post-Dated Not Yet Due</field>
+        <field name="code">PDC</field>
+        <field name="category">date</field>
+    </record>
+</odoo>
+

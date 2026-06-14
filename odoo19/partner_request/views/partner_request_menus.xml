@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ════════════════════════════════════════════════════════════ -->
+    <!-- Menu: Sales > Customers > Partner Requests                  -->
+    <!-- ════════════════════════════════════════════════════════════ -->
+
+    <!-- Top-level menu item under Sales -->
+    <menuitem id="menu_partner_request"
+              name="Partner Requests"
+              parent="sale.res_partner_menu"
+              sequence="5"
+              action="action_partner_request"/>
+
+</odoo>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ════════════════════════════════════════════════════════════ -->
+    <!-- Partner Form: Add "Classification & Credit" tab             -->
+    <!-- Inherit: base.view_partner_form                              -->
+    <!-- ════════════════════════════════════════════════════════════ -->
+    <record id="view_partner_form_classification" model="ir.ui.view">
+        <field name="name">res.partner.classification.form</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+
+            <!-- Add Classification & Credit tab after "Sales & Purchases" page -->
+            <xpath expr="//page[@name='sales_purchases']" position="after">
+                <page name="classification_credit" string="Classification &amp; Credit">
+                    <group>
+                        <group string="Customer Classification">
+                            <field name="classification_id"/>
+                        </group>
+                        <group string="Classification Info" invisible="not classification_id">
+                            <field name="classification_pricelist_id" string="Classif. Price List" readonly="1"/>
+                            <field name="classification_credit_limit" string="Classif. Credit Limit" readonly="1"/>
+                            <field name="classification_payment_term_id" string="Classif. Payment Term" readonly="1"/>
+                            <field name="credit_policy" readonly="1"/>
+                        </group>
+                    </group>
+
+                    <group invisible="not classification_id">
+                        <group string="Individual Overrides">
+                            <field name="override_pricelist"/>
+                            <field name="manual_pricelist_id"
+                                   invisible="not override_pricelist"
+                                   required="override_pricelist"/>
+                            <field name="override_credit_limit"/>
+                            <field name="credit_limit"
+                                   invisible="not override_credit_limit"/>
+                            <field name="override_payment_term"/>
+                            <field name="property_payment_term_id"
+                                   invisible="not override_payment_term"/>
+                        </group>
+                        <group string="Effective Values">
+                            <field name="effective_credit_limit" string="Effective Credit Limit"/>
+                            <field name="effective_payment_term_id" string="Effective Payment Term"/>
+                        </group>
+                    </group>
+
+                    <group invisible="not classification_id" string="Credit Information">
+                        <group>
+                            <field name="credit" string="Outstanding Balance"/>
+                            <field name="effective_credit_limit" string="Effective Credit Limit"/>
+                        </group>
+                        <group>
+                            <field name="credit_policy"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+
+        </field>
+    </record>
+
+    <!-- ════════════════════════════════════════════════════════════ -->
+    <!-- Partner Search: Add classification filter & group            -->
+    <!-- ════════════════════════════════════════════════════════════ -->
+    <record id="view_partner_search_classification" model="ir.ui.view">
+        <field name="name">res.partner.classification.search</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_res_partner_filter"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//filter[@name='supplier']" position="after">
+                <separator/>
+                <filter name="filter_classification" string="Has Classification"
+                        domain="[('classification_id', '!=', False)]"/>
+                <filter name="group_classification" string="Classification"
+                        context="{'group_by': 'classification_id'}"/>
+            </xpath>
+
+        </field>
+    </record>
+
+</odoo>

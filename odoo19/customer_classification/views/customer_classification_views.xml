@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ════════════════════════════════════════════════════════════ -->
+    <!-- Tree View (Odoo 19: <list> not <tree>)                     -->
+    <!-- ════════════════════════════════════════════════════════════ -->
+    <record id="view_customer_classification_list" model="ir.ui.view">
+        <field name="name">customer.classification.list</field>
+        <field name="model">customer.classification</field>
+        <field name="arch" type="xml">
+            <list string="Customer Classifications" decoration-danger="credit_policy == 'block'" decoration-info="credit_policy == 'warning'">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="description" optional="show"/>
+                <field name="pricelist_id" optional="show"/>
+                <field name="credit_limit" optional="show"/>
+                <field name="payment_term_id" optional="show"/>
+                <field name="credit_policy" widget="badge" decoration-success="credit_policy == 'warning'" decoration-danger="credit_policy == 'block'"/>
+                <field name="partner_count" string="Customers"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="active" widget="boolean_toggle" invisible="not context.get('show_active')"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ════════════════════════════════════════════════════════════ -->
+    <!-- Form View                                                   -->
+    <!-- ════════════════════════════════════════════════════════════ -->
+    <record id="view_customer_classification_form" model="ir.ui.view">
+        <field name="name">customer.classification.form</field>
+        <field name="model">customer.classification</field>
+        <field name="arch" type="xml">
+            <form string="Customer Classification">
+                <header>
+                    <button name="action_apply_pricelist" type="object" string="Apply Pricelist Now" class="btn-secondary" />
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="e.g., A"/>
+                            <field name="partner_count" widget="badge" nolabel="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="General">
+                            <field name="description" placeholder="Optional description..."/>
+                            <field name="sequence"/>
+                            <field name="active"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                        <group string="Default Values (Inherited by Customers)">
+                            <field name="pricelist_id"/>
+                            <field name="credit_limit"/>
+                            <field name="payment_term_id"/>
+                            <field name="credit_policy"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <!-- Auto-Classification Criteria -->
+                        <page string="Auto-Classification Criteria">
+                            <field name="criteria_ids">
+                                <list editable="bottom" string="Criteria">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="model_field"/>
+                                    <field name="operator"/>
+                                    <field name="value"/>
+                                    <field name="value_to" invisible="operator != 'between'"/>
+                                    <field name="active" widget="boolean_toggle"/>
+                                </list>
+                            </field>
+                        </page>
+                        <!-- Customers -->
+                        <page string="Customers">
+                            <field name="partner_ids">
+                                <list string="Customers in this Classification" create="0" edit="0" delete="0">
+                                    <field name="name"/>
+                                    <field name="credit"/>
+                                    <field name="effective_credit_limit" string="Effective Credit Limit"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- ════════════════════════════════════════════════════════════ -->
+    <!-- Search View                                                 -->
+    <!-- ════════════════════════════════════════════════════════════ -->
+    <record id="view_customer_classification_search" model="ir.ui.view">
+        <field name="name">customer.classification.search</field>
+        <field name="model">customer.classification</field>
+        <field name="arch" type="xml">
+            <search string="Search Classifications">
+                <field name="name"/>
+                <field name="description"/>
+                <separator/>
+                <filter name="filter_active" string="Active" domain="[('active', '=', True)]"/>
+                <filter name="filter_has_customers" string="Has Customers" domain="[('partner_count', '>', 0)]"/>
+                <separator/>
+                <filter name="filter_block" string="Block Policy" domain="[('credit_policy', '=', 'block')]"/>
+                <filter name="filter_warning" string="Warning Policy" domain="[('credit_policy', '=', 'warning')]"/>
+                <separator/>
+                <filter name="group_policy" string="Credit Policy" context="{'group_by': 'credit_policy'}"/>
+                <filter name="group_company" string="Company" context="{'group_by': 'company_id'}" groups="base.group_multi_company"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- ════════════════════════════════════════════════════════════ -->
+    <!-- Action                                                      -->
+    <!-- ════════════════════════════════════════════════════════════ -->
+    <record id="action_customer_classification" model="ir.actions.act_window">
+        <field name="name">Customer Classifications</field>
+        <field name="res_model">customer.classification</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first customer classification
+            </p>
+            <p>
+                Classifications let you define price lists, credit limits,
+                and payment terms that are automatically inherited by
+                assigned customers.
+            </p>
+        </field>
+    </record>
+
+    <!-- ════════════════════════════════════════════════════════════ -->
+    <!-- Menu: Sales > Configuration > Customer Classification       -->
+    <!-- ════════════════════════════════════════════════════════════ -->
+    <menuitem id="menu_customer_classification_root"
+              name="Customer Classification"
+              parent="sale.menu_sale_config"
+              sequence="30"/>
+
+    <menuitem id="menu_customer_classification"
+              name="Classifications"
+              parent="menu_customer_classification_root"
+              action="action_customer_classification"
+              sequence="10"/>
+
+</odoo>

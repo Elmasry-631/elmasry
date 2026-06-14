@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="ir_cron_meta_fetch_leads" model="ir.cron">
+        <field name="name">Meta Lead Ads: Fetch Leads</field>
+        <field name="model_id" ref="model_meta_lead_form"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_fetch_all_leads()</field>
+        <field name="interval_number">30</field>
+        <field name="interval_type">minutes</field>
+        <field name="active">True</field>
+    </record>
+
+    <record id="ir_cron_meta_check_token_expiry" model="ir.cron">
+        <field name="name">Meta Lead Ads: Check Token Expiry</field>
+        <field name="model_id" ref="model_meta_app_credential"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_check_token_expiry()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="active">True</field>
+    </record>
+
+    <record id="ir_cron_meta_cleanup_sync_logs" model="ir.cron">
+        <field name="name">Meta Lead Ads: Cleanup Sync Logs</field>
+        <field name="model_id" ref="model_meta_sync_log"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_cleanup_old_logs()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">weeks</field>
+        <field name="active">True</field>
+    </record>
+</odoo>

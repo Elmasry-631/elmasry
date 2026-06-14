@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_cheque_deposit_list" model="ir.ui.view">
+        <field name="name">cheque.deposit.list</field>
+        <field name="model">cheque.deposit</field>
+        <field name="arch" type="xml">
+            <list decoration-success="state == 'confirmed'" decoration-muted="state == 'cancelled'">
+                <field name="name"/>
+                <field name="deposit_date"/>
+                <field name="bank_journal_id"/>
+                <field name="total_amount" sum="Total"/>
+                <field name="state" widget="badge"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cheque_deposit_form" model="ir.ui.view">
+        <field name="name">cheque.deposit.form</field>
+        <field name="model">cheque.deposit</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_confirm" type="object" string="Confirm Deposit" class="oe_highlight" invisible="state != 'draft'"/>
+                    <button name="action_print_deposit_slip" type="object" string="Print Deposit Slip" invisible="state == 'draft'"/>
+                    <button name="action_cancel" type="object" string="Cancel" invisible="state != 'draft'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,cancelled"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="deposit_date" readonly="state != 'draft'"/>
+                            <field name="bank_journal_id" readonly="state != 'draft'"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                        <group>
+                            <field name="total_amount" readonly="1"/>
+                            <field name="journal_entry_id" readonly="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Cheques">
+                            <field name="cheque_ids" readonly="state != 'draft'">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="cheque_number"/>
+                                    <field name="partner_id"/>
+                                    <field name="cheque_date"/>
+                                    <field name="due_date"/>
+                                    <field name="amount"/>
+                                    <field name="state"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Notes">
+                            <field name="notes" nolabel="1"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_cheque_deposit_search" model="ir.ui.view">
+        <field name="name">cheque.deposit.search</field>
+        <field name="model">cheque.deposit</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="bank_journal_id"/>
+                <filter name="confirmed" string="Confirmed" domain="[('state', '=', 'confirmed')]"/>
+                <filter name="draft" string="Draft" domain="[('state', '=', 'draft')]"/>
+                <group>
+                    <filter name="group_bank" string="Bank" domain="[]" context="{'group_by': 'bank_journal_id'}"/>
+                    <filter name="group_state" string="Status" domain="[]" context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_cheque_deposit" model="ir.actions.act_window">
+        <field name="name">Cheque Deposits</field>
+        <field name="res_model">cheque.deposit</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_cheque_deposit_search"/>
+    </record>
+</odoo>

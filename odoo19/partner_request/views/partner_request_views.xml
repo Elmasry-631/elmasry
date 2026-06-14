@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ════════════════════════════════════════════════════════════ -->
+    <!-- List View (Odoo 19: <list>)                                -->
+    <!-- ════════════════════════════════════════════════════════════ -->
+    <record id="view_partner_request_list" model="ir.ui.view">
+        <field name="name">partner.request.list</field>
+        <field name="model">partner.request</field>
+        <field name="arch" type="xml">
+            <list string="Partner Requests" decoration-primary="state == 'pending'" decoration-success="state == 'approved'" decoration-danger="state == 'rejected'" decoration-warning="state == 'sent_back'">
+                <field name="sequence"/>
+                <field name="name"/>
+                <field name="customer_code" optional="show"/>
+                <field name="salesperson_id" optional="show"/>
+                <field name="state" widget="badge" decoration-success="state == 'approved'" decoration-danger="state == 'rejected'" decoration-warning="state == 'sent_back'" decoration-primary="state == 'pending'" decoration-muted="state == 'draft'"/>
+                <field name="create_date" string="Created On" optional="show"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ════════════════════════════════════════════════════════════ -->
+    <!-- Form View                                                   -->
+    <!-- ════════════════════════════════════════════════════════════ -->
+    <record id="view_partner_request_form" model="ir.ui.view">
+        <field name="name">partner.request.form</field>
+        <field name="model">partner.request</field>
+        <field name="arch" type="xml">
+            <form string="Partner Request" create="0">
+                <header>
+                    <button name="action_submit" type="object" string="Submit"
+                            invisible="state not in ('draft', 'sent_back')"
+                            class="btn-primary"/>
+                    <button name="action_create_partner" type="object" string="Create Partner"
+                            invisible="state != 'pending'"
+                            class="btn-success"
+                            groups="partner_request.group_partner_request_manager"/>
+                    <button name="action_send_back" type="object" string="Send Back"
+                            invisible="state != 'pending'"
+                            groups="partner_request.group_partner_request_manager"/>
+                    <button name="action_reject" type="object" string="Reject"
+                            invisible="state != 'pending'"
+                            class="btn-danger"
+                            groups="partner_request.group_partner_request_manager"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,pending,approved"/>
+                </header>
+
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="sequence" placeholder="New"/></h1>
+                    </div>
+
+                    <!-- Smart Button: Open Created Partner -->
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" name="action_open_partner"
+                                icon="fa-user" type="object"
+                                invisible="not partner_id">
+                            <field name="partner_id" string="Customer"
+                                   readonly="1"/>
+                        </button>
+                    </div>
+
+                    <group>
+                        <!-- Basic Info -->
+                        <group string="Basic Information">
+                            <field name="name" required="1"/>
+                            <field name="customer_code"/>
+                            <field name="classification_id"/>
+                            <field name="contact_person"/>
+                            <field name="area"/>
+                        </group>
+
+                        <!-- Address -->
+                        <group string="Address">
+                            <field name="country_id"/>
+                            <field name="state_id"/>
+                            <field name="city"/>
+                            <field name="street"/>
+                            <field name="zip"/>
+                            <field name="pobox"/>
+                        </group>
+                    </group>
+
+                    <group>
+                        <!-- Contact Info -->
+                        <group string="Contact Information">
+                            <field name="phone"/>
+                            <field name="email"/>
+                            <field name="vat"/>
+                        </group>
+
+                        <!-- Sales -->
+                        <group string="Sales">
+                            <field name="sales_supervisor_id"/>
+                            <field name="salesperson_id"/>
+                        </group>
+                    </group>
+
+                    <!-- Rejection Reason (visible at pending + rejected) -->
+                    <group invisible="state not in ('pending', 'rejected')" string="Rejection Reason" colspan="4">
+                        <field name="rejection_reason"
+                               readonly="state == 'rejected'"
+                               placeholder="Enter rejection reason before clicking Reject..."/>
+                    </group>
+
+                    <!-- Send Back Reason (visible at pending + sent_back) -->
+                    <group invisible="state not in ('pending', 'sent_back')" string="Send Back Reason" colspan="4">
+                        <field name="send_back_reason"
+                               readonly="state == 'sent_back'"
+                               placeholder="Enter reason before clicking Send Back..."/>
+                    </group>
+
+                    <!-- Created Partner (visible at approved) -->
+                    <group invisible="state != 'approved'" string="Created Customer">
+                        <group>
+                            <field name="partner_id" readonly="1"/>
+                        </group>
+                    </group>
+                </sheet>
+
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- ════════════════════════════════════════════════════════════ -->
+    <!-- Search View                                                 -->
+    <!-- ════════════════════════════════════════════════════════════ -->
+    <record id="view_partner_request_search" model="ir.ui.view">
+        <field name="name">partner.request.search</field>
+        <field name="model">partner.request</field>
+        <field name="arch" type="xml">
+            <search string="Search Partner Requests">
+                <field name="name"/>
+                <field name="sequence"/>
+                <field name="customer_code"/>
+                <field name="salesperson_id"/>
+                <separator/>
+                <filter name="filter_draft" string="Draft" domain="[('state', '=', 'draft')]"/>
+                <filter name="filter_pending" string="Pending" domain="[('state', '=', 'pending')]"/>
+                <filter name="filter_sent_back" string="Sent Back" domain="[('state', '=', 'sent_back')]"/>
+                <filter name="filter_approved" string="Approved" domain="[('state', '=', 'approved')]"/>
+                <filter name="filter_rejected" string="Rejected" domain="[('state', '=', 'rejected')]"/>
+                <separator/>
+                <filter name="filter_my_requests" string="My Requests"
+                        domain="[('salesperson_id', '=', uid)]"/>
+                <separator/>
+                <group>
+                    <filter name="group_state" string="Status"
+                            context="{'group_by': 'state'}"/>
+                    <filter name="group_salesperson" string="Salesperson"
+                            context="{'group_by': 'salesperson_id'}"/>
+                    <filter name="group_create_date" string="Creation Date"
+                            context="{'group_by': 'create_date:day'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- ════════════════════════════════════════════════════════════ -->
+    <!-- Action                                                      -->
+    <!-- ════════════════════════════════════════════════════════════ -->
+    <record id="action_partner_request" model="ir.actions.act_window">
+        <field name="name">Partner Requests</field>
+        <field name="res_model">partner.request</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_filter_my_requests': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new partner request
+            </p>
+            <p>
+                Submit a request to create a new customer.
+                Your sales supervisor will review and approve it.
+            </p>
+        </field>
+    </record>
+
+</odoo>

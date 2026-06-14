@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_cheque_cheque_list_endorsement" model="ir.ui.view">
+        <field name="name">cheque.cheque.list.endorsement</field>
+        <field name="model">cheque.cheque</field>
+        <field name="inherit_id" ref="cheque_tracking.view_cheque_cheque_list"/>
+        <field name="arch" type="xml">
+            <xpath expr="//list" position="attributes">
+                <attribute name="decoration-info">state == 'endorsed'</attribute>
+            </xpath>
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="current_endorsee_id" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_cheque_cheque_form_endorsement" model="ir.ui.view">
+        <field name="name">cheque.cheque.form.endorsement</field>
+        <field name="model">cheque.cheque</field>
+        <field name="inherit_id" ref="cheque_tracking.view_cheque_cheque_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_deposit']" position="before">
+                <button name="action_open_endorse_wizard" type="object" string="Endorse" class="oe_highlight" invisible="state not in ('holding', 'endorsed') or cheque_type != 'received' or not is_endorsable" groups="cheque_tracking_endorsement.group_cheque_endorse,cheque_tracking.group_cheque_manager,cheque_tracking.group_cheque_admin"/>
+            </xpath>
+            <xpath expr="//button[@name='action_deposit']" position="attributes">
+                <attribute name="invisible">state not in ('holding', 'endorsed', 'returned') or cheque_type != 'received'</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_cancel']" position="attributes">
+                <attribute name="invisible">state not in ('draft', 'holding', 'returned', 'endorsed') or (state == 'endorsed' and cheque_type != 'received')</attribute>
+            </xpath>
+            <xpath expr="//field[@name='state']" position="replace">
+                <field name="state" widget="statusbar" statusbar_visible="draft,holding,endorsed,deposited,cleared,approved,handed_over,cashed,returned,cancelled,void"/>
+            </xpath>
+            <xpath expr="//sheet/div[@name='button_box']" position="before">
+                <div class="alert alert-warning" role="alert" invisible="cheque_type != 'received' or is_endorsable">
+                    This cheque is not endorsable and can only be cashed by the first beneficiary.
+                </div>
+            </xpath>
+            <xpath expr="//button[@name='action_view_entries']" position="after">
+                <button name="action_view_endorsements" type="object" class="oe_stat_button" icon="fa-exchange" invisible="endorsement_count == 0">
+                    <field name="endorsement_count" widget="statinfo" string="Endorsements"/>
+                </button>
+            </xpath>
+            <xpath expr="//field[@name='payee_name']" position="after">
+                <field name="is_endorsable" readonly="state != 'draft'"/>
+                <field name="is_crossed"/>
+                <field name="original_beneficiary_id" readonly="state != 'draft'"/>
+                <field name="current_endorsee_id" readonly="1"/>
+            </xpath>
+            <xpath expr="//group[field[@name='is_post_dated']]/field[@name='is_stale']" position="after">
+                <field name="endorsement_count" readonly="1"/>
+            </xpath>
+            <xpath expr="//page[field[@name='move_ids']]" position="after">
+                <page string="Endorsements" invisible="cheque_type != 'received'">
+                    <field name="endorsement_ids" readonly="1">
+                        <list>
+                            <field name="sequence"/>
+                            <field name="endorsement_date"/>
+                            <field name="endorser_id"/>
+                            <field name="endorsee_id"/>
+                            <field name="user_id"/>
+                            <field name="state"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_cheque_cheque_search_endorsement" model="ir.ui.view">
+        <field name="name">cheque.cheque.search.endorsement</field>
+        <field name="model">cheque.cheque</field>
+        <field name="inherit_id" ref="cheque_tracking.view_cheque_cheque_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='returned']" position="after">
+                <filter name="endorsed" string="Endorsed" domain="[('state', '=', 'endorsed')]"/>
+                <filter name="endorsable" string="Endorsable" domain="[('is_endorsable', '=', True)]"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_cheque_endorsement_list" model="ir.ui.view">
+        <field name="name">cheque.endorsement.list</field>
+        <field name="model">cheque.endorsement</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="cheque_id"/>
+                <field name="sequence"/>
+                <field name="endorsement_date"/>
+                <field name="endorser_id"/>
+                <field name="endorsee_id"/>
+                <field name="amount" sum="Total"/>
+                <field name="state"/>
+                <field name="user_id"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cheque_endorsement_form" model="ir.ui.view">
+        <field name="name">cheque.endorsement.form</field>
+        <field name="model">cheque.endorsement</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="cheque_id" readonly="1"/>
+                            <field name="sequence" readonly="1"/>
+                            <field name="endorsement_date" readonly="1"/>
+                            <field name="state" readonly="1"/>
+                            <field name="company_id" groups="base.group_multi_company" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="endorser_id" readonly="1"/>
+                            <field name="endorsee_id" readonly="1"/>
+                            <field name="amount" readonly="1"/>
+                            <field name="user_id" readonly="1"/>
+                            <field name="move_id" readonly="1"/>
+                            <field name="vendor_bill_id" readonly="1"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="reason" readonly="1"/>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_cheque_endorsement_search" model="ir.ui.view">
+        <field name="name">cheque.endorsement.search</field>
+        <field name="model">cheque.endorsement</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="cheque_id"/>
+                <field name="endorser_id"/>
+                <field name="endorsee_id"/>
+                <field name="state"/>
+                <filter name="confirmed" string="Confirmed" domain="[('state', '=', 'confirmed')]"/>
+                <filter name="this_month" string="This Month" date="endorsement_date"/>
+                <group>
+                    <filter name="group_cheque" string="Cheque" domain="[]" context="{'group_by': 'cheque_id'}"/>
+                    <filter name="group_endorsee" string="Endorsee" domain="[]" context="{'group_by': 'endorsee_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_cheque_endorsement" model="ir.actions.act_window">
+        <field name="name">Cheque Endorsements</field>
+        <field name="res_model">cheque.endorsement</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_cheque_endorsement_search"/>
+    </record>
+</odoo>

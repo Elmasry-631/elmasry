@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="group_cheque_endorse" model="res.groups">
+        <field name="name">Cheque Endorsement Access</field>
+        <field name="privilege_id" ref="cheque_tracking.res_groups_privilege_cheque_tracking"/>
+        <field name="sequence">25</field>
+        <field name="implied_ids" eval="[(4, ref('cheque_tracking.group_cheque_user'))]"/>
+    </record>
+</odoo>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_cheque_root" name="Cheque Tracking" sequence="45" groups="cheque_tracking.group_cheque_user" web_icon="cheque_tracking,static/description/icon.png"/>
+    <menuitem id="menu_cheque_operations" name="Operations" parent="menu_cheque_root" sequence="10"/>
+    <menuitem id="menu_cheque_received" name="Received Cheques" parent="menu_cheque_operations" action="action_cheque_received" sequence="10"/>
+    <menuitem id="menu_cheque_issued" name="Issued Cheques" parent="menu_cheque_operations" action="action_cheque_issued" sequence="20"/>
+    <menuitem id="menu_cheque_all" name="All Cheques" parent="menu_cheque_operations" action="action_cheque_all" sequence="30"/>
+    <menuitem id="menu_cheque_deposits" name="Deposits" parent="menu_cheque_operations" action="action_cheque_deposit" sequence="40"/>
+    <menuitem id="menu_cheque_returns" name="Returns" parent="menu_cheque_operations" action="action_cheque_return" sequence="50"/>
+
+    <menuitem id="menu_cheque_reporting" name="Reporting" parent="menu_cheque_root" sequence="20"/>
+    <menuitem id="menu_cheque_analysis" name="Cheque Analysis" parent="menu_cheque_reporting" action="action_cheque_all" sequence="10"/>
+
+    <menuitem id="menu_cheque_config" name="Configuration" parent="menu_cheque_root" sequence="90" groups="cheque_tracking.group_cheque_admin"/>
+    <menuitem id="menu_cheque_return_reasons" name="Return Reasons" parent="menu_cheque_config" action="action_cheque_return_reason" sequence="10"/>
+    <menuitem id="menu_cheque_settings" name="Settings" parent="menu_cheque_config" action="account.action_account_config" sequence="20"/>
+</odoo>

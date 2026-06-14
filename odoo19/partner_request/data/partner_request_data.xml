@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ════════════════════════════════════════════════════════════ -->
+    <!-- Sequence: PRQ-YYYY-NNNNN                                    -->
+    <!-- ════════════════════════════════════════════════════════════ -->
+    <record id="seq_partner_request" model="ir.sequence">
+        <field name="name">Partner Request Sequence</field>
+        <field name="code">partner.request</field>
+        <field name="prefix">PRQ-%(year)s-</field>
+        <field name="padding">5</field>
+        <field name="number_increment">1</field>
+        <field name="use_date_range" eval="True"/>
+    </record>
+
+    <!-- ════════════════════════════════════════════════════════════ -->
+    <!-- Sequence: PRQ-YYYY-NNNNN (Date Range - Yearly Reset)        -->
+    <!-- ════════════════════════════════════════════════════════════ -->
+    <record id="seq_partner_request_date_range" model="ir.sequence.date_range">
+        <field name="sequence_id" ref="seq_partner_request"/>
+        <field name="date_from" eval="DateTime.now().strftime('%Y-01-01')"/>
+        <field name="date_to" eval="DateTime.now().strftime('%Y-12-31')"/>
+        <field name="number_next" eval="1"/>
+        <field name="number_next_actual" eval="1"/>
+    </record>
+
+</odoo>

@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_partner_request_manager,partner.request.manager,model_partner_request,partner_request.group_partner_request_manager,1,1,1,1
+access_partner_request_user,partner.request.user,model_partner_request,partner_request.group_partner_request_user,1,1,1,0

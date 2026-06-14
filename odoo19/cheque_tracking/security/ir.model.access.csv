@@ -1,0 +1,12 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_cheque_cheque_user,cheque.cheque.user,model_cheque_cheque,cheque_tracking.group_cheque_user,1,1,1,0
+access_cheque_cheque_manager,cheque.cheque.manager,model_cheque_cheque,cheque_tracking.group_cheque_manager,1,1,1,1
+access_cheque_deposit_user,cheque.deposit.user,model_cheque_deposit,cheque_tracking.group_cheque_user,1,1,1,0
+access_cheque_deposit_manager,cheque.deposit.manager,model_cheque_deposit,cheque_tracking.group_cheque_manager,1,1,1,1
+access_cheque_return_user,cheque.return.user,model_cheque_return,cheque_tracking.group_cheque_user,1,0,0,0
+access_cheque_return_manager,cheque.return.manager,model_cheque_return,cheque_tracking.group_cheque_manager,1,1,1,1
+access_cheque_return_reason_user,cheque.return.reason.user,model_cheque_return_reason,cheque_tracking.group_cheque_user,1,0,0,0
+access_cheque_return_reason_admin,cheque.return.reason.admin,model_cheque_return_reason,cheque_tracking.group_cheque_admin,1,1,1,1
+access_cheque_deposit_wizard,cheque.deposit.wizard,model_cheque_deposit_wizard,cheque_tracking.group_cheque_user,1,1,1,1
+access_cheque_return_wizard,cheque.return.wizard,model_cheque_return_wizard,cheque_tracking.group_cheque_manager,1,1,1,1
+access_cheque_print_wizard,cheque.print.wizard,model_cheque_print_wizard,cheque_tracking.group_cheque_user,1,1,1,1

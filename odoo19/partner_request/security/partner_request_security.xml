@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ════════════════════════════════════════════════════════════ -->
+    <!-- Module Category                                            -->
+    <!-- ════════════════════════════════════════════════════════════ -->
+    <record id="module_category_partner_request" model="ir.module.category">
+        <field name="name">Partner Request</field>
+        <field name="parent_id" ref="base.module_category_sales"/>
+    </record>
+
+    <!-- ════════════════════════════════════════════════════════════ -->
+    <!-- Privilege                                                    -->
+    <!-- ════════════════════════════════════════════════════════════ -->
+    <record id="res_groups_privilege_partner_request" model="res.groups.privilege">
+        <field name="name">Partner Request</field>
+        <field name="category_id" ref="module_category_partner_request"/>
+    </record>
+
+    <!-- ════════════════════════════════════════════════════════════ -->
+    <!-- Group: Partner Request User                                 -->
+    <!-- Auto-assigned to users in sales_team.group_sale_salesman    -->
+    <!-- ════════════════════════════════════════════════════════════ -->
+    <record id="group_partner_request_user" model="res.groups">
+        <field name="name">Partner Request User</field>
+        <field name="privilege_id" ref="res_groups_privilege_partner_request"/>
+        <field name="comment">
+            Can create partner requests and submit them for approval.
+            Cannot approve requests or create customers directly.
+        </field>
+    </record>
+
+    <!-- Auto-add our user group to Odoo's sales users -->
+    <record id="sales_team.group_sale_salesman" model="res.groups">
+        <field name="implied_ids" eval="[(4, ref('group_partner_request_user'))]"/>
+    </record>
+
+    <!-- ════════════════════════════════════════════════════════════ -->
+    <!-- Group: Partner Request Manager                              -->
+    <!-- Auto-assigned to users in sales_team.group_sale_manager     -->
+    <!-- ════════════════════════════════════════════════════════════ -->
+    <record id="group_partner_request_manager" model="res.groups">
+        <field name="name">Partner Request Manager</field>
+        <field name="privilege_id" ref="res_groups_privilege_partner_request"/>
+        <field name="implied_ids" eval="[(4, ref('group_partner_request_user'))]"/>
+        <field name="comment">
+            Can approve, reject, and send back partner requests.
+            Can create customers directly.
+        </field>
+    </record>
+
+    <!-- Auto-add our manager group to Odoo's sales managers -->
+    <record id="sales_team.group_sale_manager" model="res.groups">
+        <field name="implied_ids" eval="[(4, ref('group_partner_request_manager'))]"/>
+    </record>
+
+</odoo>

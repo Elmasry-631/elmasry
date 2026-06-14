@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_cheque_print" model="ir.actions.report">
+        <field name="name">Print Cheque</field>
+        <field name="model">cheque.cheque</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">cheque_tracking.report_cheque_print_document</field>
+        <field name="report_file">cheque_tracking.report_cheque_print_document</field>
+        <field name="binding_model_id" ref="model_cheque_cheque"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="report_cheque_print_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.basic_layout">
+                    <div class="page" style="font-size: 15px;">
+                        <div style="height: 80px;"></div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <div>
+                                <strong>Payee:</strong>
+                                <span t-esc="doc.payee_name or doc.partner_id.display_name"/>
+                            </div>
+                            <div>
+                                <strong>Date:</strong>
+                                <span t-field="doc.cheque_date"/>
+                            </div>
+                        </div>
+                        <div style="margin-top: 30px;">
+                            <strong>Amount:</strong>
+                            <span t-field="doc.amount"/>
+                            <span t-field="doc.currency_id"/>
+                        </div>
+                        <div style="margin-top: 28px;">
+                            <strong>Cheque No:</strong>
+                            <span t-field="doc.cheque_number"/>
+                        </div>
+                        <div style="margin-top: 70px; display: flex; justify-content: flex-end;">
+                            <span>Authorized Signature ____________________</span>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>
+

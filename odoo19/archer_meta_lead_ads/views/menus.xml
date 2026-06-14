@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_meta_lead_ads_root"
+              name="Meta Lead Ads"
+              parent="crm.crm_menu_config"
+              sequence="40"
+              groups="archer_meta_lead_ads.group_meta_lead_ads_user,archer_meta_lead_ads.group_meta_lead_ads_manager"/>
+
+    <menuitem id="menu_meta_lead_ads_credentials"
+              name="Credentials"
+              parent="menu_meta_lead_ads_root"
+              action="action_meta_app_credential"
+              sequence="10"/>
+
+    <menuitem id="menu_meta_lead_ads_pages"
+              name="Pages"
+              parent="menu_meta_lead_ads_root"
+              action="action_meta_page"
+              sequence="20"/>
+
+    <menuitem id="menu_meta_lead_ads_forms"
+              name="Forms"
+              parent="menu_meta_lead_ads_root"
+              action="action_meta_lead_form"
+              sequence="30"/>
+
+    <menuitem id="menu_meta_lead_ads_logs"
+              name="Sync Issues"
+              parent="menu_meta_lead_ads_root"
+              action="action_meta_sync_log"
+              sequence="40"/>
+</odoo>
