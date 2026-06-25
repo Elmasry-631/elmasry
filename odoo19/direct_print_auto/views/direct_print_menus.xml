@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--
+            No top-level menu: Direct Print is a settings-driven utility.
+            A configuration shortcut is provided under Settings → Sales.
+        -->
+        <record id="menu_direct_print_root" model="ir.ui.menu">
+            <field name="name">Direct Print</field>
+            <field name="sequence">90</field>
+            <field name="active" eval="False"/>
+        </record>
+    </data>
+</odoo>

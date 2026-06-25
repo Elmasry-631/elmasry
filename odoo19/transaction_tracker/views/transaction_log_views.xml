@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ============================================================ -->
+    <!-- Transaction Log Form View                                     -->
+    <!-- ============================================================ -->
+    <record id="view_transaction_log_form" model="ir.ui.view">
+        <field name="name">transaction.log.form</field>
+        <field name="model">transaction.log</field>
+        <field name="arch" type="xml">
+            <form string="Transaction Log" create="0" edit="0" delete="0">
+                <header>
+                    <button name="action_open_record"
+                            type="object"
+                            string="Open Source Record"
+                            icon="fa-external-link"
+                            class="oe_highlight"/>
+                    <button name="action_export_pdf"
+                            type="object"
+                            string="Export PDF"
+                            icon="fa-file-pdf"/>
+                </header>
+                <sheet>
+                    <field name="is_suspicious" invisible="1"/>
+                    <div class="alert alert-danger"
+                         role="alert"
+                         invisible="is_suspicious == False"
+                         style="margin-bottom:0px;">
+                        <strong>⚠ Suspicious Activity Detected</strong>
+                        <p>This operation was flagged as potentially suspicious (e.g. bulk operation).</p>
+                    </div>
+                    <group>
+                        <group name="info">
+                            <field name="name"/>
+                            <field name="operation"
+                                   widget="badge"
+                                   decoration-success="operation == 'create'"
+                                   decoration-info="operation == 'write'"
+                                   decoration-danger="operation == 'unlink'"
+                                   decoration-warning="operation == 'read'"/>
+                            <field name="user_id"/>
+                            <field name="ip_address"/>
+                        </group>
+                        <group name="record_info">
+                            <field name="model_name"/>
+                            <field name="res_id"/>
+                            <field name="record_display_name"/>
+                            <field name="record_ref"/>
+                            <field name="module_name"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                    <group name="changes" invisible="operation != 'write'">
+                        <group name="old_values_group">
+                            <field name="changed_fields"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Old Values" name="old_values_page"
+                              invisible="old_values == False">
+                            <field name="old_values"
+                                   readonly="1"
+                                   placeholder="No old values recorded"/>
+                        </page>
+                        <page string="New Values" name="new_values_page"
+                              invisible="new_values == False">
+                            <field name="new_values"
+                                   readonly="1"
+                                   placeholder="No new values recorded"/>
+                        </page>
+                        <page string="Notes" name="notes_page">
+                            <field name="note" placeholder="Additional notes..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- Transaction Log List View                                     -->
+    <!-- ============================================================ -->
+    <record id="view_transaction_log_list" model="ir.ui.view">
+        <field name="name">transaction.log.list</field>
+        <field name="model">transaction.log</field>
+        <field name="arch" type="xml">
+            <list string="Transaction Logs"
+                  decoration-success="operation == 'create'"
+                  decoration-info="operation == 'write'"
+                  decoration-danger="operation == 'unlink'"
+                  decoration-warning="operation == 'read'"
+                  decoration-muted="is_suspicious == True"
+                  default_order="create_date desc"
+                  create="0" edit="0" delete="0">
+                <field name="name"/>
+                <field name="create_date" string="Time"/>
+                <field name="user_id"/>
+                <field name="operation"
+                       widget="badge"
+                       decoration-success="operation == 'create'"
+                       decoration-info="operation == 'write'"
+                       decoration-danger="operation == 'unlink'"
+                       decoration-warning="operation == 'read'"/>
+                <field name="model_name"/>
+                <field name="record_display_name"/>
+                <field name="changed_fields"/>
+                <field name="ip_address"/>
+                <field name="is_suspicious"
+                       string="⚠"
+                       widget="boolean_toggle"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- Transaction Log Search View                                   -->
+    <!-- ============================================================ -->
+    <record id="view_transaction_log_search" model="ir.ui.view">
+        <field name="name">transaction.log.search</field>
+        <field name="model">transaction.log</field>
+        <field name="arch" type="xml">
+            <search string="Search Transaction Logs">
+                <field name="name"/>
+                <field name="user_id"/>
+                <field name="model_name"/>
+                <field name="record_display_name"/>
+                <field name="changed_fields"/>
+                <field name="ip_address"/>
+                <field name="create_date"/>
+                <separator/>
+                <filter name="filter_create" string="Create" domain="[('operation', '=', 'create')]"/>
+                <filter name="filter_write" string="Write" domain="[('operation', '=', 'write')]"/>
+                <filter name="filter_unlink" string="Delete" domain="[('operation', '=', 'unlink')]"/>
+                <filter name="filter_read" string="Read" domain="[('operation', '=', 'read')]"/>
+                <separator/>
+                <filter name="filter_today" string="Today" domain="[('create_date', '&gt;=', context_today().strftime('%Y-%m-%d'))]"/>
+                <filter name="filter_yesterday" string="Yesterday" domain="[('create_date', '&gt;=', (context_today() - relativedelta(days=1)).strftime('%Y-%m-%d')), ('create_date', '&lt;', context_today().strftime('%Y-%m-%d'))]"/>
+                <filter name="filter_week" string="Last 7 Days" domain="[('create_date', '&gt;=', (context_today() - relativedelta(days=7)).strftime('%Y-%m-%d'))]"/>
+                <filter name="filter_month" string="Last 30 Days" domain="[('create_date', '&gt;=', (context_today() - relativedelta(days=30)).strftime('%Y-%m-%d'))]"/>
+                <filter name="filter_year" string="This Year" domain="[('create_date', '&gt;=', context_today().strftime('%Y-01-01'))]"/>
+                <separator/>
+                <filter name="filter_suspicious" string="Suspicious" domain="[('is_suspicious', '=', True)]"/>
+                <filter name="filter_my_logs" string="My Activity" domain="[('user_id', '=', uid)]"/>
+                <group>
+                    <filter name="group_by_user" string="User" context="{'group_by': 'user_id'}"/>
+                    <filter name="group_by_model" string="Model" context="{'group_by': 'model_name'}"/>
+                    <filter name="group_by_operation" string="Operation" context="{'group_by': 'operation'}"/>
+                    <filter name="group_by_date" string="Date" context="{'group_by': 'create_date:day'}"/>
+                    <filter name="group_by_module" string="Module" context="{'group_by': 'module_name'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- Transaction Log Pivot View                                    -->
+    <!-- ============================================================ -->
+    <record id="view_transaction_log_pivot" model="ir.ui.view">
+        <field name="name">transaction.log.pivot</field>
+        <field name="model">transaction.log</field>
+        <field name="arch" type="xml">
+            <pivot string="Transaction Analysis">
+                <field name="user_id" type="row"/>
+                <field name="model_name" type="col"/>
+                <field name="operation" type="col"/>
+                <field name="create_date" type="row" interval="day"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- Transaction Log Graph View                                    -->
+    <!-- ============================================================ -->
+    <record id="view_transaction_log_graph" model="ir.ui.view">
+        <field name="name">transaction.log.graph</field>
+        <field name="model">transaction.log</field>
+        <field name="arch" type="xml">
+            <graph string="Transaction Activity" type="bar">
+                <field name="create_date" type="row" interval="day"/>
+                <field name="operation" type="col"/>
+            </graph>
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- Transaction Log Kanban View (Dashboard)                       -->
+    <!-- ============================================================ -->
+    <record id="view_transaction_log_kanban" model="ir.ui.view">
+        <field name="name">transaction.log.kanban</field>
+        <field name="model">transaction.log</field>
+        <field name="arch" type="xml">
+            <kanban string="Transaction Logs" default_group_by="operation" create="0" edit="0" delete="0">
+                <field name="name"/>
+                <field name="user_id"/>
+                <field name="model_name"/>
+                <field name="record_display_name"/>
+                <field name="operation"/>
+                <field name="create_date"/>
+                <field name="is_suspicious"/>
+                <templates>
+                    <t t-name="card">
+                        <div t-attf-class="oe_kanban_card oe_kanban_global_click o_kanban_record">
+                            <div class="oe_kanban_content">
+                                <div>
+                                    <strong><field name="name"/></strong>
+                                    <span t-attf-class="badge ms-2 #{operation == 'create' ? 'bg-success' : operation == 'write' ? 'bg-info' : operation == 'unlink' ? 'bg-danger' : 'bg-warning'}">
+                                        <field name="operation"/>
+                                    </span>
+                                    <span t-if="record.is_suspicious.raw_value" class="badge bg-danger ms-1">⚠</span>
+                                </div>
+                                <div class="text-muted">
+                                    <field name="user_id"/> · <field name="model_name"/>
+                                </div>
+                                <div class="text-muted">
+                                    <field name="record_display_name"/>
+                                </div>
+                                <div class="text-muted small">
+                                    <field name="create_date"/>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- Transaction Log Action                                        -->
+    <!-- ============================================================ -->
+    <record id="action_transaction_log" model="ir.actions.act_window">
+        <field name="name">Transaction Logs</field>
+        <field name="res_model">transaction.log</field>
+        <field name="view_mode">list,form,pivot,graph,kanban</field>
+        <field name="search_view_id" ref="view_transaction_log_search"/>
+        <field name="context">{'search_default_filter_today': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No transaction logs yet
+            </p>
+            <p>
+                Transaction logs are recorded automatically when users create, modify, or delete records.
+            </p>
+        </field>
+    </record>
+
+</odoo>

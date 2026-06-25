@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ============================================================ -->
+    <!-- Tracker Config Form View                                      -->
+    <!-- ============================================================ -->
+    <record id="view_tracker_config_form" model="ir.ui.view">
+        <field name="name">transaction.tracker.config.form</field>
+        <field name="model">transaction.tracker.config</field>
+        <field name="arch" type="xml">
+            <form string="Tracker Configuration">
+                <header>
+                    <button name="action_track_all"
+                            type="object"
+                            string="Enable All Tracking"
+                            class="oe_highlight"
+                            invisible="active == False"/>
+                    <button name="action_untrack_all"
+                            type="object"
+                            string="Disable All Tracking"
+                            invisible="active == False"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button"
+                                icon="fa-eye"
+                                type="action"
+                                name="%(transaction_tracker.action_transaction_log)d"
+                                context="{'search_default_model_name': model_name}"
+                                help="View logs for this model">
+                            <field name="model_id" widget="statinfo"/>
+                        </button>
+                    </div>
+                    <group>
+                        <group name="model_info">
+                            <field name="model_id"
+                                   options="{'no_create': True, 'no_edit': True}"/>
+                            <field name="model_name"/>
+                            <field name="active"/>
+                        </group>
+                        <group name="tracking_options">
+                            <field name="track_create"/>
+                            <field name="track_write"/>
+                            <field name="track_unlink"/>
+                            <field name="track_read"
+                                   widget="boolean_toggle"
+                                   help="WARNING: Tracking reads generates very high log volume. Enable only for specific audit needs."/>
+                        </group>
+                    </group>
+                    <group name="company">
+                        <field name="company_id" groups="base.group_multi_company"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- Tracker Config List View                                      -->
+    <!-- ============================================================ -->
+    <record id="view_tracker_config_list" model="ir.ui.view">
+        <field name="name">transaction.tracker.config.list</field>
+        <field name="model">transaction.tracker.config</field>
+        <field name="arch" type="xml">
+            <list string="Tracker Configurations"
+                  decoration-danger="track_create == False and track_write == False and track_unlink == False and track_read == False">
+                <field name="model_id"/>
+                <field name="model_name"/>
+                <field name="track_create" widget="boolean_toggle"/>
+                <field name="track_write" widget="boolean_toggle"/>
+                <field name="track_unlink" widget="boolean_toggle"/>
+                <field name="track_read" widget="boolean_toggle"/>
+                <field name="active" column_invisible="True"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- Tracker Config Search View                                    -->
+    <!-- ============================================================ -->
+    <record id="view_tracker_config_search" model="ir.ui.view">
+        <field name="name">transaction.tracker.config.search</field>
+        <field name="model">transaction.tracker.config</field>
+        <field name="arch" type="xml">
+            <search string="Search Tracker Configurations">
+                <field name="model_id"/>
+                <field name="model_name"/>
+                <filter name="track_create" string="Tracking Create" domain="[('track_create', '=', True)]"/>
+                <filter name="track_write" string="Tracking Write" domain="[('track_write', '=', True)]"/>
+                <filter name="track_unlink" string="Tracking Delete" domain="[('track_unlink', '=', True)]"/>
+                <filter name="track_read" string="Tracking Read" domain="[('track_read', '=', True)]"/>
+                <filter name="inactive" string="Archived" domain="[('active', '=', False)]"/>
+                <separator/>
+                <filter name="all_tracking_off"
+                        string="All Tracking Off"
+                        domain="[('track_create', '=', False), ('track_write', '=', False), ('track_unlink', '=', False), ('track_read', '=', False)]"/>
+                <group>
+                    <filter name="group_by_active" string="Active" context="{'group_by': 'active'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- Tracker Config Action                                         -->
+    <!-- ============================================================ -->
+    <record id="action_tracker_config" model="ir.actions.act_window">
+        <field name="name">Tracker Configuration</field>
+        <field name="res_model">transaction.tracker.config</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Configure which models to track
+            </p>
+            <p>
+                Define which Odoo models should have their transactions tracked.
+                You can enable or disable tracking for each operation type (create, write, delete, read).
+            </p>
+        </field>
+    </record>
+
+</odoo>

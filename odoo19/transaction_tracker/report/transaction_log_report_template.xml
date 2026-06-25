@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_transaction_log_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <!-- Header -->
+                        <div class="row mb-4">
+                            <div class="col-6">
+                                <h2>Transaction Log</h2>
+                                <p class="text-muted">Reference: <span t-field="doc.name"/></p>
+                            </div>
+                            <div class="col-6 text-end">
+                                <p><strong>Date:</strong> <span t-field="doc.create_date" t-options="{'widget': 'datetime'}"/></p>
+                                <p>
+                                    <span t-attf-class="badge #{doc.operation == 'create' and 'bg-success' or doc.operation == 'write' and 'bg-info' or doc.operation == 'unlink' and 'bg-danger' or 'bg-warning'}">
+                                        <span t-field="doc.operation"/>
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Alert for suspicious activity -->
+                        <div t-if="doc.is_suspicious" class="alert alert-danger" role="alert">
+                            <strong>⚠ Suspicious Activity Detected</strong>
+                            <p>This operation was flagged as potentially suspicious.</p>
+                        </div>
+
+                        <!-- Main Info Table -->
+                        <div class="row">
+                            <div class="col-6">
+                                <table class="table table-sm table-bordered">
+                                    <tr>
+                                        <th class="table-light">User</th>
+                                        <td><span t-field="doc.user_id"/></td>
+                                    </tr>
+                                    <tr>
+                                        <th class="table-light">IP Address</th>
+                                        <td><span t-field="doc.ip_address"/></td>
+                                    </tr>
+                                    <tr>
+                                        <th class="table-light">Company</th>
+                                        <td><span t-field="doc.company_id"/></td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-6">
+                                <table class="table table-sm table-bordered">
+                                    <tr>
+                                        <th class="table-light">Model</th>
+                                        <td><span t-field="doc.model_name"/></td>
+                                    </tr>
+                                    <tr>
+                                        <th class="table-light">Record ID</th>
+                                        <td><span t-field="doc.res_id"/></td>
+                                    </tr>
+                                    <tr>
+                                        <th class="table-light">Record Name</th>
+                                        <td><span t-field="doc.record_display_name"/></td>
+                                    </tr>
+                                    <tr>
+                                        <th class="table-light">Module</th>
+                                        <td><span t-field="doc.module_name"/></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Changed Fields -->
+                        <div t-if="doc.changed_fields" class="mt-3">
+                            <h5>Changed Fields</h5>
+                            <p><span t-field="doc.changed_fields"/></p>
+                        </div>
+
+                        <!-- Old Values -->
+                        <div t-if="doc.old_values" class="mt-3">
+                            <h5>Old Values (Before)</h5>
+                            <pre class="bg-light p-3"><code t-field="doc.old_values"/></pre>
+                        </div>
+
+                        <!-- New Values -->
+                        <div t-if="doc.new_values" class="mt-3">
+                            <h5>New Values (After)</h5>
+                            <pre class="bg-light p-3"><code t-field="doc.new_values"/></pre>
+                        </div>
+
+                        <!-- Notes -->
+                        <div t-if="doc.note" class="mt-3">
+                            <h5>Notes</h5>
+                            <p t-field="doc.note"/>
+                        </div>
+
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <template id="report_transaction_log">
+        <t t-call="web.html_container">
+            <t t-foreach="doc_ids" t-as="doc_id">
+                <t t-var="doc" t-value="docs.browse(doc_id)"/>
+                <t t-call="transaction_tracker.report_transaction_log_document"/>
+            </t>
+        </t>
+    </template>
+</odoo>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="res_config_settings_view_form_direct_print" model="ir.ui.view">
+            <field name="name">res.config.settings.view.form.inherit.direct_print</field>
+            <field name="model">res.config.settings</field>
+            <field name="inherit_id" ref="sale.res_config_settings_view_form_sale"/>
+            <field name="arch" type="xml">
+                <!-- Insert a Direct Print block at the end of the Sales app settings.
+                     We use position="inside" on the <app> element so we don't depend
+                     on the exact name of any existing setting block (which can vary
+                     between Odoo versions). -->
+                <xpath expr="//app[@name='sale']" position="inside">
+                    <block title="Direct Print" name="direct_print_auto_settings_block">
+                        <setting id="direct_print_auto_settings"
+                                 string="Direct Print"
+                                 help="Automatically open the browser's print dialog when documents are confirmed.">
+                            <div class="row mt16">
+                                <div class="col-lg-6 o_setting_box">
+                                    <div class="o_setting_right_pane">
+                                        <label for="direct_print_invoice_auto"/>
+                                        <div class="text-muted">
+                                            Auto-print customer invoices/refunds when posted
+                                        </div>
+                                        <field name="direct_print_invoice_auto"/>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 o_setting_box">
+                                    <div class="o_setting_right_pane">
+                                        <label for="direct_print_so_auto"/>
+                                        <div class="text-muted">
+                                            Auto-print sales orders when confirmed
+                                        </div>
+                                        <field name="direct_print_so_auto"/>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 o_setting_box">
+                                    <div class="o_setting_right_pane">
+                                        <label for="direct_print_picking_auto"/>
+                                        <div class="text-muted">
+                                            Auto-print outgoing delivery slips when validated
+                                        </div>
+                                        <field name="direct_print_picking_auto"/>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 o_setting_box">
+                                    <div class="o_setting_right_pane">
+                                        <label for="direct_print_po_auto"/>
+                                        <div class="text-muted">
+                                            Auto-print purchase orders when approved
+                                        </div>
+                                        <field name="direct_print_po_auto"/>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 o_setting_box">
+                                    <div class="o_setting_right_pane">
+                                        <label for="direct_print_open_dialog"/>
+                                        <div class="text-muted">
+                                            Open browser print dialog for the manual Direct Print button
+                                            (otherwise the PDF is downloaded)
+                                        </div>
+                                        <field name="direct_print_open_dialog"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </setting>
+                    </block>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

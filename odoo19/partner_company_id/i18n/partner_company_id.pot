@@ -1,0 +1,66 @@
+# Translation file for Partner Company ID module.
+# Copyright (C) 2026 Ibrahim Elmasry
+# This file is distributed under the LGPL-3 license.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-06-20 10:00+0000\n"
+"PO-Revision-Date: 2026-06-20 10:00+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: partner_company_id
+#: model:ir.model.fields,field_description:partner_company_id.field_res_partner__company_registry
+msgid "Company ID"
+msgstr ""
+
+#. module: partner_company_id
+#: model:ir.model.fields,help:partner_company_id.field_res_partner__company_registry
+msgid ""
+"Customer company identifier. Must start with the digit 7 and consist of "
+"exactly 10 digits (e.g. 7000123456)."
+msgstr ""
+
+#. module: partner_company_id
+#: model:ir.model.fields.selection,name:partner_company_id.selection__res_partner__company_registry
+msgid ""
+"Company ID for partner \"%(name)s\" is invalid.\n"
+"The Company ID must start with the digit \"%(first)s\" and consist of "
+"exactly %(length)s digits.\n"
+"Received value: \"%(value)s\""
+msgstr ""
+
+#. module: partner_company_id
+#: code:addons/partner_company_id/models/res_partner.py:0
+#, python-format
+msgid "Invalid Company ID"
+msgstr ""
+
+#. module: partner_company_id
+#: code:addons/partner_company_id/models/res_partner.py:0
+#, python-format
+msgid "Company ID must contain digits only. Letters and symbols are not allowed."
+msgstr ""
+
+#. module: partner_company_id
+#: code:addons/partner_company_id/models/res_partner.py:0
+#, python-format
+msgid "Company ID must start with the digit \"%s\"."
+msgstr ""
+
+#. module: partner_company_id
+#: code:addons/partner_company_id/models/res_partner.py:0
+#, python-format
+msgid "Company ID must consist of exactly %s digits (currently %s)."
+msgstr ""
+
+#. module: partner_company_id
+#: model:ir.model,name:partner_company_id.model_res_partner
+msgid "Contact"
+msgstr ""

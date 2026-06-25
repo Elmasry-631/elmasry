@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates>
+    <!--
+        The actual OWL template for the Direct Print client action is
+        defined inline in static/src/js/direct_print_action.js using the
+        `xml` tagged-template-literal. This XML file is bundled in
+        web.assets_backend so that any future XML templates that the
+        component may reference (sub-components, etc.) are preloaded.
+        Keeping it empty but present ensures the assets bundle entry is
+        valid even when no XML templates are needed at the XML level.
+    -->
+</templates>

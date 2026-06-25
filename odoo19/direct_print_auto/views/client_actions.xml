@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--
+            Client action declared for completeness / menus / server actions
+            that may want to invoke the Direct Print client action by XML ID.
+            The OWL component registered under tag='direct_print_auto' in
+            static/src/js/direct_print_action.js is what actually renders.
+        -->
+        <record id="action_direct_print_client" model="ir.actions.client">
+            <field name="name">Direct Print</field>
+            <field name="tag">direct_print_auto</field>
+            <field name="params">{}</field>
+        </record>
+    </data>
+</odoo>

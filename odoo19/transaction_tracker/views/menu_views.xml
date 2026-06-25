@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ============================================================ -->
+    <!-- Root Menu                                                      -->
+    <!-- ============================================================ -->
+    <menuitem id="menu_transaction_tracker_root"
+              name="Transaction Tracker"
+              sequence="50"
+              web_icon="transaction_tracker,static/description/icon.png"/>
+
+    <!-- ============================================================ -->
+    <!-- Transaction Logs Menu                                         -->
+    <!-- ============================================================ -->
+    <menuitem id="menu_transaction_log"
+              name="Transaction Logs"
+              parent="menu_transaction_tracker_root"
+              action="action_transaction_log"
+              sequence="10"/>
+
+    <!-- ============================================================ -->
+    <!-- Dashboard Menu                                                -->
+    <!-- ============================================================ -->
+    <menuitem id="menu_transaction_dashboard"
+              name="Dashboard"
+              parent="menu_transaction_tracker_root"
+              action="action_transaction_dashboard"
+              sequence="5"/>
+
+    <!-- ============================================================ -->
+    <!-- Configuration Menu                                            -->
+    <!-- ============================================================ -->
+    <menuitem id="menu_transaction_tracker_config"
+              name="Configuration"
+              parent="menu_transaction_tracker_root"
+              sequence="90"/>
+
+    <menuitem id="menu_tracker_config"
+              name="Tracker Settings"
+              parent="menu_transaction_tracker_config"
+              action="action_tracker_config"
+              sequence="10"/>
+
+    <!-- Auto-Populate is available as a button in the Tracker Settings list view -->
+
+    <!-- ============================================================ -->
+    <!-- Reports Menu                                                  -->
+    <!-- ============================================================ -->
+    <menuitem id="menu_transaction_reports"
+              name="Reports"
+              parent="menu_transaction_tracker_root"
+              sequence="80"/>
+
+    <menuitem id="menu_transaction_log_report"
+              name="Transaction Report"
+              parent="menu_transaction_reports"
+              action="action_report_transaction_log_menu"
+              sequence="10"/>
+
+</odoo>

@@ -1,0 +1,955 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* el_nmo_salesman_reports
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-06-23 17:00+0000\n"
+"PO-Revision-Date: 2026-06-23 17:00+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: el_nmo_salesman_reports
+#: model:ir.module.module,summary:el_nmo_salesman_reports.module_module_el_nmo_salesman_reports
+msgid "Aging debt report and account statement for salespersons without entering Accounting."
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.module.module,name:el_nmo_salesman_reports.module_module_el_nmo_salesman_reports
+msgid "El-Nmo - Salesman Reports (Aging + Statement)"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.model.fields,field_description:aging_bucket.field_aging_bucket__name
+#: model:ir.model.fields,field_description:salesman_report_aging_wizard.field_salesman_report_aging_line__bucket_id
+msgid "Bucket"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.model.fields,field_description:aging_bucket.field_aging_bucket__name
+msgid "Bucket Name"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.model.fields,field_description:salesman_report_aging_wizard.field_salesman_report_aging_line__bucket_sequence
+msgid "Bucket Sequence"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.model.constraint,message:aging_bucket.constraint_aging_bucket_uniq_name_per_company
+msgid "Bucket name must be unique per company!"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.ui.menu,name:el_nmo_salesman_reports.menu_aging_bucket_config
+#: model:ir.ui.menu,name:el_nmo_salesman_reports.menu_contacts_aging_pivot
+#: model:ir.ui.menu,name:el_nmo_salesman_reports.menu_contacts_aging_wizard
+#: model:ir.ui.menu,name:el_nmo_salesman_reports.menu_contacts_salesman_reports
+#: model:ir.ui.menu,name:el_nmo_salesman_reports.menu_salesman_aging_pivot
+#: model:ir.ui.menu,name:el_nmo_salesman_reports.menu_salesman_aging_wizard
+#: model:ir.ui.menu,name:el_nmo_salesman_reports.menu_salesman_reports_config
+#: model:ir.ui.menu,name:el_nmo_salesman_reports.menu_salesman_reports_root
+#: model:ir.actions.act_window,name:el_nmo_salesman_reports.action_aging_bucket
+#: model:ir.actions.act_window,name:el_nmo_salesman_reports.action_account_move_aging_pivot
+#: model:ir.actions.act_window,name:el_nmo_salesman_reports.action_salesman_aging_wizard
+#: model:ir.actions.act_window,name:el_nmo_salesman_reports.action_account_statement_wizard
+#: model:ir.actions.report,name:el_nmo_salesman_reports.action_aging_report_pdf
+#: model:ir.actions.report,name:el_nmo_salesman_reports.action_account_statement_pdf
+msgid "Aging Bucket"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.model.fields,field_description:aging_bucket.field_aging_bucket__active
+msgid "Active"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.ui.menu,name:el_nmo_salesman_reports.menu_salesman_reports_config
+msgid "Active Aging Buckets"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.ui.menu,name:el_nmo_salesman_reports.menu_contacts_aging_pivot
+#: model:ir.ui.menu,name:el_nmo_salesman_reports.menu_salesman_aging_pivot
+#: model:ir.actions.act_window,name:el_nmo_salesman_reports.action_account_move_aging_pivot
+msgid "Aging Pivot"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.ui.menu,name:el_nmo_salesman_reports.menu_contacts_aging_wizard
+#: model:ir.ui.menu,name:el_nmo_salesman_reports.menu_salesman_aging_wizard
+msgid "Aging Report PDF"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.actions.act_window,name:el_nmo_salesman_reports.action_salesman_aging_wizard
+msgid "Aging Report (PDF)"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.actions.report,name:el_nmo_salesman_reports.action_aging_report_pdf
+msgid "Aging Report PDF"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.ui.view,arch_db:el_nmo_salesman_reports.view_aging_bucket_list
+#: model:ir.ui.view,arch_db:el_nmo_salesman_reports.view_aging_bucket_form
+#: model:ir.actions.act_window,name:el_nmo_salesman_reports.action_aging_bucket
+msgid "Aging Buckets"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.model,name:aging_bucket.model_aging_bucket
+msgid "Aging Bucket"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.model.fields,field_description:account_move.field_account_move__overdue_days
+msgid "Overdue Days"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.model.fields,field_description:account_move.field_account_move__aging_bucket_id
+msgid "Aging Bucket"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.model.fields,field_description:aging_bucket.field_aging_bucket__sequence
+msgid "Sequence"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.model.fields,field_description:aging_bucket.field_aging_bucket__days_from
+msgid "Days From (overdue)"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.model.fields,field_description:aging_bucket.field_aging_bucket__days_to
+msgid "Days To (overdue)"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.model.fields,field_description:aging_bucket.field_aging_bucket__company_id
+#: model:ir.model.fields,field_description:salesman_report_aging_wizard.field_salesman_report_aging_wizard__company_id
+#: model:ir.model.fields,field_description:account_statement_wizard.field_account_statement_wizard__company_id
+msgid "Company"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.model.fields,field_description:aging_bucket.field_aging_bucket__bucket_line_count
+msgid "Invoices in Bucket"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.model.fields,field_description:aging_bucket.field_aging_bucket__display_name
+msgid "Bucket"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.model.fields,field_description:aging_bucket.field_aging_bucket__help
+msgid "Label shown in reports (e.g. \"1-30 Days\", \"120+ Days\")."
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.model.fields,help:aging_bucket.field_aging_bucket__sequence
+msgid "Lower sequence = earlier bucket (e.g. \"Current\" should have sequence 5)."
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.model.fields,help:aging_bucket.field_aging_bucket__days_from
+msgid "Lower bound (inclusive) of overdue days. Use negative for \"not yet due\" (e.g. -99999 for \"Current\")."
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.model.fields,help:aging_bucket.field_aging_bucket__days_to
+msgid "Upper bound (inclusive) of overdue days. Use 99999 for open-ended (e.g. \"120+\")."
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.model.fields,help:aging_bucket.field_aging_bucket__active
+msgid "Soft delete. Inactive buckets are excluded from matching."
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.model.fields,help:aging_bucket.field_aging_bucket__company_id
+msgid "Each company can have its own bucket set."
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.model.fields,help:aging_bucket.field_aging_bucket__bucket_line_count
+msgid "Number of posted customer invoices currently matched to this bucket."
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.model.fields,help:account_move.field_account_move__overdue_days
+msgid "Number of days since invoice_date_due. Negative = not yet due. 0 = due today."
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.model.fields,help:account_move.field_account_move__aging_bucket_id
+msgid "Matched aging bucket based on overdue_days and the bucket configuration."
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: code:addons/el_nmo_salesman_reports/models/aging_bucket.py:0
+#, python-format
+msgid "Days To (%(to)s) must be greater than or equal to Days From (%(from)s) for bucket \"%(name)s\"."
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: code:addons/el_nmo_salesman_reports/models/aging_bucket.py:0
+#, python-format
+msgid "Invoices in Bucket: %s"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: code:addons/el_nmo_salesman_reports/models/account_move.py:0
+#, python-format
+msgid "Unsupported search operator for overdue_only."
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#. odoo-python
+#: code:addons/el_nmo_salesman_reports/models/res_partner.py:0
+#, python-format
+msgid "Aging Report"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: code:addons/el_nmo_salesman_reports/models/res_partner.py:0
+#, python-format
+msgid "Account Statement"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: code:addons/el_nmo_salesman_reports/models/res_partner.py:0
+#: code:addons/el_nmo_salesman_reports/models/salesman_report_aging_wizard.py:0
+#, python-format
+msgid "Aging Pivot"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.model.fields,field_description:res_config_settings.field_res_config_settings__salesman_report_access_mode
+msgid "Salesperson Access Mode"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.model.fields.selection:res_config_settings.selection__res_config_settings__salesman_report_access_mode__own
+msgid "Own customers only"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.model.fields.selection:res_config_settings.selection__res_config_settings__salesman_report_access_mode__all
+msgid "All customers"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.model.fields,help:res_config_settings.field_res_config_settings__salesman_report_access_mode
+msgid "Controls whether salespersons see only their own customers (partner.user_id = current user) or all customers in the report wizards."
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.model.fields,field_description:res_config_settings.field_res_config_settings__salesman_report_default_bucket_ids
+msgid "Active Aging Buckets"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.model.fields,help:res_config_settings.field_res_config_settings__salesman_report_default_bucket_ids
+msgid "Informational: shows all active buckets for the current company."
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.model,name:salesman_report_aging_wizard.model_salesman_report_aging_wizard
+msgid "Salesman Aging Report Wizard"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.model.fields,field_description:salesman_report_aging_wizard.field_salesman_report_aging_wizard__date_to
+msgid "As-Of Date"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.model.fields,field_description:salesman_report_aging_wizard.field_salesman_report_aging_wizard__partner_ids
+#: model:ir.model.fields,field_description:account_statement_wizard.field_account_statement_wizard__partner_ids
+msgid "Customers"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.model.fields,field_description:salesman_report_aging_wizard.field_salesman_report_aging_wizard__salesperson_id
+#: model:ir.model.fields,field_description:account_statement_wizard.field_account_statement_wizard__salesperson_id
+msgid "Salesperson"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.model.fields,field_description:salesman_report_aging_wizard.field_salesman_report_aging_wizard__show_overdue_only
+msgid "Overdue Only"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.model.fields,help:salesman_report_aging_wizard.field_salesman_report_aging_wizard__date_to
+msgid "Cutoff date for aging calculation. Defaults to today."
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.model.fields,help:salesman_report_aging_wizard.field_salesman_report_aging_wizard__partner_ids
+#: model:ir.model.fields,help:account_statement_wizard.field_account_statement_wizard__partner_ids
+msgid "Empty = all customers (per access mode setting)."
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.model.fields,help:salesman_report_aging_wizard.field_salesman_report_aging_wizard__salesperson_id
+msgid "Filter by salesperson. Defaults to current user."
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.model.fields,help:salesman_report_aging_wizard.field_salesman_report_aging_wizard__show_overdue_only
+msgid "Exclude the \"Current\" bucket (not-yet-due) rows."
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.model.fields,field_description:salesman_report_aging_wizard.field_salesman_report_aging_wizard__result_line_ids
+#: model:ir.model.fields,field_description:account_statement_wizard.field_account_statement_wizard__result_line_ids
+msgid "Result Lines"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.model.fields,field_description:salesman_report_aging_wizard.field_salesman_report_aging_wizard__result_partner_count
+msgid "Partners in Result"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.model.fields,field_description:salesman_report_aging_wizard.field_salesman_report_aging_wizard__result_total_amount
+msgid "Total Amount"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: code:addons/el_nmo_salesman_reports/models/salesman_report_aging_wizard.py:0
+#, python-format
+msgid "Aging Report Lines"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: code:addons/el_nmo_salesman_reports/models/salesman_report_aging_wizard.py:0
+#, python-format
+msgid "No aging data found for the selected filters. Try widening the customer filter or changing the access mode in Settings → Salesman Reports."
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.model,name:salesman_report_aging_wizard.model_salesman_report_aging_line
+msgid "Salesman Aging Report Line"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.model.fields,field_description:salesman_report_aging_wizard.field_salesman_report_aging_line__wizard_id
+#: model:ir.model.fields,field_description:account_statement_wizard.field_account_statement_line__wizard_id
+msgid "Wizard"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.model.fields,field_description:salesman_report_aging_wizard.field_salesman_report_aging_line__partner_id
+#: model:ir.model.fields,field_description:account_statement_wizard.field_account_statement_line__partner_id
+msgid "Customer"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.model.fields,field_description:salesman_report_aging_wizard.field_salesman_report_aging_line__amount
+msgid "Amount"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.model.fields,field_description:salesman_report_aging_wizard.field_salesman_report_aging_line__invoice_count
+msgid "Invoices"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.model,name:account_statement_wizard.model_account_statement_wizard
+msgid "Account Statement Wizard"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.model.fields,field_description:account_statement_wizard.field_account_statement_wizard__date_from
+msgid "From Date"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.model.fields,field_description:account_statement_wizard.field_account_statement_wizard__date_to
+msgid "To Date"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.model.fields,field_description:account_statement_wizard.field_account_statement_wizard__include_invoices
+msgid "Include Invoices"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.model.fields,field_description:account_statement_wizard.field_account_statement_wizard__include_payments
+msgid "Include Payments"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.model.fields,field_description:account_statement_wizard.field_account_statement_wizard__opening_balance
+msgid "Opening Balance"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.model.fields,field_description:account_statement_wizard.field_account_statement_wizard__closing_balance
+msgid "Closing Balance"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: code:addons/el_nmo_salesman_reports/models/account_statement_wizard.py:0
+#, python-format
+msgid "Statement Lines"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: code:addons/el_nmo_salesman_reports/models/account_statement_wizard.py:0
+#, python-format
+msgid "From Date (%(from)s) cannot be later than To Date (%(to)s)."
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.model,name:account_statement_wizard.model_account_statement_line
+msgid "Account Statement Line"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.model.fields,field_description:account_statement_wizard.field_account_statement_line__date
+msgid "Date"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.model.fields,field_description:account_statement_wizard.field_account_statement_line__move_id
+msgid "Invoice"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.model.fields,field_description:account_statement_wizard.field_account_statement_line__payment_id
+msgid "Payment"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.model.fields,field_description:account_statement_wizard.field_account_statement_line__ref
+msgid "Reference"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.model.fields,field_description:account_statement_wizard.field_account_statement_line__line_type
+msgid "Type"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.model.fields.selection:account_statement_wizard.selection__account_statement_line__line_type__invoice
+msgid "Invoice"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.model.fields.selection:account_statement_wizard.selection__account_statement_line__line_type__refund
+msgid "Refund"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.model.fields.selection:account_statement_wizard.selection__account_statement_line__line_type__payment
+msgid "Payment"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.model.fields,field_description:account_statement_wizard.field_account_statement_line__debit
+msgid "Debit"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.model.fields,field_description:account_statement_wizard.field_account_statement_line__credit
+msgid "Credit"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.model.fields,field_description:account_statement_wizard.field_account_statement_line__balance
+msgid "Balance"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.ui.view,arch_db:el_nmo_salesman_reports.view_aging_bucket_list
+msgid "View Invoices"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.ui.view,arch_db:el_nmo_salesman_reports.view_aging_bucket_search
+msgid "Active"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.ui.view,arch_db:el_nmo_salesman_reports.view_aging_bucket_search
+msgid "Archived"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.ui.view,arch_db:el_nmo_salesman_reports.view_aging_bucket_search
+msgid "Company"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.ui.view,arch_db:el_nmo_salesman_reports.view_aging_bucket_form
+msgid "Help"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.ui.view,arch_db:el_nmo_salesman_reports.view_aging_bucket_form
+msgid "Examples:"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.ui.view,arch_db:el_nmo_salesman_reports.view_aging_bucket_form
+msgid "Current (Not Overdue): days_from = -99999, days_to = 0"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.ui.view,arch_db:el_nmo_salesman_reports.view_aging_bucket_form
+msgid "1-30 Days Overdue: days_from = 1, days_to = 30"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.ui.view,arch_db:el_nmo_salesman_reports.view_aging_bucket_form
+msgid "120+ Days: days_from = 121, days_to = 99999"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.ui.view,arch_db:el_nmo_salesman_reports.view_aging_bucket_form
+msgid "e.g. 1-30 Days"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.ui.view,arch_db:el_nmo_salesman_reports.view_aging_bucket_search
+msgid "Search Aging Buckets"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.ui.view,arch_db:el_nmo_salesman_reports.view_aging_bucket_search
+msgid "Group By"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.actions.act_window,help:el_nmo_salesman_reports.action_aging_bucket
+msgid "Create your first aging bucket"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.actions.act_window,help:el_nmo_salesman_reports.action_aging_bucket
+msgid "Aging buckets define how overdue days are grouped in the Aging Report. Common configurations: 0-30 / 31-60 / 61-90 / 91-120 / 120+."
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.ui.view,arch_db:el_nmo_salesman_reports.view_account_move_aging_pivot
+msgid "Aging Pivot"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.ui.view,arch_db:el_nmo_salesman_reports.view_account_move_aging_search
+msgid "Overdue"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.ui.view,arch_db:el_nmo_salesman_reports.view_account_move_aging_search
+msgid "Not Yet Due"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.ui.view,arch_db:el_nmo_salesman_reports.view_account_move_aging_search
+msgid "Customer"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.ui.view,arch_db:el_nmo_salesman_reports.view_account_move_aging_search
+msgid "Aging Bucket"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.actions.act_window,help:el_nmo_salesman_reports.action_account_move_aging_pivot
+msgid "No posted unpaid customer invoices found."
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.actions.act_window,help:el_nmo_salesman_reports.action_account_move_aging_pivot
+msgid "This pivot groups open customer invoices by aging bucket. Use the filters above to narrow by customer or salesperson."
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.ui.view,arch_db:el_nmo_salesman_reports.view_partner_form_salesman_reports
+msgid "Aging"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.ui.view,arch_db:el_nmo_salesman_reports.view_partner_form_salesman_reports
+msgid "Aging Report"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.ui.view,arch_db:el_nmo_salesman_reports.view_partner_form_salesman_reports
+msgid "Statement"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.ui.view,arch_db:el_nmo_salesman_reports.view_partner_form_salesman_reports
+msgid "Account Statement"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.ui.view,arch_db:el_nmo_salesman_reports.view_partner_form_salesman_reports
+msgid "Aging Pivot"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.ui.view,arch_db:el_nmo_salesman_reports.res_config_settings_view_form_salesman_reports
+msgid "Access Mode"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.ui.view,arch_db:el_nmo_salesman_reports.res_config_settings_view_form_salesman_reports
+msgid "Salesperson Access Mode"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.ui.view,arch_db:el_nmo_salesman_reports.res_config_settings_view_form_salesman_reports
+msgid "Choose whether salespersons see only their own customers (partner.user_id = current user) or all customers in the Aging Report and Account Statement wizards."
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.ui.view,arch_db:el_nmo_salesman_reports.res_config_settings_view_form_salesman_reports
+msgid "Aging Buckets"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.ui.view,arch_db:el_nmo_salesman_reports.res_config_settings_view_form_salesman_reports
+msgid "Active Aging Buckets"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.ui.view,arch_db:el_nmo_salesman_reports.res_config_settings_view_form_salesman_reports
+msgid "Buckets defined for the current company. Use the action below to add/edit/reorder buckets."
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.ui.view,arch_db:el_nmo_salesman_reports.res_config_settings_view_form_salesman_reports
+msgid "Configure Aging Buckets"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.ui.view,arch_db:el_nmo_salesman_reports.view_salesman_aging_wizard_form
+msgid "Aging Report Wizard"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.ui.view,arch_db:el_nmo_salesman_reports.view_salesman_aging_wizard_form
+#: model:ir.ui.view,arch_db:el_nmo_salesman_reports.view_account_statement_wizard_form
+msgid "Filters"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.ui.view,arch_db:el_nmo_salesman_reports.view_salesman_aging_wizard_form
+#: model:ir.ui.view,arch_db:el_nmo_salesman_reports.view_account_statement_wizard_form
+msgid "Customers"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.ui.view,arch_db:el_nmo_salesman_reports.view_salesman_aging_wizard_form
+#: model:ir.ui.view,arch_db:el_nmo_salesman_reports.view_account_statement_wizard_form
+msgid "Leave empty to include all customers (subject to your access mode setting)."
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.ui.view,arch_db:el_nmo_salesman_reports.view_salesman_aging_wizard_form
+msgid "Summary"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.ui.view,arch_db:el_nmo_salesman_reports.view_salesman_aging_wizard_form
+msgid "Result Lines"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.ui.view,arch_db:el_nmo_salesman_reports.view_salesman_aging_wizard_form
+msgid "Total"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.ui.view,arch_db:el_nmo_salesman_reports.view_salesman_aging_wizard_form
+msgid "Total Invoices"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.ui.view,arch_db:el_nmo_salesman_reports.view_salesman_aging_wizard_form
+#: model:ir.ui.view,arch_db:el_nmo_salesman_reports.view_account_statement_wizard_form
+msgid "Print PDF"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.ui.view,arch_db:el_nmo_salesman_reports.view_salesman_aging_wizard_form
+msgid "View Pivot"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.ui.view,arch_db:el_nmo_salesman_reports.view_salesman_aging_wizard_form
+#: model:ir.ui.view,arch_db:el_nmo_salesman_reports.view_account_statement_wizard_form
+msgid "View Lines"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.ui.view,arch_db:el_nmo_salesman_reports.view_salesman_aging_wizard_form
+#: model:ir.ui.view,arch_db:el_nmo_salesman_reports.view_account_statement_wizard_form
+msgid "Cancel"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.ui.view,arch_db:el_nmo_salesman_reports.view_account_statement_wizard_form
+msgid "Account Statement Wizard"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.ui.view,arch_db:el_nmo_salesman_reports.view_account_statement_wizard_form
+msgid "Date Range"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.ui.view,arch_db:el_nmo_salesman_reports.view_account_statement_wizard_form
+msgid "Balances"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.ui.view,arch_db:el_nmo_salesman_reports.view_account_statement_wizard_form
+msgid "Statement Lines"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.ui.view,arch_db:el_nmo_salesman_reports.view_account_statement_wizard_form
+msgid "Total Debit"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.ui.view,arch_db:el_nmo_salesman_reports.view_account_statement_wizard_form
+msgid "Total Credit"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.ui.menu,name:el_nmo_salesman_reports.menu_salesman_reports_root
+#: model:ir.ui.menu,name:el_nmo_salesman_reports.menu_contacts_salesman_reports
+msgid "Salesman Reports"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.ui.menu,name:el_nmo_salesman_reports.menu_account_statement_wizard
+#: model:ir.ui.menu,name:el_nmo_salesman_reports.menu_contacts_statement_wizard
+msgid "Account Statement PDF"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.actions.act_window,name:el_nmo_salesman_reports.action_account_statement_wizard
+msgid "Account Statement (PDF)"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.actions.report,name:el_nmo_salesman_reports.action_account_statement_pdf
+msgid "Account Statement PDF"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.ui.menu,name:el_nmo_salesman_reports.menu_salesman_reports_config
+msgid "Configuration"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:res.groups,name:el_nmo_salesman_reports.group_salesman_reports_manager
+msgid "Salesman Reports: Manager"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:res.groups,comment:el_nmo_salesman_reports.group_salesman_reports_manager
+msgid "Grants configuration access to Salesman Reports module (aging buckets, settings)."
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:aging.bucket,name:el_nmo_salesman_reports.bucket_current
+msgid "Current"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:aging.bucket,name:el_nmo_salesman_reports.bucket_1_30
+msgid "1-30 Days"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:aging.bucket,name:el_nmo_salesman_reports.bucket_31_60
+msgid "31-60 Days"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:aging.bucket,name:el_nmo_salesman_reports.bucket_61_90
+msgid "61-90 Days"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:aging.bucket,name:el_nmo_salesman_reports.bucket_91_120
+msgid "91-120 Days"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:aging.bucket,name:el_nmo_salesman_reports.bucket_120_plus
+msgid "120+ Days"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model:ir.cron,name:el_nmo_salesman_reports.cron_recompute_account_aging
+msgid "Salesman Reports: Recompute Account Aging"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model_terms:ir.ui.view,arch_db:el_nmo_salesman_reports.report_aging_pdf
+msgid "Aging Report"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model_terms:ir.ui.view,arch_db:el_nmo_salesman_reports.report_aging_pdf
+msgid "As-Of Date:"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model_terms:ir.ui.view,arch_db:el_nmo_salesman_reports.report_aging_pdf
+#: model_terms:ir.ui.view,arch_db:el_nmo_salesman_reports.report_account_statement_pdf
+msgid "Company:"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model_terms:ir.ui.view,arch_db:el_nmo_salesman_reports.report_aging_pdf
+#: model_terms:ir.ui.view,arch_db:el_nmo_salesman_reports.report_account_statement_pdf
+msgid "Salesperson:"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model_terms:ir.ui.view,arch_db:el_nmo_salesman_reports.report_aging_pdf
+msgid "Overdue Only:"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model_terms:ir.ui.view,arch_db:el_nmo_salesman_reports.report_aging_pdf
+msgid "Yes"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model_terms:ir.ui.view,arch_db:el_nmo_salesman_reports.report_aging_pdf
+msgid "No"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model_terms:ir.ui.view,arch_db:el_nmo_salesman_reports.report_aging_pdf
+msgid "Customer"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model_terms:ir.ui.view,arch_db:el_nmo_salesman_reports.report_aging_pdf
+msgid "Total"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model_terms:ir.ui.view,arch_db:el_nmo_salesman_reports.report_aging_pdf
+msgid "Generated by el_nmo_salesman_reports module."
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model_terms:ir.ui.view,arch_db:el_nmo_salesman_reports.report_aging_pdf
+msgid "Totals reflect open (unpaid) customer invoices as of the As-Of Date. Negative amounts represent credit notes (refunds) exceeding invoices."
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model_terms:ir.ui.view,arch_db:el_nmo_salesman_reports.report_account_statement_pdf
+msgid "Account Statement"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model_terms:ir.ui.view,arch_db:el_nmo_salesman_reports.report_account_statement_pdf
+msgid "From:"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model_terms:ir.ui.view,arch_db:el_nmo_salesman_reports.report_account_statement_pdf
+msgid "To:"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model_terms:ir.ui.view,arch_db:el_nmo_salesman_reports.report_account_statement_pdf
+msgid "Opening Balance:"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model_terms:ir.ui.view,arch_db:el_nmo_salesman_reports.report_account_statement_pdf
+msgid "Closing Balance:"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model_terms:ir.ui.view,arch_db:el_nmo_salesman_reports.report_account_statement_pdf
+msgid "Date"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model_terms:ir.ui.view,arch_db:el_nmo_salesman_reports.report_account_statement_pdf
+msgid "Reference"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model_terms:ir.ui.view,arch_db:el_nmo_salesman_reports.report_account_statement_pdf
+msgid "Type"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model_terms:ir.ui.view,arch_db:el_nmo_salesman_reports.report_account_statement_pdf
+msgid "Debit"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model_terms:ir.ui.view,arch_db:el_nmo_salesman_reports.report_account_statement_pdf
+msgid "Credit"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model_terms:ir.ui.view,arch_db:el_nmo_salesman_reports.report_account_statement_pdf
+msgid "Balance"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model_terms:ir.ui.view,arch_db:el_nmo_salesman_reports.report_account_statement_pdf
+msgid "Opening Balance"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model_terms:ir.ui.view,arch_db:el_nmo_salesman_reports.report_account_statement_pdf
+msgid "Invoice"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model_terms:ir.ui.view,arch_db:el_nmo_salesman_reports.report_account_statement_pdf
+msgid "Refund"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model_terms:ir.ui.view,arch_db:el_nmo_salesman_reports.report_account_statement_pdf
+msgid "Payment"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model_terms:ir.ui.view,arch_db:el_nmo_salesman_reports.report_account_statement_pdf
+msgid "Closing Balance"
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model_terms:ir.ui.view,arch_db:el_nmo_salesman_reports.report_account_statement_pdf
+msgid "No statement lines found for the selected filters."
+msgstr ""
+
+#. module: el_nmo_salesman_reports
+#: model_terms:ir.ui.view,arch_db:el_nmo_salesman_reports.report_account_statement_pdf
+msgid "Includes posted customer invoices (out_invoice + out_refund) and inbound payments. Opening balance reflects all customer transactions prior to the From date."
+msgstr ""

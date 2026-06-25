@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_transaction_log_manager,transaction.log.manager,model_transaction_log,group_transaction_tracker_manager,1,0,0,0
+access_transaction_log_user,transaction.log.user,model_transaction_log,group_transaction_tracker_user,1,0,0,0
+access_tracker_config_manager,transaction.tracker.config.manager,model_transaction_tracker_config,group_transaction_tracker_manager,1,1,1,0
