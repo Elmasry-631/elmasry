@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+        Stock Movement Report — Security (Odoo 19 privilege pattern)
+        ===========================================================
+        LAW 11/14: uses res.groups.privilege (Odoo 19 native)
+        E-VER-020: res.groups in Odoo 18+ must NOT have category_id field
+                   (groups auto-attach via the res.groups.privilege sibling).
+        PRE-F020: model is 'res.groups.privilege' (not 'ir.module.privilege'
+                  which was removed in Odoo 19).
+    -->
+    <record id="privilege_stock_movement_report" model="res.groups.privilege">
+        <field name="name">Stock Movement Report</field>
+        <field name="category_id" ref="base.module_category_inventory_inventory"/>
+        <field name="sequence">20</field>
+    </record>
+
+    <record id="group_stock_movement_report_user" model="res.groups">
+        <field name="name">Stock Movement Report: User</field>
+        <field name="implied_ids" eval="[(4, ref('stock.group_stock_user'))]"/>
+    </record>
+
+    <record id="group_stock_movement_report_manager" model="res.groups">
+        <field name="name">Stock Movement Report: Manager</field>
+        <field name="implied_ids" eval="[(4, ref('group_stock_movement_report_user'))]"/>
+    </record>
+</odoo>

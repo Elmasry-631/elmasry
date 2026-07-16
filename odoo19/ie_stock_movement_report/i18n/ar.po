@@ -1,0 +1,191 @@
+# Arabic translations for Stock Movement Report
+# Copyright (C) 2026 Ibrahim Elmasry
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo 19.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-07-04 12:30+0000\n"
+"PO-Revision-Date: 2026-07-04 12:30+0000\n"
+"Last-Translator: Ibrahim Elmasry <ibrahim.elmasry@gmail.com>\n"
+"Language-Team: Arabic <ar@li.org>\n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 ? 4 : 5);\n"
+
+#. module: ie_stock_movement_report
+#: model:ir.ui.view,arch_db:ie_stock_movement_report.report_stock_movement_document
+msgid "Stock Movement Report"
+msgstr "تقرير حركة المخزون"
+
+#. module: ie_stock_movement_report
+msgid "Period:"
+msgstr "الفترة:"
+
+#. module: ie_stock_movement_report
+msgid "to"
+msgstr "إلى"
+
+#. module: ie_stock_movement_report
+msgid "Warehouse:"
+msgstr "المستودع:"
+
+#. module: ie_stock_movement_report
+msgid "Location:"
+msgstr "الموقع:"
+
+#. module: ie_stock_movement_report
+msgid "Product:"
+msgstr "المنتج:"
+
+#. module: ie_stock_movement_report
+msgid "Category:"
+msgstr "الفئة:"
+
+#. module: ie_stock_movement_report
+msgid "UoM:"
+msgstr "وحدة القياس:"
+
+#. module: ie_stock_movement_report
+msgid "Opening Balance"
+msgstr "الرصيد الافتتاحي"
+
+#. module: ie_stock_movement_report
+msgid "Qty"
+msgstr "الكمية"
+
+#. module: ie_stock_movement_report
+msgid "Unit Cost"
+msgstr "تكلفة الوحدة"
+
+#. module: ie_stock_movement_report
+msgid "Total Value"
+msgstr "إجمالي القيمة"
+
+#. module: ie_stock_movement_report
+msgid "Transaction Details"
+msgstr "تفاصيل الحركة"
+
+#. module: ie_stock_movement_report
+msgid "Date"
+msgstr "التاريخ"
+
+#. module: ie_stock_movement_report
+msgid "Reference"
+msgstr "المرجع"
+
+#. module: ie_stock_movement_report
+msgid "Partner"
+msgstr "الشريك"
+
+#. module: ie_stock_movement_report
+msgid "Source"
+msgstr "المصدر"
+
+#. module: ie_stock_movement_report
+msgid "Destination"
+msgstr "الوجهة"
+
+#. module: ie_stock_movement_report
+msgid "IN"
+msgstr "وارد"
+
+#. module: ie_stock_movement_report
+msgid "OUT"
+msgstr "صادر"
+
+#. module: ie_stock_movement_report
+msgid "BALANCE"
+msgstr "الرصيد"
+
+#. module: ie_stock_movement_report
+msgid "Unit"
+msgstr "الوحدة"
+
+#. module: ie_stock_movement_report
+msgid "Unit Price"
+msgstr "سعر الوحدة"
+
+#. module: ie_stock_movement_report
+msgid "Total"
+msgstr "الإجمالي"
+
+#. module: ie_stock_movement_report
+msgid "No movements in this period."
+msgstr "لا توجد حركات في هذه الفترة."
+
+#. module: ie_stock_movement_report
+msgid "Product Summary"
+msgstr "ملخص المنتج"
+
+#. module: ie_stock_movement_report
+msgid "Opening Qty"
+msgstr "الكمية الافتتاحية"
+
+#. module: ie_stock_movement_report
+msgid "Total In"
+msgstr "إجمالي الوارد"
+
+#. module: ie_stock_movement_report
+msgid "Total Out"
+msgstr "إجمالي الصادر"
+
+#. module: ie_stock_movement_report
+msgid "Closing Qty"
+msgstr "الكمية الختامية"
+
+#. module: ie_stock_movement_report
+msgid "Inventory Value"
+msgstr "قيمة المخزون"
+
+#. module: ie_stock_movement_report
+#: model:ir.model.fields,field_description:ie_stock_movement_report.field_stock_movement_report_wizard__date_from
+msgid "From Date"
+msgstr "من تاريخ"
+
+#. module: ie_stock_movement_report
+#: model:ir.model.fields,field_description:ie_stock_movement_report.field_stock_movement_report_wizard__date_to
+msgid "To Date"
+msgstr "إلى تاريخ"
+
+#. module: ie_stock_movement_report
+msgid "Warehouse"
+msgstr "المستودع"
+
+#. module: ie_stock_movement_report
+msgid "Location"
+msgstr "الموقع"
+
+#. module: ie_stock_movement_report
+msgid "Product"
+msgstr "المنتج"
+
+#. module: ie_stock_movement_report
+msgid "Product Category"
+msgstr "فئة المنتج"
+
+#. module: ie_stock_movement_report
+msgid "Period"
+msgstr "الفترة"
+
+#. module: ie_stock_movement_report
+msgid "Filters (optional)"
+msgstr "عوامل التصفية (اختياري)"
+
+#. module: ie_stock_movement_report
+msgid "Print PDF"
+msgstr "طباعة PDF"
+
+#. module: ie_stock_movement_report
+msgid "Cancel"
+msgstr "إلغاء"
+
+#. module: ie_stock_movement_report
+msgid "Stock Movement Report: User"
+msgstr "تقرير حركة المخزون: مستخدم"
+
+#. module: ie_stock_movement_report
+msgid "Stock Movement Report: Manager"
+msgstr "تقرير حركة المخزون: مدير"

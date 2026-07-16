@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+        Stock Movement Report — Menu
+        ============================
+        Placed under Inventory > Reporting
+    -->
+    <menuitem id="menu_stock_movement_report_root"
+              name="Stock Movement Report"
+              parent="stock.menu_warehouse_report"
+              action="action_stock_movement_report_wizard"
+              sequence="30"/>
+</odoo>

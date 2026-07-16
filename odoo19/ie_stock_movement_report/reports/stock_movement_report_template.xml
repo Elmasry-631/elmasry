@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+        Stock Movement Report — QWeb PDF Template
+        =========================================
+        LAW 19 compliance (v10.30.0):
+          - t-foreach placed BETWEEN html_container and external_layout
+          - uses `o.` (not `object.`)
+          - uses `t-options="..."` (not `t-field-options="..."`)
+          - every <td> text wrapped in <span>
+          - one product per page (page-break-after: always)
+        Multi-language:
+          - All literal strings wrapped in _() via t-esc
+          - RTL handled by wkhtmltopdf when context lang = ar_001
+        Paper: A4 Landscape (paperformat defined below)
+    -->
+    <template id="report_stock_movement_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page" style="page-break-after: always;">
+                        <!-- ─── Report Header (per page) ──────────────────── -->
+                        <div class="oe_structure">
+                            <h2 class="text-center" style="margin-bottom: 5px;">
+                                <span t-esc="_('Stock Movement Report')" />
+                            </h2>
+                            <div class="text-center text-muted" style="margin-bottom: 15px;">
+                                <span t-esc="_('Period:')" />
+                                <span t-esc="o.date_from" />
+                                <span t-esc="_('to')" />
+                                <span t-esc="o.date_to" />
+                                <t t-if="o.warehouse">
+                                    <span> | </span>
+                                    <span t-esc="_('Warehouse:')" />
+                                    <span t-field="o.warehouse.name" />
+                                </t>
+                                <t t-if="o.location">
+                                    <span> | </span>
+                                    <span t-esc="_('Location:')" />
+                                    <span t-field="o.location.name" />
+                                </t>
+                            </div>
+                        </div>
+
+                        <!-- ─── Product section (one product per doc) ───── -->
+                        <t t-set="prod" t-value="o.product" />
+
+                        <!-- Product information -->
+                                <div class="product-info" style="margin-top: 10px; margin-bottom: 10px; padding: 8px; background-color: #f5f5f5;">
+                                    <strong><span t-esc="_('Product:')" /></strong>
+                                    <span t-esc="prod.product_name" />
+                                    <t t-if="prod.product_code">
+                                        <span> (</span>
+                                        <span t-esc="prod.product_code" />
+                                        <span>)</span>
+                                    </t>
+                                    <span> | </span>
+                                    <strong><span t-esc="_('Category:')" /></strong>
+                                    <span t-esc="prod.category" />
+                                    <span> | </span>
+                                    <strong><span t-esc="_('UoM:')" /></strong>
+                                    <span t-esc="prod.uom" />
+                                </div>
+
+                                <!-- Opening Balance -->
+                                <h4 style="margin-top: 15px;">
+                                    <span t-esc="_('Opening Balance')" />
+                                </h4>
+                                <table class="table table-sm table-bordered o_stock_movement_opening">
+                                    <thead>
+                                        <tr class="active">
+                                            <th><span t-esc="_('Qty')" /></th>
+                                            <th><span t-esc="_('Unit Cost')" /></th>
+                                            <th><span t-esc="_('Total Value')" /></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="text-right"><span t-esc="prod.opening.qty" t-options='{"widget": "float", "precision": 2}' /></td>
+                                            <td class="text-right"><span t-esc="prod.opening.unit_cost" t-options='{"widget": "monetary", "display_currency": currency_id}' /></td>
+                                            <td class="text-right"><span t-esc="prod.opening.value" t-options='{"widget": "monetary", "display_currency": currency_id}' /></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <!-- Transaction details -->
+                                <h4 style="margin-top: 20px;">
+                                    <span t-esc="_('Transaction Details')" />
+                                </h4>
+                                <table class="table table-sm table-bordered o_stock_movement_lines">
+                                    <thead>
+                                        <tr class="active">
+                                            <th rowspan="2"><span t-esc="_('Date')" /></th>
+                                            <th rowspan="2"><span t-esc="_('Reference')" /></th>
+                                            <th rowspan="2"><span t-esc="_('Partner')" /></th>
+                                            <th rowspan="2"><span t-esc="_('Source')" /></th>
+                                            <th rowspan="2"><span t-esc="_('Destination')" /></th>
+                                            <th colspan="4" class="text-center"><span t-esc="_('IN')" /></th>
+                                            <th colspan="4" class="text-center"><span t-esc="_('OUT')" /></th>
+                                            <th colspan="4" class="text-center"><span t-esc="_('BALANCE')" /></th>
+                                        </tr>
+                                        <tr class="active">
+                                            <th><span t-esc="_('Qty')" /></th>
+                                            <th><span t-esc="_('Unit')" /></th>
+                                            <th><span t-esc="_('Unit Price')" /></th>
+                                            <th><span t-esc="_('Total')" /></th>
+                                            <th><span t-esc="_('Qty')" /></th>
+                                            <th><span t-esc="_('Unit')" /></th>
+                                            <th><span t-esc="_('Unit Price')" /></th>
+                                            <th><span t-esc="_('Total')" /></th>
+                                            <th><span t-esc="_('Qty')" /></th>
+                                            <th><span t-esc="_('Unit')" /></th>
+                                            <th><span t-esc="_('Unit Price')" /></th>
+                                            <th><span t-esc="_('Total')" /></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="prod.lines" t-as="line">
+                                            <tr>
+                                                <td><span t-esc="line.date" /></td>
+                                                <td><span t-esc="line.reference" /></td>
+                                                <td><span t-esc="line.partner" /></td>
+                                                <td><span t-esc="line.source" /></td>
+                                                <td><span t-esc="line.destination" /></td>
+                                                <td class="text-right"><span t-esc="line.in_qty" t-options='{"widget": "float", "precision": 2}' /></td>
+                                                <td><span t-esc="line.in_unit" /></td>
+                                                <td class="text-right"><span t-esc="line.in_price" t-options='{"widget": "monetary", "display_currency": currency_id}' /></td>
+                                                <td class="text-right"><span t-esc="line.in_total" t-options='{"widget": "monetary", "display_currency": currency_id}' /></td>
+                                                <td class="text-right"><span t-esc="line.out_qty" t-options='{"widget": "float", "precision": 2}' /></td>
+                                                <td><span t-esc="line.out_unit" /></td>
+                                                <td class="text-right"><span t-esc="line.out_price" t-options='{"widget": "monetary", "display_currency": currency_id}' /></td>
+                                                <td class="text-right"><span t-esc="line.out_total" t-options='{"widget": "monetary", "display_currency": currency_id}' /></td>
+                                                <td class="text-right"><span t-esc="line.bal_qty" t-options='{"widget": "float", "precision": 2}' /></td>
+                                                <td><span t-esc="line.bal_unit" /></td>
+                                                <td class="text-right"><span t-esc="line.bal_price" t-options='{"widget": "monetary", "display_currency": currency_id}' /></td>
+                                                <td class="text-right"><span t-esc="line.bal_total" t-options='{"widget": "monetary", "display_currency": currency_id}' /></td>
+                                            </tr>
+                                        </t>
+                                        <t t-if="not prod.lines">
+                                            <tr>
+                                                <td colspan="17" class="text-center text-muted">
+                                                    <span t-esc="_('No movements in this period.')" />
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+
+                                <!-- Product Summary -->
+                                <h4 style="margin-top: 20px;">
+                                    <span t-esc="_('Product Summary')" />
+                                </h4>
+                                <table class="table table-sm table-bordered o_stock_movement_summary">
+                                    <thead>
+                                        <tr class="active">
+                                            <th><span t-esc="_('Opening Qty')" /></th>
+                                            <th><span t-esc="_('Total In')" /></th>
+                                            <th><span t-esc="_('Total Out')" /></th>
+                                            <th><span t-esc="_('Closing Qty')" /></th>
+                                            <th><span t-esc="_('Inventory Value')" /></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="text-right"><span t-esc="prod.summary.opening_qty" t-options='{"widget": "float", "precision": 2}' /></td>
+                                            <td class="text-right"><span t-esc="prod.summary.total_in" t-options='{"widget": "float", "precision": 2}' /></td>
+                                            <td class="text-right"><span t-esc="prod.summary.total_out" t-options='{"widget": "float", "precision": 2}' /></td>
+                                            <td class="text-right"><span t-esc="prod.summary.closing_qty" t-options='{"widget": "float", "precision": 2}' /></td>
+                                            <td class="text-right"><span t-esc="prod.summary.inventory_value" t-options='{"widget": "monetary", "display_currency": currency_id}' /></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <!-- A4 Landscape paper format (must be defined before the report action) -->
+    <record id="paperformat_stock_movement_landscape" model="report.paperformat">
+        <field name="name">Stock Movement Report (A4 Landscape)</field>
+        <field name="format">A4</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">40</field>
+        <field name="margin_bottom">25</field>
+        <field name="margin_left">7</field>
+        <field name="margin_right">7</field>
+        <field name="header_spacing">35</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <!-- Main report action -->
+    <record id="action_report_stock_movement" model="ir.actions.report">
+        <field name="name">Stock Movement Report (PDF)</field>
+        <field name="model">stock.movement.report.wizard</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">ie_stock_movement_report.report_stock_movement_document</field>
+        <field name="report_file">ie_stock_movement_report.report_stock_movement_document</field>
+        <field name="binding_model_id" ref="model_stock_movement_report_wizard" />
+        <field name="binding_type">report</field>
+        <field name="paperformat_id" ref="paperformat_stock_movement_landscape" />
+        <field name="print_report_name">'Stock Movement Report - %s to %s' % (data.get('date_from', ''), data.get('date_to', ''))</field>
+    </record>
+</odoo>
