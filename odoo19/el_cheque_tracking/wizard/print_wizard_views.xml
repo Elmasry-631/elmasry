@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="cheque_print_wizard_form" model="ir.ui.view">
+        <field name="name">cheque.print.wizard.form</field>
+        <field name="model">cheque.print.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Print Cheques">
+                <group>
+                    <group>
+                        <field name="report_type"/>
+                    </group>
+                </group>
+                <group string="Selected Cheques">
+                    <field name="cheque_ids" nolabel="1">
+                        <list>
+                            <field name="name"/>
+                            <field name="cheque_number"/>
+                            <field name="partner_id"/>
+                            <field name="amount"/>
+                            <field name="state"/>
+                        </list>
+                    </field>
+                </group>
+                <footer>
+                    <button name="action_print" string="Print"
+                            type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_cheque_print_wizard" model="ir.actions.act_window">
+        <field name="name">Print Cheques</field>
+        <field name="res_model">cheque.print.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="model_cheque_cheque"/>
+        <field name="binding_view_types">list</field>
+    </record>
+
+</odoo>

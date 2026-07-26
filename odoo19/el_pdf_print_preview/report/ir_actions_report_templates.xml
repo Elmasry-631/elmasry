@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+        el_pdf_print_preview — Error catcher report template
+        Shown when a report fails to render. Shows a generic error message
+        (no stack traces — security).
+    -->
+    <template id="report_error_catcher">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page" style="padding: 40px;">
+                    <h3 style="color: #d9534f;">
+                        Report Generation Error
+                    </h3>
+                    <br/>
+                    <div class="alert alert-danger" role="alert">
+                        <p t-esc="error"/>
+                    </div>
+                    <br/>
+                    <p style="color: #999; font-size: 12px;">
+                        If this problem persists, please contact your system administrator.
+                    </p>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

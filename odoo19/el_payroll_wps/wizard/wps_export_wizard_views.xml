@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_wps_export_wizard_form" model="ir.ui.view">
+        <field name="name">wps.export.wizard.form</field>
+        <field name="model">wps.export.wizard</field>
+        <field name="arch" type="xml">
+            <form string="WPS Export">
+                <group>
+                    <field name="month"/>
+                </group>
+                <footer>
+                    <button name="action_export" type="object"
+                            string="Export CSV" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_wps_export_wizard" model="ir.actions.act_window">
+        <field name="name">WPS Export</field>
+        <field name="res_model">wps.export.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_wps_export"
+              name="WPS Export"
+              parent="hr_work_entry_enterprise.menu_hr_payroll_root"
+              action="action_wps_export_wizard"
+              sequence="100"/>
+
+</odoo>

@@ -1,0 +1,47 @@
+# Arabic translations for el_pdf_print_preview
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0\n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Preview PDF before print"
+msgstr "معاينة PDF قبل الطباعة"
+
+msgid "When enabled, clicking a Print button opens a PDF.js viewer dialog instead of downloading the PDF file."
+msgstr "عند التفعيل، الضغط على زر الطباعة يفتح عارض PDF بدلاً من تنزيل الملف."
+
+msgid "Automatic printing"
+msgstr "طباعة تلقائية"
+
+msgid "When enabled, the browser's print dialog opens automatically after the PDF is generated."
+msgstr "عند التفعيل، تفتح نافذة طباعة المتصفح تلقائياً بعد توليد PDF."
+
+msgid "PDF Preview Settings"
+msgstr "إعدادات معاينة PDF"
+
+msgid "Report Preview Settings"
+msgstr "إعدادات معاينة التقارير"
+
+msgid "Preview Settings"
+msgstr "إعدادات المعاينة"
+
+msgid "PDF Preview"
+msgstr "معاينة PDF"
+
+msgid "Opening print dialog..."
+msgstr "جاري فتح نافذة الطباعة..."
+
+msgid "Close"
+msgstr "إغلاق"
+
+msgid "PDF Error Catcher"
+msgstr "ملقط أخطاء PDF"
+
+msgid "Report Generation Error"
+msgstr "خطأ في توليد التقرير"
+
+msgid "If this problem persists, please contact your system administrator."
+msgstr "إذا استمرت المشكلة، يرجى الاتصال بمسؤول النظام."

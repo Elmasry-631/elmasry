@@ -1,0 +1,12 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+cheque_cheque_user,cheque.cheque user,model_cheque_cheque,group_cheque_user,1,1,1,0
+cheque_cheque_manager,cheque.cheque manager,model_cheque_cheque,group_cheque_manager,1,1,1,1
+cheque_deposit_user,cheque.deposit user,model_cheque_deposit,group_cheque_user,1,1,1,0
+cheque_deposit_manager,cheque.deposit manager,model_cheque_deposit,group_cheque_manager,1,1,1,1
+cheque_return_user,cheque.return user,model_cheque_return,group_cheque_user,1,0,0,0
+cheque_return_manager,cheque.return manager,model_cheque_return,group_cheque_manager,1,1,1,0
+cheque_return_reason_user,cheque.return.reason user,model_cheque_return_reason,group_cheque_user,1,0,0,0
+cheque_return_reason_manager,cheque.return.reason manager,model_cheque_return_reason,group_cheque_manager,1,1,1,1
+cheque_deposit_wizard_user,cheque.deposit.wizard user,model_cheque_deposit_wizard,group_cheque_user,1,1,1,1
+cheque_return_wizard_user,cheque.return.wizard user,model_cheque_return_wizard,group_cheque_user,1,1,1,1
+cheque_print_wizard_user,cheque.print.wizard user,model_cheque_print_wizard,group_cheque_user,1,1,1,1

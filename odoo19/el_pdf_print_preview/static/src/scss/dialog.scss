@@ -1,0 +1,19 @@
+/* el_pdf_print_preview — Dialog SCSS */
+
+.o_pdf_preview_dialog {
+    padding: 0;
+    overflow: hidden;
+
+    iframe {
+        width: 100%;
+        height: 75vh;
+        border: 0;
+        border-radius: 4px;
+        background: #f5f5f5;
+    }
+}
+
+/* Dark theme support */
+.o_web_client.o_dark .o_pdf_preview_dialog iframe {
+    background: #1a1a1a;
+}

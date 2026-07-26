@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+        el_pdf_print_preview — Error catcher report action
+        Used by ir.actions.report._render_qweb_pdf fallback.
+    -->
+    <record id="action_report_error_catcher" model="ir.actions.report">
+        <field name="name">PDF Error Catcher</field>
+        <field name="model">res.users</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">el_pdf_print_preview.report_error_catcher</field>
+        <field name="print_report_name">'Report Error'</field>
+    </record>
+</odoo>

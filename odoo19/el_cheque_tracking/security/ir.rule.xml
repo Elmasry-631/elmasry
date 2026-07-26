@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ═════════════════════════════════════════════════════════════ -->
+    <!--  Multi-company record rules                                    -->
+    <!--  Every cheque-domain record is company-scoped. Users in        -->
+    <!--  company A cannot read / write / create / delete company B's   -->
+    <!--  records, even if they have the cheque group.                  -->
+    <!-- ═════════════════════════════════════════════════════════════ -->
+
+    <!-- cheque.cheque -->
+    <record id="cheque_cheque_company_rule" model="ir.rule">
+        <field name="name">Cheque: multi-company</field>
+        <field name="model_id" ref="model_cheque_cheque"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+
+    <!-- cheque.deposit -->
+    <record id="cheque_deposit_company_rule" model="ir.rule">
+        <field name="name">Cheque Deposit: multi-company</field>
+        <field name="model_id" ref="model_cheque_deposit"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+
+    <!-- cheque.return -->
+    <record id="cheque_return_company_rule" model="ir.rule">
+        <field name="name">Cheque Return: multi-company</field>
+        <field name="model_id" ref="model_cheque_return"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+
+    <!-- cheque.return.reason -->
+    <record id="cheque_return_reason_company_rule" model="ir.rule">
+        <field name="name">Cheque Return Reason: multi-company</field>
+        <field name="model_id" ref="model_cheque_return_reason"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+
+    <!-- Personal return-reason rule: users see only their own company's
+         reasons, even with multi-company access. -->
+    <record id="cheque_return_reason_user_rule" model="ir.rule">
+        <field name="name">Cheque Return Reason: user company</field>
+        <field name="model_id" ref="model_cheque_return_reason"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="groups" eval="[(4, ref('group_cheque_user'))]"/>
+    </record>
+</odoo>

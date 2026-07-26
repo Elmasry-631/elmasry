@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.cheque.tracking</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="account.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//block[@id='storno']" position="after">
+                <h2>EL Cheque Tracking</h2>
+                <div class="row mt16 o_settings_container" id="cheque_tracking_settings">
+                    <div class="col-12 col-lg-6 o_setting_box">
+                        <div class="o_setting_right_pane">
+                            <span class="o_form_label">Cheque Accounts</span>
+                            <span class="fa fa-lg fa-building-o" title="Company"/>
+                            <div class="text-muted">
+                                Default accounts used when cheque tracking creates journal entries.
+                            </div>
+                            <div class="content-group mt16">
+                                <div class="row mt16">
+                                    <label for="cheque_received_account_id" class="col-lg-5 o_light_label"/>
+                                    <field name="cheque_received_account_id"/>
+                                </div>
+                                <div class="row mt16">
+                                    <label for="cheque_under_collection_account_id" class="col-lg-5 o_light_label"/>
+                                    <field name="cheque_under_collection_account_id"/>
+                                </div>
+                                <div class="row mt16">
+                                    <label for="cheque_issued_account_id" class="col-lg-5 o_light_label"/>
+                                    <field name="cheque_issued_account_id"/>
+                                </div>
+                                <div class="row mt16">
+                                    <label for="cheque_penalty_income_account_id" class="col-lg-5 o_light_label"/>
+                                    <field name="cheque_penalty_income_account_id"/>
+                                </div>
+                                <div class="row mt16">
+                                    <label for="cheque_bank_charges_account_id" class="col-lg-5 o_light_label"/>
+                                    <field name="cheque_bank_charges_account_id"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-6 o_setting_box">
+                        <div class="o_setting_right_pane">
+                            <span class="o_form_label">Cheque Lifecycle Rules</span>
+                            <div class="text-muted">
+                                Rules for post-dated reminders, stale cheque detection,
+                                re-deposit attempts, and approval threshold.
+                            </div>
+                            <div class="content-group mt16">
+                                <div class="row mt16">
+                                    <label for="cheque_stale_months" class="col-lg-7 o_light_label"/>
+                                    <field name="cheque_stale_months"/>
+                                </div>
+                                <div class="row mt16">
+                                    <label for="cheque_pdc_reminder_days" class="col-lg-7 o_light_label"/>
+                                    <field name="cheque_pdc_reminder_days"/>
+                                </div>
+                                <div class="row mt16">
+                                    <label for="cheque_max_redeposits" class="col-lg-7 o_light_label"/>
+                                    <field name="cheque_max_redeposits"/>
+                                </div>
+                                <div class="row mt16">
+                                    <label for="cheque_approval_threshold" class="col-lg-7 o_light_label"/>
+                                    <field name="cheque_approval_threshold"/>
+                                    <field name="company_currency_id" invisible="1"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="action_report_deposit_slip" model="ir.actions.report">
+        <field name="name">Cheque Deposit Slip</field>
+        <field name="model">cheque.deposit</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">el_cheque_tracking.report_deposit_slip_document</field>
+        <field name="report_file">el_cheque_tracking.report_deposit_slip_document</field>
+        <field name="print_report_name">'Deposit_Slip_%s' % (object.name or 'deposit')</field>
+        <field name="binding_model_id" ref="model_cheque_deposit"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="report_deposit_slip_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc" t-key="doc.id">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <div class="text-center mt-3 mb-4">
+                            <h2>Deposit Slip</h2>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-6">
+                                <p><b>Reference:</b> <t t-esc="doc.name"/></p>
+                                <p><b>Deposit Date:</b> <t t-esc="doc.deposit_date"/></p>
+                                <p><b>Bank Journal:</b> <t t-esc="doc.bank_journal_id.name"/></p>
+                            </div>
+                            <div class="col-6 text-end">
+                                <p><b>Total Cheques:</b> <t t-esc="len(doc.cheque_ids)"/></p>
+                                <p><b>Total Amount:</b>
+                                    <t t-esc="doc.total_amount"
+                                       t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/>
+                                </p>
+                            </div>
+                        </div>
+                        <table class="table table-sm table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Cheque Reference</th>
+                                    <th>Cheque Number</th>
+                                    <th>Partner</th>
+                                    <th>Bank</th>
+                                    <th class="text-end">Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="doc.cheque_ids" t-as="cheque" t-key="cheque.id">
+                                    <td><t t-esc="cheque_index + 1"/></td>
+                                    <td><t t-esc="cheque.name"/></td>
+                                    <td><t t-esc="cheque.cheque_number"/></td>
+                                    <td><t t-esc="cheque.partner_id.name"/></td>
+                                    <td><t t-esc="cheque.bank_id.name"/></td>
+                                    <td class="text-end">
+                                        <t t-esc="cheque.amount"
+                                           t-options='{"widget": "monetary", "display_currency": cheque.currency_id}'/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr class="table-active fw-bold">
+                                    <td colspan="5" class="text-end">Total</td>
+                                    <td class="text-end">
+                                        <t t-esc="doc.total_amount"
+                                           t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+</odoo>

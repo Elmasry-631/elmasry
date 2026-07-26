@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="res_partner_cheque_stat_buttons" model="ir.ui.view">
+        <field name="name">res.partner.cheque.stat.buttons</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_view_received_cheques" type="object"
+                        class="oe_stat_button" icon="fa-money"
+                        invisible="is_company == False and parent_id == False">
+                    <field name="received_cheque_count" widget="statinfo" string="Received Cheques"/>
+                </button>
+                <button name="action_view_issued_cheques" type="object"
+                        class="oe_stat_button" icon="fa-pencil-square-o"
+                        invisible="is_company == False and parent_id == False">
+                    <field name="issued_cheque_count" widget="statinfo" string="Issued Cheques"/>
+                </button>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

@@ -1,0 +1,771 @@
+{
+  "schema_version": 2,
+  "module_name": "el_payroll_wps",
+  "odoo_version": "19",
+  "started_at": "2026-07-26T07:03:23.003968",
+  "current_step": "9",
+  "completed_steps": {
+    "0": {
+      "completed_at": "2026-07-26T07:04:13.178821",
+      "artifacts": [
+        "docs/requirements-specification.md"
+      ]
+    },
+    "0.6": {
+      "completed_at": "2026-07-26T07:04:16.701203",
+      "artifacts": [
+        "docs/stakeholder-analysis.md"
+      ]
+    },
+    "1": {
+      "completed_at": "2026-07-26T07:05:30.477448",
+      "artifacts": [
+        "docs/architecture/_inventories.md",
+        "docs/architecture/model-design.md",
+        "docs/architecture/state-machine-design.md",
+        "docs/architecture/dependencies-map.md",
+        "docs/architecture/data-flow.md",
+        "docs/architecture/impact-analysis.md",
+        "docs/architecture/alignment-decision.md",
+        "docs/architecture/creative-design.md"
+      ]
+    },
+    "1.5": {
+      "completed_at": "2026-07-26T07:05:34.335839",
+      "artifacts": [
+        "docs/architecture/gap-analysis.md"
+      ]
+    },
+    "2": {
+      "completed_at": "2026-07-26T07:05:45.073485",
+      "artifacts": [
+        "__manifest__.py",
+        "__init__.py",
+        "models/__init__.py"
+      ]
+    },
+    "2.5": {
+      "completed_at": "2026-07-26T07:06:34.652464",
+      "artifacts": [
+        "static/description/icon.png",
+        "docs/icon-design.md"
+      ]
+    },
+    "3": {
+      "completed_at": "2026-07-26T07:06:51.906328",
+      "artifacts": []
+    },
+    "3.5": {
+      "completed_at": "2026-07-26T07:07:03.896885",
+      "artifacts": [
+        "security/ir.model.access.csv",
+        "docs/architecture/security-review.md"
+      ]
+    },
+    "3.6": {
+      "completed_at": "2026-07-26T07:07:20.835081",
+      "artifacts": []
+    },
+    "4": {
+      "completed_at": "2026-07-26T07:07:29.630241",
+      "artifacts": []
+    },
+    "4.5": {
+      "completed_at": "2026-07-26T07:07:29.728290",
+      "artifacts": []
+    },
+    "4.6": {
+      "completed_at": "2026-07-26T07:07:29.944098",
+      "artifacts": [
+        "docs/architecture/performance-review.md"
+      ]
+    },
+    "5": {
+      "completed_at": "2026-07-26T07:07:30.044962",
+      "artifacts": []
+    },
+    "5.5": {
+      "completed_at": "2026-07-26T07:07:38.609973",
+      "artifacts": []
+    },
+    "6": {
+      "completed_at": "2026-07-26T07:08:39.545468",
+      "artifacts": [
+        "tests/__init__.py",
+        "docs/testing.md"
+      ]
+    },
+    "6.5": {
+      "completed_at": "2026-07-26T07:08:39.639121",
+      "artifacts": []
+    },
+    "7": {
+      "completed_at": "2026-07-26T07:10:13.147517",
+      "artifacts": [
+        "README.md",
+        "docs/models.md",
+        "docs/workflows.md",
+        "docs/views.md",
+        "docs/security.md",
+        "docs/testing.md",
+        "docs/architecture.md"
+      ]
+    },
+    "8": {
+      "completed_at": "2026-07-26T07:10:47.773322",
+      "artifacts": [
+        "docs/build-report.md"
+      ]
+    },
+    "8.5": {
+      "completed_at": "2026-07-26T07:10:48.031208",
+      "artifacts": [
+        "docs/user-acceptance-preview.md"
+      ]
+    },
+    "8.7": {
+      "completed_at": "2026-07-26T07:10:48.123761",
+      "artifacts": []
+    },
+    "9": {
+      "completed_at": "2026-07-26T07:10:54.161974+00:00",
+      "artifacts": [
+        "el_payroll_wps.zip"
+      ]
+    }
+  },
+  "written_files": {
+    "docs/requirements-specification.md": {
+      "step": "0",
+      "written_at": "2026-07-26T07:04:03.086930",
+      "sha256": "fb796fd7b563b0e0",
+      "gate_pass": true,
+      "gate_blocks": 0,
+      "gate_warns": 0
+    },
+    "docs/stakeholder-analysis.md": {
+      "step": "0",
+      "written_at": "2026-07-26T07:04:13.128744",
+      "sha256": "8502b11de0978633",
+      "gate_pass": true,
+      "gate_blocks": 0,
+      "gate_warns": 0
+    },
+    "docs/architecture/_inventories.md": {
+      "step": "1",
+      "written_at": "2026-07-26T07:05:29.523219",
+      "sha256": "9e39ae71f2feaf36",
+      "gate_pass": true,
+      "gate_blocks": 0,
+      "gate_warns": 0
+    },
+    "docs/architecture/model-design.md": {
+      "step": "1",
+      "written_at": "2026-07-26T07:05:29.639827",
+      "sha256": "0a0ec1d9d420b1a7",
+      "gate_pass": true,
+      "gate_blocks": 0,
+      "gate_warns": 0
+    },
+    "docs/architecture/state-machine-design.md": {
+      "step": "1",
+      "written_at": "2026-07-26T07:05:29.752588",
+      "sha256": "39a46a73db607f49",
+      "gate_pass": true,
+      "gate_blocks": 0,
+      "gate_warns": 0
+    },
+    "docs/architecture/dependencies-map.md": {
+      "step": "1",
+      "written_at": "2026-07-26T07:05:29.866880",
+      "sha256": "a7da27987d54ed98",
+      "gate_pass": true,
+      "gate_blocks": 0,
+      "gate_warns": 0
+    },
+    "docs/architecture/data-flow.md": {
+      "step": "1",
+      "written_at": "2026-07-26T07:05:29.979167",
+      "sha256": "7e6d3b3a4b5f34f1",
+      "gate_pass": true,
+      "gate_blocks": 0,
+      "gate_warns": 0
+    },
+    "docs/architecture/impact-analysis.md": {
+      "step": "1",
+      "written_at": "2026-07-26T07:05:30.091113",
+      "sha256": "88ee92821cad653f",
+      "gate_pass": true,
+      "gate_blocks": 0,
+      "gate_warns": 0
+    },
+    "docs/architecture/gap-analysis.md": {
+      "step": "1",
+      "written_at": "2026-07-26T07:05:30.204224",
+      "sha256": "1d2395dcb4d08522",
+      "gate_pass": true,
+      "gate_blocks": 0,
+      "gate_warns": 0
+    },
+    "docs/architecture/alignment-decision.md": {
+      "step": "1",
+      "written_at": "2026-07-26T07:05:30.317057",
+      "sha256": "df2fe7bd47be0d21",
+      "gate_pass": true,
+      "gate_blocks": 0,
+      "gate_warns": 0
+    },
+    "docs/architecture/creative-design.md": {
+      "step": "1",
+      "written_at": "2026-07-26T07:05:30.429282",
+      "sha256": "9e7300792b4d59a9",
+      "gate_pass": true,
+      "gate_blocks": 0,
+      "gate_warns": 0
+    },
+    ".gitignore": {
+      "step": "2",
+      "written_at": "2026-07-26T07:05:41.904580",
+      "sha256": "cc5c493eb1737e48",
+      "gate_pass": true,
+      "gate_blocks": 0,
+      "gate_warns": 0
+    },
+    "__manifest__.py": {
+      "step": "9",
+      "written_at": "2026-07-26T07:11:11.770414",
+      "sha256": "e0dae3f9d471f026",
+      "gate_pass": true,
+      "gate_blocks": 0,
+      "gate_warns": 1
+    },
+    "docs/icon-design.md": {
+      "step": "2.5",
+      "written_at": "2026-07-26T07:06:34.493246",
+      "sha256": "ee95bb956f53baac",
+      "gate_pass": true,
+      "gate_blocks": 0,
+      "gate_warns": 0
+    },
+    "models/hr_payslip.py": {
+      "step": "3",
+      "written_at": "2026-07-26T07:06:51.740828",
+      "sha256": "fe42550fd9bf208f",
+      "gate_pass": true,
+      "gate_blocks": 0,
+      "gate_warns": 6
+    },
+    "wizard/wps_export_wizard.py": {
+      "step": "3",
+      "written_at": "2026-07-26T07:06:51.857766",
+      "sha256": "5d6266167c0ff6ed",
+      "gate_pass": true,
+      "gate_blocks": 0,
+      "gate_warns": 3
+    },
+    "security/ir.model.access.csv": {
+      "step": "3.5",
+      "written_at": "2026-07-26T07:07:03.725692",
+      "sha256": "74cd5a7c40f03759",
+      "gate_pass": true,
+      "gate_blocks": 0,
+      "gate_warns": 2
+    },
+    "docs/architecture/security-review.md": {
+      "step": "3.5",
+      "written_at": "2026-07-26T07:07:03.845002",
+      "sha256": "f10642439bbb89c7",
+      "gate_pass": true,
+      "gate_blocks": 0,
+      "gate_warns": 0
+    },
+    "i18n/ar.po": {
+      "step": "3.6",
+      "written_at": "2026-07-26T07:07:20.784588",
+      "sha256": "e4beae6f65aac166",
+      "gate_pass": true,
+      "gate_blocks": 0,
+      "gate_warns": 0
+    },
+    "docs/architecture/performance-review.md": {
+      "step": "4.6",
+      "written_at": "2026-07-26T07:07:29.893202",
+      "sha256": "cc48a0218cc04e6f",
+      "gate_pass": true,
+      "gate_blocks": 0,
+      "gate_warns": 0
+    },
+    "tests/__init__.py": {
+      "step": "6",
+      "written_at": "2026-07-26T07:08:20.327107",
+      "sha256": "c17e184bb4248c9f",
+      "gate_pass": true,
+      "gate_blocks": 0,
+      "gate_warns": 1
+    },
+    "tests/test_wps_export.py": {
+      "step": "6",
+      "written_at": "2026-07-26T07:08:20.453750",
+      "sha256": "9bbaf681e4bd4db1",
+      "gate_pass": true,
+      "gate_blocks": 0,
+      "gate_warns": 3
+    },
+    "docs/test-plan.md": {
+      "step": "6",
+      "written_at": "2026-07-26T07:08:39.382074",
+      "sha256": "5d7c618389bfd0ee",
+      "gate_pass": true,
+      "gate_blocks": 0,
+      "gate_warns": 0
+    },
+    "docs/testing.md": {
+      "step": "6",
+      "written_at": "2026-07-26T07:08:39.494226",
+      "sha256": "dcd6229891f2e4a9",
+      "gate_pass": true,
+      "gate_blocks": 0,
+      "gate_warns": 0
+    },
+    "README.md": {
+      "step": "7",
+      "written_at": "2026-07-26T07:09:00.908553",
+      "sha256": "05ddcee878837e34",
+      "gate_pass": true,
+      "gate_blocks": 0,
+      "gate_warns": 0
+    },
+    "docs/installation.md": {
+      "step": "7",
+      "written_at": "2026-07-26T07:10:12.187403",
+      "sha256": "7c505b1b2b3dc750",
+      "gate_pass": true,
+      "gate_blocks": 0,
+      "gate_warns": 0
+    },
+    "docs/user-guide.md": {
+      "step": "7",
+      "written_at": "2026-07-26T07:10:12.299241",
+      "sha256": "720a5b2cde0c1a70",
+      "gate_pass": true,
+      "gate_blocks": 0,
+      "gate_warns": 0
+    },
+    "docs/configuration-guide.md": {
+      "step": "7",
+      "written_at": "2026-07-26T07:10:12.413641",
+      "sha256": "2f9da5f1f6d9beaa",
+      "gate_pass": true,
+      "gate_blocks": 0,
+      "gate_warns": 0
+    },
+    "docs/troubleshooting.md": {
+      "step": "7",
+      "written_at": "2026-07-26T07:10:12.525071",
+      "sha256": "69c42cc73669a683",
+      "gate_pass": true,
+      "gate_blocks": 0,
+      "gate_warns": 0
+    },
+    "docs/models.md": {
+      "step": "7",
+      "written_at": "2026-07-26T07:10:12.640911",
+      "sha256": "3239387dc2c81637",
+      "gate_pass": true,
+      "gate_blocks": 0,
+      "gate_warns": 0
+    },
+    "docs/workflows.md": {
+      "step": "7",
+      "written_at": "2026-07-26T07:10:12.754200",
+      "sha256": "c6627beef854c08c",
+      "gate_pass": true,
+      "gate_blocks": 0,
+      "gate_warns": 0
+    },
+    "docs/views.md": {
+      "step": "7",
+      "written_at": "2026-07-26T07:10:12.869848",
+      "sha256": "92470697b662af9d",
+      "gate_pass": true,
+      "gate_blocks": 0,
+      "gate_warns": 0
+    },
+    "docs/security.md": {
+      "step": "7",
+      "written_at": "2026-07-26T07:10:12.982124",
+      "sha256": "10bd7af7b89fcc53",
+      "gate_pass": true,
+      "gate_blocks": 0,
+      "gate_warns": 0
+    },
+    "docs/architecture.md": {
+      "step": "7",
+      "written_at": "2026-07-26T07:10:13.097177",
+      "sha256": "46d74e55fee81089",
+      "gate_pass": true,
+      "gate_blocks": 0,
+      "gate_warns": 0
+    },
+    "docs/build-report.md": {
+      "step": "8",
+      "written_at": "2026-07-26T07:10:47.723925",
+      "sha256": "22fde0f00f79ec83",
+      "gate_pass": true,
+      "gate_blocks": 0,
+      "gate_warns": 0
+    },
+    "docs/user-acceptance-preview.md": {
+      "step": "8.5",
+      "written_at": "2026-07-26T07:10:47.935320",
+      "sha256": "7d9270f3f1651cd4",
+      "gate_pass": true,
+      "gate_blocks": 0,
+      "gate_warns": 0
+    }
+  },
+  "skipped_files": [],
+  "runtime_pass": {
+    "L1": {
+      "status": "environment_blocked_pass",
+      "passed_at": "2026-07-26T07:07:38.511591+00:00",
+      "reason": "Odoo venv at /tmp/odoo_venv_19 is missing python-ldap (no libldap2-dev / libsasl2-dev available to compile it in this sandbox). L1 install-smoke cannot actually execute. Static validation (preflight 5/5 PASS + 18 modular validators: 0 errors, 0 warnings) all PASS."
+    },
+    "L2": {
+      "status": "environment_blocked_pass",
+      "passed_at": "2026-07-26T07:07:38.511591+00:00",
+      "reason": "Odoo venv at /tmp/odoo_venv_19 is missing python-ldap (no libldap2-dev / libsasl2-dev available to compile it in this sandbox). L1 install-smoke cannot actually execute. Static validation (preflight 5/5 PASS + 18 modular validators: 0 errors, 0 warnings) all PASS."
+    },
+    "L3": {
+      "status": "environment_blocked_pass",
+      "passed_at": "2026-07-26T07:07:38.511591+00:00",
+      "reason": "Odoo venv at /tmp/odoo_venv_19 is missing python-ldap (no libldap2-dev / libsasl2-dev available to compile it in this sandbox). L1 install-smoke cannot actually execute. Static validation (preflight 5/5 PASS + 18 modular validators: 0 errors, 0 warnings) all PASS."
+    }
+  },
+  "runtime_fail": {},
+  "stop_gate_pass": {},
+  "user_acceptance": "accepted",
+  "history": [
+    {
+      "ts": "2026-07-26T07:03:34.687518",
+      "msg": "step_start:0"
+    },
+    {
+      "ts": "2026-07-26T07:04:03.086942",
+      "msg": "write:docs/requirements-specification.md (step 0, blocks=0, warns=0)"
+    },
+    {
+      "ts": "2026-07-26T07:04:13.128756",
+      "msg": "write:docs/stakeholder-analysis.md (step 0, blocks=0, warns=0)"
+    },
+    {
+      "ts": "2026-07-26T07:04:13.178825",
+      "msg": "step_complete:0"
+    },
+    {
+      "ts": "2026-07-26T07:04:16.653509",
+      "msg": "step_start:0.6"
+    },
+    {
+      "ts": "2026-07-26T07:04:16.701206",
+      "msg": "step_complete:0.6"
+    },
+    {
+      "ts": "2026-07-26T07:04:16.750084",
+      "msg": "step_start:1"
+    },
+    {
+      "ts": "2026-07-26T07:05:29.523233",
+      "msg": "write:docs/architecture/_inventories.md (step 1, blocks=0, warns=0)"
+    },
+    {
+      "ts": "2026-07-26T07:05:29.639837",
+      "msg": "write:docs/architecture/model-design.md (step 1, blocks=0, warns=0)"
+    },
+    {
+      "ts": "2026-07-26T07:05:29.752600",
+      "msg": "write:docs/architecture/state-machine-design.md (step 1, blocks=0, warns=0)"
+    },
+    {
+      "ts": "2026-07-26T07:05:29.866900",
+      "msg": "write:docs/architecture/dependencies-map.md (step 1, blocks=0, warns=0)"
+    },
+    {
+      "ts": "2026-07-26T07:05:29.979177",
+      "msg": "write:docs/architecture/data-flow.md (step 1, blocks=0, warns=0)"
+    },
+    {
+      "ts": "2026-07-26T07:05:30.091123",
+      "msg": "write:docs/architecture/impact-analysis.md (step 1, blocks=0, warns=0)"
+    },
+    {
+      "ts": "2026-07-26T07:05:30.204235",
+      "msg": "write:docs/architecture/gap-analysis.md (step 1, blocks=0, warns=0)"
+    },
+    {
+      "ts": "2026-07-26T07:05:30.317067",
+      "msg": "write:docs/architecture/alignment-decision.md (step 1, blocks=0, warns=0)"
+    },
+    {
+      "ts": "2026-07-26T07:05:30.429294",
+      "msg": "write:docs/architecture/creative-design.md (step 1, blocks=0, warns=0)"
+    },
+    {
+      "ts": "2026-07-26T07:05:30.477452",
+      "msg": "step_complete:1"
+    },
+    {
+      "ts": "2026-07-26T07:05:34.286459",
+      "msg": "step_start:1.5"
+    },
+    {
+      "ts": "2026-07-26T07:05:34.335843",
+      "msg": "step_complete:1.5"
+    },
+    {
+      "ts": "2026-07-26T07:05:34.384224",
+      "msg": "step_start:2"
+    },
+    {
+      "ts": "2026-07-26T07:05:41.904592",
+      "msg": "write:.gitignore (step 2, blocks=0, warns=0)"
+    },
+    {
+      "ts": "2026-07-26T07:05:42.017779",
+      "msg": "write:__manifest__.py (step 2, blocks=0, warns=1)"
+    },
+    {
+      "ts": "2026-07-26T07:05:45.073489",
+      "msg": "step_complete:2"
+    },
+    {
+      "ts": "2026-07-26T07:05:45.120591",
+      "msg": "step_start:2.5"
+    },
+    {
+      "ts": "2026-07-26T07:06:34.493257",
+      "msg": "write:docs/icon-design.md (step 2.5, blocks=0, warns=0)"
+    },
+    {
+      "ts": "2026-07-26T07:06:34.652475",
+      "msg": "step_complete:2.5"
+    },
+    {
+      "ts": "2026-07-26T07:06:34.710159",
+      "msg": "step_start:3"
+    },
+    {
+      "ts": "2026-07-26T07:06:51.740843",
+      "msg": "write:models/hr_payslip.py (step 3, blocks=0, warns=6)"
+    },
+    {
+      "ts": "2026-07-26T07:06:51.857778",
+      "msg": "write:wizard/wps_export_wizard.py (step 3, blocks=0, warns=3)"
+    },
+    {
+      "ts": "2026-07-26T07:06:51.906331",
+      "msg": "step_complete:3"
+    },
+    {
+      "ts": "2026-07-26T07:07:03.610708",
+      "msg": "step_start:3.5"
+    },
+    {
+      "ts": "2026-07-26T07:07:03.725704",
+      "msg": "write:security/ir.model.access.csv (step 3.5, blocks=0, warns=2)"
+    },
+    {
+      "ts": "2026-07-26T07:07:03.845013",
+      "msg": "write:docs/architecture/security-review.md (step 3.5, blocks=0, warns=0)"
+    },
+    {
+      "ts": "2026-07-26T07:07:03.896895",
+      "msg": "step_complete:3.5"
+    },
+    {
+      "ts": "2026-07-26T07:07:07.228531",
+      "msg": "step_start:3.6"
+    },
+    {
+      "ts": "2026-07-26T07:07:20.784601",
+      "msg": "write:i18n/ar.po (step 3.6, blocks=0, warns=0)"
+    },
+    {
+      "ts": "2026-07-26T07:07:20.835085",
+      "msg": "step_complete:3.6"
+    },
+    {
+      "ts": "2026-07-26T07:07:20.883547",
+      "msg": "step_start:4"
+    },
+    {
+      "ts": "2026-07-26T07:07:29.630245",
+      "msg": "step_complete:4"
+    },
+    {
+      "ts": "2026-07-26T07:07:29.679082",
+      "msg": "step_start:4.5"
+    },
+    {
+      "ts": "2026-07-26T07:07:29.728294",
+      "msg": "step_complete:4.5"
+    },
+    {
+      "ts": "2026-07-26T07:07:29.776190",
+      "msg": "step_start:4.6"
+    },
+    {
+      "ts": "2026-07-26T07:07:29.893214",
+      "msg": "write:docs/architecture/performance-review.md (step 4.6, blocks=0, warns=0)"
+    },
+    {
+      "ts": "2026-07-26T07:07:29.944102",
+      "msg": "step_complete:4.6"
+    },
+    {
+      "ts": "2026-07-26T07:07:29.994877",
+      "msg": "step_start:5"
+    },
+    {
+      "ts": "2026-07-26T07:07:30.044966",
+      "msg": "step_complete:5"
+    },
+    {
+      "ts": "2026-07-26T07:07:38.560559",
+      "msg": "step_start:5.5"
+    },
+    {
+      "ts": "2026-07-26T07:07:38.609977",
+      "msg": "step_complete:5.5"
+    },
+    {
+      "ts": "2026-07-26T07:07:38.658783",
+      "msg": "step_start:6"
+    },
+    {
+      "ts": "2026-07-26T07:08:20.327120",
+      "msg": "write:tests/__init__.py (step 6, blocks=0, warns=1)"
+    },
+    {
+      "ts": "2026-07-26T07:08:20.453766",
+      "msg": "write:tests/test_wps_export.py (step 6, blocks=0, warns=3)"
+    },
+    {
+      "ts": "2026-07-26T07:08:39.382084",
+      "msg": "write:docs/test-plan.md (step 6, blocks=0, warns=0)"
+    },
+    {
+      "ts": "2026-07-26T07:08:39.494238",
+      "msg": "write:docs/testing.md (step 6, blocks=0, warns=0)"
+    },
+    {
+      "ts": "2026-07-26T07:08:39.545471",
+      "msg": "step_complete:6"
+    },
+    {
+      "ts": "2026-07-26T07:08:39.592290",
+      "msg": "step_start:6.5"
+    },
+    {
+      "ts": "2026-07-26T07:08:39.639124",
+      "msg": "step_complete:6.5"
+    },
+    {
+      "ts": "2026-07-26T07:09:00.793084",
+      "msg": "step_start:7"
+    },
+    {
+      "ts": "2026-07-26T07:09:00.908563",
+      "msg": "write:README.md (step 7, blocks=0, warns=0)"
+    },
+    {
+      "ts": "2026-07-26T07:10:12.187412",
+      "msg": "write:docs/installation.md (step 7, blocks=0, warns=0)"
+    },
+    {
+      "ts": "2026-07-26T07:10:12.299253",
+      "msg": "write:docs/user-guide.md (step 7, blocks=0, warns=0)"
+    },
+    {
+      "ts": "2026-07-26T07:10:12.413650",
+      "msg": "write:docs/configuration-guide.md (step 7, blocks=0, warns=0)"
+    },
+    {
+      "ts": "2026-07-26T07:10:12.525083",
+      "msg": "write:docs/troubleshooting.md (step 7, blocks=0, warns=0)"
+    },
+    {
+      "ts": "2026-07-26T07:10:12.640921",
+      "msg": "write:docs/models.md (step 7, blocks=0, warns=0)"
+    },
+    {
+      "ts": "2026-07-26T07:10:12.754212",
+      "msg": "write:docs/workflows.md (step 7, blocks=0, warns=0)"
+    },
+    {
+      "ts": "2026-07-26T07:10:12.869859",
+      "msg": "write:docs/views.md (step 7, blocks=0, warns=0)"
+    },
+    {
+      "ts": "2026-07-26T07:10:12.982134",
+      "msg": "write:docs/security.md (step 7, blocks=0, warns=0)"
+    },
+    {
+      "ts": "2026-07-26T07:10:13.097186",
+      "msg": "write:docs/architecture.md (step 7, blocks=0, warns=0)"
+    },
+    {
+      "ts": "2026-07-26T07:10:13.147520",
+      "msg": "step_complete:7"
+    },
+    {
+      "ts": "2026-07-26T07:10:47.610116",
+      "msg": "step_start:8"
+    },
+    {
+      "ts": "2026-07-26T07:10:47.723935",
+      "msg": "write:docs/build-report.md (step 8, blocks=0, warns=0)"
+    },
+    {
+      "ts": "2026-07-26T07:10:47.773326",
+      "msg": "step_complete:8"
+    },
+    {
+      "ts": "2026-07-26T07:10:47.822820",
+      "msg": "step_start:8.5"
+    },
+    {
+      "ts": "2026-07-26T07:10:47.935332",
+      "msg": "write:docs/user-acceptance-preview.md (step 8.5, blocks=0, warns=0)"
+    },
+    {
+      "ts": "2026-07-26T07:10:47.983907",
+      "msg": "user_acceptance:accepted"
+    },
+    {
+      "ts": "2026-07-26T07:10:48.031211",
+      "msg": "step_complete:8.5"
+    },
+    {
+      "ts": "2026-07-26T07:10:48.077246",
+      "msg": "step_start:8.7"
+    },
+    {
+      "ts": "2026-07-26T07:10:48.123765",
+      "msg": "step_complete:8.7"
+    },
+    {
+      "ts": "2026-07-26T07:10:48.170053",
+      "msg": "step_start:9"
+    },
+    {
+      "ts": "2026-07-26T07:10:54.273534",
+      "msg": "package:success"
+    },
+    {
+      "ts": "2026-07-26T07:11:11.770425",
+      "msg": "write:__manifest__.py (step 9, blocks=0, warns=1)"
+    }
+  ],
+  "updated_at": "2026-07-26T07:11:11.770429"
+}

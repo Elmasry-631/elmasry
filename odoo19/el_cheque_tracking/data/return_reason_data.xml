@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- Default return reasons -->
+    <record id="return_reason_nsf" model="cheque.return.reason">
+        <field name="name">Non-Sufficient Funds (NSF)</field>
+        <field name="code">NSF</field>
+        <field name="sequence">10</field>
+        <field name="default_penalty">0</field>
+    </record>
+
+    <record id="return_reason_stale" model="cheque.return.reason">
+        <field name="name">Stale Cheque</field>
+        <field name="code">STALE</field>
+        <field name="sequence">20</field>
+        <field name="default_penalty">0</field>
+    </record>
+
+    <record id="return_reason_damaged" model="cheque.return.reason">
+        <field name="name">Damaged Cheque</field>
+        <field name="code">DAMAGED</field>
+        <field name="sequence">30</field>
+        <field name="default_penalty">0</field>
+    </record>
+
+    <record id="return_reason_other" model="cheque.return.reason">
+        <field name="name">Other</field>
+        <field name="code">OTHER</field>
+        <field name="sequence">90</field>
+        <field name="default_penalty">0</field>
+    </record>
+</odoo>

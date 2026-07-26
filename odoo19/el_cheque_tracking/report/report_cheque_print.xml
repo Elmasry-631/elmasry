@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="action_report_cheque_print" model="ir.actions.report">
+        <field name="name">Print Cheque</field>
+        <field name="model">cheque.cheque</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">el_cheque_tracking.report_cheque_print_document</field>
+        <field name="report_file">el_cheque_tracking.report_cheque_print_document</field>
+        <field name="print_report_name">'Cheque_%s' % (object.name or 'cheque')</field>
+        <field name="binding_model_id" ref="model_cheque_cheque"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="report_cheque_print_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc" t-key="doc.id">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <div class="text-center mt-3 mb-4">
+                            <h2>Cheque</h2>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <p><b>Reference:</b> <t t-esc="doc.name"/></p>
+                                <p><b>Cheque Number:</b> <t t-esc="doc.cheque_number"/></p>
+                                <p><b>Date:</b> <t t-esc="doc.cheque_date"/></p>
+                                <p><b>Due Date:</b> <t t-esc="doc.due_date or ''"/></p>
+                            </div>
+                            <div class="col-6 text-end">
+                                <p><b>Partner:</b> <t t-esc="doc.partner_id.name"/></p>
+                                <p><b>Bank:</b> <t t-esc="doc.bank_id.name"/></p>
+                                <p><b>Type:</b> <t t-esc="doc.cheque_type"/></p>
+                                <p><b>Status:</b> <t t-esc="doc.state"/></p>
+                            </div>
+                        </div>
+                        <div class="text-center mt-5 mb-5">
+                            <h3><t t-esc="doc.amount"
+                                    t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/></h3>
+                            <p class="text-muted">
+                                (<t t-esc="doc.currency_id.amount_to_text(doc.amount)"/>)
+                            </p>
+                        </div>
+                        <div class="row mt-5">
+                            <div class="col-6">
+                                <p>Payee Signature: _________________________</p>
+                            </div>
+                            <div class="col-6 text-end">
+                                <p>Authorized Signature: _________________________</p>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+</odoo>

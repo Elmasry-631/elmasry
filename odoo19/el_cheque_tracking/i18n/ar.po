@@ -1,0 +1,537 @@
+# Translation template for el_cheque_tracking.
+# Copyright (C) 2026 Ibrahim Elmasry
+# This file is distributed under the LGPL-3 license.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-07-09 00:00+0000\n"
+"PO-Revision-Date: 2026-07-09 00:00+0000\n"
+"Last-Translator: Ibrahim Elmasry <ibrahim.elmasry@gmail.com>\n"
+"Language-Team: Arabic\n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 ? 4 : 5);\n"
+"Project-Id-Version: Odoo Server 19.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-07-09 00:00+0000\n"
+"PO-Revision-Date: 2026-07-09 00:00+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+
+#: views/deposit_views.xml:90
+#. module: el_cheque_tracking
+msgid "Bank Journal"
+msgstr "دفتر يومية البنك"
+
+#: models/cheque.py:487
+#. module: el_cheque_tracking
+msgid "Cannot deposit a post-dated cheque before its due date."
+msgstr "لا يمكن إيداع شيك آجل قبل تاريخ استحقاقه."
+
+#: wizard/deposit_wizard.py:60
+#. module: el_cheque_tracking
+msgid "Cannot deposit post-dated cheques before their due date: %s"
+msgstr "لا يمكن إيداع شيكات آجلة قبل تاريخ استحقاقها: %s"
+
+#: models/cheque.py:493
+#. module: el_cheque_tracking
+msgid "Cannot re-deposit cheque. Maximum re-deposit "
+msgstr ""
+
+#: models/cheque.py:773
+#. module: el_cheque_tracking
+msgid "Cheque %s matures on %s."
+msgstr "الشيك %s يستحق في %s."
+
+#: views/cheque_views.xml:228
+#. module: el_cheque_tracking
+msgid "Cheque Analysis"
+msgstr "تحليل الشيكات"
+
+#: views/cheque_views.xml:285
+#. module: el_cheque_tracking
+msgid "Cheque Date"
+msgstr "تاريخ الشيك"
+
+#: views/cheque_views.xml:85
+#. module: el_cheque_tracking
+msgid "Cheque Details"
+msgstr ""
+
+#: models/cheque.py:731
+#. module: el_cheque_tracking
+msgid "Cheque Journal Entries"
+msgstr "قيود الشيك"
+
+#: wizard/return_wizard.py:71
+#: views/return_views.xml:26
+#. module: el_cheque_tracking
+msgid "Cheque Return"
+msgstr "مرتجع شيك"
+
+#: views/cheque_views.xml:243
+#. module: el_cheque_tracking
+msgid "Cheque Summary"
+msgstr "ملخص الشيكات"
+
+#: views/account_payment_views.xml:10
+#: views/account_payment_register_views.xml:10
+#. module: el_cheque_tracking
+msgid "Cheque Tracking"
+msgstr "تتبع الشيكات"
+
+#: models/cheque.py:715
+#. module: el_cheque_tracking
+msgid "Cheque cancelled."
+msgstr "تم إلغاء الشيك."
+
+#: models/cheque.py:537
+#. module: el_cheque_tracking
+msgid "Cheque cleared."
+msgstr "تم تحصيل الشيك."
+
+#: models/cheque.py:245
+#. module: el_cheque_tracking
+msgid "Cheque created."
+msgstr "تم إنشاء الشيك."
+
+#: models/cheque.py:513
+#. module: el_cheque_tracking
+msgid "Cheque deposited under collection."
+msgstr "تم إيداع الشيك تحت التحصيل."
+
+#: models/cheque.py:576
+#. module: el_cheque_tracking
+msgid "Cheque handed over."
+msgstr "تم تسليم الشيك."
+
+#: models/cheque.py:786
+#. module: el_cheque_tracking
+msgid "Cheque is stale based on company configuration."
+msgstr "الشيك قديم وفقاً لإعدادات الشركة."
+
+#: models/cheque.py:723
+#. module: el_cheque_tracking
+msgid "Cheque reset to draft."
+msgstr "تمت إعادة الشيك للمسودة."
+
+#: models/cheque.py:638
+#: models/cheque.py:678
+#. module: el_cheque_tracking
+msgid "Cheque returned. Reason: %s"
+msgstr "تم إرجاع الشيك. السبب: %s"
+
+#: models/cheque.py:473
+#. module: el_cheque_tracking
+msgid "Cheque submitted and moved to holding."
+msgstr "تم تسليم الشيك ونقله إلى الحيازة."
+
+#: models/cheque.py:707
+#. module: el_cheque_tracking
+msgid "Cheque voided."
+msgstr "تم إبطال الشيك."
+
+#: models/res_partner.py:119
+#. module: el_cheque_tracking
+msgid "Cheques"
+msgstr "الشيكات"
+
+#: models/cheque.py:551
+#: models/cheque.py:586
+#. module: el_cheque_tracking
+msgid "Cheques Issued Account"
+msgstr "حساب الشيكات المُصدرة"
+
+#: models/cheque.py:460
+#: models/cheque.py:501
+#. module: el_cheque_tracking
+msgid "Cheques Received Account"
+msgstr "حساب الشيكات المستلمة"
+
+#: models/cheque.py:498
+#: models/cheque.py:525
+#. module: el_cheque_tracking
+msgid "Cheques Under Collection Account"
+msgstr "حساب الشيكات تحت التحصيل"
+
+#: views/cheque_views.xml:269
+#. module: el_cheque_tracking
+msgid "Cleared / Cashed"
+msgstr "محصّل / مصروف"
+
+#: views/deposit_views.xml:30
+#. module: el_cheque_tracking
+msgid "Confirm Deposit"
+msgstr "تأكيد الإيداع"
+
+#: models/deposit.py:113
+#. module: el_cheque_tracking
+msgid "Confirmed deposits cannot be cancelled. Return the cheques first."
+msgstr "لا يمكن إلغاء الإيداعات المؤكدة. أرجع الشيكات أولاً."
+
+#: wizard/deposit_wizard.py:78
+#. module: el_cheque_tracking
+msgid "Deposit"
+msgstr "إيداع"
+
+#: models/deposit.py:116
+#. module: el_cheque_tracking
+msgid "Deposit cancelled."
+msgstr "تم إلغاء الإيداع."
+
+#: models/deposit.py:106
+#. module: el_cheque_tracking
+msgid "Deposit confirmed."
+msgstr "تم تأكيد الإيداع."
+
+#: models/cheque.py:683
+#. module: el_cheque_tracking
+msgid "Follow up returned cheque"
+msgstr "متابعة شيك مرتجع"
+
+#: models/cheque.py:684
+#. module: el_cheque_tracking
+msgid "Follow up returned cheque with partner."
+msgstr "متابعة الشيك المرتجع مع الشريك."
+
+#: views/deposit_views.xml:89
+#: views/return_views.xml:73
+#: views/cheque_views.xml:280
+#. module: el_cheque_tracking
+msgid "Group By"
+msgstr "تجميع حسب"
+
+#: views/cheque_views.xml:47
+#. module: el_cheque_tracking
+msgid "Hand Over"
+msgstr "تسليم"
+
+#: models/cheque.py:344
+#. module: el_cheque_tracking
+msgid "High-value cheque approval required"
+msgstr "مطلوب اعتماد شيك عالي القيمة"
+
+#: views/cheque_views.xml:127
+#. module: el_cheque_tracking
+msgid "Invoices / Bills"
+msgstr "الفواتير"
+
+#: views/cheque_views.xml:111
+#. module: el_cheque_tracking
+msgid "Issued Cheque Handover"
+msgstr "تسليم الشيك المُصدر"
+
+#: views/partner_views.xml:18
+#. module: el_cheque_tracking
+msgid "Issued Cheques"
+msgstr "الشيكات المُصدرة"
+
+#: models/cheque.py:563
+#. module: el_cheque_tracking
+msgid "Issued cheque approved and accounting entry posted."
+msgstr "تم اعتماد الشيك المُصدر وقيد القيد المحاسبي."
+
+#: models/cheque.py:704
+#. module: el_cheque_tracking
+msgid "Issued cheque voided."
+msgstr "تم إبطال الشيك المُصدر."
+
+#: models/cheque.py:599
+#. module: el_cheque_tracking
+msgid "Issued cheque was cashed."
+msgstr "تم صرف الشيك المُصدر."
+
+#: views/return_views.xml:45
+#: views/cheque_views.xml:139
+#. module: el_cheque_tracking
+msgid "Journal Entries"
+msgstr "القيود المحاسبية"
+
+#: wizard/deposit_wizard.py:67
+#. module: el_cheque_tracking
+msgid "Maximum re-deposit attempts exceeded for: %s"
+msgstr "تم تجاوز الحد الأقصى لمحاولات إعادة الإيداع لـ: %s"
+
+#: views/cheque_views.xml:263
+#. module: el_cheque_tracking
+msgid "My Cheques"
+msgstr "شيكاتي"
+
+#: models/cheque.py:409
+#. module: el_cheque_tracking
+msgid "No journal lines to post for cheque %s."
+msgstr "لا توجد بنود قيد لنشرها للشيك %s."
+
+#: models/cheque.py:571
+#. module: el_cheque_tracking
+msgid "Only approved issued cheques can be handed over."
+msgstr "فقط الشيكات المُصدرة المعتمدة يمكن تسليمها."
+
+#: models/cheque.py:721
+#. module: el_cheque_tracking
+msgid "Only cancelled cheques can be reset to draft."
+msgstr "فقط الشيكات الملغاة يمكن إعادتها للمسودة."
+
+#: models/cheque.py:521
+#. module: el_cheque_tracking
+msgid "Only deposited cheques can be cleared."
+msgstr "فقط الشيكات المُودعة يمكن تحصيلها."
+
+#: wizard/return_wizard.py:60
+#: models/cheque.py:609
+#. module: el_cheque_tracking
+msgid "Only deposited, cleared, or handed-over cheques can be returned."
+msgstr "فقط الشيكات المُودعة أو المُحصلة أو المسلمة يمكن إرجاعها."
+
+#: models/cheque.py:713
+#. module: el_cheque_tracking
+msgid "Only draft cheques can be cancelled."
+msgstr "فقط الشيكات المسودة يمكن إلغاؤها."
+
+#: models/cheque.py:458
+#. module: el_cheque_tracking
+msgid "Only draft cheques can be received."
+msgstr "فقط الشيكات المسودة يمكن استلامها."
+
+#: models/deposit.py:96
+#. module: el_cheque_tracking
+msgid "Only draft deposits can be confirmed."
+msgstr "فقط الإيداعات المسودة يمكن تأكيدها."
+
+#: models/cheque.py:548
+#. module: el_cheque_tracking
+msgid "Only draft issued cheques can be approved."
+msgstr "فقط الشيكات المُصدرة المسودة يمكن اعتمادها."
+
+#: models/cheque.py:696
+#. module: el_cheque_tracking
+msgid "Only draft, approved, or handed-over issued cheques can be voided."
+msgstr "فقط الشيكات المُصدرة المسودة أو المعتمدة أو المسلمة يمكن إبطالها."
+
+#: models/cheque.py:584
+#. module: el_cheque_tracking
+msgid "Only handed-over issued cheques can be cashed."
+msgstr "فقط الشيكات المُصدرة المسلمة يمكن صرفها."
+
+#: models/cheque.py:482
+#. module: el_cheque_tracking
+msgid "Only holding or returned cheques can be deposited."
+msgstr "فقط الشيكات تحت الحيازة أو المرتجعة يمكن إيداعها."
+
+#: models/cheque.py:546
+#. module: el_cheque_tracking
+msgid "Only issued cheques can be approved."
+msgstr "فقط الشيكات المُصدرة يمكن اعتمادها."
+
+#: models/cheque.py:582
+#. module: el_cheque_tracking
+msgid "Only issued cheques can be cashed."
+msgstr "فقط الشيكات المُصدرة يمكن صرفها."
+
+#: models/cheque.py:569
+#. module: el_cheque_tracking
+msgid "Only issued cheques can be handed over."
+msgstr "فقط الشيكات المُصدرة يمكن تسليمها."
+
+#: models/cheque.py:693
+#. module: el_cheque_tracking
+msgid "Only issued cheques can be voided."
+msgstr "فقط الشيكات المُصدرة يمكن إبطالها."
+
+#: models/cheque.py:519
+#. module: el_cheque_tracking
+msgid "Only received cheques can be cleared."
+msgstr "فقط الشيكات المستلمة يمكن تحصيلها."
+
+#: models/cheque.py:479
+#. module: el_cheque_tracking
+msgid "Only received cheques can be deposited."
+msgstr "فقط الشيكات المستلمة يمكن إيداعها."
+
+#: models/cheque.py:456
+#. module: el_cheque_tracking
+msgid "Only received cheques can be received."
+msgstr "فقط الشيكات المستلمة يمكن استلامها."
+
+#: views/cheque_views.xml:213
+#. module: el_cheque_tracking
+msgid "PDC Calendar"
+msgstr "تقويم الشيكات الآجلة"
+
+#: models/cheque.py:742
+#. module: el_cheque_tracking
+msgid "Payments"
+msgstr "المدفوعات"
+
+#: views/cheque_views.xml:265
+#. module: el_cheque_tracking
+msgid "Pending Deposit"
+msgstr "بانتظار الإيداع"
+
+#: models/deposit.py:98
+#. module: el_cheque_tracking
+msgid "Please add at least one cheque."
+msgstr "رجاءً أضف شيكاً واحداً على الأقل."
+
+#: models/cheque.py:369
+#. module: el_cheque_tracking
+msgid "Please configure %s in Cheque Tracking settings."
+msgstr "رجاءً اضبط %s في إعدادات تتبع الشيكات."
+
+#: models/cheque.py:647
+#. module: el_cheque_tracking
+msgid "Please configure the Cheque Bank Charges Account."
+msgstr "رجاءً اضبط حساب رسوم بنك الشيك."
+
+#: models/cheque.py:664
+#. module: el_cheque_tracking
+msgid "Please configure the Cheque Penalty Income Account."
+msgstr "رجاءً اضبط حساب إيرادات غرامة الشيك."
+
+#: models/cheque.py:393
+#. module: el_cheque_tracking
+msgid "Please configure the partner accounting account (%s)."
+msgstr "رجاءً اضبط حساب الشريك المحاسبي (%s)."
+
+#: models/cheque.py:378
+#. module: el_cheque_tracking
+msgid "Please select a bank journal with a default account."
+msgstr "رجاءً اختر دفتر يومية بنك بحساب افتراضي."
+
+#: wizard/deposit_wizard.py:55
+#: wizard/print_wizard.py:41
+#. module: el_cheque_tracking
+msgid "Please select at least one cheque."
+msgstr "رجاءً اختر شيكاً واحداً على الأقل."
+
+#: models/cheque.py:772
+#. module: el_cheque_tracking
+msgid "Post-dated cheque maturing"
+msgstr "شيك آجل قارب الاستحقاق"
+
+#: views/deposit_views.xml:36
+#. module: el_cheque_tracking
+msgid "Print Deposit Slip"
+msgstr "طباعة قسيمة الإيداع"
+
+#: views/partner_views.xml:13
+#. module: el_cheque_tracking
+msgid "Received Cheques"
+msgstr "الشيكات المستلمة"
+
+#: views/cheque_views.xml:62
+#. module: el_cheque_tracking
+msgid "Reset to Draft"
+msgstr "إعادة للمسودة"
+
+#: models/cheque.py:612
+#. module: el_cheque_tracking
+msgid "Return Cheque"
+msgstr "إرجاع شيك"
+
+#: views/return_reason_views.xml:23
+#. module: el_cheque_tracking
+msgid "Return Reason"
+msgstr "سبب الإرجاع"
+
+#: views/return_reason_views.xml:8
+#. module: el_cheque_tracking
+msgid "Return Reasons"
+msgstr "أسباب الإرجاع"
+
+#: models/cheque.py:440
+#. module: el_cheque_tracking
+msgid "Reversal for cheque %s"
+msgstr "عكس قيد الشيك %s"
+
+#: models/cheque.py:345
+#. module: el_cheque_tracking
+msgid "Review and approve issued cheque %s."
+msgstr "مراجعة واعتماد الشيك المُصدر %s."
+
+#: models/cheque.py:791
+#. module: el_cheque_tracking
+msgid "Review stale cheque %s."
+msgstr "مراجعة الشيك القديم %s."
+
+#: models/cheque.py:790
+#. module: el_cheque_tracking
+msgid "Stale cheque follow-up"
+msgstr "متابعة شيك قديم"
+
+#: views/cheque_views.xml:117
+#. module: el_cheque_tracking
+msgid "Status Flags"
+msgstr "أعلام الحالة"
+
+#: models/account_payment.py:26
+#: models/account_payment.py:32
+#. module: el_cheque_tracking
+msgid "The cheque type must match the payment: use a received "
+msgstr ""
+
+#: models/account_payment.py:38
+#. module: el_cheque_tracking
+msgid "The payment partner must match the partner on the selected cheque."
+msgstr "شريك الدفعة يجب أن يطابق الشريك على الشيك المحدد."
+
+#: views/cheque_views.xml:277
+#. module: el_cheque_tracking
+msgid "This Month"
+msgstr "هذا الشهر"
+
+#: views/return_views.xml:14
+#. module: el_cheque_tracking
+msgid "Total Charges"
+msgstr "إجمالي الرسوم"
+
+#: views/return_views.xml:15
+#. module: el_cheque_tracking
+msgid "Total Penalty"
+msgstr "إجمالي الغرامة"
+
+#: views/cheque_views.xml:267
+#. module: el_cheque_tracking
+msgid "Under Collection"
+msgstr "تحت التحصيل"
+
+#: models/cheque.py:640
+#: models/cheque.py:679
+#. module: el_cheque_tracking
+msgid "Unknown"
+msgstr "غير معروف"
+
+#: models/cheque.py:261
+#. module: el_cheque_tracking
+msgid "You cannot delete a cheque that is linked to invoices or bills."
+msgstr "لا يمكنك حذف شيك مرتبط بفواتير."
+
+#: models/cheque.py:259
+#. module: el_cheque_tracking
+msgid "You cannot delete a cheque that is linked to payments."
+msgstr "لا يمكنك حذف شيك مرتبط بمدفوعات."
+
+#: models/cheque.py:264
+#. module: el_cheque_tracking
+msgid "You cannot delete a cheque whose journal items are reconciled."
+msgstr "لا يمكنك حذف شيك تم تسوية قيوده."
+
+#: models/cheque.py:390
+#. module: el_cheque_tracking
+msgid "the partner payable account"
+msgstr "حساب الشريك الدائن"
+
+#: models/cheque.py:387
+#. module: el_cheque_tracking
+msgid "the partner receivable account"
+msgstr "حساب الشريك المدين"
+

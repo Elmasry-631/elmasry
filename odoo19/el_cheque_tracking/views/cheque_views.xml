@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ============================================================ -->
+    <!--  cheque.cheque — LIST VIEW                                    -->
+    <!-- ============================================================ -->
+    <record id="cheque_cheque_list" model="ir.ui.view">
+        <field name="name">cheque.cheque.list</field>
+        <field name="model">cheque.cheque</field>
+        <field name="arch" type="xml">
+            <list string="Cheques">
+                <field name="name"/>
+                <field name="cheque_type"/>
+                <field name="cheque_number"/>
+                <field name="cheque_date"/>
+                <field name="due_date"/>
+                <field name="partner_id"/>
+                <field name="bank_id"/>
+                <field name="deposit_account_id"/>
+                <field name="amount" sum="Total"/>
+                <field name="currency_id" groups="base.group_multi_currency"/>
+                <field name="state" widget="badge"
+                       decoration-info="state == 'draft'"
+                       decoration-success="state in ('holding', 'approved', 'handed_over')"
+                       decoration-primary="state in ('deposited', 'cleared', 'cashed')"
+                       decoration-warning="state == 'returned'"
+                       decoration-muted="state in ('cancelled', 'void')"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!--  cheque.cheque — FORM VIEW                                    -->
+    <!-- ============================================================ -->
+    <record id="cheque_cheque_form" model="ir.ui.view">
+        <field name="name">cheque.cheque.form</field>
+        <field name="model">cheque.cheque</field>
+        <field name="arch" type="xml">
+            <form string="Cheque">
+                <header>
+                    <button name="action_receive" string="Receive" type="object"
+                            class="oe_highlight" invisible="cheque_type != 'received' or state != 'draft'"
+                            groups="el_cheque_tracking.group_cheque_user"/>
+                    <button name="action_approve" string="Approve" type="object"
+                            class="oe_highlight" invisible="cheque_type != 'issued' or state != 'draft'"
+                            groups="el_cheque_tracking.group_cheque_manager"/>
+                    <button name="action_hand_over" string="Hand Over" type="object"
+                            class="oe_highlight" invisible="cheque_type != 'issued' or state != 'approved'"
+                            groups="el_cheque_tracking.group_cheque_user"/>
+                    <button name="action_cash" string="Cash" type="object"
+                            class="oe_highlight" invisible="cheque_type != 'issued' or state != 'handed_over'"
+                            groups="el_cheque_tracking.group_cheque_manager"/>
+                    <button name="action_return" string="Return" type="object"
+                            invisible="state not in ('deposited', 'cleared', 'handed_over')"
+                            groups="el_cheque_tracking.group_cheque_manager"/>
+                    <button name="action_void" string="Void" type="object"
+                            invisible="cheque_type != 'issued' or state not in ('draft', 'approved', 'handed_over')"
+                            groups="el_cheque_tracking.group_cheque_manager"/>
+                    <button name="action_cancel" string="Cancel" type="object"
+                            invisible="state != 'draft'"
+                            groups="el_cheque_tracking.group_cheque_user"/>
+                    <button name="action_reset_to_draft" string="Reset to Draft" type="object"
+                            invisible="state != 'cancelled'"
+                            groups="el_cheque_tracking.group_cheque_manager"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,holding,deposited,cleared,approved,handed_over,cashed,returned,cancelled,void"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_moves" type="object" class="oe_stat_button" icon="fa-book">
+                            <field name="move_count" widget="statinfo" string="Entries"/>
+                        </button>
+                        <button name="action_view_payments" type="object" class="oe_stat_button" icon="fa-money">
+                            <field name="payment_count" widget="statinfo" string="Payments"/>
+                        </button>
+                    </div>
+                    <widget name="web_ribbon" title="Returned" bg_color="text-bg-warning"
+                            invisible="state != 'returned'"/>
+                    <widget name="web_ribbon" title="Void" bg_color="text-bg-danger"
+                            invisible="state != 'void'"/>
+                    <div class="oe_title">
+                        <h1><field name="name" readonly="1"/></h1>
+                    </div>
+                    <group>
+                        <group string="Cheque Details">
+                            <field name="cheque_type" readonly="state != 'draft'"/>
+                            <field name="cheque_number" readonly="state != 'draft'"/>
+                            <field name="cheque_date" readonly="state != 'draft'"/>
+                            <field name="due_date" readonly="state != 'draft'"/>
+                            <field name="payee_name" readonly="state != 'draft'"
+                                   invisible="cheque_type != 'issued'"/>
+                        </group>
+                        <group string="Amount">
+                            <field name="amount" readonly="state != 'draft'"/>
+                            <field name="currency_id" groups="base.group_multi_currency" readonly="state != 'draft'"/>
+                            <field name="exchange_rate" groups="base.group_multi_currency" readonly="state != 'draft'"/>
+                            <field name="amount_company_currency" readonly="1"/>
+                            <field name="company_currency_id" invisible="1"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Parties">
+                            <field name="partner_id" readonly="state != 'draft'"/>
+                            <field name="bank_id" readonly="state != 'draft'"/>
+                            <field name="bank_branch_id" readonly="state != 'draft'"/>
+                            <field name="bank_account_id" readonly="state != 'draft'"/>
+                            <field name="deposit_account_id" readonly="state != 'draft'"/>
+                            <field name="responsible_id"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                        <group string="Issued Cheque Handover"
+                               invisible="cheque_type != 'issued'">
+                            <field name="handover_date" readonly="state != 'handed_over'"/>
+                            <field name="handover_recipient" readonly="state != 'handed_over'"/>
+                            <field name="expected_clearing_date"/>
+                        </group>
+                        <group string="Status Flags">
+                            <field name="is_post_dated" readonly="1"/>
+                            <field name="is_stale" readonly="1"/>
+                            <field name="days_until_due" readonly="1"/>
+                            <field name="days_in_state" readonly="1"/>
+                            <field name="return_count" readonly="1"/>
+                            <field name="last_return_date" readonly="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Invoices / Bills">
+                            <field name="invoice_ids" readonly="state not in ('draft', 'holding', 'approved')">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="partner_id"/>
+                                    <field name="invoice_date"/>
+                                    <field name="amount_total"/>
+                                    <field name="amount_residual"/>
+                                    <field name="payment_state"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Journal Entries">
+                            <field name="move_ids" readonly="1">
+                                <list>
+                                    <field name="date"/>
+                                    <field name="name"/>
+                                    <field name="ref"/>
+                                    <field name="journal_id"/>
+                                    <field name="cheque_stage"/>
+                                    <field name="state"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Returns">
+                            <field name="return_ids" readonly="1">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="return_date"/>
+                                    <field name="return_reason_id"/>
+                                    <field name="bank_charges"/>
+                                    <field name="penalty_amount"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Notes">
+                            <field name="notes"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!--  cheque.cheque — KANBAN VIEW                                  -->
+    <!-- ============================================================ -->
+    <record id="cheque_cheque_kanban" model="ir.ui.view">
+        <field name="name">cheque.cheque.kanban</field>
+        <field name="model">cheque.cheque</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="state" class="o_kanban_small_column">
+                <field name="name"/>
+                <field name="cheque_number"/>
+                <field name="partner_id"/>
+                <field name="amount"/>
+                <field name="currency_id"/>
+                <field name="state"/>
+                <field name="cheque_type"/>
+                <templates>
+                    <t t-name="card">
+                        <div t-attf-class="oe_kanban_card oe_kanban_global_click">
+                            <div class="o_kanban_record_title">
+                                <strong><field name="name"/></strong>
+                            </div>
+                            <div>
+                                <field name="cheque_number"/> — <field name="partner_id"/>
+                            </div>
+                            <div>
+                                <span class="text-end"><field name="amount"/> <field name="currency_id"/></span>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!--  cheque.cheque — CALENDAR VIEW                                -->
+    <!-- ============================================================ -->
+    <record id="cheque_cheque_calendar" model="ir.ui.view">
+        <field name="name">cheque.cheque.calendar</field>
+        <field name="model">cheque.cheque</field>
+        <field name="arch" type="xml">
+            <calendar string="PDC Calendar" date_start="due_date" color="cheque_type">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="amount"/>
+            </calendar>
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!--  cheque.cheque — PIVOT VIEW                                   -->
+    <!-- ============================================================ -->
+    <record id="cheque_cheque_pivot" model="ir.ui.view">
+        <field name="name">cheque.cheque.pivot</field>
+        <field name="model">cheque.cheque</field>
+        <field name="arch" type="xml">
+            <pivot string="Cheque Analysis">
+                <field name="cheque_type" type="row"/>
+                <field name="state" type="col"/>
+                <field name="amount_company_currency" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!--  cheque.cheque — GRAPH VIEW                                   -->
+    <!-- ============================================================ -->
+    <record id="cheque_cheque_graph" model="ir.ui.view">
+        <field name="name">cheque.cheque.graph</field>
+        <field name="model">cheque.cheque</field>
+        <field name="arch" type="xml">
+            <graph string="Cheque Summary" type="bar">
+                <field name="state" type="row"/>
+                <field name="amount_company_currency" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!--  SEARCH VIEW                                                  -->
+    <!-- ============================================================ -->
+    <record id="cheque_cheque_search" model="ir.ui.view">
+        <field name="name">cheque.cheque.search</field>
+        <field name="model">cheque.cheque</field>
+        <field name="arch" type="xml">
+            <search string="Cheques">
+                <field name="name"/>
+                <field name="cheque_number"/>
+                <field name="partner_id"/>
+                <field name="bank_id"/>
+                <separator/>
+                <filter string="My Cheques" name="my_cheques"
+                        domain="[('responsible_id', '=', uid)]"/>
+                <filter string="Pending Deposit" name="pending_deposit"
+                        domain="[('state', 'in', ('holding', 'returned'))]"/>
+                <filter string="Under Collection" name="under_collection"
+                        domain="[('state', '=', 'deposited')]"/>
+                <filter string="Cleared / Cashed" name="cleared"
+                        domain="[('state', 'in', ('cleared', 'cashed'))]"/>
+                <separator/>
+                <filter string="Post-Dated" name="post_dated"
+                        domain="[('is_post_dated', '=', True)]"/>
+                <filter string="Stale" name="stale"
+                        domain="[('is_stale', '=', True)]"/>
+                <separator/>
+                <filter string="This Month" name="this_month"
+                        domain="[('cheque_date', '&gt;=', (context_today() - relativedelta(day=1)).strftime('%Y-%m-%d')),
+                                 ('cheque_date', '&lt;=', context_today().strftime('%Y-%m-%d'))]"/>
+                <group>
+                    <filter string="Partner" name="partner" context="{'group_by': 'partner_id'}"/>
+                    <filter string="Bank" name="bank" context="{'group_by': 'bank_id'}"/>
+                    <filter string="Type" name="type" context="{'group_by': 'cheque_type'}"/>
+                    <filter string="Status" name="status" context="{'group_by': 'state'}"/>
+                    <filter string="Cheque Date" name="cheque_date"
+                            context="{'group_by': 'cheque_date'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!--  ACTIONS                                                      -->
+    <!-- ============================================================ -->
+    <record id="action_cheque_received" model="ir.actions.act_window">
+        <field name="name">Received Cheques</field>
+        <field name="res_model">cheque.cheque</field>
+        <field name="view_mode">list,form,kanban,calendar,pivot,graph</field>
+        <field name="domain">[('cheque_type', '=', 'received')]</field>
+        <field name="context">{'default_cheque_type': 'received'}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Create a new received cheque</p>
+        </field>
+    </record>
+
+    <record id="action_cheque_issued" model="ir.actions.act_window">
+        <field name="name">Issued Cheques</field>
+        <field name="res_model">cheque.cheque</field>
+        <field name="view_mode">list,form,kanban,calendar,pivot,graph</field>
+        <field name="domain">[('cheque_type', '=', 'issued')]</field>
+        <field name="context">{'default_cheque_type': 'issued'}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Create a new issued cheque</p>
+        </field>
+    </record>
+
+    <record id="action_cheque_all" model="ir.actions.act_window">
+        <field name="name">All Cheques</field>
+        <field name="res_model">cheque.cheque</field>
+        <field name="view_mode">list,form,kanban,calendar,pivot,graph</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Create a new cheque</p>
+        </field>
+    </record>
+
+</odoo>

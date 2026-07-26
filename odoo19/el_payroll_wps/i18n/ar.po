@@ -1,0 +1,81 @@
+# Arabic translations for el_payroll_wps
+# Copyright (C) 2026 Ibrahim Elmasry
+# This file is distributed under the LGPL-3 license.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo 19.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-07-26 07:00+0000\n"
+"PO-Revision-Date: 2026-07-26 07:00+0000\n"
+"Last-Translator: Ibrahim Elmasry\n"
+"Language-Team: Arabic\n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 ? 4 : 5);\n"
+
+#. module: el_payroll_wps
+#: model:ir.model.fields,field_description:el_payroll_wps.field_hr_payslip__x_others
+msgid "Others"
+msgstr "أخرى"
+
+#. module: el_payroll_wps
+#: model:ir.model.fields,help:el_payroll_wps.field_hr_payslip__x_others
+msgid ""
+"Auto-calculated as Allowances minus Deductions when the payslip is computed. "
+"You can edit it manually afterwards. It is purely informational and has no "
+"effect on the Net Salary."
+msgstr ""
+"يُحسب تلقائياً كالبدلات ناقص الاستقطاعات عند حساب قسيمة الراتب. يمكنك تعديله "
+"يدوياً بعد ذلك. وهو لأغراض العرض فقط ولا يؤثر على صافي الراتب."
+
+#. module: el_payroll_wps
+#: model:ir.actions.act_window,name:el_payroll_wps.action_wps_export_wizard
+msgid "WPS Export"
+msgstr "تصدير الراتب"
+
+#. module: el_payroll_wps
+#: model:ir.ui.view,arch_db:el_payroll_wps.view_wps_export_wizard_form
+msgid "WPS Export"
+msgstr "تصدير الراتب"
+
+#. module: el_payroll_wps
+#: model:ir.ui.view,arch_db:el_payroll_wps.view_wps_export_wizard_form
+msgid "Export CSV"
+msgstr "تصدير CSV"
+
+#. module: el_payroll_wps
+#: model:ir.ui.view,arch_db:el_payroll_wps.view_wps_export_wizard_form
+msgid "Cancel"
+msgstr "إلغاء"
+
+#. module: el_payroll_wps
+#: model:ir.ui.view,arch_db:el_payroll_wps.view_wps_export_wizard_form
+msgid "Month"
+msgstr "الشهر"
+
+#. module: el_payroll_wps
+#: model:ir.model.fields,field_description:el_payroll_wps.field_wps_export_wizard__month
+msgid "Month"
+msgstr "الشهر"
+
+#. module: el_payroll_wps
+#: model:ir.model.fields,help:el_payroll_wps.field_wps_export_wizard__month
+msgid ""
+"Pick any date within the month you want to export. All payslips whose period "
+"falls in that month will be exported."
+msgstr ""
+"اختر أي تاريخ داخل الشهر الذي تريد تصديره. سيتم تصدير جميع قسائم الرواتب "
+"التي تقع فترتها في ذلك الشهر."
+
+#. module: el_payroll_wps
+#: model:ir.ui.menu,name:el_payroll_wps.menu_wps_export
+msgid "WPS Export"
+msgstr "تصدير الراتب"
+
+#. module: el_payroll_wps
+#: model:ir.model,name:el_payroll_wps.model_wps_export_wizard
+msgid "WPS Payroll CSV Export"
+msgstr "تصدير CSV لرواتب WPS"

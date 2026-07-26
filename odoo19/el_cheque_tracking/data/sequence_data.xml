@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- Sequence for cheque.cheque references -->
+    <record id="seq_cheque_cheque" model="ir.sequence">
+        <field name="name">Cheque</field>
+        <field name="code">cheque.cheque</field>
+        <field name="prefix">CHQ/%(year)s/</field>
+        <field name="padding">5</field>
+        <field name="company_id" eval="False"/>
+    </record>
+
+    <!-- Sequence for cheque.deposit references -->
+    <record id="seq_cheque_deposit" model="ir.sequence">
+        <field name="name">Cheque Deposit</field>
+        <field name="code">cheque.deposit</field>
+        <field name="prefix">DEP/%(year)s/</field>
+        <field name="padding">5</field>
+        <field name="company_id" eval="False"/>
+    </record>
+
+    <!-- Sequence for cheque.return references -->
+    <record id="seq_cheque_return" model="ir.sequence">
+        <field name="name">Cheque Return</field>
+        <field name="code">cheque.return</field>
+        <field name="prefix">RET/%(year)s/</field>
+        <field name="padding">5</field>
+        <field name="company_id" eval="False"/>
+    </record>
+</odoo>

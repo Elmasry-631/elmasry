@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- Cheque inbound payment method (received cheques) -->
+    <record id="cheque_payment_method_inbound" model="account.payment.method">
+        <field name="name">Cheque (Inbound)</field>
+        <field name="code">cheque_in</field>
+        <field name="payment_type">inbound</field>
+    </record>
+
+    <!-- Cheque outbound payment method (issued cheques) -->
+    <record id="cheque_payment_method_outbound" model="account.payment.method">
+        <field name="name">Cheque (Outbound)</field>
+        <field name="code">cheque_out</field>
+        <field name="payment_type">outbound</field>
+    </record>
+</odoo>

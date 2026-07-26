@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Top-level menu -->
+    <menuitem id="menu_cheque_tracking_root"
+              name="Cheque Tracking"
+              sequence="55"
+              web_icon="el_cheque_tracking,static/description/icon.png"
+              groups="el_cheque_tracking.group_cheque_user"/>
+
+    <!-- Received -->
+    <menuitem id="menu_cheque_received"
+              name="Received"
+              parent="menu_cheque_tracking_root"
+              sequence="10"/>
+    <menuitem id="menu_cheque_received_list"
+              name="Received Cheques"
+              parent="menu_cheque_received"
+              action="action_cheque_received"
+              sequence="11"/>
+    <menuitem id="menu_cheque_deposit_list"
+              name="Deposits"
+              parent="menu_cheque_received"
+              action="action_cheque_deposit"
+              sequence="12"/>
+
+    <!-- Issued -->
+    <menuitem id="menu_cheque_issued"
+              name="Issued"
+              parent="menu_cheque_tracking_root"
+              sequence="20"/>
+    <menuitem id="menu_cheque_issued_list"
+              name="Issued Cheques"
+              parent="menu_cheque_issued"
+              action="action_cheque_issued"
+              sequence="21"/>
+
+    <!-- Operations -->
+    <menuitem id="menu_cheque_operations"
+              name="Operations"
+              parent="menu_cheque_tracking_root"
+              sequence="30"/>
+    <menuitem id="menu_cheque_all_list"
+              name="All Cheques"
+              parent="menu_cheque_operations"
+              action="action_cheque_all"
+              sequence="31"/>
+    <menuitem id="menu_cheque_return_list"
+              name="Returns"
+              parent="menu_cheque_operations"
+              action="action_cheque_return"
+              sequence="32"/>
+
+    <!-- Configuration -->
+    <menuitem id="menu_cheque_config"
+              name="Configuration"
+              parent="menu_cheque_tracking_root"
+              sequence="90"
+              groups="el_cheque_tracking.group_cheque_manager"/>
+    <menuitem id="menu_cheque_return_reason"
+              name="Return Reasons"
+              parent="menu_cheque_config"
+              action="action_cheque_return_reason"
+              sequence="91"/>
+
+</odoo>

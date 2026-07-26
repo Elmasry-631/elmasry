@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+        el_pdf_print_preview — User form extension
+        Adds "PDF Preview" page to the user form.
+    -->
+    <record id="view_users_pdf_preview_form" model="ir.ui.view">
+        <field name="name">res.users.form.pdf.preview</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="inside">
+                <group string="PDF Preview Settings">
+                    <field name="preview_print" widget="boolean_toggle"/>
+                    <field name="automatic_printing" widget="boolean_toggle"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

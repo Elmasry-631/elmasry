@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="cheque_return_reason_list" model="ir.ui.view">
+        <field name="name">cheque.return.reason.list</field>
+        <field name="model">cheque.return.reason</field>
+        <field name="arch" type="xml">
+            <list string="Return Reasons">
+                <field name="sequence" widget="handle"/>
+                <field name="code"/>
+                <field name="name"/>
+                <field name="default_penalty"/>
+                <field name="currency_id" groups="base.group_multi_currency"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="cheque_return_reason_form" model="ir.ui.view">
+        <field name="name">cheque.return.reason.form</field>
+        <field name="model">cheque.return.reason</field>
+        <field name="arch" type="xml">
+            <form string="Return Reason">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="code"/>
+                            <field name="name"/>
+                            <field name="sequence"/>
+                            <field name="active"/>
+                        </group>
+                        <group>
+                            <field name="default_penalty"/>
+                            <field name="currency_id" groups="base.group_multi_currency"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_cheque_return_reason" model="ir.actions.act_window">
+        <field name="name">Return Reasons</field>
+        <field name="res_model">cheque.return.reason</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

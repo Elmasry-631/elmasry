@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- LIST -->
+    <record id="cheque_return_list" model="ir.ui.view">
+        <field name="name">cheque.return.list</field>
+        <field name="model">cheque.return</field>
+        <field name="arch" type="xml">
+            <list string="Returns">
+                <field name="name"/>
+                <field name="cheque_id"/>
+                <field name="return_date"/>
+                <field name="return_reason_id"/>
+                <field name="bank_charges" sum="Total Charges"/>
+                <field name="penalty_amount" sum="Total Penalty"/>
+                <field name="currency_id" groups="base.group_multi_currency"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- FORM -->
+    <record id="cheque_return_form" model="ir.ui.view">
+        <field name="name">cheque.return.form</field>
+        <field name="model">cheque.return</field>
+        <field name="arch" type="xml">
+            <form string="Cheque Return" create="false" edit="false">
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" readonly="1"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="cheque_id" readonly="1"/>
+                            <field name="return_date" readonly="1"/>
+                            <field name="return_reason_id" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="bank_charges" readonly="1"/>
+                            <field name="penalty_amount" readonly="1"/>
+                            <field name="currency_id" readonly="1"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Journal Entries">
+                            <field name="move_ids" readonly="1">
+                                <list>
+                                    <field name="date"/>
+                                    <field name="ref"/>
+                                    <field name="cheque_stage"/>
+                                    <field name="state"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Notes">
+                            <field name="notes"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- SEARCH -->
+    <record id="cheque_return_search" model="ir.ui.view">
+        <field name="name">cheque.return.search</field>
+        <field name="model">cheque.return</field>
+        <field name="arch" type="xml">
+            <search string="Returns">
+                <field name="name"/>
+                <field name="cheque_id"/>
+                <field name="return_reason_id"/>
+                <group>
+                    <filter string="Reason" name="reason"
+                            context="{'group_by': 'return_reason_id'}"/>
+                    <filter string="Date" name="date"
+                            context="{'group_by': 'return_date'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- ACTION -->
+    <record id="action_cheque_return" model="ir.actions.act_window">
+        <field name="name">Cheque Returns</field>
+        <field name="res_model">cheque.return</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

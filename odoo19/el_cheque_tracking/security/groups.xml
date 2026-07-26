@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ═════════════════════════════════════════════════════════════ -->
+    <!--  Module Privilege (Odoo 19+ pattern)                          -->
+    <!--  Do NOT use ir.module.category or category_id in Odoo 19.      -->
+    <!--  See references/cookbook/05-verbatim-core-patterns.md §9.      -->
+    <!-- ═════════════════════════════════════════════════════════════ -->
+    <record id="res_groups_privilege_cheque_tracking" model="res.groups.privilege">
+        <field name="name">EL Cheque Tracking</field>
+        <field name="sequence">35</field>
+    </record>
+
+    <!-- ═════════════════════════════════════════════════════════════ -->
+    <!--  Cheque User                                                   -->
+    <!--  Can create and track cheques, deposits, and returns.          -->
+    <!-- ═════════════════════════════════════════════════════════════ -->
+    <record id="group_cheque_user" model="res.groups">
+        <field name="name">Cheque User</field>
+        <field name="privilege_id" ref="res_groups_privilege_cheque_tracking"/>
+        <field name="sequence">10</field>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="comment">
+            Users can create and track cheques, batch deposits, and returns.
+            They cannot approve postings or void issued cheques.
+        </field>
+    </record>
+
+    <!-- ═════════════════════════════════════════════════════════════ -->
+    <!--  Cheque Manager                                                -->
+    <!--  Can approve cheque postings, re-deposit returned cheques,     -->
+    <!--  and void issued cheques.                                      -->
+    <!-- ═════════════════════════════════════════════════════════════ -->
+    <record id="group_cheque_manager" model="res.groups">
+        <field name="name">Cheque Manager</field>
+        <field name="privilege_id" ref="res_groups_privilege_cheque_tracking"/>
+        <field name="sequence">20</field>
+        <field name="implied_ids" eval="[(4, ref('group_cheque_user'))]"/>
+        <field name="comment">
+            Managers can approve postings, re-deposit returned cheques, and
+            void issued cheques. They can also see all companies' cheques if
+            they have multi-company access.
+        </field>
+    </record>
+
+    <!-- ═════════════════════════════════════════════════════════════ -->
+    <!--  Cheque Administrator                                          -->
+    <!--  Full access including configuration and security overrides.   -->
+    <!-- ═════════════════════════════════════════════════════════════ -->
+    <record id="group_cheque_admin" model="res.groups">
+        <field name="name">Cheque Administrator</field>
+        <field name="privilege_id" ref="res_groups_privilege_cheque_tracking"/>
+        <field name="sequence">30</field>
+        <field name="implied_ids" eval="[(4, ref('group_cheque_manager'))]"/>
+        <field name="user_ids" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+        <field name="comment">
+            Administrators have full access to cheque configuration,
+            accounting setup, and security overrides.
+        </field>
+    </record>
+</odoo>
