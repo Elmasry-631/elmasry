@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_el_stock_alert_root"
+              name="Negative Stock Alerts"
+              parent="stock.menu_stock_root"
+              sequence="99"
+              groups="group_alert_user"/>
+
+    <menuitem id="menu_el_stock_alert_all"
+              name="All Alerts"
+              parent="menu_el_stock_alert_root"
+              action="action_el_stock_alert"
+              sequence="10"/>
+</odoo>

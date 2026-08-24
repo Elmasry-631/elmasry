@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="mail_template_negative_stock_alert" model="mail.template">
+        <field name="name">Negative Stock Alert Notification</field>
+        <field name="model_id" ref="model_el_stock_alert"/>
+        <field name="subject">Negative Stock Alert: {{ object.name }}</field>
+        <field name="email_to">{{ object.company_id.email or '' }}</field>
+        <field name="partner_to">{{ object.company_id.partner_id.id }}</field>
+        <field name="body_html" type="html">
+            <div style="margin:0px; padding:0px; font-family:Arial,sans-serif;">
+                <h2 style="color:#C62828;">🚫 Negative Stock Alert</h2>
+                <p>A stock move has been rejected to prevent negative stock:</p>
+                <table style="border-collapse:collapse; width:100%;">
+                    <tr><td style="padding:5px; border:1px solid #ddd;"><b>Reference:</b></td><td style="padding:5px; border:1px solid #ddd;">{{ object.name }}</td></tr>
+                    <tr><td style="padding:5px; border:1px solid #ddd;"><b>Product:</b></td><td style="padding:5px; border:1px solid #ddd;">{{ object.product_id.display_name }}</td></tr>
+                    <tr><td style="padding:5px; border:1px solid #ddd;"><b>Location:</b></td><td style="padding:5px; border:1px solid #ddd;">{{ object.location_id.display_name }}</td></tr>
+                    <tr><td style="padding:5px; border:1px solid #ddd;"><b>Requested:</b></td><td style="padding:5px; border:1px solid #ddd;">{{ object.requested_qty }}</td></tr>
+                    <tr><td style="padding:5px; border:1px solid #ddd;"><b>Available:</b></td><td style="padding:5px; border:1px solid #ddd;">{{ object.available_qty }}</td></tr>
+                    <tr><td style="padding:5px; border:1px solid #ddd;"><b>User:</b></td><td style="padding:5px; border:1px solid #ddd;">{{ object.user_id.name }}</td></tr>
+                </table>
+                <p style="color:#666; margin-top:10px;">This is an automated notification from the Prevent Negative Stock module.</p>
+            </div>
+        </field>
+        <field name="auto_delete" eval="False"/>
+    </record>
+</odoo>

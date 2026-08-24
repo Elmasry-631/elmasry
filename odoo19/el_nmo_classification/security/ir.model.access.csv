@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_customer_classification_manager,customer.classification.manager,model_customer_classification,sales_team.group_sale_manager,1,1,1,1
+access_customer_classification_user,customer.classification.user,model_customer_classification,sales_team.group_sale_salesman,1,0,0,0
+access_classification_criteria_manager,classification.criteria.manager,model_classification_criteria,sales_team.group_sale_manager,1,1,1,1
+access_classification_criteria_user,classification.criteria.user,model_classification_criteria,sales_team.group_sale_salesman,1,0,0,0

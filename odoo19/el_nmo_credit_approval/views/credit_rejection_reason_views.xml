@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- List View -->
+    <record id="view_credit_rejection_reason_list" model="ir.ui.view">
+        <field name="name">credit.rejection.reason.list</field>
+        <field name="model">credit.rejection.reason</field>
+        <field name="arch" type="xml">
+            <list string="Rejection Reasons" decoration-danger="not active">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="description" optional="show"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_credit_rejection_reason_form" model="ir.ui.view">
+        <field name="name">credit.rejection.reason.form</field>
+        <field name="model">credit.rejection.reason</field>
+        <field name="arch" type="xml">
+            <form string="Rejection Reason">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="e.g., Overdue Payments"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="sequence"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                        <group>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                    <group string="Description">
+                        <field name="description" placeholder="Explain when to use this reason..."/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_credit_rejection_reason_search" model="ir.ui.view">
+        <field name="name">credit.rejection.reason.search</field>
+        <field name="model">credit.rejection.reason</field>
+        <field name="arch" type="xml">
+            <search string="Search Rejection Reasons">
+                <field name="name"/>
+                <separator/>
+                <filter name="filter_active" string="Active" domain="[('active', '=', True)]"/>
+                <filter name="filter_inactive" string="Inactive" domain="[('active', '=', False)]"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_credit_rejection_reason" model="ir.actions.act_window">
+        <field name="name">Rejection Reasons</field>
+        <field name="res_model">credit.rejection.reason</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first rejection reason
+            </p>
+            <p>
+                Define predefined reasons that supervisors can select when
+                rejecting a credit approval request.
+            </p>
+        </field>
+    </record>
+
+</odoo>

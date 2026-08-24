@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_partner_form_classification" model="ir.ui.view">
+        <field name="name">res.partner.classification.inherit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//page[@name='sales_purchases']" position="after">
+                <page name="classification" string="Classification">
+                    <field name="property_product_pricelist" invisible="1"/>
+                    <group>
+                        <group string="Customer Classification">
+                            <field name="classification_id"/>
+                            <field name="credit_policy" readonly="1"/>
+                        </group>
+                        <group string="Classification Defaults" invisible="not classification_id">
+                            <field name="classification_pricelist_id" string="Price List" readonly="1"/>
+                            <field name="classification_credit_limit" string="Credit Limit" readonly="1"/>
+                            <field name="classification_payment_term_id" string="Payment Term" readonly="1"/>
+                        </group>
+                    </group>
+
+                    <group invisible="not classification_id">
+                        <group string="Individual Overrides">
+                            <field name="override_pricelist"/>
+                            <field name="manual_pricelist_id"
+                                   invisible="not override_pricelist"
+                                   required="override_pricelist"/>
+                            <field name="override_credit_limit"/>
+                            <field name="credit_limit"
+                                   invisible="not override_credit_limit"/>
+                            <field name="override_payment_term"/>
+                            <field name="property_payment_term_id"
+                                   invisible="not override_payment_term"/>
+                        </group>
+                        <group string="Credit Overview">
+                            <field name="effective_credit_limit" string="Limit"/>
+                            <field name="credit" string="Outstanding"/>
+                            <field name="remaining_credit" string="Remaining"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+
+        </field>
+    </record>
+
+    <record id="view_partner_search_classification" model="ir.ui.view">
+        <field name="name">res.partner.classification.search</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_res_partner_filter"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//filter[@name='supplier']" position="after">
+                <separator/>
+                <filter name="filter_classification" string="Has Classification"
+                        domain="[('classification_id', '!=', False)]"/>
+                <filter name="group_classification" string="Classification"
+                        context="{'group_by': 'classification_id'}"/>
+            </xpath>
+
+        </field>
+    </record>
+
+</odoo>

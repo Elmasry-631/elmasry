@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <record id="rejection_reason_insufficient_payment_history" model="credit.rejection.reason">
+        <field name="name">Insufficient Payment History</field>
+        <field name="description">Customer does not have enough payment history to justify increased credit exposure.</field>
+        <field name="sequence">10</field>
+    </record>
+
+    <record id="rejection_reason_overdue_payments" model="credit.rejection.reason">
+        <field name="name">Overdue Payments</field>
+        <field name="description">Customer has overdue invoices that must be resolved before new credit is extended.</field>
+        <field name="sequence">20</field>
+    </record>
+
+    <record id="rejection_reason_credit_limit_exceeded" model="credit.rejection.reason">
+        <field name="name">Credit Limit Exceeded</field>
+        <field name="description">The order amount exceeds the approved credit limit for this customer classification.</field>
+        <field name="sequence">30</field>
+    </record>
+
+    <record id="rejection_reason_high_risk_customer" model="credit.rejection.reason">
+        <field name="name">High Risk Customer</field>
+        <field name="description">Customer has been flagged as high risk due to payment behavior or credit history.</field>
+        <field name="sequence">40</field>
+    </record>
+
+    <record id="rejection_reason_classification_downgrade" model="credit.rejection.reason">
+        <field name="name">Classification Pending Downgrade</field>
+        <field name="description">Customer classification is under review for downgrade. New credit should not be extended until resolved.</field>
+        <field name="sequence">50</field>
+    </record>
+
+    <record id="rejection_reason_management_decision" model="credit.rejection.reason">
+        <field name="name">Management Decision</field>
+        <field name="description">Rejected per management directive. Contact the credit manager for details.</field>
+        <field name="sequence">60</field>
+    </record>
+
+    <record id="rejection_reason_incomplete_documents" model="credit.rejection.reason">
+        <field name="name">Incomplete Documents</field>
+        <field name="description">Required credit documents (guarantees, contracts) are missing or expired.</field>
+        <field name="sequence">70</field>
+    </record>
+
+    <record id="rejection_reason_other" model="credit.rejection.reason">
+        <field name="name">Other</field>
+        <field name="description">Reason not listed above. Use the additional notes field to explain.</field>
+        <field name="sequence">100</field>
+    </record>
+
+</odoo>

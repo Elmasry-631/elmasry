@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="ir_cron_auto_classify_action" model="ir.actions.server">
+        <field name="name">Customer Classification: Evaluate Auto-Classification</field>
+        <field name="model_id" ref="model_customer_classification"/>
+        <field name="state">code</field>
+        <field name="code">model._auto_classify_partners()</field>
+        <field name="usage">ir_cron</field>
+    </record>
+
+    <record id="ir_cron_auto_classify" model="ir.cron">
+        <field name="cron_name">Customer Classification: Evaluate Auto-Classification</field>
+        <field name="ir_actions_server_id" ref="ir_cron_auto_classify_action"/>
+        <field name="user_id" ref="base.user_root"/>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="active" eval="False"/>
+        <field name="nextcall" eval="(DateTime.now() + timedelta(days=1)).strftime('%Y-%m-%d 02:00:00')"/>
+    </record>
+
+</odoo>

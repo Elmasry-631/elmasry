@@ -1,0 +1,118 @@
+# Arabic translations for el_prevent_negative_stock
+# Copyright (C) 2026 Ibrahim Elmasry
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: el_prevent_negative_stock 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-07-13 20:00+0000\n"
+"PO-Revision-Date: 2026-07-13 20:00+0000\n"
+"Last-Translator: Ibrahim Elmasry\n"
+"Language-Team: Arabic\n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 ? 4 : 5);\n"
+
+#. module: el_prevent_negative_stock
+#: model:ir.module.module,summary:el_prevent_negative_stock.module_el_prevent_negative_stock
+msgid "Prevent Negative Stock"
+msgstr "منع السحب بالسالب من المخزون"
+
+#. module: el_prevent_negative_stock
+#: model:ir.module.module,name:el_prevent_negative_stock.module_el_prevent_negative_stock
+msgid "Negative Stock Alert"
+msgstr "تنبيه مخزون سالب"
+
+#. module: el_prevent_negative_stock
+#: model:ir.model.fields,field_description:el_prevent_negative_stock.field_el_stock_alert__name
+msgid "Reference"
+msgstr "المرجع"
+
+#. module: el_prevent_negative_stock
+#: model:ir.model.fields,field_description:el_prevent_negative_stock.field_el_stock_alert__product_id
+msgid "Product"
+msgstr "المنتج"
+
+#. module: el_prevent_negative_stock
+#: model:ir.model.fields,field_description:el_prevent_negative_stock.field_el_stock_alert__location_id
+msgid "Location"
+msgstr "الموقع"
+
+#. module: el_prevent_negative_stock
+#: model:ir.model.fields,field_description:el_prevent_negative_stock.field_el_stock_alert__requested_qty
+msgid "Requested Quantity"
+msgstr "الكمية المطلوبة"
+
+#. module: el_prevent_negative_stock
+#: model:ir.model.fields,field_description:el_prevent_negative_stock.field_el_stock_alert__available_qty
+msgid "Available Quantity"
+msgstr "الكمية المتاحة"
+
+#. module: el_prevent_negative_stock
+#: model:ir.model.fields,field_description:el_prevent_negative_stock.field_el_stock_alert__move_id
+msgid "Stock Move"
+msgstr "حركة المخزون"
+
+#. module: el_prevent_negative_stock
+#: model:ir.model.fields,field_description:el_prevent_negative_stock.field_el_stock_alert__user_id
+msgid "Rejected By"
+msgstr "رفض بواسطة"
+
+#. module: el_prevent_negative_stock
+#: model:ir.model.fields,field_description:el_prevent_negative_stock.field_el_stock_alert__state
+msgid "Status"
+msgstr "الحالة"
+
+#. module: el_prevent_negative_stock
+#: model:ir.model.fields.selection:el_prevent_negative_stock.selection__el_stock_alert__state__rejected
+msgid "Rejected"
+msgstr "مرفوض"
+
+#. module: el_prevent_negative_stock
+#: model:ir.model.fields,field_description:el_prevent_negative_stock.field_el_stock_alert__company_id
+msgid "Company"
+msgstr "الشركة"
+
+#. module: el_prevent_negative_stock
+msgid "New"
+msgstr "جديد"
+
+#. module: el_prevent_negative_stock
+#: model:ir.actions.act_window,name:el_prevent_negative_stock.action_el_stock_alert
+msgid "Negative Stock Alerts"
+msgstr "تنبيهات المخزون السالب"
+
+#. module: el_prevent_negative_stock
+#: model:ir.ui.menu,name:el_prevent_negative_stock.menu_el_stock_alert_all
+msgid "All Alerts"
+msgstr "كل التنبيهات"
+
+#. module: el_prevent_negative_stock
+msgid "No negative stock alerts yet"
+msgstr "لا توجد تنبيهات مخزون سالب بعد"
+
+#. module: el_prevent_negative_stock
+#: model:res.groups,name:el_prevent_negative_stock.group_alert_user
+msgid "Alert User (View Own)"
+msgstr "مستخدم التنبيهات (عرض خاص)"
+
+#. module: el_prevent_negative_stock
+#: model:res.groups,name:el_prevent_negative_stock.group_alert_manager
+msgid "Alert Manager (View All + Delete)"
+msgstr "مدير التنبيهات (عرض الكل + حذف)"
+
+#. module: el_prevent_negative_stock
+msgid "Today"
+msgstr "اليوم"
+
+#. module: el_prevent_negative_stock
+#: model:ir.model.fields,field_description:el_prevent_negative_stock.field_el_stock_alert__user_id
+msgid "User"
+msgstr "المستخدم"
+
+#. module: el_prevent_negative_stock
+#: model:ir.module.category,name:el_prevent_negative_stock.module_category_el_prevent_negative_stock
+msgid "Prevent Negative Stock"
+msgstr "منع السحب بالسالب"

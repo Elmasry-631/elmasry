@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="menu_credit_approval_root"
+              name="Credit Approval"
+              parent="sale.menu_sale_config"
+              sequence="31"/>
+
+    <menuitem id="menu_credit_approval_requests"
+              name="Approval Requests"
+              parent="menu_credit_approval_root"
+              action="action_credit_approval_request"
+              sequence="10"/>
+
+    <menuitem id="menu_credit_rejection_reasons"
+              name="Rejection Reasons"
+              parent="menu_credit_approval_root"
+              action="action_credit_rejection_reason"
+              sequence="20"
+              groups="el_nmo_credit_approval.group_credit_approval_manager"/>
+
+</odoo>

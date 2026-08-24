@@ -1,0 +1,112 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* el_nmo_credit_approval
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-01-01 00:00+0000\n"
+"PO-Revision-Date: 2025-01-01 00:00+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
+
+#. module: el_nmo_credit_approval
+#: model:ir.model,name:el_nmo_credit_approval.model_credit_approval_request
+msgid "Credit Approval Request"
+msgstr "طلب اعتماد ائتماني"
+
+#. module: el_nmo_credit_approval
+#: model:ir.model,name:el_nmo_credit_approval.model_credit_rejection_reason
+msgid "Credit Rejection Reason"
+msgstr "سبب رفض ائتماني"
+
+#. module: el_nmo_credit_approval
+#: model:ir.model,name:el_nmo_credit_approval.model_sale_order
+msgid "Sale Order"
+msgstr "أمر بيع"
+
+#. module: el_nmo_credit_approval
+#: model:ir.actions.act_window,name:el_nmo_credit_approval.action_credit_approval_request
+msgid "Credit Approvals"
+msgstr "الموافقات الائتمانية"
+
+#. module: el_nmo_credit_approval
+#: model:ir.actions.act_window,name:el_nmo_credit_approval.action_credit_rejection_reason
+msgid "Rejection Reasons"
+msgstr "أسباب الرفض"
+
+#. module: el_nmo_credit_approval
+#: model:ir.ui.menu,name:el_nmo_credit_approval.menu_credit_approval_root
+msgid "Credit Approval"
+msgstr "اعتماد ائتماني"
+
+#. module: el_nmo_credit_approval
+#: model:ir.ui.menu,name:el_nmo_credit_approval.menu_credit_approval_requests
+msgid "Approval Requests"
+msgstr "طلبات الاعتماد"
+
+#. module: el_nmo_credit_approval
+#: model:ir.ui.menu,name:el_nmo_credit_approval.menu_credit_rejection_reasons
+msgid "Rejection Reasons"
+msgstr "أسباب الرفض"
+
+#. module: el_nmo_credit_approval
+#: model:res.groups,name:el_nmo_credit_approval.group_credit_approval_salesperson
+msgid "Credit Approval — Salesperson"
+msgstr "اعتماد ائتماني — مندوب مبيعات"
+
+#. module: el_nmo_credit_approval
+#: model:res.groups,name:el_nmo_credit_approval.group_credit_approval_supervisor
+msgid "Credit Approval — Supervisor"
+msgstr "اعتماد ائتماني — مشرف"
+
+#. module: el_nmo_credit_approval
+#: model:res.groups,name:el_nmo_credit_approval.group_credit_approval_manager
+msgid "Credit Approval — Manager"
+msgstr "اعتماد ائتماني — مدير"
+
+#. module: el_nmo_credit_approval
+#: model:credit.rejection.reason,name:el_nmo_credit_approval.rejection_reason_insufficient_payment_history
+msgid "Insufficient Payment History"
+msgstr "سجل دفعات غير كافي"
+
+#. module: el_nmo_credit_approval
+#: model:credit.rejection.reason,name:el_nmo_credit_approval.rejection_reason_overdue_payments
+msgid "Overdue Payments"
+msgstr "مدفوعات متأخرة"
+
+#. module: el_nmo_credit_approval
+#: model:credit.rejection.reason,name:el_nmo_credit_approval.rejection_reason_credit_limit_exceeded
+msgid "Credit Limit Exceeded"
+msgstr "تجاوز الحد الائتماني"
+
+#. module: el_nmo_credit_approval
+#: model:credit.rejection.reason,name:el_nmo_credit_approval.rejection_reason_high_risk_customer
+msgid "High Risk Customer"
+msgstr "عميل عالي المخاطر"
+
+#. module: el_nmo_credit_approval
+#: model:credit.rejection.reason,name:el_nmo_credit_approval.rejection_reason_classification_downgrade
+msgid "Classification Pending Downgrade"
+msgstr "تصنيف معلق للخفض"
+
+#. module: el_nmo_credit_approval
+#: model:credit.rejection.reason,name:el_nmo_credit_approval.rejection_reason_management_decision
+msgid "Management Decision"
+msgstr "قرار الإدارة"
+
+#. module: el_nmo_credit_approval
+#: model:credit.rejection.reason,name:el_nmo_credit_approval.rejection_reason_incomplete_documents
+msgid "Incomplete Documents"
+msgstr "مستندات ناقصة"
+
+#. module: el_nmo_credit_approval
+#: model:credit.rejection.reason,name:el_nmo_credit_approval.rejection_reason_other
+msgid "Other"
+msgstr "أخرى"

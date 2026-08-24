@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_el_stock_alert_user,el.stock.alert.user,model_el_stock_alert,group_alert_user,1,0,0,0
+access_el_stock_alert_manager,el.stock.alert.manager,model_el_stock_alert,group_alert_manager,1,1,1,1
+access_el_stock_alert_system,el.stock.alert.system,model_el_stock_alert,base.group_system,1,1,1,1

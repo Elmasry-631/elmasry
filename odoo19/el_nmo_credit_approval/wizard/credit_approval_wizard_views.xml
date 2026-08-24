@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="credit_approval_wizard_form_view" model="ir.ui.view">
+        <field name="name">credit.approval.wizard.form</field>
+        <field name="model">credit.approval.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Credit Approval">
+                <group>
+                    <group string="Customer">
+                        <field name="customer_id"/>
+                    </group>
+                    <group string="Credit Details">
+                        <field name="credit_limit" string="Credit Limit" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                        <field name="credit_used" string="Credit Used" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                        <field name="order_amount" string="Order Amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                        <field name="exceeded_by" string="Exceeded By" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                        <field name="currency_id" invisible="1"/>
+                    </group>
+                </group>
+                <group string="Rejection Information">
+                    <field name="rejection_reason_id" placeholder="Select rejection reason..."/>
+                    <field name="rejection_notes" placeholder="Additional notes..."/>
+                </group>
+                <footer>
+                    <button name="action_approve" string="Approve"
+                            type="object" class="btn-success"/>
+                    <button name="action_reject" string="Reject"
+                            type="object" class="btn-danger"/>
+                    <button special="cancel" string="Cancel"
+                            class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="credit_approval_wizard_action" model="ir.actions.act_window">
+        <field name="name">Credit Approval</field>
+        <field name="res_model">credit.approval.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="type">ir.actions.act_window</field>
+    </record>
+
+</odoo>
