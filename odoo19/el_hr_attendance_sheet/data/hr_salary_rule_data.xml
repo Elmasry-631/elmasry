@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+        Salary Rules for Attendance Sheet
+        These rules compute monetary amounts from the attendance data
+        that the linked hr.attendance.sheet provides on hr.payslip.
+        Available payslip inputs (computed fields):
+          - payslip.overtime_hours    (Float, hours)
+          - payslip.late_in_hours     (Float, hours)
+          - payslip.absence_days      (Float, days)
+          - payslip.difference_hours  (Float, hours)
+        Hourly rate = version.wage / 240 (assuming 30 days * 8h)
+        Daily rate  = version.wage / 30
+    -->
+
+    <!-- ============ OVERTIME RULE ============ -->
+    <record id="salary_rule_overtime" model="hr.salary.rule">
+        <field name="name">Overtime</field>
+        <field name="code">OVERT</field>
+        <field name="sequence">100</field>
+        <field name="category_id" ref="hr_payroll.ALW"/>
+        <field name="struct_id" ref="structure_attendance"/>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = 0.0
+if payslip.attendance_sheet_id and payslip.overtime_hours:
+    version = payslip.version_id
+    hourly_rate = version.wage / 240.0 if version.wage else 0.0
+    policy = version.attendance_policy_id
+    rate = 1.5
+    if policy and policy.overtime_working_id:
+        rate = policy.overtime_working_id.rate
+    result = payslip.overtime_hours * hourly_rate * rate
+        </field>
+        <field name="appears_on_payslip" eval="True"/>
+    </record>
+
+    <!-- ============ LATENESS RULE ============ -->
+    <record id="salary_rule_late_in" model="hr.salary.rule">
+        <field name="name">Lateness Deduction</field>
+        <field name="code">LATE</field>
+        <field name="sequence">200</field>
+        <field name="category_id" ref="hr_payroll.DED"/>
+        <field name="struct_id" ref="structure_attendance"/>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = 0.0
+if payslip.attendance_sheet_id and payslip.late_in_hours:
+    version = payslip.version_id
+    hourly_rate = version.wage / 240.0 if version.wage else 0.0
+    result = -(payslip.late_in_hours * hourly_rate)
+        </field>
+        <field name="appears_on_payslip" eval="True"/>
+    </record>
+
+    <!-- ============ ABSENCE RULE ============ -->
+    <record id="salary_rule_absence" model="hr.salary.rule">
+        <field name="name">Absence Deduction</field>
+        <field name="code">ABS</field>
+        <field name="sequence">210</field>
+        <field name="category_id" ref="hr_payroll.DED"/>
+        <field name="struct_id" ref="structure_attendance"/>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = 0.0
+if payslip.attendance_sheet_id and payslip.absence_days:
+    version = payslip.version_id
+    daily_rate = version.wage / 30.0 if version.wage else 0.0
+    policy = version.attendance_policy_id
+    rate = 1.0
+    if policy and policy.absence_id:
+        absence_rule = policy.absence_id
+        step = absence_rule.get_step_for_days(payslip.absence_days)
+        if step:
+            rate = step.rate
+    result = -(payslip.absence_days * daily_rate * rate)
+        </field>
+        <field name="appears_on_payslip" eval="True"/>
+    </record>
+
+    <!-- ============ DIFFERENCE TIME RULE ============ -->
+    <record id="salary_rule_difference" model="hr.salary.rule">
+        <field name="name">Difference Time</field>
+        <field name="code">DIFF</field>
+        <field name="sequence">220</field>
+        <field name="category_id" ref="hr_payroll.DED"/>
+        <field name="struct_id" ref="structure_attendance"/>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = 0.0
+if payslip.attendance_sheet_id and payslip.difference_hours:
+    version = payslip.version_id
+    hourly_rate = version.wage / 240.0 if version.wage else 0.0
+    result = -(payslip.difference_hours * hourly_rate)
+        </field>
+        <field name="appears_on_payslip" eval="True"/>
+    </record>
+</odoo>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_hr_attendance_policy" model="ir.actions.act_window">
+        <field name="name">Attendance Policies</field>
+        <field name="res_model">hr.attendance.policy</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="view_hr_attendance_policy_list" model="ir.ui.view">
+        <field name="name">hr.attendance.policy.list</field>
+        <field name="model">hr.attendance.policy</field>
+        <field name="arch" type="xml">
+            <list string="Attendance Policies">
+                <field name="name"/>
+                <field name="overtime_working_id"/>
+                <field name="overtime_weekend_id"/>
+                <field name="overtime_holiday_id"/>
+                <field name="lateness_id"/>
+                <field name="absence_id"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_hr_attendance_policy_form" model="ir.ui.view">
+        <field name="name">hr.attendance.policy.form</field>
+        <field name="model">hr.attendance.policy</field>
+        <field name="arch" type="xml">
+            <form string="Attendance Policy">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="active"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Overtime Rules" name="overtime">
+                            <group>
+                                <field name="overtime_working_id"/>
+                                <field name="overtime_weekend_id"/>
+                                <field name="overtime_holiday_id"/>
+                            </group>
+                        </page>
+                        <page string="Lateness &amp; Absence" name="lateness_absence">
+                            <group>
+                                <field name="lateness_id"/>
+                                <field name="absence_id"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_hr_attendance_policy_search" model="ir.ui.view">
+        <field name="name">hr.attendance.policy.search</field>
+        <field name="model">hr.attendance.policy</field>
+        <field name="arch" type="xml">
+            <search string="Search Attendance Policies">
+                <field name="name"/>
+                <separator/>
+                <filter name="filter_active" string="Active"
+                        domain="[('active', '=', True)]"/>
+            </search>
+        </field>
+    </record>
+</odoo>

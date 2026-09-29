@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ============ Multi-company record rules ============ -->
+    <record id="rule_hr_attendance_sheet_company" model="ir.rule">
+        <field name="name">Attendance Sheet: multi-company</field>
+        <field name="model_id" ref="model_hr_attendance_sheet"/>
+        <field name="domain_force">
+            ['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]
+        </field>
+    </record>
+
+    <record id="rule_hr_attendance_policy_company" model="ir.rule">
+        <field name="name">Attendance Policy: multi-company</field>
+        <field name="model_id" ref="model_hr_attendance_policy"/>
+        <field name="domain_force">
+            ['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]
+        </field>
+    </record>
+
+    <record id="rule_hr_attendance_public_holiday_company" model="ir.rule">
+        <field name="name">Public Holiday: multi-company</field>
+        <field name="model_id" ref="model_hr_attendance_public_holiday"/>
+        <field name="domain_force">
+            ['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]
+        </field>
+    </record>
+
+    <record id="rule_hr_attendance_sheet_batch_company" model="ir.rule">
+        <field name="name">Attendance Sheet Batch: multi-company</field>
+        <field name="model_id" ref="model_hr_attendance_sheet_batch"/>
+        <field name="domain_force">
+            ['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]
+        </field>
+    </record>
+
+    <record id="rule_hr_attendance_rule_overtime_company" model="ir.rule">
+        <field name="name">Overtime Rule: multi-company</field>
+        <field name="model_id" ref="model_hr_attendance_rule_overtime"/>
+        <field name="domain_force">
+            ['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]
+        </field>
+    </record>
+
+    <!-- ============ Employee-self record rule ============ -->
+    <!-- Users can see their own sheets even without officer rights -->
+    <record id="rule_hr_attendance_sheet_personal" model="ir.rule">
+        <field name="name">Attendance Sheet: see own</field>
+        <field name="model_id" ref="model_hr_attendance_sheet"/>
+        <field name="domain_force">
+            [('employee_id.user_id', '=', user.id)]
+        </field>
+        <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+</odoo>

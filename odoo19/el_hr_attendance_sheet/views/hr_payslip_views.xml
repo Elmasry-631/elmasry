@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Add attendance_sheet_id + computed fields to hr.payslip form -->
+    <record id="view_hr_payslip_form_attendance" model="ir.ui.view">
+        <field name="name">hr.payslip.form.attendance</field>
+        <field name="model">hr.payslip</field>
+        <field name="inherit_id" ref="hr_payroll.view_hr_payslip_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Attendance" name="attendance"
+                      invisible="not attendance_sheet_id">
+                    <group>
+                        <field name="attendance_sheet_id" readonly="state != 'draft'"/>
+                    </group>
+                    <group>
+                        <group string="Computed Inputs">
+                            <field name="overtime_hours"/>
+                            <field name="late_in_hours"/>
+                            <field name="absence_days"/>
+                            <field name="difference_hours"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

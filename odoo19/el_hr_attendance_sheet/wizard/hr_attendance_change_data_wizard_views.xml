@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_hr_attendance_change_data_wizard_form" model="ir.ui.view">
+        <field name="name">hr.attendance.change.data.wizard.form</field>
+        <field name="model">hr.attendance.change.data.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Change Attendance Data">
+                <group>
+                    <field name="sheet_line_id" readonly="True"/>
+                </group>
+                <group string="New Values">
+                    <field name="new_overtime_hours"/>
+                    <field name="new_late_in_minutes"/>
+                    <field name="new_difference_hours"/>
+                </group>
+                <group string="Reason">
+                    <field name="reason" nolabel="1" colspan="2"
+                           placeholder="Explain why this data is being changed..."/>
+                </group>
+                <footer>
+                    <button name="action_apply" string="Apply Change"
+                            type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary"
+                            special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_hr_attendance_change_data_wizard" model="ir.actions.act_window">
+        <field name="name">Change Attendance Data</field>
+        <field name="res_model">hr.attendance.change.data.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

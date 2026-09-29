@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Add attendance_policy_id to employee form (where contract fields are shown) -->
+    <record id="view_employee_form_attendance_policy" model="ir.ui.view">
+        <field name="name">hr.employee.form.attendance.policy</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='contract_date_start']" position="after">
+                <field name="attendance_policy_id"
+                    placeholder="Attendance Policy"
+                    context="{'default_company_id': company_id}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Add attendance_policy_id to contract template form -->
+    <record id="view_hr_contract_template_form_attendance_policy" model="ir.ui.view">
+        <field name="name">hr.contract.template.form.attendance.policy</field>
+        <field name="model">hr.version</field>
+        <field name="inherit_id" ref="hr.hr_contract_template_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='structure_type_id']" position="after">
+                <field name="attendance_policy_id"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

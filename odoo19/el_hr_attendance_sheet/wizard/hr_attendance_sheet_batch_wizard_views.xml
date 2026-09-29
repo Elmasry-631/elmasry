@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_hr_attendance_sheet_batch_wizard_form" model="ir.ui.view">
+        <field name="name">hr.attendance.sheet.batch.wizard.form</field>
+        <field name="model">hr.attendance.sheet.batch.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Create Attendance Sheet Batch">
+                <group>
+                    <group>
+                        <field name="department_id"/>
+                        <field name="date_from"/>
+                        <field name="date_to"/>
+                    </group>
+                    <group>
+                        <field name="company_id" groups="base.group_multi_company"/>
+                    </group>
+                </group>
+                <group string="Employees (optional)">
+                    <field name="employee_ids" nolabel="1" colspan="2"
+                           domain="[('department_id', '=', department_id), ('active', '=', True)]"
+                           widget="many2many_tags"
+                           placeholder="Leave empty to use all active employees in the department"/>
+                </group>
+                <footer>
+                    <button name="action_create_batch" string="Create Batch"
+                            type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary"
+                            special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_hr_attendance_sheet_batch_wizard" model="ir.actions.act_window">
+        <field name="name">Create Attendance Sheet Batch</field>
+        <field name="res_model">hr.attendance.sheet.batch.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

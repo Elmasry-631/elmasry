@@ -1,0 +1,50 @@
+# Translation file for el_hr_attendance_sheet
+# This file is distributed under the LGPL-3 license.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-06-23 19:00+0000\n"
+"PO-Revision-Date: 2026-06-23 19:00+0000\n"
+"Last-Translator: Ibrahim Elmasry\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: el_hr_attendance_sheet
+#: model:ir.model.fields,field_description:hr_attendance_sheet.field_hr_attendance_sheet__name
+msgid "Reference"
+msgstr ""
+
+#. module: el_hr_attendance_sheet
+#: model:ir.model.fields,field_description:hr_attendance_sheet.field_hr_attendance_sheet__state
+msgid "Status"
+msgstr ""
+
+#. module: el_hr_attendance_sheet
+#: model:ir.model.fields.selection,name:hr_attendance_sheet.selection__hr_attendance_sheet__state__draft
+msgid "Draft"
+msgstr ""
+
+#. module: el_hr_attendance_sheet
+#: model:ir.model.fields.selection,name:hr_attendance_sheet.selection__hr_attendance_sheet__state__computed
+msgid "Computed"
+msgstr ""
+
+#. module: el_hr_attendance_sheet
+#: model:ir.model.fields.selection,name:hr_attendance_sheet.selection__hr_attendance_sheet__state__approved
+msgid "Approved"
+msgstr ""
+
+#. module: el_hr_attendance_sheet
+#: model:ir.model.fields.selection,name:hr_attendance_sheet.selection__hr_attendance_sheet__state__done
+msgid "Done"
+msgstr ""
+
+#. module: el_hr_attendance_sheet
+#: model:ir.model.fields.selection,name:hr_attendance_sheet.selection__hr_attendance_sheet__state__cancelled
+msgid "Cancelled"
+msgstr ""

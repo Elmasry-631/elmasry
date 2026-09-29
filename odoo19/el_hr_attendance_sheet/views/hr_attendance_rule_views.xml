@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ============ OVERTIME RULE ============ -->
+    <record id="action_hr_attendance_rule_overtime" model="ir.actions.act_window">
+        <field name="name">Overtime Rules</field>
+        <field name="res_model">hr.attendance.rule.overtime</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="view_hr_attendance_rule_overtime_list" model="ir.ui.view">
+        <field name="name">hr.attendance.rule.overtime.list</field>
+        <field name="model">hr.attendance.rule.overtime</field>
+        <field name="arch" type="xml">
+            <list string="Overtime Rules">
+                <field name="name"/>
+                <field name="type"/>
+                <field name="apply_after_minutes"/>
+                <field name="rate"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_hr_attendance_rule_overtime_form" model="ir.ui.view">
+        <field name="name">hr.attendance.rule.overtime.form</field>
+        <field name="model">hr.attendance.rule.overtime</field>
+        <field name="arch" type="xml">
+            <form string="Overtime Rule">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="type"/>
+                            <field name="apply_after_minutes"/>
+                            <field name="rate"/>
+                        </group>
+                        <group>
+                            <field name="active"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_hr_attendance_rule_overtime_search" model="ir.ui.view">
+        <field name="name">hr.attendance.rule.overtime.search</field>
+        <field name="model">hr.attendance.rule.overtime</field>
+        <field name="arch" type="xml">
+            <search string="Search Overtime Rules">
+                <field name="name"/>
+                <separator/>
+                <filter name="filter_active" string="Active"
+                        domain="[('active', '=', True)]"/>
+                <separator/>
+                <filter name="group_type" string="Type"
+                        context="{'group_by': 'type'}"/>
+                <filter name="group_company" string="Company"
+                        context="{'group_by': 'company_id'}"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- ============ LATENESS RULE ============ -->
+    <record id="action_hr_attendance_rule_lateness" model="ir.actions.act_window">
+        <field name="name">Lateness Rules</field>
+        <field name="res_model">hr.attendance.rule.lateness</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="view_hr_attendance_rule_lateness_list" model="ir.ui.view">
+        <field name="name">hr.attendance.rule.lateness.list</field>
+        <field name="model">hr.attendance.rule.lateness</field>
+        <field name="arch" type="xml">
+            <list string="Lateness Rules">
+                <field name="name"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_hr_attendance_rule_lateness_form" model="ir.ui.view">
+        <field name="name">hr.attendance.rule.lateness.form</field>
+        <field name="model">hr.attendance.rule.lateness</field>
+        <field name="arch" type="xml">
+            <form string="Lateness Rule">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="active"/>
+                        </group>
+                        <group>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Steps" name="steps">
+                            <field name="step_ids">
+                                <list string="Steps" editable="bottom">
+                                    <field name="from_minutes"/>
+                                    <field name="to_minutes"/>
+                                    <field name="penalty_type"/>
+                                    <field name="rate" invisible="penalty_type != 'rate'"/>
+                                    <field name="initial_rate" invisible="penalty_type != 'rate'"/>
+                                    <field name="amount" invisible="penalty_type != 'amount'"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_hr_attendance_rule_lateness_search" model="ir.ui.view">
+        <field name="name">hr.attendance.rule.lateness.search</field>
+        <field name="model">hr.attendance.rule.lateness</field>
+        <field name="arch" type="xml">
+            <search string="Search Lateness Rules">
+                <field name="name"/>
+                <separator/>
+                <filter name="filter_active" string="Active"
+                        domain="[('active', '=', True)]"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- ============ ABSENCE RULE ============ -->
+    <record id="action_hr_attendance_rule_absence" model="ir.actions.act_window">
+        <field name="name">Absence Rules</field>
+        <field name="res_model">hr.attendance.rule.absence</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="view_hr_attendance_rule_absence_list" model="ir.ui.view">
+        <field name="name">hr.attendance.rule.absence.list</field>
+        <field name="model">hr.attendance.rule.absence</field>
+        <field name="arch" type="xml">
+            <list string="Absence Rules">
+                <field name="name"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_hr_attendance_rule_absence_form" model="ir.ui.view">
+        <field name="name">hr.attendance.rule.absence.form</field>
+        <field name="model">hr.attendance.rule.absence</field>
+        <field name="arch" type="xml">
+            <form string="Absence Rule">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="active"/>
+                        </group>
+                        <group>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Steps" name="steps">
+                            <field name="step_ids">
+                                <list string="Steps" editable="bottom">
+                                    <field name="from_days"/>
+                                    <field name="to_days"/>
+                                    <field name="rate"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_hr_attendance_rule_absence_search" model="ir.ui.view">
+        <field name="name">hr.attendance.rule.absence.search</field>
+        <field name="model">hr.attendance.rule.absence</field>
+        <field name="arch" type="xml">
+            <search string="Search Absence Rules">
+                <field name="name"/>
+                <separator/>
+                <filter name="filter_active" string="Active"
+                        domain="[('active', '=', True)]"/>
+            </search>
+        </field>
+    </record>
+</odoo>
