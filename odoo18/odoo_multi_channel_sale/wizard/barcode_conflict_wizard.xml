@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2015-Present Webkul Software Pvt. Ltd. (<https://webkul.com/>) -->
+<!-- See LICENSE file for full copyright and licensing details. -->
+<!-- "License URL : <https://store.webkul.com/license.html/>" -->
+<odoo>
+	<data>
+		<record id="view_barcode_conflict_wizard_form" model="ir.ui.view">
+			<field name="name">barcode.conflict.wizard.form</field>
+			<field name="model">barcode.conflict.wizard</field>
+			<field name="arch" type="xml">
+				<form string="Resolve Barcode Conflicts">
+					<field name="conflict_count" invisible="1"/>
+					<field name="feed_ids" invisible="1" force_save="1"/>
+					<field name="summary" nolabel="1" readonly="1" force_save="1"/>
+					<field name="line_ids" nolabel="1">
+						<list editable="bottom" create="0" delete="0">
+							<field name="feed_id" optional="show" readonly="1" force_save="1"/>
+							<field name="barcode" readonly="1" force_save="1"/>
+							<field name="related_barcodes" optional="hide" readonly="1" force_save="1"/>
+							<field name="conflict_type" readonly="1" force_save="1"/>
+							<field name="feed_source" optional="show" readonly="1" force_save="1"/>
+							<field name="product_info" optional="hide" readonly="1" force_save="1"/>
+							<field name="product_ids" widget="many2many_tags" optional="show" readonly="1" force_save="1"/>
+							<field name="preferred_product_id" options="{'no_create': True, 'no_open': False}"/>
+							<field name="recommended_action" optional="hide" readonly="1" force_save="1"/>
+							<field name="action"/>
+							<field name="note" optional="show" readonly="1" force_save="1"/>
+							<field name="affects_template" column_invisible="1" force_save="1"/>
+							<field name="variant_feed_ids" column_invisible="1" force_save="1"/>
+							<button
+								name="action_open_products"
+								type="object"
+								string="Open"
+								icon="fa-external-link"
+								title="Open conflicting products"
+							/>
+						</list>
+					</field>
+					<footer>
+						<button
+							name="action_apply"
+							string="Apply"
+							type="object"
+							class="btn-primary"
+							invisible="not conflict_count"
+						/>
+						<button
+							name="action_apply_and_evaluate"
+							string="Apply &amp; Evaluate"
+							type="object"
+							class="btn-secondary"
+							invisible="not conflict_count"
+						/>
+						<button string="Close" class="btn-secondary" special="cancel"/>
+					</footer>
+				</form>
+			</field>
+		</record>
+
+		<!-- Clean leftover act_window binding if present (no XML-ID delete: missing IDs warn/traceback on SH). -->
+		<delete model="ir.actions.act_window" search="[('res_model', '=', 'barcode.conflict.wizard')]"/>
+
+		<!-- Create wizard on server so required line fields are persisted. -->
+		<record id="action_barcode_conflict_wizard_server" model="ir.actions.server">
+			<field name="name">Resolve Barcode Conflicts</field>
+			<field name="model_id" ref="model_product_feed"/>
+			<field name="binding_model_id" ref="model_product_feed"/>
+			<field name="binding_view_types">list,form</field>
+			<field name="state">code</field>
+			<field name="code">
+action = env['barcode.conflict.wizard'].with_context(
+    active_model='product.feed',
+    active_ids=records.ids,
+    active_id=records[:1].id,
+).action_open_wizard()
+			</field>
+		</record>
+	</data>
+</odoo>
