@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_deduction_deduction_user,deduction.deduction.user,model_deduction_deduction,deduction_management.group_deduction_management_user,1,0,0,0
+access_deduction_deduction_approver,deduction.deduction.approver,model_deduction_deduction,deduction_management.group_deduction_management_approver,1,1,1,0
+access_deduction_deduction_hr,deduction.deduction.hr,model_deduction_deduction,deduction_management.group_deduction_management_hr,1,1,1,1
+access_deduction_deduction_manager,deduction.deduction.manager,model_deduction_deduction,deduction_management.group_deduction_management_manager,1,1,1,1

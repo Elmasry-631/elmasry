@@ -1,0 +1,97 @@
+<odoo>
+    <record id="deduction_form_view" model="ir.ui.view">
+        <field name="name">deduction.form.view</field>
+        <field name="model">deduction.deduction</field>
+        <field name="arch" type="xml">
+            <form string="Deductions">
+                <header>
+                    <button name="button_approve1" type="object" string="Approve" class="btn-primary"
+                            invisible="state != 'draft'"
+                            groups="deduction_management.group_deduction_management_approver,deduction_management.group_deduction_management_manager"/>
+                    <button name="button_approve2" type="object" string="Approve" class="btn-primary"
+                            invisible="state != 'approve1'"
+                            groups="deduction_management.group_deduction_management_hr,deduction_management.group_deduction_management_manager"/>
+                    <button name="button_approve" type="object" string="Approve" class="btn-primary"
+                            invisible="state != 'approve2'" groups="deduction_management.group_deduction_management_manager"/>
+                    <button name="button_reject" type="object" string="Reject" invisible="state in ('rejected', 'done')"
+                            groups="deduction_management.group_deduction_management_manager,deduction_management.group_deduction_management_hr"/>
+                    <button name="action_reset_to_draft" type="object" string="Reset To Draft" class="btn-secondary"
+                            invisible="state == 'draft'"
+                            groups="deduction_management.group_deduction_management_approver,deduction_management.group_deduction_management_manager,deduction_management.group_deduction_management_hr"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h2>
+                            <field name="employee_id" widget="many2one_avatar_user" placeholder="Employee..." readonly="state != 'draft'"/>
+                        </h2>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="date" readonly="state != 'draft'"/>
+                            <field name="deduction_type" readonly="state != 'draft'"/>
+                            <field name="vehicle_id" invisible="deduction_type != 'traffic_violations'"/>
+                            <field name="company_id" invisible="1" readonly="state != 'draft'"/>
+                            <field name="currency_id" invisible="1" readonly="state != 'draft'"/>
+                        </group>
+                        <group>
+                            <field name="amount" readonly="state != 'draft'" invisible="deduction_type == 'gas'"/>
+                            <field name="liter_value" readonly="state != 'draft'" invisible="deduction_type != 'gas'"/>
+                            <field name="litres_no" readonly="state != 'draft'" invisible="deduction_type != 'gas'"/>
+                            <field name="litres_total_cost" invisible="deduction_type != 'gas'"/>
+                        </group>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="deduction_list_view" model="ir.ui.view">
+        <field name="name">deduction.list.view</field>
+        <field name="model">deduction.deduction</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="date"/>
+                <field name="employee_id"/>
+                <field name="deduction_type"/>
+                <field name="liter_value" invisible="deduction_type != 'gas'"/>
+                <field name="litres_no" invisible="deduction_type != 'gas'"/>
+                <field name="litres_total_cost" invisible="deduction_type != 'gas'"/>
+                <field name="amount" invisible="deduction_type == 'gas'"/>
+                <field name="company_id" column_invisible="1"/>
+                <field name="currency_id" column_invisible="1"/>
+                <field name="state" widget="badge" decoration-success="state == 'done'" decoration-info="state == 'approved'"
+                       decoration-danger="state == 'rejected'" decoration-muted="state == 'draft'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="deduction_view_search" model="ir.ui.view">
+            <field name="name">deduction.search</field>
+            <field name="model">deduction.deduction</field>
+            <field name="arch" type="xml">
+                <search>
+                    <filter name="active_deductions" string="Active" domain="[('state', 'in', ['draft', 'approve1', 'approve2', 'approved'])]"/>
+                    <filter name="rejected_deductions" string="Rejected" domain="[('state', '=', 'rejected')]"/>
+                    <filter name="done_deductions" string="Done" domain="[('state', '=', 'done')]"/>
+                </search>
+            </field>
+    </record>
+
+    <!-- actions opening views on models -->
+    <record model="ir.actions.act_window" id="deduction_action_window">
+        <field name="name">Deductions</field>
+        <field name="res_model">deduction.deduction</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('company_id', 'in', allowed_company_ids)]</field>
+        <field name="context">{'search_default_active_deductions': True}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No Deductions available!
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_deduction_root" parent="hr_work_entry_enterprise.menu_hr_payroll_root" name="Deductions" action="deduction_action_window" sequence="65"/>
+</odoo>
