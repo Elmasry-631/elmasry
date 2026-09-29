@@ -1,0 +1,402 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* vehicle_installment
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-04 17:51+0000\n"
+"PO-Revision-Date: 2026-08-04 17:51+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: vehicle_installment
+#: model:ir.model.fields,field_description:vehicle_installment.field_vehicle_installment__message_needaction
+msgid "Action Needed"
+msgstr "يتطلب إجراء"
+
+#. module: vehicle_installment
+#: model_terms:ir.ui.view,arch_db:vehicle_installment.vehicle_installment_view_search
+msgid "Active"
+msgstr "نشط"
+
+#. module: vehicle_installment
+#: model:res.groups,name:vehicle_installment.group_vehicle_installment_manager
+msgid "Administrator"
+msgstr "مدير"
+
+#. module: vehicle_installment
+#: model:ir.model.fields,field_description:vehicle_installment.field_vehicle_installment_line__amount
+msgid "Amount"
+msgstr "المبلغ"
+
+#. module: vehicle_installment
+#: model_terms:ir.ui.view,arch_db:vehicle_installment.vehicle_installment_form_view
+msgid "Approve"
+msgstr "موافقة"
+
+#. module: vehicle_installment
+#: model:ir.model.fields.selection,name:vehicle_installment.selection__vehicle_installment__state__approved
+msgid "Approved"
+msgstr "تمت الموافقة"
+
+#. module: vehicle_installment
+#: model:ir.model.fields,field_description:vehicle_installment.field_vehicle_installment__message_attachment_count
+msgid "Attachment Count"
+msgstr "عدد المرفقات"
+
+#. module: vehicle_installment
+#: model:ir.model.fields,field_description:vehicle_installment.field_vehicle_installment__calculated_months
+msgid "Calculated Months"
+msgstr "الأشهر المحسوبة"
+
+#. module: vehicle_installment
+#: model_terms:ir.ui.view,arch_db:vehicle_installment.vehicle_installment_form_view
+msgid "Calculation Details"
+msgstr "تفاصيل الحساب"
+
+#. module: vehicle_installment
+#: model_terms:ir.actions.act_window,help:vehicle_installment.vehicle_installment_action_window
+msgid "Click the create button to add a new vehicle installment."
+msgstr "انقر على زر الإنشاء لإضافة قسط مركبة جديد."
+
+#. module: vehicle_installment
+#: model:ir.model.fields,field_description:vehicle_installment.field_vehicle_installment__company_id
+#: model:ir.model.fields,field_description:vehicle_installment.field_vehicle_installment_line__company_id
+msgid "Company"
+msgstr "الشركة"
+
+#. module: vehicle_installment
+#: model_terms:ir.ui.view,arch_db:vehicle_installment.vehicle_installment_form_view
+msgid "Compute Installments"
+msgstr "احتساب الأقساط"
+
+#. module: vehicle_installment
+#: model:ir.model.fields,field_description:vehicle_installment.field_vehicle_installment__create_uid
+#: model:ir.model.fields,field_description:vehicle_installment.field_vehicle_installment_line__create_uid
+msgid "Created by"
+msgstr "أنشئ بواسطة"
+
+#. module: vehicle_installment
+#: model:ir.model.fields,field_description:vehicle_installment.field_vehicle_installment__create_date
+#: model:ir.model.fields,field_description:vehicle_installment.field_vehicle_installment_line__create_date
+msgid "Created on"
+msgstr "أنشئ في"
+
+#. module: vehicle_installment
+#: model:ir.model.fields,field_description:vehicle_installment.field_vehicle_installment__currency_id
+#: model:ir.model.fields,field_description:vehicle_installment.field_vehicle_installment_line__currency_id
+msgid "Currency"
+msgstr "العملة"
+
+#. module: vehicle_installment
+#: model:ir.model.fields,field_description:vehicle_installment.field_vehicle_installment__date
+msgid "Date"
+msgstr "التاريخ"
+
+#. module: vehicle_installment
+#: model:ir.model.fields,field_description:vehicle_installment.field_hr_payslip__display_name
+#: model:ir.model.fields,field_description:vehicle_installment.field_vehicle_installment__display_name
+#: model:ir.model.fields,field_description:vehicle_installment.field_vehicle_installment_line__display_name
+msgid "Display Name"
+msgstr "اسم العرض"
+
+#. module: vehicle_installment
+#: model:ir.model.fields.selection,name:vehicle_installment.selection__vehicle_installment__state__draft
+msgid "Draft"
+msgstr "مسودة"
+
+#. module: vehicle_installment
+#: model:ir.model.fields,field_description:vehicle_installment.field_vehicle_installment__employee_id
+#: model:ir.model.fields,field_description:vehicle_installment.field_vehicle_installment_line__employee_id
+msgid "Employee"
+msgstr "الموظف"
+
+#. module: vehicle_installment
+#: model:ir.model.fields,field_description:vehicle_installment.field_vehicle_installment__message_follower_ids
+msgid "Followers"
+msgstr "المتابعون"
+
+#. module: vehicle_installment
+#: model:ir.model.fields,field_description:vehicle_installment.field_vehicle_installment__message_partner_ids
+msgid "Followers (Partners)"
+msgstr "المتابعون (الشركاء)"
+
+#. module: vehicle_installment
+#: model:ir.model.fields,field_description:vehicle_installment.field_vehicle_installment__full_months
+msgid "Full Payment Months"
+msgstr "أشهر السداد الكاملة"
+
+#. module: vehicle_installment
+#: model:ir.model.fields,field_description:vehicle_installment.field_vehicle_installment__has_message
+msgid "Has Message"
+msgstr "يحتوي على رسالة"
+
+#. module: vehicle_installment
+#: model:ir.model.fields,field_description:vehicle_installment.field_hr_payslip__id
+#: model:ir.model.fields,field_description:vehicle_installment.field_vehicle_installment__id
+#: model:ir.model.fields,field_description:vehicle_installment.field_vehicle_installment_line__id
+msgid "ID"
+msgstr "المُعرّف"
+
+#. module: vehicle_installment
+#: model:ir.model.fields,help:vehicle_installment.field_vehicle_installment__message_needaction
+msgid "If checked, new messages require your attention."
+msgstr "إذا كان محددًا، فهذا يعني أن الرسائل الجديدة تتطلب اهتمامك."
+
+#. module: vehicle_installment
+#: model:ir.model.fields,help:vehicle_installment.field_vehicle_installment__message_has_error
+#: model:ir.model.fields,help:vehicle_installment.field_vehicle_installment__message_has_sms_error
+msgid "If checked, some messages have a delivery error."
+msgstr "إذا كان محددًا، فهذا يعني وجود خطأ في تسليم بعض الرسائل."
+
+#. module: vehicle_installment
+#: model:ir.model.fields,field_description:vehicle_installment.field_vehicle_installment_line__installment_id
+msgid "Installment"
+msgstr "القسط"
+
+#. module: vehicle_installment
+#: model:ir.model.fields,field_description:vehicle_installment.field_vehicle_installment__installment_lines
+msgid "Installment Lines"
+msgstr "بنود الأقساط"
+
+#. module: vehicle_installment
+#: model_terms:ir.ui.view,arch_db:vehicle_installment.vehicle_installment_form_view
+msgid "Installment Reason..."
+msgstr "سبب القسط..."
+
+#. module: vehicle_installment
+#: model:ir.model.fields,field_description:vehicle_installment.field_vehicle_installment_line__installment_state
+msgid "Installment Status"
+msgstr "حالة القسط"
+
+#. module: vehicle_installment
+#: model:ir.ui.menu,name:vehicle_installment.menu_vehicle_installment_main
+msgid "Installments"
+msgstr "الأقساط"
+
+#. module: vehicle_installment
+#: model:ir.model.fields,field_description:vehicle_installment.field_vehicle_installment__message_is_follower
+msgid "Is Follower"
+msgstr "متابع"
+
+#. module: vehicle_installment
+#: model:ir.model.fields,field_description:vehicle_installment.field_vehicle_installment__last_payment_amount
+msgid "Last Payment Amount"
+msgstr "مبلغ الدفعة الأخيرة"
+
+#. module: vehicle_installment
+#: model:ir.model.fields,field_description:vehicle_installment.field_vehicle_installment__write_uid
+#: model:ir.model.fields,field_description:vehicle_installment.field_vehicle_installment_line__write_uid
+msgid "Last Updated by"
+msgstr "آخر تحديث بواسطة"
+
+#. module: vehicle_installment
+#: model:ir.model.fields,field_description:vehicle_installment.field_vehicle_installment__write_date
+#: model:ir.model.fields,field_description:vehicle_installment.field_vehicle_installment_line__write_date
+msgid "Last Updated on"
+msgstr "آخر تحديث في"
+
+#. module: vehicle_installment
+#: model:ir.model.fields,field_description:vehicle_installment.field_vehicle_installment__message_has_error
+msgid "Message Delivery error"
+msgstr "خطأ في تسليم الرسالة"
+
+#. module: vehicle_installment
+#: model:ir.model.fields,field_description:vehicle_installment.field_vehicle_installment__message_ids
+msgid "Messages"
+msgstr "الرسائل"
+
+#. module: vehicle_installment
+#: model:ir.model.fields,field_description:vehicle_installment.field_vehicle_installment__monthly_payment
+msgid "Monthly Payment"
+msgstr "الدفعة الشهرية"
+
+#. module: vehicle_installment
+#: model_terms:ir.actions.act_window,help:vehicle_installment.vehicle_installment_line_action_window
+msgid "No payment schedules found!"
+msgstr "لم يتم العثور على جداول سداد!"
+
+#. module: vehicle_installment
+#: model_terms:ir.actions.act_window,help:vehicle_installment.vehicle_installment_action_window
+msgid "No vehicle installments found!"
+msgstr "لم يتم العثور على أقساط مركبات!"
+
+#. module: vehicle_installment
+#: model:ir.model.fields,field_description:vehicle_installment.field_vehicle_installment_line__note
+msgid "Note"
+msgstr "ملاحظة"
+
+#. module: vehicle_installment
+#: model:ir.model.fields,field_description:vehicle_installment.field_vehicle_installment__message_needaction_counter
+msgid "Number of Actions"
+msgstr "عدد الإجراءات"
+
+#. module: vehicle_installment
+#: model:ir.model.fields,field_description:vehicle_installment.field_vehicle_installment__message_has_error_counter
+msgid "Number of errors"
+msgstr "عدد الأخطاء"
+
+#. module: vehicle_installment
+#: model:ir.model.fields,help:vehicle_installment.field_vehicle_installment__message_needaction_counter
+msgid "Number of messages requiring action"
+msgstr "عدد الرسائل التي تتطلب اتخاذ إجراء"
+
+#. module: vehicle_installment
+#: model:ir.model.fields,help:vehicle_installment.field_vehicle_installment__message_has_error_counter
+msgid "Number of messages with delivery error"
+msgstr "عدد الرسائل التي بها خطأ في التسليم"
+
+#. module: vehicle_installment
+#: model:ir.model.fields.selection,name:vehicle_installment.selection__vehicle_installment__state__paid
+#: model:ir.model.fields.selection,name:vehicle_installment.selection__vehicle_installment_line__state__paid
+#: model_terms:ir.ui.view,arch_db:vehicle_installment.vehicle_installment_view_search
+msgid "Paid"
+msgstr "مدفوع"
+
+#. module: vehicle_installment
+#: model:ir.model,name:vehicle_installment.model_hr_payslip
+msgid "Pay Slip"
+msgstr "إيصال الدفع"
+
+#. module: vehicle_installment
+#: model:ir.model.fields,field_description:vehicle_installment.field_vehicle_installment_line__payment_date
+msgid "Payment Date"
+msgstr "تاريخ السداد"
+
+#. module: vehicle_installment
+#: model:ir.actions.act_window,name:vehicle_installment.vehicle_installment_line_action_window
+#: model:ir.ui.menu,name:vehicle_installment.menu_vehicle_installment_lines
+#: model_terms:ir.ui.view,arch_db:vehicle_installment.vehicle_installment_form_view
+msgid "Payment Schedule"
+msgstr "جدول السداد"
+
+#. module: vehicle_installment
+#: model:ir.model.fields,field_description:vehicle_installment.field_vehicle_installment_line__state
+msgid "Payment Status"
+msgstr "حالة السداد"
+
+#. module: vehicle_installment
+#: model:ir.model.fields,field_description:vehicle_installment.field_vehicle_installment__rate_percentage
+msgid "Rate Percentage (%)"
+msgstr "نسبة الفائدة (%)"
+
+#. module: vehicle_installment
+#: model:ir.model.fields,field_description:vehicle_installment.field_vehicle_installment__reason
+msgid "Reason"
+msgstr "السبب"
+
+#. module: vehicle_installment
+#: model_terms:ir.ui.view,arch_db:vehicle_installment.vehicle_installment_form_view
+msgid "Reject"
+msgstr "رفض"
+
+#. module: vehicle_installment
+#: model:ir.model.fields.selection,name:vehicle_installment.selection__vehicle_installment__state__rejected
+#: model_terms:ir.ui.view,arch_db:vehicle_installment.vehicle_installment_view_search
+msgid "Rejected"
+msgstr "مرفوض"
+
+#. module: vehicle_installment
+#: model_terms:ir.ui.view,arch_db:vehicle_installment.vehicle_installment_form_view
+msgid "Reset to draft"
+msgstr "إعادة إلى مسودة"
+
+#. module: vehicle_installment
+#: model:ir.model.fields,field_description:vehicle_installment.field_vehicle_installment__message_has_sms_error
+msgid "SMS Delivery error"
+msgstr "خطأ في تسليم الرسائل النصية القصيرة (SMS)"
+
+#. module: vehicle_installment
+#: model_terms:ir.ui.view,arch_db:vehicle_installment.vehicle_installment_form_view
+msgid "Select Vehicle..."
+msgstr "اختر المركبة..."
+
+#. module: vehicle_installment
+#: model:ir.model.fields,field_description:vehicle_installment.field_vehicle_installment__state
+msgid "State"
+msgstr "الحالة"
+
+#. module: vehicle_installment
+#: model:ir.model.fields,field_description:vehicle_installment.field_vehicle_installment__total_amount
+msgid "Total Amount"
+msgstr "المبلغ الإجمالي"
+
+#. module: vehicle_installment
+#: model:ir.model.fields.selection,name:vehicle_installment.selection__vehicle_installment_line__state__unpaid
+msgid "Unpaid"
+msgstr "غير مدفوع"
+
+#. module: vehicle_installment
+#: model:res.groups,name:vehicle_installment.group_vehicle_installment_user
+msgid "User"
+msgstr "مستخدم"
+
+#. module: vehicle_installment
+#: model:ir.model.fields,field_description:vehicle_installment.field_vehicle_installment__vehicle_id
+#: model:ir.model.fields,field_description:vehicle_installment.field_vehicle_installment_line__vehicle_id
+msgid "Vehicle"
+msgstr "المركبة"
+
+#. module: vehicle_installment
+#: model:ir.model,name:vehicle_installment.model_vehicle_installment
+#: model:ir.module.category,name:vehicle_installment.module_category_vehicle_installment
+msgid "Vehicle Installment"
+msgstr "قسط المركبة"
+
+#. module: vehicle_installment
+#: model:ir.model,name:vehicle_installment.model_vehicle_installment_line
+msgid "Vehicle Installment Line"
+msgstr "بند قسط المركبة"
+
+#. module: vehicle_installment
+#: model:res.groups.privilege,name:vehicle_installment.res_groups_privilege_vehicle_installment
+msgid "Vehicle Installment Management"
+msgstr "إدارة أقساط المركبات"
+
+#. module: vehicle_installment
+#: model:ir.actions.act_window,name:vehicle_installment.vehicle_installment_action_window
+#: model:ir.ui.menu,name:vehicle_installment.menu_vehicle_installment_root
+#: model_terms:ir.ui.view,arch_db:vehicle_installment.vehicle_installment_form_view
+msgid "Vehicle Installments"
+msgstr "أقساط المركبات"
+
+#. module: vehicle_installment
+#: model:ir.model.fields,field_description:vehicle_installment.field_vehicle_installment__vehicle_price
+msgid "Vehicle Price"
+msgstr "سعر المركبة"
+
+#. module: vehicle_installment
+#: model:ir.model.fields.selection,name:vehicle_installment.selection__vehicle_installment__state__waiting
+msgid "Waiting"
+msgstr "قيد الانتظار"
+
+#. module: vehicle_installment
+#: model:ir.model.fields,field_description:vehicle_installment.field_vehicle_installment__website_message_ids
+msgid "Website Messages"
+msgstr "رسائل الموقع الإلكتروني"
+
+#. module: vehicle_installment
+#: model:ir.model.fields,help:vehicle_installment.field_vehicle_installment__website_message_ids
+msgid "Website communication history"
+msgstr "سجل تواصل الموقع الإلكتروني"
+
+#. module: vehicle_installment
+#. odoo-python
+#: code:addons/vehicle_installment/models/vehicle_installment.py:0
+msgid "You can only delete records in (Draft, Rejected) status."
+msgstr "يمكنك فقط حذف السجلات التي في حالة (مسودة، مرفوض)."
+
+#. module: vehicle_installment
+#. odoo-python
+#: code:addons/vehicle_installment/models/vehicle_installment.py:0
+msgid ""
+"You cannot edit current record as its status is 'approved', contact your "
+"administrator instead."
+msgstr ""
+"لا يمكنك تعديل السجل الحالي نظرًا لأن حالته \"معتمد\"، يرجى الاتصال بالمسؤول بدلاً من ذلك."

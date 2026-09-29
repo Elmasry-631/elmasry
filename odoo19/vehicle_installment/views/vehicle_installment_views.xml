@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="vehicle_installment_form_view" model="ir.ui.view">
+        <field name="name">vehicle.installment.form.view</field>
+        <field name="model">vehicle.installment</field>
+        <field name="arch" type="xml">
+            <form string="Vehicle Installments">
+                <header>
+                    <button name="compute_installments" type="object" string="Compute Installments" class="btn-primary"
+                            invisible="state != 'draft'" groups="vehicle_installment.group_vehicle_installment_manager"/>
+                    <button name="compute_installments" type="object" string="Compute Installments" class="btn-secondary"
+                            invisible="state != 'waiting'" groups="vehicle_installment.group_vehicle_installment_manager"/>
+                    <button name="button_approve" type="object" string="Approve" class="btn-primary"
+                            invisible="state in ('approved', 'draft', 'paid')" groups="vehicle_installment.group_vehicle_installment_manager"/>
+                    <button name="button_reject" type="object" string="Reject" invisible="state in ('rejected', 'draft', 'paid')"
+                            groups="vehicle_installment.group_vehicle_installment_manager"/>
+                    <button name="button_draft" type="object" string="Reset to draft" invisible="state in ('draft', 'paid')"
+                            groups="vehicle_installment.group_vehicle_installment_manager"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft, approved, rejected, paid"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h2>
+                            <field name="vehicle_id" placeholder="Select Vehicle..." readonly="state != 'draft'"/>
+                        </h2>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="employee_id" readonly="state != 'draft'"/>
+                            <field name="date" readonly="state != 'draft'"/>
+                            <field name="company_id" invisible="1"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="vehicle_price" readonly="state != 'draft'"/>
+                            <field name="rate_percentage" readonly="state != 'draft'"/>
+                            <field name="monthly_payment" readonly="state != 'draft'"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Calculation Details">
+                            <field name="total_amount" readonly="1" widget="monetary"/>
+                            <field name="calculated_months" readonly="1"/>
+                            <field name="full_months" readonly="1"/>
+                            <field name="last_payment_amount" readonly="1" widget="monetary"/>
+                        </group>
+                        <group>
+                            <field name="reason" placeholder="Installment Reason..." readonly="state != 'draft'"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="installment_lines" string="Payment Schedule">
+                            <field name="installment_lines" widget="one2many_list">
+                                <list editable="top">
+                                    <field name="installment_id" column_invisible="1"/>
+                                    <field name="payment_date" readonly="installment_state not in ['draft', 'waiting']"/>
+                                    <field name="amount" readonly="state == 'paid'"/>
+                                    <field name="note" readonly="installment_state not in ['draft', 'waiting']"/>
+                                    <field name="company_id" column_invisible="1"/>
+                                    <field name="currency_id" column_invisible="1"/>
+                                    <field name="installment_state" column_invisible="1"/>
+                                    <field name="state" decoration-danger="state == 'unpaid'" decoration-success="state == 'paid'" readonly="installment_state not in ['draft', 'waiting']"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="vehicle_installment_list_view" model="ir.ui.view">
+        <field name="name">vehicle.installment.list.view</field>
+        <field name="model">vehicle.installment</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="date"/>
+                <field name="vehicle_id"/>
+                <field name="employee_id"/>
+                <field name="vehicle_price"/>
+                <field name="rate_percentage"/>
+                <field name="total_amount"/>
+                <field name="monthly_payment"/>
+                <field name="full_months"/>
+                <field name="company_id" column_invisible="1"/>
+                <field name="currency_id" column_invisible="1"/>
+                <field name="state" widget="badge" decoration-success="state == 'paid'"
+                       decoration-info="state == 'approved'" decoration-danger="state == 'rejected'"
+                       decoration-muted="state == 'draft'" decoration-warning="state == 'waiting'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="vehicle_installment_view_search" model="ir.ui.view">
+        <field name="name">vehicle.installment.search</field>
+        <field name="model">vehicle.installment</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="vehicle_id"/>
+                <field name="employee_id"/>
+                <filter name="active_installments" string="Active" domain="[('state', 'in', ['draft', 'waiting', 'approved'])]"/>
+                <filter name="rejected_installments" string="Rejected" domain="[('state', '=', 'rejected')]"/>
+                <filter name="paid_installments" string="Paid" domain="[('state', '=', 'paid')]"/>
+<!--                <group expand="0" string="Group By">-->
+<!--                    <filter name="group_by_vehicle" string="Vehicle" context="{'group_by': 'vehicle_id'}"/>-->
+<!--                    <filter name="group_by_employee" string="Employee" context="{'group_by': 'employee_id'}"/>-->
+<!--                    <filter name="group_by_state" string="Status" context="{'group_by': 'state'}"/>-->
+<!--                </group>-->
+            </search>
+        </field>
+    </record>
+
+    <!-- actions opening views on models -->
+    <record model="ir.actions.act_window" id="vehicle_installment_action_window">
+        <field name="name">Vehicle Installments</field>
+        <field name="res_model">vehicle.installment</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('company_id', 'in', allowed_company_ids)]</field>
+        <field name="context">{'search_default_active_installments': True}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No vehicle installments found!
+            </p>
+            <p>
+                Click the create button to add a new vehicle installment.
+            </p>
+        </field>
+    </record>
+
+    <!-- Installment Lines view -->
+    <record id="vehicle_installment_line_list_view" model="ir.ui.view">
+        <field name="name">vehicle.installment.line.list.view</field>
+        <field name="model">vehicle.installment.line</field>
+        <field name="arch" type="xml">
+            <list editable="top">
+                <field name="payment_date"/>
+                <field name="vehicle_id"/>
+                <field name="employee_id"/>
+                <field name="amount"/>
+                <field name="company_id" column_invisible="1"/>
+                <field name="currency_id" column_invisible="1"/>
+                <field name="state" decoration-danger="state == 'unpaid'" decoration-success="state == 'paid'"/>
+                <field name="installment_state"/>
+            </list>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="vehicle_installment_line_action_window">
+        <field name="name">Payment Schedule</field>
+        <field name="res_model">vehicle.installment.line</field>
+        <field name="view_mode">list</field>
+        <field name="domain">[('company_id', 'in', allowed_company_ids)]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No payment schedules found!
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu Items -->
+    <menuitem id="menu_vehicle_installment_root" 
+              name="Vehicle Installments" 
+              web_icon="vehicle_installment,static/description/icon.png"
+              sequence="10"/>
+
+    <menuitem id="menu_vehicle_installment_main" 
+              name="Installments" 
+              parent="menu_vehicle_installment_root"
+              action="vehicle_installment_action_window"
+              sequence="10"/>
+
+    <menuitem id="menu_vehicle_installment_lines" 
+              name="Payment Schedule" 
+              parent="menu_vehicle_installment_root"
+              action="vehicle_installment_line_action_window"
+              sequence="20"/>
+</odoo>

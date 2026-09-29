@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_vehicle_installment_user,vehicle.installment.user,model_vehicle_installment,vehicle_installment.group_vehicle_installment_user,1,0,0,0
+access_vehicle_installment_line_user,vehicle.installment.line.user,model_vehicle_installment_line,vehicle_installment.group_vehicle_installment_user,1,0,0,0
+access_vehicle_installment_manager,vehicle.installment.manager,model_vehicle_installment,vehicle_installment.group_vehicle_installment_manager,1,1,1,1
+access_vehicle_installment_line_manager,vehicle.installment.line.manager,model_vehicle_installment_line,vehicle_installment.group_vehicle_installment_manager,1,1,1,1
