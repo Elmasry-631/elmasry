@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="payment_provider_form_alrajhi_arb" model="ir.ui.view">
+        <field name="name">payment.provider.form.alrajhi.arb</field>
+        <field name="model">payment.provider</field>
+        <field name="inherit_id" ref="payment.payment_provider_form"/>
+        <field name="arch" type="xml">
+            <group name="provider_credentials" position="inside">
+                <group string="Al Rajhi ARB" invisible="code != 'alrajhi_arb'" name="alrajhi_arb_credentials">
+                    <field name="arb_tranportal_id"
+                           required="code == 'alrajhi_arb' and state != 'disabled'"/>
+                    <field name="arb_tranportal_password"
+                           password="True"
+                           required="code == 'alrajhi_arb' and state != 'disabled'"/>
+                    <field name="arb_resource_key"
+                           password="True"
+                           required="code == 'alrajhi_arb' and state != 'disabled'"/>
+                </group>
+                <group string="Token generation URLs" invisible="code != 'alrajhi_arb'" name="alrajhi_arb_endpoints">
+                    <field name="arb_endpoint_url_test"/>
+                    <field name="arb_endpoint_url_prod"/>
+                </group>
+                <group string="Diagnostics" invisible="code != 'alrajhi_arb'" name="alrajhi_arb_diagnostics">
+                    <button name="action_test_alrajhi_connection" type="object"
+                            string="Test Al Rajhi connection" class="btn-primary"
+                            help="Send a 1.00 SAR token request to Al Rajhi from this server to verify credentials, environment and terminal. No Sale Order is created and nothing is charged. Save the form first."/>
+                </group>
+            </group>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,116 @@
+Manifest version vs Odoo server
+-------------------------------
+Odoo checks that the module version matches the server series (e.g. Odoo 17
+requires 17.0.x.y or 17.0.x.y.z). Installing a manifest with 18.0.* on Odoo 17
+raises "invalid manifest". Deploy the 17.0.* copy to Odoo 17 and the 18.0.*
+copy only to Odoo 18.
+
+Python dependencies (see requirements.txt)
+-------------------------------------------
+This addon needs `requests` and `pycryptodome` in the SAME environment as the
+`odoo` process. If they are missing, payment flows can fail when calling ARB or
+decrypting trandata (often as a UserError in-app; startup can also fail if the
+module import chain changes).
+
+Do NOT pip install on the VPS host (PEP 668 / "externally-managed-environment")
+------------------------------------------------------------------------------
+Host Python (e.g. Debian/Ubuntu with python3.12) blocks `pip install` outside a
+venv. That is normal. Odoo does not use the host interpreter: it uses Python
+inside the **odoo** container. Installing on the host does not fix Odoo.
+
+Always install into the container where `odoo` runs, for example (from the
+same directory as your docker-compose.yml):
+
+  docker compose ps                    # note the SERVICE name for Odoo (often "odoo")
+  docker compose exec -u root odoo pip3 install --no-cache-dir requests pycryptodome
+  docker compose restart odoo
+
+If your compose service is not named `odoo`, replace it (e.g. `web`, `odoo17`).
+
+Copy requirements into the container and install (optional):
+
+  docker compose cp payment_alrajhi_arb/requirements.txt odoo:/tmp/arb-req.txt
+  docker compose exec -u root odoo pip3 install --no-cache-dir -r /tmp/arb-req.txt
+  docker compose restart odoo
+
+Verify **inside** the container (still not on the host):
+
+  docker compose exec odoo python3 -c "import requests; from Crypto.Cipher import AES; print('ok')"
+
+Why it still says "missing pycryptodome" after a successful pip install
+-----------------------------------------------------------------------
+`docker compose exec ... pip3 install` only changes the **current** container
+filesystem. If you run **`docker compose down`** (or the server reboots and
+containers are recreated from the **image**), that container is thrown away and
+the next `up` starts a **new** container from `odoo:17` — **without** anything
+you pip-installed earlier.
+
+**`docker compose down -v` is worse:** `-v` removes **volumes** (often your
+PostgreSQL data). Avoid `-v` unless you intend to wipe the database.
+
+If you just ran `pip3 install` inside the container, **do not run `docker compose
+down` or `down -v` before activating the module** — you will get "pycryptodome
+not installed" again. Use `docker compose restart odoo` only. Helper script:
+`payment_alrajhi_arb/scripts/install_python_deps_in_container.sh`
+
+**Persistent fix:** bake dependencies into a **custom image** with a
+`Dockerfile`, then `build` that image and use it for the Odoo service.
+
+Example (see `Dockerfile.odoo17-arb-deps` in the Rajhy_payment workspace root):
+
+1) Put the Dockerfile beside your `docker-compose.yml` (or set `build.context`).
+
+2) In `docker-compose.yml`, on the Odoo service, add a build section and a stable image name, for example:
+
+   services:
+     odoo:
+       build:
+         context: .
+         dockerfile: Dockerfile.odoo17-arb-deps
+       image: odoo17-with-arb-deps:local
+       # ... keep your existing env, volumes, ports, command ...
+
+   Remove or replace a plain `image: odoo:17` that would skip the build.
+
+3) Rebuild and start:
+
+   docker compose build --no-cache odoo
+   docker compose up -d
+
+4) Confirm inside the **new** container:
+
+   docker compose exec odoo python3 -c "import Crypto; print(Crypto.__file__)"
+
+Temporary one-off pip (lost after `down` / recreate)
+---------------------------------------------------
+Only for a quick test on a long-lived container — not for production:
+
+  docker compose exec -u root odoo pip3 install --no-cache-dir requests pycryptodome
+  docker compose restart odoo
+
+Official Odoo image (typical pattern)
+-------------------------------------
+Extend the image and install deps as root, then drop back to odoo user:
+
+  FROM odoo:17.0
+  USER root
+  COPY payment_alrajhi_arb/requirements.txt /tmp/payment_alrajhi_arb-requirements.txt
+  RUN pip3 install --no-cache-dir -r /tmp/payment_alrajhi_arb-requirements.txt \
+ && rm /tmp/payment_alrajhi_arb-requirements.txt
+  USER odoo
+
+Or run a custom entrypoint that pip-installs then exec's odoo (only if you
+accept slower starts and non-immutable images).
+
+Debugging HTTP 500 after `docker compose down` / `up`
+-----------------------------------------------------
+1) docker compose logs -f odoo --tail=200
+2) Confirm DB is up before Odoo (depends_on + healthcheck).
+3) Confirm addons path still mounts this module after recreate.
+4) docker compose exec odoo python3 -c "import requests; from Crypto.Cipher import AES"
+
+Icon / branding
+---------------
+Do not ship an Al Rajhi logo unless your agreement with the bank allows it.
+Replace static/description/icon.png only when permitted; otherwise keep a
+neutral payment icon.

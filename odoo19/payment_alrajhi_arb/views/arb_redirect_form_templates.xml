@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="arb_redirect_form_view" name="Al Rajhi ARB Redirect Form">
+        <!--
+            ARB payment pages are opened with GET parameters.
+            Do not keep those parameters only in the form action URL: browser GET
+            form submission can drop the original action query string and submit an
+            empty query, which makes ARB return IPAY0400007.
+        -->
+        <form t-att-action="payment_action_url" method="get" id="arb_redirect_form">
+            <t t-foreach="payment_params" t-as="param">
+                <input type="hidden" t-att-name="param['name']" t-att-value="param['value']"/>
+            </t>
+        </form>
+    </template>
+</odoo>

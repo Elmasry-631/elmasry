@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- Standalone provider row: appears in Accounting -> Payment Providers like core modules. -->
+    <record id="payment_provider_alrajhi_arb" model="payment.provider">
+        <field name="name">Al Rajhi Bank (ARB)</field>
+        <field name="code">alrajhi_arb</field>
+        <field name="state">disabled</field>
+        <field name="image_128" type="base64" file="payment_alrajhi_arb/static/description/icon.png"/>
+        <field name="module_id" ref="base.module_payment_alrajhi_arb"/>
+        <field name="payment_method_ids"
+               eval="[Command.set([
+                         ref('payment.payment_method_card'),
+                         ref('payment.payment_method_mada'),
+                     ])]"
+        />
+    </record>
+</odoo>

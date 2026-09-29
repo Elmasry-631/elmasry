@@ -1,0 +1,5 @@
+# Python deps for payment_alrajhi_arb (Al Rajhi ARB token API + AES trandata).
+# Install into the Odoo image/container before starting Odoo, e.g.:
+#   pip3 install --no-cache-dir -r requirements.txt
+requests>=2.25.0
+pycryptodome>=3.19.0

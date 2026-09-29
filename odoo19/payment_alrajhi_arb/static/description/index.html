@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>Al Rajhi Bank (ARB) Payment Gateway - Odoo</title>
+    <style type="text/css">
+        .arb-page {
+            margin: 0;
+            padding: 0;
+            color: #21314a;
+            font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+            line-height: 1.65;
+            background: #ffffff;
+        }
+
+        .arb-page * {
+            box-sizing: border-box;
+        }
+
+        .arb-page .oe_container {
+            width: 100%;
+            max-width: 1120px;
+            margin: 0 auto;
+        }
+
+        .arb-page .oe_row {
+            margin: 0 auto;
+            padding: 0 8px;
+        }
+
+        .arb-page .oe_spaced {
+            padding-top: 28px;
+            padding-bottom: 28px;
+        }
+
+        .arb-page .oe_dark {
+            margin-top: 18px;
+            border: 1px solid #dde7f4;
+            border-radius: 20px;
+            background: linear-gradient(180deg, #fbfcff 0%, #f3f7fd 100%);
+            box-shadow: 0 16px 32px rgba(17, 50, 70, 0.06);
+        }
+
+        .arb-page .oe_separator {
+            height: 10px;
+        }
+
+        .arb-page .oe_span12 {
+            width: 100%;
+        }
+
+        .arb-page .oe_slogan {
+            margin: 0 auto 10px;
+            text-align: center;
+            line-height: 1.3;
+        }
+
+        .arb-title {
+            color: #875a7b;
+            font-size: 34px;
+            font-weight: 700;
+        }
+
+        .arb-title-ar {
+            display: block;
+            margin-top: 8px;
+            color: #1f4f96;
+            font-size: 28px;
+            font-weight: 700;
+            direction: rtl;
+        }
+
+        .arb-subtitle {
+            max-width: 900px;
+            color: #52657f;
+            font-size: 20px;
+            font-weight: 400;
+        }
+
+        .arb-subtitle-ar {
+            display: block;
+            margin-top: 8px;
+            font-size: 19px;
+            direction: rtl;
+        }
+
+        .arb-hero-card {
+            overflow: hidden;
+            margin-top: 24px;
+            border-radius: 18px;
+            border: 1px solid #dce6f4;
+            background: linear-gradient(135deg, #113246 0%, #1b5db5 48%, #7565d8 100%);
+            box-shadow: 0 18px 40px rgba(17, 50, 70, 0.16);
+        }
+
+        .arb-hero-card img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        .arb-intro-grid,
+        .arb-step-copy-grid,
+        .arb-support-grid {
+            display: grid;
+            gap: 18px;
+        }
+
+        .arb-intro-grid,
+        .arb-step-copy-grid,
+        .arb-support-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .arb-intro-card,
+        .arb-lang-card,
+        .arb-note-card,
+        .arb-support-card {
+            padding: 22px;
+            border-radius: 16px;
+            border: 1px solid #d9e4f2;
+            background: #ffffff;
+            box-shadow: 0 10px 24px rgba(17, 50, 70, 0.05);
+        }
+
+        .arb-intro-card h3,
+        .arb-lang-card h4,
+        .arb-note-card h3,
+        .arb-support-card h3 {
+            margin: 0 0 10px;
+            color: #113246;
+            line-height: 1.25;
+        }
+
+        .arb-intro-card p,
+        .arb-lang-card p,
+        .arb-note-card p,
+        .arb-support-card p {
+            margin: 0 0 10px;
+            color: #5b6d85;
+        }
+
+        .arb-intro-card p:last-child,
+        .arb-lang-card p:last-child,
+        .arb-note-card p:last-child,
+        .arb-support-card p:last-child {
+            margin-bottom: 0;
+        }
+
+        .arb-rtl {
+            direction: rtl;
+            text-align: right;
+            font-family: Tahoma, "Segoe UI", Arial, sans-serif;
+        }
+
+        .arb-checklist {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            font-size: 17px;
+        }
+
+        .arb-checklist li {
+            position: relative;
+            margin-bottom: 12px;
+            padding-left: 22px;
+            color: #25415d;
+        }
+
+        .arb-checklist li:last-child {
+            margin-bottom: 0;
+        }
+
+        .arb-checklist li:before {
+            content: "";
+            position: absolute;
+            top: 9px;
+            left: 0;
+            width: 9px;
+            height: 9px;
+            border-radius: 999px;
+            background: #113246;
+        }
+
+        .arb-checklist-ar li {
+            padding-left: 0;
+            padding-right: 22px;
+        }
+
+        .arb-checklist-ar li:before {
+            left: auto;
+            right: 0;
+        }
+
+        .arb-step {
+            margin-top: 18px;
+            padding: 24px;
+            border-radius: 18px;
+            border: 1px solid #d9e5f2;
+            background: #ffffff;
+            box-shadow: 0 12px 28px rgba(17, 50, 70, 0.05);
+        }
+
+        .arb-step-head {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 18px;
+        }
+
+        .arb-step-num {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            border-radius: 999px;
+            background: linear-gradient(135deg, #875a7b 0%, #1f4f96 100%);
+            color: #ffffff;
+            font-size: 15px;
+            font-weight: 700;
+            flex: 0 0 auto;
+        }
+
+        .arb-step-head h3 {
+            margin: 0;
+            color: #875a7b;
+            font-size: 28px;
+            line-height: 1.25;
+        }
+
+        .arb-step-head span {
+            display: block;
+            color: #6f8197;
+            font-size: 17px;
+        }
+
+        .arb-step-media-grid {
+            display: grid;
+            width:50%;
+            gap: 8px;
+            grid-template-columns: 1fr;
+            margin-top: 8px;
+            align-items: left;
+        }
+
+        .arb-shot,
+        .arb-shot-single {
+            margin-top: 18px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            gap: 12px;
+            height: 100%;
+            padding: 16px;
+            border-radius: 18px;
+            border: 1px solid #d9e5f2;
+            background: linear-gradient(180deg, #fbfdff 0%, #f3f8fe 100%);
+            box-shadow: 0 12px 28px rgba(17, 50, 70, 0.06);
+            overflow: hidden;
+        }
+
+        .arb-shot img,
+        .arb-shot-single img {
+            display: block;
+            width: 100%;
+            height: auto;
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 0;
+            border-radius: 14px;
+            border: 1px solid #d7e2f1;
+            box-shadow: 0 10px 26px rgba(17, 50, 70, 0.07);
+            background: #ffffff;
+        }
+
+        .arb-caption {
+            color: #6d8098;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .arb-note-grid {
+            display: grid;
+            gap: 18px;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .arb-note-card {
+            background: linear-gradient(180deg, #fffdf6 0%, #fff8eb 100%);
+            border-color: #ead7aa;
+        }
+
+        .arb-note-card strong {
+            color: #906200;
+        }
+
+        .arb-link {
+            color: #1f4f96;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .arb-link:hover {
+            text-decoration: underline;
+        }
+
+        code {
+            padding: 2px 6px;
+            border-radius: 8px;
+            background: rgba(31, 79, 150, 0.08);
+            color: #113246;
+            font-size: 0.95em;
+        }
+
+        @media (max-width: 700px) {
+            .arb-intro-grid,
+            .arb-step-copy-grid,
+            .arb-note-grid,
+            .arb-support-grid,
+            .arb-step-media-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .arb-title {
+                font-size: 29px;
+            }
+
+            .arb-title-ar {
+                font-size: 24px;
+            }
+
+            .arb-step-head h3 {
+                font-size: 24px;
+            }
+
+        }
+
+        @media (max-width: 640px) {
+            .arb-page .oe_row {
+                padding: 0 4px;
+            }
+
+            .arb-page .oe_spaced {
+                padding-top: 18px;
+                padding-bottom: 18px;
+            }
+
+            .arb-step,
+            .arb-intro-card,
+            .arb-lang-card,
+            .arb-note-card,
+            .arb-support-card {
+                padding: 18px;
+            }
+
+            .arb-hero-card {
+                margin-top: 18px;
+            }
+
+            .arb-shot,
+            .arb-shot-single {
+                padding: 12px;
+            }
+
+        }
+    </style>
+</head>
+<body class="arb-page">
+    <section class="oe_container">
+        <div class="oe_row oe_spaced">
+            <h2 class="oe_slogan arb-title">
+                Al Rajhi Bank (ARB) Payment Gateway for Odoo
+                <span class="arb-title-ar">بوابة دفع مصرف الراجحي لنظام أودو</span>
+            </h2>
+            
+            <div class="oe_span12">
+                <div class="arb-hero-card">
+                    <img src="cover.png" alt="Al Rajhi ARB payment gateway cover" loading="lazy"/>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="oe_container oe_dark">
+        <div class="oe_row oe_spaced">
+            <h2 class="oe_slogan" style="color:#875A7B;">Overview</h2>
+            <div class="arb-intro-grid">
+                <div class="arb-intro-card">
+                    <h3>English Overview</h3>
+                    <p>
+                        This module connects Odoo with Al Rajhi Bank through a secure bank-hosted payment flow.
+                        It helps merchants install the provider, configure credentials, test safely, publish when ready,
+                        and offer Al Rajhi payment selection to website customers.
+                    </p>
+                </div>
+                <div class="arb-intro-card arb-rtl">
+                    <h3>نظرة عامة بالعربية</h3>
+                    <p>
+                        تقوم هذه الوحدة بربط أودو مع مصرف الراجحي من خلال صفحة دفع آمنة مستضافة من البنك.
+                        وهي تساعد التاجر على تثبيت المزود وإعداد البيانات واختبار التكامل ثم نشره وإتاحته للعملاء في المتجر الإلكتروني.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="oe_container oe_dark">
+        <div class="oe_row oe_spaced">
+            <h2 class="oe_slogan" style="color:#875A7B;">Configuration</h2>
+
+            <div class="arb-step">
+                <div class="arb-step-head">
+                    <span class="arb-step-num">01</span>
+                    <div>
+                        <h3>Open Apps and search for the module</h3>
+                        <span>افتح شاشة التطبيقات ثم ابحث عن الوحدة</span>
+                    </div>
+                </div>
+                <div class="arb-step-copy-grid">
+                    <div class="arb-lang-card">
+                        <h4>English</h4>
+                        <ul class="arb-checklist">
+                            <li>Start from the Odoo home page and open <strong>Apps</strong>.</li>
+                            <li>Search for the Al Rajhi payment module and review the module card before installation.</li>
+                        </ul>
+                    </div>
+                    <div class="arb-lang-card arb-rtl">
+                        <h4>العربية</h4>
+                        <ul class="arb-checklist arb-checklist-ar">
+                            <li>ابدأ من الصفحة الرئيسية في أودو ثم افتح <strong>التطبيقات</strong>.</li>
+                            <li>ابحث عن وحدة دفع الراجحي ثم راجع بطاقة الوحدة قبل التثبيت.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="arb-step-media-grid">
+                    <div class="arb-shot">
+                        <img src="1.png" alt="Open Apps from home page" loading="lazy"/>
+                        <div class="arb-caption">Step image: home page to Apps</div>
+                    </div>
+                    <div class="arb-shot">
+                        <img src="2.png" alt="Search and activate the module" loading="lazy"/>
+                        <div class="arb-caption">Step image: search and activate the module</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="arb-step">
+                <div class="arb-step-head">
+                    <span class="arb-step-num">02</span>
+                    <div>
+                        <h3>Open Accounting configuration and navigate to Payment Providers</h3>
+                        <span>ادخل إلى تهيئة المحاسبة ثم افتح مزودي الدفع</span>
+                    </div>
+                </div>
+                <div class="arb-step-copy-grid">
+                    <div class="arb-lang-card">
+                        <h4>English</h4>
+                        <ul class="arb-checklist">
+                            <li>Open the <strong>Accounting</strong> app after installation.</li>
+                            <li>From <strong>Configuration</strong>, select <strong>Payment Providers</strong> to access the gateway list.</li>
+                        </ul>
+                    </div>
+                    <div class="arb-lang-card arb-rtl">
+                        <h4>العربية</h4>
+                        <ul class="arb-checklist arb-checklist-ar">
+                            <li>بعد التثبيت افتح تطبيق <strong>المحاسبة</strong>.</li>
+                            <li>من قائمة <strong>التهيئة</strong> اختر <strong>مزودو الدفع</strong> للوصول إلى قائمة بوابات الدفع.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="arb-step-media-grid">
+                    <div class="arb-shot">
+                        <img src="3.png" alt="Accounting configuration menu" loading="lazy"/>
+                        <div class="arb-caption">Step image: Accounting configuration menu</div>
+                    </div>
+                    <div class="arb-shot">
+                        <img src="4.png" alt="Payment Providers menu item" loading="lazy"/>
+                        <div class="arb-caption">Step image: Payment Providers menu</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="arb-step">
+                <div class="arb-step-head">
+                    <span class="arb-step-num">03</span>
+                    <div>
+                        <h3>Activate Al Rajhi ARB and open its configuration screen</h3>
+                        <span>فعّل مزود الراجحي ثم افتح شاشة الإعدادات الخاصة به</span>
+                    </div>
+                </div>
+                <div class="arb-step-copy-grid">
+                    <div class="arb-lang-card">
+                        <h4>English</h4>
+                        <ul class="arb-checklist">
+                            <li>Locate <strong>Al Rajhi Bank (ARB)</strong> in the provider kanban list.</li>
+                            <li>Click <strong>Activate</strong> and open the provider form to continue configuration.</li>
+                        </ul>
+                    </div>
+                    <div class="arb-lang-card arb-rtl">
+                        <h4>العربية</h4>
+                        <ul class="arb-checklist arb-checklist-ar">
+                            <li>ابحث عن <strong>Al Rajhi Bank (ARB)</strong> داخل شاشة مزودي الدفع.</li>
+                            <li>اضغط <strong>تفعيل</strong> ثم افتح نموذج المزود لإكمال الإعدادات.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="arb-step-media-grid">
+                    <div class="arb-shot">
+                        <img src="5.png" alt="Activate provider from kanban view" loading="lazy"/>
+                        <div class="arb-caption">Step image: activate provider</div>
+                    </div>
+                    <div class="arb-shot">
+                        <img src="6.png" alt="Provider credentials and mode configuration" loading="lazy"/>
+                        <div class="arb-caption">Step image: provider form and credentials</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="arb-step">
+                <div class="arb-step-head">
+                    <span class="arb-step-num">04</span>
+                    <div>
+                        <h3>Review provider status in test mode, unpublished mode, or ready state</h3>
+                        <span>راجع حالة المزود في وضع الاختبار أو غير منشور أو الجاهزية النهائية</span>
+                    </div>
+                </div>
+                <div class="arb-step-copy-grid">
+                    <div class="arb-lang-card">
+                        <h4>English</h4>
+                        <ul class="arb-checklist">
+                            <li>The provider can appear as <strong>Disabled</strong>, <strong>Enabled</strong>, or <strong>Test Mode</strong>.</li>
+                            <li>Use test mode during UAT and publish only when the checkout flow is verified.</li>
+                            <li>Review the kanban card again to confirm the final state.</li>
+                        </ul>
+                    </div>
+                    <div class="arb-lang-card arb-rtl">
+                        <h4>العربية</h4>
+                        <ul class="arb-checklist arb-checklist-ar">
+                            <li>قد تظهر حالة المزود كـ <strong>معطل</strong> أو <strong>ممكن</strong> أو <strong>وضع الاختبار</strong>.</li>
+                            <li>استخدم وضع الاختبار أثناء UAT ثم انشر المزود بعد التأكد من نجاح مسار الدفع.</li>
+                            <li>راجع البطاقة مرة أخرى للتأكد من أن الحالة النهائية صحيحة.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="arb-step-media-grid">
+                    <div class="arb-shot">
+                        <img src="7.png" alt="Provider in test mode and not published state" loading="lazy"/>
+                        <div class="arb-caption">Step image: test mode and unpublished state</div>
+                    </div>
+                    <div class="arb-shot">
+                        <img src="12.png" alt="Provider ready state" loading="lazy"/>
+                        <div class="arb-caption">Step image: ready or enabled state</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="oe_container oe_dark">
+        <div class="oe_row oe_spaced">
+            <h2 class="oe_slogan" style="color:#875A7B;">Checkout</h2>
+            <div class="arb-step-copy-grid">
+                <div class="arb-lang-card">
+                    <h4>English</h4>
+                    <ul class="arb-checklist">
+                        <li>From the website cart, the customer clicks the checkout button to continue.</li>
+                        <li>In the payment step, the customer selects <strong>Al Rajhi Bank (ARB)</strong> and clicks <strong>Pay now</strong>.</li>
+                    </ul>
+                </div>
+                <div class="arb-lang-card arb-rtl">
+                    <h4>العربية</h4>
+                    <ul class="arb-checklist arb-checklist-ar">
+                        <li>من صفحة السلة في المتجر الإلكتروني يضغط العميل على زر إتمام الشراء للمتابعة.</li>
+                        <li>في خطوة الدفع يختار العميل <strong>Al Rajhi Bank (ARB)</strong> ثم يضغط <strong>ادفع الآن</strong>.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="arb-step-media-grid">
+                <div class="arb-shot">
+                    <img src="8.png" alt="Customer leaves cart to checkout" loading="lazy"/>
+                    <div class="arb-caption">Checkout step: cart to payment</div>
+                </div>
+                <div class="arb-shot">
+                    <img src="9.png" alt="Customer selects Al Rajhi payment method" loading="lazy"/>
+                    <div class="arb-caption">Checkout step: choose Al Rajhi payment method</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="oe_container oe_dark">
+        <div class="oe_row oe_spaced">
+            <h2 class="oe_slogan" style="color:#875A7B;">Important Notes</h2>
+            <div class="arb-note-grid">
+                <div class="arb-note-card">
+                    <h3>English Notes</h3>
+                    <p><strong>Bank credentials are mandatory.</strong> Make sure you already received the correct <strong>Tranportal ID</strong>, <strong>Tranportal Password</strong>, and <strong>Resource Key</strong> from Al Rajhi Bank.</p>
+                    <p><strong>Use the correct environment.</strong> Keep the UAT endpoint for test mode and the production endpoint for live mode.</p>
+                    <p><strong>Public URL matters.</strong> Set <code>web.base.url</code> to a valid public HTTPS URL for clean callback handling.</p>
+                </div>
+                <div class="arb-note-card arb-rtl">
+                    <h3>ملاحظات بالعربية</h3>
+                    <p><strong>بيانات البنك مطلوبة.</strong> تأكد من حصولك على <strong>Tranportal ID</strong> و<strong>Tranportal Password</strong> و<strong>Resource Key</strong> الصحيحة من مصرف الراجحي.</p>
+                    <p><strong>استخدم البيئة الصحيحة.</strong> استخدم رابط UAT في وضع الاختبار واستخدم رابط الإنتاج عند التشغيل الفعلي.</p>
+                    <p><strong>الرابط العام مهم.</strong> اضبط <code>web.base.url</code> على رابط HTTPS عام وصحيح حتى تعمل روابط العودة بشكل سليم.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="oe_container oe_dark">
+        <div class="oe_row oe_spaced">
+            <h2 class="oe_slogan" style="color:#875A7B;">Support</h2>
+            <div class="arb-support-grid">
+                <div class="arb-support-card">
+                    <h3>Professional support</h3>
+                    <p>
+                        For implementation help, bank coordination, testing support, or production go-live assistance,
+                        contact <a class="arb-link" href="https://sirelkhatim.odoo.com" target="_blank" rel="noopener">sirelkhatim.odoo.com</a>.
+                    </p>
+                </div>
+                <div class="arb-support-card arb-rtl">
+                    <h3>الدعم الاحترافي</h3>
+                    <p>
+                        للمساعدة في التنفيذ أو التنسيق مع البنك أو دعم الاختبار أو المساعدة في التشغيل الفعلي،
+                        يمكن التواصل عبر <a class="arb-link" href="https://sirelkhatim.odoo.com" target="_blank" rel="noopener">sirelkhatim.odoo.com</a>.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="oe_container oe_separator"></section>
+</body>
+</html>
