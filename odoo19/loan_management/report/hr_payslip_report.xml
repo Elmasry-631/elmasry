@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="report_payslip_inherit" inherit_id="hr_payroll.report_payslip">
+        <xpath expr="//div[@id='infos_table']/table/thead/tr/th[1]" position="after">
+            <th>Loan Information</th>
+        </xpath>
+        <xpath expr="//div[@id='infos_table']/table/tbody/tr/td[@id='other_infos']" position="before">
+            <td id="loan_infos" style="width:200px;">
+                <div id="loan_total">
+                    <strong class="me-2">Total Loan:</strong>
+                    <span t-out="o.loan_total"
+                          t-options="{'widget': 'monetary', 'display_currency': o.company_id.currency_id}"
+                          class="fw-bold"/>
+                </div>
+
+                <div id="loan_before">
+                    <strong class="me-2">Loan Before:</strong>
+                    <span t-out="o.loan_before"
+                          t-options="{'widget': 'monetary', 'display_currency': o.company_id.currency_id}"
+                          class="fw-bold"/>
+                </div>
+
+                <div id="loan_after">
+                    <strong class="me-2">Loan After:</strong>
+                    <span t-out="o.loan_after"
+                          t-options="{'widget': 'monetary', 'display_currency': o.company_id.currency_id}"
+                          class="fw-bold"/>
+                </div>
+            </td>
+        </xpath>
+    </template>
+</odoo>
