@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Medical Record Report -->
+    <record id="action_report_hospital_medical_record" model="ir.actions.report">
+        <field name="name">Medical Record</field>
+        <field name="model">hospital.medical.record</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">el_hospital.report_hospital_medical_record_document</field>
+        <field name="report_file">el_hospital.report_hospital_medical_record_document</field>
+        <field name="binding_model_id" ref="model_hospital_medical_record"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="report_hospital_medical_record_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>Medical Record</h2>
+                        <div class="row mt-3">
+                            <div class="col-6">
+                                <strong>Record #:</strong> <t t-out="doc.name"/><br/>
+                                <strong>Date:</strong> <t t-out="doc.record_date"/><br/>
+                                <strong>Patient:</strong> <t t-out="doc.patient_id.name"/><br/>
+                                <strong>Patient Code:</strong> <t t-out="doc.patient_id.ref"/>
+                            </div>
+                            <div class="col-6">
+                                <strong>Physician:</strong> <t t-out="doc.physician_id.name"/><br/>
+                                <strong>Specialization:</strong> <t t-out="doc.physician_id.specialization"/><br/>
+                                <strong>Department:</strong> <t t-out="doc.patient_id.department_id.name"/>
+                            </div>
+                        </div>
+                        <div t-if="doc.chief_complaint" class="mt-4">
+                            <h4>Chief Complaint</h4>
+                            <p><t t-out="doc.chief_complaint"/></p>
+                        </div>
+                        <div t-if="doc.diagnosis" class="mt-3">
+                            <h4>Diagnosis</h4>
+                            <p><t t-out="doc.diagnosis"/></p>
+                        </div>
+                        <div t-if="doc.treatment" class="mt-3">
+                            <h4>Treatment</h4>
+                            <p><t t-out="doc.treatment"/></p>
+                        </div>
+                        <div t-if="doc.prescription_ids" class="mt-3">
+                            <h4>Prescriptions</h4>
+                            <ul>
+                                <li t-foreach="doc.prescription_ids" t-as="rx">
+                                    <t t-out="rx.name"/> - <t t-out="rx.prescription_date"/>
+                                </li>
+                            </ul>
+                        </div>
+                        <div t-if="doc.lab_test_ids" class="mt-3">
+                            <h4>Lab Tests</h4>
+                            <ul>
+                                <li t-foreach="doc.lab_test_ids" t-as="lab">
+                                    <t t-out="lab.name"/> - <t t-out="lab.test_name"/> - <t t-out="lab.state"/>
+                                </li>
+                            </ul>
+                        </div>
+                        <div t-if="doc.radiology_order_ids" class="mt-3">
+                            <h4>Radiology</h4>
+                            <ul>
+                                <li t-foreach="doc.radiology_order_ids" t-as="rad">
+                                    <t t-out="rad.name"/> - <t t-out="rad.study_name"/> - <t t-out="rad.state"/>
+                                </li>
+                            </ul>
+                        </div>
+                        <div t-if="doc.notes" class="mt-3">
+                            <h4>Notes</h4>
+                            <p><t t-out="doc.notes"/></p>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

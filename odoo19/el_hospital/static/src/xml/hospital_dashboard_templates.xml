@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="hospital_dashboard.HospitalDashboard" owl="1">
+        <div class="o_hospital_dashboard">
+            <!-- Header with refresh button -->
+            <div class="o_hospital_header">
+                <h1>Hospital Dashboard</h1>
+                <button class="btn btn-secondary o_refresh_btn" t-on-click="onClickRefresh">
+                    <i class="fa fa-refresh"/> Refresh
+                </button>
+            </div>
+
+            <div t-if="state.loading" class="o_hospital_loading">
+                <div class="o_spinner"/>
+                <p>Loading dashboard...</p>
+            </div>
+
+            <div t-elif="state.error" class="o_hospital_error">
+                <p>Error: <t t-out="state.error"/></p>
+            </div>
+
+            <div t-else="" class="o_hospital_content">
+                <!-- KPI Cards (clickable) -->
+                <div class="o_kpi_grid">
+                    <div class="o_kpi_card o_kpi_patients" t-on-click="onClickPatients">
+                        <div class="o_kpi_icon"><i class="fa fa-users"/></div>
+                        <div class="o_kpi_body">
+                            <div class="o_kpi_value"><t t-out="state.data.kpi.total_patients"/></div>
+                            <div class="o_kpi_label">Total Patients</div>
+                        </div>
+                    </div>
+                    <div class="o_kpi_card o_kpi_physicians" t-on-click="onClickPhysicians">
+                        <div class="o_kpi_icon"><i class="fa fa-user-md"/></div>
+                        <div class="o_kpi_body">
+                            <div class="o_kpi_value"><t t-out="state.data.kpi.total_physicians"/></div>
+                            <div class="o_kpi_label">Physicians</div>
+                        </div>
+                    </div>
+                    <div class="o_kpi_card o_kpi_appointments" t-on-click="onClickAppointments">
+                        <div class="o_kpi_icon"><i class="fa fa-calendar"/></div>
+                        <div class="o_kpi_body">
+                            <div class="o_kpi_value"><t t-out="state.data.kpi.appointments_today"/></div>
+                            <div class="o_kpi_label">Appointments Today</div>
+                        </div>
+                    </div>
+                    <div class="o_kpi_card o_kpi_admissions" t-on-click="onClickAdmissions">
+                        <div class="o_kpi_icon"><i class="fa fa-hospital-o"/></div>
+                        <div class="o_kpi_body">
+                            <div class="o_kpi_value"><t t-out="state.data.kpi.active_admissions"/></div>
+                            <div class="o_kpi_label">Active Admissions</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bed Occupancy -->
+                <div class="o_occupancy_section">
+                    <h3>Bed Occupancy</h3>
+                    <div class="o_occupancy_grid">
+                        <div class="o_occupancy_card">
+                            <div class="o_occupancy_value"><t t-out="state.data.kpi.total_beds"/></div>
+                            <div class="o_occupancy_label">Total Beds</div>
+                        </div>
+                        <div class="o_occupancy_card o_occupied">
+                            <div class="o_occupancy_value"><t t-out="state.data.kpi.occupied_beds"/></div>
+                            <div class="o_occupancy_label">Occupied</div>
+                        </div>
+                        <div class="o_occupancy_card o_available">
+                            <div class="o_occupancy_value"><t t-out="state.data.kpi.available_beds"/></div>
+                            <div class="o_occupancy_label">Available</div>
+                        </div>
+                        <div class="o_occupancy_card o_rate">
+                            <div class="o_occupancy_value"><t t-out="state.data.kpi.bed_occupancy_rate"/>%</div>
+                            <div class="o_occupancy_label">Occupancy Rate</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pending Tasks -->
+                <div class="o_pending_section">
+                    <h3>Pending Tasks</h3>
+                    <div class="o_pending_grid">
+                        <div class="o_pending_card">
+                            <div class="o_pending_value"><t t-out="state.data.kpi.pending_lab_tests"/></div>
+                            <div class="o_pending_label">Lab Tests</div>
+                        </div>
+                        <div class="o_pending_card">
+                            <div class="o_pending_value"><t t-out="state.data.kpi.pending_radiology"/></div>
+                            <div class="o_pending_label">Radiology</div>
+                        </div>
+                        <div class="o_pending_card o_revenue">
+                            <div class="o_pending_value">
+                                <t t-out="state.data.kpi.monthly_revenue"/>
+                                <span class="o_currency"><t t-out="state.data.kpi.currency"/></span>
+                            </div>
+                            <div class="o_pending_label">Monthly Revenue</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts -->
+                <div class="o_charts_grid">
+                    <div class="o_chart_card">
+                        <h4>Appointments by Department</h4>
+                        <div class="o_chart_canvas_wrapper">
+                            <canvas t-ref="chart_appointments"/>
+                        </div>
+                    </div>
+                    <div class="o_chart_card">
+                        <h4>Admissions by State (last 30 days)</h4>
+                        <div class="o_chart_canvas_wrapper">
+                            <canvas t-ref="chart_admissions"/>
+                        </div>
+                    </div>
+                    <div class="o_chart_card o_chart_wide">
+                        <h4>Beds by Ward Type</h4>
+                        <div class="o_chart_canvas_wrapper">
+                            <canvas t-ref="chart_beds"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>

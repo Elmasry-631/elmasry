@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Billing Report -->
+    <record id="action_report_hospital_billing" model="ir.actions.report">
+        <field name="name">Medical Bill</field>
+        <field name="model">hospital.invoice.billing</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">el_hospital.report_hospital_billing_document</field>
+        <field name="report_file">el_hospital.report_hospital_billing_document</field>
+        <field name="binding_model_id" ref="model_hospital_invoice_billing"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="report_hospital_billing_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>Medical Bill</h2>
+                        <div class="row mt-3">
+                            <div class="col-6">
+                                <strong>Bill #:</strong> <t t-out="doc.name"/><br/>
+                                <strong>Date:</strong> <t t-out="doc.billing_date"/><br/>
+                                <strong>State:</strong> <t t-out="doc.state"/>
+                            </div>
+                            <div class="col-6">
+                                <strong>Patient:</strong> <t t-out="doc.patient_id.name"/><br/>
+                                <strong>Patient Code:</strong> <t t-out="doc.patient_id.ref"/><br/>
+                                <strong>Physician:</strong> <t t-out="doc.physician_id.name" t-if="doc.physician_id"/>
+                            </div>
+                        </div>
+                        <h3 class="mt-4">Services</h3>
+                        <table class="table table-bordered mt-2">
+                            <thead>
+                                <tr>
+                                    <th>Description</th>
+                                    <th>Service Type</th>
+                                    <th class="text-right">Qty</th>
+                                    <th class="text-right">Unit Price</th>
+                                    <th class="text-right">Subtotal</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="doc.line_ids" t-as="line">
+                                    <td><t t-out="line.name"/></td>
+                                    <td><t t-out="line.service_type"/></td>
+                                    <td class="text-right"><t t-out="line.quantity"/></td>
+                                    <td class="text-right">
+                                        <span t-field="line.price_unit"
+                                              t-options='{"widget":"monetary","display_currency":doc.currency_id}'/>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-field="line.price_subtotal"
+                                              t-options='{"widget":"monetary","display_currency":doc.currency_id}'/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th colspan="4" class="text-right">Total:</th>
+                                    <th class="text-right">
+                                        <span t-field="doc.amount_total"
+                                              t-options='{"widget":"monetary","display_currency":doc.currency_id}'/>
+                                    </th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                        <div t-if="doc.notes" class="mt-4">
+                            <strong>Notes:</strong>
+                            <p><t t-out="doc.notes"/></p>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

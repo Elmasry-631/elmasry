@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_hospital_radiology_list" model="ir.ui.view">
+        <field name="name">hospital.radiology.list</field>
+        <field name="model">hospital.radiology.order</field>
+        <field name="arch" type="xml">
+            <list string="Radiology Orders" decoration-warning="state == 'in_progress'"
+                  decoration-success="state == 'completed'"
+                  decoration-danger="state == 'cancelled'">
+                <field name="name"/>
+                <field name="patient_id"/>
+                <field name="physician_id"/>
+                <field name="modality"/>
+                <field name="study_name"/>
+                <field name="request_date"/>
+                <field name="state" widget="badge"
+                       decoration-muted="state == 'requested'"
+                       decoration-warning="state == 'in_progress'"
+                       decoration-success="state == 'completed'"
+                       decoration-danger="state == 'cancelled'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_hospital_radiology_form" model="ir.ui.view">
+        <field name="name">hospital.radiology.form</field>
+        <field name="model">hospital.radiology.order</field>
+        <field name="arch" type="xml">
+            <form string="Radiology Order">
+                <header>
+                    <button name="action_start" type="object" string="Start"
+                            class="btn-primary" invisible="state != 'requested'"/>
+                    <button name="action_complete" type="object" string="Complete"
+                            class="btn-primary" invisible="state != 'in_progress'"/>
+                    <button name="action_cancel" type="object" string="Cancel"
+                            class="btn-danger" invisible="state in ('completed', 'cancelled')"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="requested,in_progress,completed"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name" readonly="1"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="patient_id"/>
+                            <field name="physician_id"/>
+                            <field name="medical_record_id"/>
+                        </group>
+                        <group>
+                            <field name="modality"/>
+                            <field name="study_name"/>
+                            <field name="request_date"/>
+                            <field name="result_date"/>
+                        </group>
+                    </group>
+                    <group string="Result / Findings">
+                        <field name="result" nolabel="1"/>
+                    </group>
+                    <group string="Attached Images">
+                        <field name="image_ids" nolabel="1" widget="many2many_binary"/>
+                    </group>
+                    <group string="Notes">
+                        <field name="notes" nolabel="1"/>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_hospital_radiology" model="ir.actions.act_window">
+        <field name="name">Radiology Orders</field>
+        <field name="res_model">hospital.radiology.order</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

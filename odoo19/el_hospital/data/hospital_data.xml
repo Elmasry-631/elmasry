@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- Initial departments (master data) -->
+    <record id="dept_cardiology" model="hospital.department">
+        <field name="name">Cardiology</field>
+        <field name="code">CARD</field>
+        <field name="bed_capacity">20</field>
+    </record>
+
+    <record id="dept_internal" model="hospital.department">
+        <field name="name">Internal Medicine</field>
+        <field name="code">INT</field>
+        <field name="bed_capacity">30</field>
+    </record>
+
+    <record id="dept_pediatrics" model="hospital.department">
+        <field name="name">Pediatrics</field>
+        <field name="code">PED</field>
+        <field name="bed_capacity">15</field>
+    </record>
+
+    <record id="dept_surgery" model="hospital.department">
+        <field name="name">Surgery</field>
+        <field name="code">SURG</field>
+        <field name="bed_capacity">25</field>
+    </record>
+
+    <record id="dept_emergency" model="hospital.department">
+        <field name="name">Emergency</field>
+        <field name="code">EMR</field>
+        <field name="bed_capacity">10</field>
+    </record>
+</odoo>

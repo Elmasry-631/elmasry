@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- Mail templates for notifications -->
+
+    <!-- Appointment confirmation email -->
+    <record id="mail_template_appointment_confirmation" model="mail.template">
+        <field name="name">Hospital: Appointment Confirmation</field>
+        <field name="model_id" ref="model_hospital_appointment"/>
+        <field name="subject">Appointment Confirmation: {{ object.name }}</field>
+        <field name="email_to">{{ object.patient_id.partner_id.email }}</field>
+        <field name="body_html" type="html">
+            <div style="margin: 0px; padding: 0px; font-family: Arial, sans-serif;">
+                <p>Dear <t t-out="object.patient_id.name"/>,</p>
+                <p>Your appointment has been confirmed:</p>
+                <ul>
+                    <li><b>Appointment #:</b> <t t-out="object.name"/></li>
+                    <li><b>Date:</b> <t t-out="object.appointment_date"/></li>
+                    <li><b>Doctor:</b> <t t-out="object.physician_id.name"/></li>
+                    <li><b>Department:</b> <t t-out="object.department_id.name"/></li>
+                </ul>
+                <p>Please arrive 15 minutes before your scheduled time.</p>
+                <p>Best regards,<br/>Hospital Management</p>
+            </div>
+        </field>
+        <field name="auto_delete" eval="True"/>
+    </record>
+
+    <!-- Lab test result ready email -->
+    <record id="mail_template_lab_result_ready" model="mail.template">
+        <field name="name">Hospital: Lab Result Ready</field>
+        <field name="model_id" ref="model_hospital_lab_test"/>
+        <field name="subject">Lab Result Ready: {{ object.name }}</field>
+        <field name="email_to">{{ object.patient_id.partner_id.email }}</field>
+        <field name="body_html" type="html">
+            <div style="margin: 0px; padding: 0px; font-family: Arial, sans-serif;">
+                <p>Dear <t t-out="object.patient_id.name"/>,</p>
+                <p>Your lab test result is ready:</p>
+                <ul>
+                    <li><b>Test #:</b> <t t-out="object.name"/></li>
+                    <li><b>Test:</b> <t t-out="object.test_name"/></li>
+                    <li><b>Completed:</b> <t t-out="object.result_date"/></li>
+                </ul>
+                <p>Please contact your doctor to discuss the results.</p>
+                <p>Best regards,<br/>Hospital Management</p>
+            </div>
+        </field>
+        <field name="auto_delete" eval="True"/>
+    </record>
+
+    <!-- Discharge summary email -->
+    <record id="mail_template_discharge_summary" model="mail.template">
+        <field name="name">Hospital: Discharge Summary</field>
+        <field name="model_id" ref="model_hospital_admission"/>
+        <field name="subject">Discharge Summary: {{ object.name }}</field>
+        <field name="email_to">{{ object.patient_id.partner_id.email }}</field>
+        <field name="body_html" type="html">
+            <div style="margin: 0px; padding: 0px; font-family: Arial, sans-serif;">
+                <p>Dear <t t-out="object.patient_id.name"/>,</p>
+                <p>You have been discharged from the hospital:</p>
+                <ul>
+                    <li><b>Admission #:</b> <t t-out="object.name"/></li>
+                    <li><b>Admission Date:</b> <t t-out="object.admission_date"/></li>
+                    <li><b>Discharge Date:</b> <t t-out="object.discharge_date"/></li>
+                    <li><b>Days Admitted:</b> <t t-out="object.days_count"/></li>
+                </ul>
+                <p><b>Discharge Notes:</b></p>
+                <p><t t-out="object.discharge_notes"/></p>
+                <p>Please follow up with your doctor as needed.</p>
+                <p>Best regards,<br/>Hospital Management</p>
+            </div>
+        </field>
+        <field name="auto_delete" eval="True"/>
+    </record>
+</odoo>

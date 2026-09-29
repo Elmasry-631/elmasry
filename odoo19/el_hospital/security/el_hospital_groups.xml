@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+        El Hospital — Security Groups.
+
+        Hierarchy (implied_ids = "users in this group ALSO get these groups"):
+            base.group_system (existing)
+                ↓ implies
+            group_hospital_admin      (full CRUD, everything)
+                ↓ implies
+            group_hospital_doctor     (patients + EMR + prescriptions)
+                ↓ implies
+            group_hospital_nurse      (wards + beds + admissions)
+                ↓ implies
+            group_hospital_reception  (patients + appointments)
+                ↓ implies
+            group_hospital_lab        (lab tests + radiology)
+                ↓ implies
+            group_hospital_pharmacy   (medicaments + prescriptions)
+                ↓ implies
+            group_hospital_user       (read-only, base group)
+
+        Note (Odoo 19): res.groups no longer has 'category_id' field —
+        the category is set via ir.module.category record separately.
+        implied_ids uses Command.link() syntax (Odoo 19+ preferred).
+    -->
+
+    <!-- Standalone category (LAW 14 — no parent_id) -->
+    <record id="module_category_hospital" model="ir.module.category">
+        <field name="name">Hospital</field>
+        <field name="sequence">15</field>
+    </record>
+
+    <!-- Privilege -->
+    <record id="privilege_hospital" model="res.groups.privilege">
+        <field name="name">Hospital</field>
+    </record>
+
+    <!-- Base group: Hospital User (read-only) -->
+    <record id="group_hospital_user" model="res.groups">
+        <field name="name">Hospital: User (Read-Only)</field>
+        <field name="comment">Read-only access to hospital records in own department.</field>
+    </record>
+
+    <!-- Receptionist: patients + appointments -->
+    <record id="group_hospital_reception" model="res.groups">
+        <field name="name">Hospital: Receptionist</field>
+        <field name="comment">Full access to patients and appointments.</field>
+    </record>
+
+    <!-- Lab Technician: lab tests + radiology -->
+    <record id="group_hospital_lab" model="res.groups">
+        <field name="name">Hospital: Lab Technician</field>
+        <field name="comment">Full access to lab tests and radiology orders.</field>
+    </record>
+
+    <!-- Pharmacist: medicaments + prescriptions -->
+    <record id="group_hospital_pharmacy" model="res.groups">
+        <field name="name">Hospital: Pharmacist</field>
+        <field name="comment">Full access to medicaments and prescriptions.</field>
+    </record>
+
+    <!-- Nurse: wards + beds + admissions -->
+    <record id="group_hospital_nurse" model="res.groups">
+        <field name="name">Hospital: Nurse</field>
+        <field name="comment">Full access to wards, beds, and admissions.</field>
+    </record>
+
+    <!-- Doctor: patients + EMR + prescriptions -->
+    <record id="group_hospital_doctor" model="res.groups">
+        <field name="name">Hospital: Doctor</field>
+        <field name="comment">Full access to patients, appointments, EMR, and prescriptions.</field>
+    </record>
+
+    <!-- Admin: everything -->
+    <record id="group_hospital_admin" model="res.groups">
+        <field name="name">Hospital: Administrator</field>
+        <field name="comment">Full access to all hospital features and configuration.</field>
+    </record>
+
+    <!-- Wire the implication ladder AFTER all groups are created -->
+    <record id="group_hospital_admin" model="res.groups">
+        <field name="implied_ids" eval="[Command.link(ref('base.group_system')), Command.link(ref('group_hospital_doctor'))]"/>
+    </record>
+    <record id="group_hospital_doctor" model="res.groups">
+        <field name="implied_ids" eval="[Command.link(ref('group_hospital_nurse'))]"/>
+    </record>
+    <record id="group_hospital_nurse" model="res.groups">
+        <field name="implied_ids" eval="[Command.link(ref('group_hospital_reception'))]"/>
+    </record>
+    <record id="group_hospital_reception" model="res.groups">
+        <field name="implied_ids" eval="[Command.link(ref('group_hospital_lab')), Command.link(ref('group_hospital_pharmacy'))]"/>
+    </record>
+    <record id="group_hospital_lab" model="res.groups">
+        <field name="implied_ids" eval="[Command.link(ref('group_hospital_user'))]"/>
+    </record>
+    <record id="group_hospital_pharmacy" model="res.groups">
+        <field name="implied_ids" eval="[Command.link(ref('group_hospital_user'))]"/>
+    </record>
+
+    <!-- Multi-company record rules -->
+    <record id="rule_hospital_company" model="ir.rule">
+        <field name="name">Hospital: Multi-Company</field>
+        <field name="model_id" ref="model_hospital_patient"/>
+        <field name="domain_force">
+            ['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]
+        </field>
+    </record>
+
+    <!-- Add admin user to hospital_admin group by default -->
+    <record id="base.user_admin" model="res.users">
+        <field name="group_ids" eval="[(4, ref('group_hospital_admin'))]"/>
+    </record>
+</odoo>

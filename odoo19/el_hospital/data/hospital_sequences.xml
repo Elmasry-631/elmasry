@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- Sequences for all operational models -->
+
+    <record id="seq_hospital_appointment" model="ir.sequence">
+        <field name="name">Hospital Appointment</field>
+        <field name="code">hospital.appointment</field>
+        <field name="prefix">AP/</field>
+        <field name="padding">5</field>
+        <field name="company_id" eval="False"/>
+    </record>
+
+    <record id="seq_hospital_medical_record" model="ir.sequence">
+        <field name="name">Hospital Medical Record</field>
+        <field name="code">hospital.medical.record</field>
+        <field name="prefix">MR/</field>
+        <field name="padding">5</field>
+        <field name="company_id" eval="False"/>
+    </record>
+
+    <record id="seq_hospital_prescription" model="ir.sequence">
+        <field name="name">Hospital Prescription</field>
+        <field name="code">hospital.prescription</field>
+        <field name="prefix">RX/</field>
+        <field name="padding">5</field>
+        <field name="company_id" eval="False"/>
+    </record>
+
+    <record id="seq_hospital_admission" model="ir.sequence">
+        <field name="name">Hospital Admission</field>
+        <field name="code">hospital.admission</field>
+        <field name="prefix">ADM/</field>
+        <field name="padding">5</field>
+        <field name="company_id" eval="False"/>
+    </record>
+
+    <record id="seq_hospital_lab_test" model="ir.sequence">
+        <field name="name">Hospital Lab Test</field>
+        <field name="code">hospital.lab.test</field>
+        <field name="prefix">LAB/</field>
+        <field name="padding">5</field>
+        <field name="company_id" eval="False"/>
+    </record>
+
+    <record id="seq_hospital_radiology" model="ir.sequence">
+        <field name="name">Hospital Radiology</field>
+        <field name="code">hospital.radiology.order</field>
+        <field name="prefix">RAD/</field>
+        <field name="padding">5</field>
+        <field name="company_id" eval="False"/>
+    </record>
+
+    <record id="seq_hospital_billing" model="ir.sequence">
+        <field name="name">Hospital Billing</field>
+        <field name="code">hospital.invoice.billing</field>
+        <field name="prefix">BILL/</field>
+        <field name="padding">5</field>
+        <field name="company_id" eval="False"/>
+    </record>
+
+    <record id="seq_hospital_patient" model="ir.sequence">
+        <field name="name">Hospital Patient Code</field>
+        <field name="code">hospital.patient</field>
+        <field name="prefix">PAT/</field>
+        <field name="padding">5</field>
+        <field name="company_id" eval="False"/>
+    </record>
+</odoo>

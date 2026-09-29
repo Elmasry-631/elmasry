@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Physician: List -->
+    <record id="view_hospital_physician_list" model="ir.ui.view">
+        <field name="name">hospital.physician.list</field>
+        <field name="model">hospital.physician</field>
+        <field name="arch" type="xml">
+            <list string="Physicians">
+                <field name="name"/>
+                <field name="specialization"/>
+                <field name="department_id"/>
+                <field name="medical_license"/>
+                <field name="phone"/>
+                <field name="email"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Physician: Form -->
+    <record id="view_hospital_physician_form" model="ir.ui.view">
+        <field name="name">hospital.physician.form</field>
+        <field name="model">hospital.physician</field>
+        <field name="arch" type="xml">
+            <form string="Physician">
+                <sheet>
+                    <field name="image_1920" widget="image" class="oe_avatar"/>
+                    <div class="oe_title">
+                        <label for="partner_id"/>
+                        <h1><field name="partner_id" placeholder="Select or create contact"/></h1>
+                        <h3><field name="name" readonly="1"/></h3>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="specialization"/>
+                            <field name="department_id"/>
+                            <field name="medical_license"/>
+                            <field name="employee_id"/>
+                            <field name="user_id"/>
+                        </group>
+                        <group>
+                            <field name="phone"/>
+                            <field name="email"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="active" invisible="1"/>
+                        </group>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Physician: Kanban -->
+    <record id="view_hospital_physician_kanban" model="ir.ui.view">
+        <field name="name">hospital.physician.kanban</field>
+        <field name="model">hospital.physician</field>
+        <field name="arch" type="xml">
+            <kanban string="Physicians" default_group_by="department_id">
+                <field name="image_1920"/>
+                <field name="name"/>
+                <field name="specialization"/>
+                <field name="department_id"/>
+                <templates>
+                    <t t-name="card">
+                        <div class="oe_kanban_card oe_kanban_global_click">
+                            <div class="o_kanban_image">
+                                <img t-att-src="kanban_image('hospital.physician', 'image_1920', record.id.raw_value)" alt="Image" class="oe_avatar oe_kanban_avatar_smallbox"/>
+                            </div>
+                            <div class="oe_kanban_details">
+                                <strong><field name="name"/></strong>
+                                <ul>
+                                    <li><field name="specialization"/></li>
+                                    <li><field name="department_id"/></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Physician: Search -->
+    <record id="view_hospital_physician_search" model="ir.ui.view">
+        <field name="name">hospital.physician.search</field>
+        <field name="model">hospital.physician</field>
+        <field name="arch" type="xml">
+            <search string="Physicians">
+                <field name="name"/>
+                <field name="specialization"/>
+                <field name="medical_license"/>
+                <field name="department_id"/>
+                <filter name="filter_active" string="Active" domain="[('active', '=', True)]"/>
+                <separator/>
+                <filter name="group_department" string="Department" context="{'group_by': 'department_id'}"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_hospital_physician" model="ir.actions.act_window">
+        <field name="name">Physicians</field>
+        <field name="res_model">hospital.physician</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="search_view_id" ref="view_hospital_physician_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Create a new physician</p>
+        </field>
+    </record>
+</odoo>

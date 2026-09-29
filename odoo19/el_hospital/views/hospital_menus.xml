@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Top-level menu -->
+    <menuitem id="menu_hospital_root"
+              name="Hospital"
+              web_icon="el_hospital,static/description/icon.png"
+              groups="group_hospital_user"
+              sequence="30"/>
+
+    <!-- Dashboard -->
+    <menuitem id="menu_hospital_dashboard"
+              name="Dashboard"
+              parent="menu_hospital_root"
+              sequence="5"
+              action="action_hospital_dashboard"/>
+
+    <!-- Patients section -->
+    <menuitem id="menu_hospital_patients"
+              name="Patients"
+              parent="menu_hospital_root"
+              sequence="10"/>
+    <menuitem id="menu_hospital_patient_list"
+              name="Patients"
+              parent="menu_hospital_patients"
+              sequence="10"
+              action="action_hospital_patient"/>
+    <menuitem id="menu_hospital_appointment"
+              name="Appointments"
+              parent="menu_hospital_patients"
+              sequence="20"
+              action="action_hospital_appointment"/>
+    <menuitem id="menu_hospital_appointment_today"
+              name="Today's Appointments"
+              parent="menu_hospital_patients"
+              sequence="30"
+              action="action_hospital_appointment_today"/>
+    <menuitem id="menu_hospital_medical_record"
+              name="Medical Records"
+              parent="menu_hospital_patients"
+              sequence="40"
+              action="action_hospital_medical_record"/>
+
+    <!-- Physicians -->
+    <menuitem id="menu_hospital_physicians"
+              name="Physicians"
+              parent="menu_hospital_root"
+              sequence="20"
+              action="action_hospital_physician"/>
+
+    <!-- Inpatient section -->
+    <menuitem id="menu_hospital_inpatient"
+              name="Inpatient"
+              parent="menu_hospital_root"
+              sequence="30"
+              groups="group_hospital_nurse"/>
+    <menuitem id="menu_hospital_admission"
+              name="Admissions"
+              parent="menu_hospital_inpatient"
+              sequence="10"
+              action="action_hospital_admission"/>
+    <menuitem id="menu_hospital_admission_active"
+              name="Active Admissions"
+              parent="menu_hospital_inpatient"
+              sequence="20"
+              action="action_hospital_admission_active"/>
+    <menuitem id="menu_hospital_ward"
+              name="Wards"
+              parent="menu_hospital_inpatient"
+              sequence="30"
+              action="action_hospital_ward"/>
+    <menuitem id="menu_hospital_bed"
+              name="Beds"
+              parent="menu_hospital_inpatient"
+              sequence="40"
+              action="action_hospital_bed"/>
+
+    <!-- Lab / Radiology -->
+    <menuitem id="menu_hospital_lab"
+              name="Laboratory"
+              parent="menu_hospital_root"
+              sequence="40"
+              groups="group_hospital_lab"/>
+    <menuitem id="menu_hospital_lab_test"
+              name="Lab Tests"
+              parent="menu_hospital_lab"
+              sequence="10"
+              action="action_hospital_lab_test"/>
+    <menuitem id="menu_hospital_radiology"
+              name="Radiology"
+              parent="menu_hospital_lab"
+              sequence="20"
+              action="action_hospital_radiology"/>
+
+    <!-- Pharmacy -->
+    <menuitem id="menu_hospital_pharmacy"
+              name="Pharmacy"
+              parent="menu_hospital_root"
+              sequence="50"
+              groups="group_hospital_pharmacy"/>
+    <menuitem id="menu_hospital_medicament"
+              name="Medicaments"
+              parent="menu_hospital_pharmacy"
+              sequence="10"
+              action="action_hospital_medicament"/>
+    <menuitem id="menu_hospital_prescription"
+              name="Prescriptions"
+              parent="menu_hospital_pharmacy"
+              sequence="20"
+              action="action_hospital_prescription"
+              groups="group_hospital_doctor,group_hospital_pharmacy"/>
+
+    <!-- Billing -->
+    <menuitem id="menu_hospital_billing"
+              name="Billing"
+              parent="menu_hospital_root"
+              sequence="60"
+              action="action_hospital_billing"
+              groups="group_hospital_reception,group_hospital_admin"/>
+
+    <!-- Configuration -->
+    <menuitem id="menu_hospital_config"
+              name="Configuration"
+              parent="menu_hospital_root"
+              sequence="90"
+              groups="group_hospital_admin"/>
+    <menuitem id="menu_hospital_department"
+              name="Departments"
+              parent="menu_hospital_config"
+              sequence="10"
+              action="action_hospital_department"/>
+</odoo>

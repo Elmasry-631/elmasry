@@ -1,0 +1,873 @@
+# Arabic translations for el_hospital.
+# Copyright (C) 2026 Ibrahim Elmasry
+# This file is distributed under the LGPL-3 license.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-07-12 12:00+0000\n"
+"PO-Revision-Date: 2026-07-12 12:00+0000\n"
+"Last-Translator: Ibrahim Elmasry\n"
+"Language-Team: Arabic\n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 ? 4 : 5);\n"
+
+#. module: el_hospital
+#: model:ir.module.category,name:el_hospital.module_category_hospital
+msgid "Hospital"
+msgstr "المستشفى"
+
+#. module: el_hospital
+#: model:ir.actions.act_window,name:el_hospital.action_hospital_patient
+#: model:ir.ui.menu,name:el_hospital.menu_hospital_patient_list
+msgid "Patients"
+msgstr "المرضى"
+
+#. module: el_hospital
+#: model:ir.actions.act_window,name:el_hospital.action_hospital_physician
+#: model:ir.ui.menu,name:el_hospital.menu_hospital_physicians
+msgid "Physicians"
+msgstr "الأطباء"
+
+#. module: el_hospital
+#: model:ir.actions.act_window,name:el_hospital.action_hospital_appointment
+#: model:ir.ui.menu,name:el_hospital.menu_hospital_appointment
+msgid "Appointments"
+msgstr "المواعيد"
+
+#. module: el_hospital
+#: model:ir.actions.act_window,name:el_hospital.action_hospital_appointment_today
+#: model:ir.ui.menu,name:el_hospital.menu_hospital_appointment_today
+msgid "Today's Appointments"
+msgstr "مواعيد اليوم"
+
+#. module: el_hospital
+#: model:ir.actions.act_window,name:el_hospital.action_hospital_medical_record
+#: model:ir.ui.menu,name:el_hospital.menu_hospital_medical_record
+msgid "Medical Records"
+msgstr "السجلات الطبية"
+
+#. module: el_hospital
+#: model:ir.actions.act_window,name:el_hospital.action_hospital_prescription
+#: model:ir.ui.menu,name:el_hospital.menu_hospital_prescription
+msgid "Prescriptions"
+msgstr "الوصفات الطبية"
+
+#. module: el_hospital
+#: model:ir.actions.act_window,name:el_hospital.action_hospital_department
+#: model:ir.ui.menu,name:el_hospital.menu_hospital_department
+msgid "Departments"
+msgstr "الأقسام"
+
+#. module: el_hospital
+#: model:ir.actions.act_window,name:el_hospital.action_hospital_ward
+#: model:ir.ui.menu,name:el_hospital.menu_hospital_ward
+msgid "Wards"
+msgstr "الأجنحة"
+
+#. module: el_hospital
+#: model:ir.actions.act_window,name:el_hospital.action_hospital_bed
+#: model:ir.ui.menu,name:el_hospital.menu_hospital_bed
+msgid "Beds"
+msgstr "الأسرّة"
+
+#. module: el_hospital
+#: model:ir.actions.act_window,name:el_hospital.action_hospital_admission
+#: model:ir.ui.menu,name:el_hospital.menu_hospital_admission
+msgid "Admissions"
+msgstr "الإقامة"
+
+#. module: el_hospital
+#: model:ir.actions.act_window,name:el_hospital.action_hospital_admission_active
+#: model:ir.ui.menu,name:el_hospital.menu_hospital_admission_active
+msgid "Active Admissions"
+msgstr "الإقامات النشطة"
+
+#. module: el_hospital
+#: model:ir.ui.menu,name:el_hospital.menu_hospital_inpatient
+msgid "Inpatient"
+msgstr "المرضى المقيمون"
+
+#. module: el_hospital
+#: model:ir.actions.act_window,name:el_hospital.action_hospital_lab_test
+#: model:ir.ui.menu,name:el_hospital.menu_hospital_lab_test
+msgid "Lab Tests"
+msgstr "التحاليل المخبرية"
+
+#. module: el_hospital
+#: model:ir.actions.act_window,name:el_hospital.action_hospital_radiology
+#: model:ir.ui.menu,name:el_hospital.menu_hospital_radiology
+msgid "Radiology Orders"
+msgstr "طلبات الأشعة"
+
+#. module: el_hospital
+#: model:ir.ui.menu,name:el_hospital.menu_hospital_lab
+msgid "Laboratory"
+msgstr "المختبر"
+
+#. module: el_hospital
+#: model:ir.actions.act_window,name:el_hospital.action_hospital_medicament
+#: model:ir.ui.menu,name:el_hospital.menu_hospital_medicament
+msgid "Medicaments"
+msgstr "الأدوية"
+
+#. module: el_hospital
+#: model:ir.ui.menu,name:el_hospital.menu_hospital_pharmacy
+msgid "Pharmacy"
+msgstr "الصيدلية"
+
+#. module: el_hospital
+#: model:ir.actions.act_window,name:el_hospital.action_hospital_billing
+#: model:ir.ui.menu,name:el_hospital.menu_hospital_billing
+msgid "Billings"
+msgstr "الفواتير"
+
+#. module: el_hospital
+#: model:ir.ui.menu,name:el_hospital.menu_hospital_config
+msgid "Configuration"
+msgstr "الإعدادات"
+
+#. module: el_hospital
+#: model:ir.ui.menu,name:el_hospital.menu_hospital_root
+msgid "Hospital"
+msgstr "المستشفى"
+
+#. module: el_hospital
+#: model:ir.ui.menu,name:el_hospital.menu_hospital_dashboard
+msgid "Dashboard"
+msgstr "لوحة التحكم"
+
+#. module: el_hospital
+#: model:ir.ui.menu,name:el_hospital.menu_hospital_patients
+msgid "Patients"
+msgstr "المرضى"
+
+#. module: el_hospital
+#: model:res.groups,name:el_hospital.group_hospital_admin
+msgid "Hospital: Administrator"
+msgstr "مستشفى: مدير"
+
+#. module: el_hospital
+#: model:res.groups,name:el_hospital.group_hospital_doctor
+msgid "Hospital: Doctor"
+msgstr "مستشفى: طبيب"
+
+#. module: el_hospital
+#: model:res.groups,name:el_hospital.group_hospital_nurse
+msgid "Hospital: Nurse"
+msgstr "مستشفى: ممرض"
+
+#. module: el_hospital
+#: model:res.groups,name:el_hospital.group_hospital_reception
+msgid "Hospital: Receptionist"
+msgstr "مستشفى: موظف استقبال"
+
+#. module: el_hospital
+#: model:res.groups,name:el_hospital.group_hospital_lab
+msgid "Hospital: Lab Technician"
+msgstr "مستشفى: فني مختبر"
+
+#. module: el_hospital
+#: model:res.groups,name:el_hospital.group_hospital_pharmacy
+msgid "Hospital: Pharmacist"
+msgstr "مستشفى: صيدلي"
+
+#. module: el_hospital
+#: model:res.groups,name:el_hospital.group_hospital_user
+msgid "Hospital: User (Read-Only)"
+msgstr "مستشفى: مستخدم (قراءة فقط)"
+
+#. module: el_hospital
+#: model:ir.model,name:el_hospital.model_hospital_patient
+msgid "Hospital Patient"
+msgstr "مريض المستشفى"
+
+#. module: el_hospital
+#: model:ir.model,name:el_hospital.model_hospital_physician
+msgid "Hospital Physician"
+msgstr "طبيب المستشفى"
+
+#. module: el_hospital
+#: model:ir.model,name:el_hospital.model_hospital_appointment
+msgid "Hospital Appointment"
+msgstr "موعد المستشفى"
+
+#. module: el_hospital
+#: model:ir.model,name:el_hospital.model_hospital_medical_record
+msgid "Hospital Medical Record (EMR)"
+msgstr "السجل الطبي للمستشفى"
+
+#. module: el_hospital
+#: model:ir.model,name:el_hospital.model_hospital_prescription
+msgid "Hospital Prescription"
+msgstr "وصفة المستشفى"
+
+#. module: el_hospital
+#: model:ir.model,name:el_hospital.model_hospital_department
+msgid "Hospital Department"
+msgstr "قسم المستشفى"
+
+#. module: el_hospital
+#: model:ir.model,name:el_hospital.model_hospital_ward
+msgid "Hospital Ward"
+msgstr "جناح المستشفى"
+
+#. module: el_hospital
+#: model:ir.model,name:el_hospital.model_hospital_bed
+msgid "Hospital Bed"
+msgstr "سرير المستشفى"
+
+#. module: el_hospital
+#: model:ir.model,name:el_hospital.model_hospital_admission
+msgid "Hospital Admission"
+msgstr "إقامة المستشفى"
+
+#. module: el_hospital
+#: model:ir.model,name:el_hospital.model_hospital_lab_test
+msgid "Hospital Lab Test"
+msgstr "تحليل مختبر المستشفى"
+
+#. module: el_hospital
+#: model:ir.model,name:el_hospital.model_hospital_radiology_order
+msgid "Hospital Radiology Order"
+msgstr "طلب أشعة المستشفى"
+
+#. module: el_hospital
+#: model:ir.model,name:el_hospital.model_hospital_medicament
+msgid "Hospital Medicament"
+msgstr "دواء المستشفى"
+
+#. module: el_hospital
+#: model:ir.model,name:el_hospital.model_hospital_invoice_billing
+msgid "Hospital Invoice Billing"
+msgstr "فاتورة المستشفى"
+
+#. module: el_hospital
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_patient__name
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_physician__name
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_department__name
+msgid "Name"
+msgstr "الاسم"
+
+#. module: el_hospital
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_patient__ref
+msgid "Patient Code"
+msgstr "كود المريض"
+
+#. module: el_hospital
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_patient__birth_date
+msgid "Birth Date"
+msgstr "تاريخ الميلاد"
+
+#. module: el_hospital
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_patient__age
+msgid "Age"
+msgstr "العمر"
+
+#. module: el_hospital
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_patient__gender
+msgid "Gender"
+msgstr "الجنس"
+
+#. module: el_hospital
+#: model:ir.model.fields.selection,name:el_hospital.selection__hospital_patient__gender__male
+msgid "Male"
+msgstr "ذكر"
+
+#. module: el_hospital
+#: model:ir.model.fields.selection,name:el_hospital.selection__hospital_patient__gender__female
+msgid "Female"
+msgstr "أنثى"
+
+#. module: el_hospital
+#: model:ir.model.fields.selection,name:el_hospital.selection__hospital_patient__gender__other
+msgid "Other"
+msgstr "آخر"
+
+#. module: el_hospital
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_patient__blood_type
+msgid "Blood Type"
+msgstr "فصيلة الدم"
+
+#. module: el_hospital
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_patient__physician_id
+msgid "Primary Physician"
+msgstr "الطبيب المعالج"
+
+#. module: el_hospital
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_patient__department_id
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_physician__department_id
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_ward__department_id
+msgid "Department"
+msgstr "القسم"
+
+#. module: el_hospital
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_patient__allergy_ids
+msgid "Allergies"
+msgstr "الحساسية"
+
+#. module: el_hospital
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_patient_allergy__name
+msgid "Allergy"
+msgstr "الحساسية"
+
+#. module: el_hospital
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_patient_allergy__severity
+msgid "Severity"
+msgstr "الشدة"
+
+#. module: el_hospital
+#: model:ir.model.fields.selection,name:el_hospital.selection__hospital_patient_allergy__severity__mild
+msgid "Mild"
+msgstr "خفيفة"
+
+#. module: el_hospital
+#: model:ir.model.fields.selection,name:el_hospital.selection__hospital_patient_allergy__severity__moderate
+msgid "Moderate"
+msgstr "متوسطة"
+
+#. module: el_hospital
+#: model:ir.model.fields.selection,name:el_hospital.selection__hospital_patient_allergy__severity__severe
+msgid "Severe"
+msgstr "شديدة"
+
+#. module: el_hospital
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_patient__chronic_disease_ids
+msgid "Chronic Diseases"
+msgstr "الأمراض المزمنة"
+
+#. module: el_hospital
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_patient_disease__name
+msgid "Disease"
+msgstr "المرض"
+
+#. module: el_hospital
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_patient_disease__diagnosed_date
+msgid "Diagnosed Date"
+msgstr "تاريخ التشخيص"
+
+#. module: el_hospital
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_appointment__name
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_medical_record__name
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_prescription__name
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_admission__name
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_lab_test__name
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_radiology_order__name
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_invoice_billing__name
+msgid "Reference"
+msgstr "المرجع"
+
+#. module: el_hospital
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_appointment__patient_id
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_medical_record__patient_id
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_prescription__patient_id
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_admission__patient_id
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_lab_test__patient_id
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_radiology_order__patient_id
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_invoice_billing__patient_id
+msgid "Patient"
+msgstr "المريض"
+
+#. module: el_hospital
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_appointment__physician_id
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_medical_record__physician_id
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_prescription__physician_id
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_admission__physician_id
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_lab_test__physician_id
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_radiology_order__physician_id
+msgid "Physician"
+msgstr "الطبيب"
+
+#. module: el_hospital
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_appointment__appointment_date
+msgid "Date"
+msgstr "التاريخ"
+
+#. module: el_hospital
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_appointment__duration
+msgid "Duration (hours)"
+msgstr "المدة (ساعات)"
+
+#. module: el_hospital
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_appointment__state
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_admission__state
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_lab_test__state
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_radiology_order__state
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_prescription__state
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_invoice_billing__state
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_bed__state
+msgid "State"
+msgstr "الحالة"
+
+#. module: el_hospital
+#: model:ir.model.fields.selection,name:el_hospital.selection__hospital_appointment__state__draft
+#: model:ir.model.fields.selection,name:el_hospital.selection__hospital_admission__state__draft
+#: model:ir.model.fields.selection,name:el_hospital.selection__hospital_prescription__state__draft
+#: model:ir.model.fields.selection,name:el_hospital.selection__hospital_invoice_billing__state__draft
+msgid "Draft"
+msgstr "مسودة"
+
+#. module: el_hospital
+#: model:ir.model.fields.selection,name:el_hospital.selection__hospital_appointment__state__confirmed
+msgid "Confirmed"
+msgstr "مؤكد"
+
+#. module: el_hospital
+#: model:ir.model.fields.selection,name:el_hospital.selection__hospital_appointment__state__done
+#: model:ir.model.fields.selection,name:el_hospital.selection__hospital_prescription__state__done
+msgid "Done"
+msgstr "مكتمل"
+
+#. module: el_hospital
+#: model:ir.model.fields.selection,name:el_hospital.selection__hospital_appointment__state__cancelled
+#: model:ir.model.fields.selection,name:el_hospital.selection__hospital_admission__state__cancelled
+#: model:ir.model.fields.selection,name:el_hospital.selection__hospital_lab_test__state__cancelled
+#: model:ir.model.fields.selection,name:el_hospital.selection__hospital_radiology_order__state__cancelled
+msgid "Cancelled"
+msgstr "ملغي"
+
+#. module: el_hospital
+#: model:ir.model.fields.selection,name:el_hospital.selection__hospital_admission__state__admitted
+msgid "Admitted"
+msgstr "تم القبول"
+
+#. module: el_hospital
+#: model:ir.model.fields.selection,name:el_hospital.selection__hospital_admission__state__discharged
+msgid "Discharged"
+msgstr "تم الخروج"
+
+#. module: el_hospital
+#: model:ir.model.fields.selection,name:el_hospital.selection__hospital_lab_test__state__requested
+#: model:ir.model.fields.selection,name:el_hospital.selection__hospital_radiology_order__state__requested
+msgid "Requested"
+msgstr "مطلوب"
+
+#. module: el_hospital
+#: model:ir.model.fields.selection,name:el_hospital.selection__hospital_lab_test__state__in_progress
+#: model:ir.model.fields.selection,name:el_hospital.selection__hospital_radiology_order__state__in_progress
+msgid "In Progress"
+msgstr "قيد التنفيذ"
+
+#. module: el_hospital
+#: model:ir.model.fields.selection,name:el_hospital.selection__hospital_lab_test__state__completed
+#: model:ir.model.fields.selection,name:el_hospital.selection__hospital_radiology_order__state__completed
+msgid "Completed"
+msgstr "مكتمل"
+
+#. module: el_hospital
+#: model:ir.model.fields.selection,name:el_hospital.selection__hospital_invoice_billing__state__invoiced
+msgid "Invoiced"
+msgstr "تم الفوترة"
+
+#. module: el_hospital
+#: model:ir.model.fields.selection,name:el_hospital.selection__hospital_invoice_billing__state__paid
+msgid "Paid"
+msgstr "مدفوع"
+
+#. module: el_hospital
+#: model:ir.model.fields.selection,name:el_hospital.selection__hospital_bed__state__available
+msgid "Available"
+msgstr "متاح"
+
+#. module: el_hospital
+#: model:ir.model.fields.selection,name:el_hospital.selection__hospital_bed__state__occupied
+msgid "Occupied"
+msgstr "مشغول"
+
+#. module: el_hospital
+#: model:ir.model.fields.selection,name:el_hospital.selection__hospital_bed__state__maintenance
+msgid "Maintenance"
+msgstr "صيانة"
+
+#. module: el_hospital
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_appointment__type
+msgid "Type"
+msgstr "النوع"
+
+#. module: el_hospital
+#: model:ir.model.fields.selection,name:el_hospital.selection__hospital_appointment__type__consultation
+msgid "Consultation"
+msgstr "استشارة"
+
+#. module: el_hospital
+#: model:ir.model.fields.selection,name:el_hospital.selection__hospital_appointment__type__follow_up
+msgid "Follow-Up"
+msgstr "متابعة"
+
+#. module: el_hospital
+#: model:ir.model.fields.selection,name:el_hospital.selection__hospital_appointment__type__emergency
+msgid "Emergency"
+msgstr "طوارئ"
+
+#. module: el_hospital
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_medical_record__chief_complaint
+msgid "Chief Complaint"
+msgstr "الشكوى الرئيسية"
+
+#. module: el_hospital
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_medical_record__diagnosis
+msgid "Diagnosis"
+msgstr "التشخيص"
+
+#. module: el_hospital
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_medical_record__treatment
+msgid "Treatment"
+msgstr "العلاج"
+
+#. module: el_hospital
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_prescription_line__medicament_id
+msgid "Medicament"
+msgstr "الدواء"
+
+#. module: el_hospital
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_prescription_line__dosage
+msgid "Dosage"
+msgstr "الجرعة"
+
+#. module: el_hospital
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_prescription_line__frequency
+msgid "Frequency"
+msgstr "التكرار"
+
+#. module: el_hospital
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_prescription_line__duration
+msgid "Duration"
+msgstr "المدة"
+
+#. module: el_hospital
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_prescription_line__quantity
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_invoice_billing_line__quantity
+msgid "Quantity"
+msgstr "الكمية"
+
+#. module: el_hospital
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_ward__code
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_department__code
+msgid "Code"
+msgstr "الكود"
+
+#. module: el_hospital
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_ward__ward_type
+msgid "Type"
+msgstr "النوع"
+
+#. module: el_hospital
+#: model:ir.model.fields.selection,name:el_hospital.selection__hospital_ward__ward_type__general
+msgid "General"
+msgstr "عام"
+
+#. module: el_hospital
+#: model:ir.model.fields.selection,name:el_hospital.selection__hospital_ward__ward_type__private
+msgid "Private"
+msgstr "خاص"
+
+#. module: el_hospital
+#: model:ir.model.fields.selection,name:el_hospital.selection__hospital_ward__ward_type__icu
+msgid "ICU"
+msgstr "العناية المركزة"
+
+#. module: el_hospital
+#: model:ir.model.fields.selection,name:el_hospital.selection__hospital_ward__ward_type__maternity
+msgid "Maternity"
+msgstr "الولادة"
+
+#. module: el_hospital
+#: model:ir.model.fields.selection,name:el_hospital.selection__hospital_ward__ward_type__pediatric
+msgid "Pediatric"
+msgstr "الأطفال"
+
+#. module: el_hospital
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_ward__floor
+msgid "Floor"
+msgstr "الدور"
+
+#. module: el_hospital
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_ward__bed_capacity
+msgid "Bed Capacity"
+msgstr "سعة الأسرّة"
+
+#. module: el_hospital
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_ward__bed_count
+msgid "Beds"
+msgstr "الأسرّة"
+
+#. module: el_hospital
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_ward__occupied_count
+msgid "Occupied"
+msgstr "مشغول"
+
+#. module: el_hospital
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_ward__available_count
+msgid "Available"
+msgstr "متاح"
+
+#. module: el_hospital
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_bed__bed_number
+msgid "Bed Number"
+msgstr "رقم السرير"
+
+#. module: el_hospital
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_admission__admission_date
+msgid "Admission Date"
+msgstr "تاريخ القبول"
+
+#. module: el_hospital
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_admission__discharge_date
+msgid "Discharge Date"
+msgstr "تاريخ الخروج"
+
+#. module: el_hospital
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_admission__days_count
+msgid "Days Admitted"
+msgstr "أيام الإقامة"
+
+#. module: el_hospital
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_admission__reason
+msgid "Reason for Admission"
+msgstr "سبب القبول"
+
+#. module: el_hospital
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_admission__discharge_notes
+msgid "Discharge Notes"
+msgstr "ملاحظات الخروج"
+
+#. module: el_hospital
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_lab_test__test_type
+msgid "Test Type"
+msgstr "نوع التحليل"
+
+#. module: el_hospital
+#: model:ir.model.fields.selection,name:el_hospital.selection__hospital_lab_test__test_type__blood
+msgid "Blood"
+msgstr "دم"
+
+#. module: el_hospital
+#: model:ir.model.fields.selection,name:el_hospital.selection__hospital_lab_test__test_type__urine
+msgid "Urine"
+msgstr "بول"
+
+#. module: el_hospital
+#: model:ir.model.fields.selection,name:el_hospital.selection__hospital_lab_test__test_type__stool
+msgid "Stool"
+msgstr "براز"
+
+#. module: el_hospital
+#: model:ir.model.fields.selection,name:el_hospital.selection__hospital_lab_test__test_type__tissue
+msgid "Tissue"
+msgstr "أنسجة"
+
+#. module: el_hospital
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_lab_test__test_name
+msgid "Test Name"
+msgstr "اسم التحليل"
+
+#. module: el_hospital
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_lab_test__request_date
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_radiology_order__request_date
+msgid "Request Date"
+msgstr "تاريخ الطلب"
+
+#. module: el_hospital
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_lab_test__result_date
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_radiology_order__result_date
+msgid "Result Date"
+msgstr "تاريخ النتيجة"
+
+#. module: el_hospital
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_lab_test__result
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_radiology_order__result
+msgid "Result"
+msgstr "النتيجة"
+
+#. module: el_hospital
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_radiology_order__modality
+msgid "Modality"
+msgstr "نوع الأشعة"
+
+#. module: el_hospital
+#: model:ir.model.fields.selection,name:el_hospital.selection__hospital_radiology_order__modality__xray
+msgid "X-Ray"
+msgstr "أشعة سينية"
+
+#. module: el_hospital
+#: model:ir.model.fields.selection,name:el_hospital.selection__hospital_radiology_order__modality__ct
+msgid "CT Scan"
+msgstr "أشعة مقطعية"
+
+#. module: el_hospital
+#: model:ir.model.fields.selection,name:el_hospital.selection__hospital_radiology_order__modality__mri
+msgid "MRI"
+msgstr "رنين مغناطيسي"
+
+#. module: el_hospital
+#: model:ir.model.fields.selection,name:el_hospital.selection__hospital_radiology_order__modality__ultrasound
+msgid "Ultrasound"
+msgstr "موجات صوتية"
+
+#. module: el_hospital
+#: model:ir.model.fields.selection,name:el_hospital.selection__hospital_radiology_order__modality__mammography
+msgid "Mammography"
+msgstr "تصوير الثدي"
+
+#. module: el_hospital
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_radiology_order__study_name
+msgid "Study Name"
+msgstr "اسم الفحص"
+
+#. module: el_hospital
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_medicament__generic_name
+msgid "Generic Name"
+msgstr "الاسم العلمي"
+
+#. module: el_hospital
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_medicament__form
+msgid "Form"
+msgstr "الشكل الدوائي"
+
+#. module: el_hospital
+#: model:ir.model.fields.selection,name:el_hospital.selection__hospital_medicament__form__tablet
+msgid "Tablet"
+msgstr "أقراص"
+
+#. module: el_hospital
+#: model:ir.model.fields.selection,name:el_hospital.selection__hospital_medicament__form__capsule
+msgid "Capsule"
+msgstr "كبسولات"
+
+#. module: el_hospital
+#: model:ir.model.fields.selection,name:el_hospital.selection__hospital_medicament__form__syrup
+msgid "Syrup"
+msgstr "شراب"
+
+#. module: el_hospital
+#: model:ir.model.fields.selection,name:el_hospital.selection__hospital_medicament__form__injection
+msgid "Injection"
+msgstr "حقن"
+
+#. module: el_hospital
+#: model:ir.model.fields.selection,name:el_hospital.selection__hospital_medicament__form__inhaler
+msgid "Inhaler"
+msgstr "بخاخ"
+
+#. module: el_hospital
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_medicament__strength
+msgid "Strength"
+msgstr "التركيز"
+
+#. module: el_hospital
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_medicament__is_prescription_required
+msgid "Prescription Required"
+msgstr "يتطلب وصفة طبية"
+
+#. module: el_hospital
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_medicament__stock_qty
+msgid "Stock Quantity"
+msgstr "الكمية المتوفرة"
+
+#. module: el_hospital
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_invoice_billing__billing_date
+msgid "Billing Date"
+msgstr "تاريخ الفاتورة"
+
+#. module: el_hospital
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_invoice_billing__amount_total
+msgid "Total"
+msgstr "الإجمالي"
+
+#. module: el_hospital
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_invoice_billing__move_id
+msgid "Invoice"
+msgstr "الفاتورة"
+
+#. module: el_hospital
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_invoice_billing_line__service_type
+msgid "Service Type"
+msgstr "نوع الخدمة"
+
+#. module: el_hospital
+#: model:ir.model.fields.selection,name:el_hospital.selection__hospital_invoice_billing_line__service_type__consultation
+msgid "Consultation"
+msgstr "استشارة"
+
+#. module: el_hospital
+#: model:ir.model.fields.selection,name:el_hospital.selection__hospital_invoice_billing_line__service_type__lab
+msgid "Laboratory"
+msgstr "مختبر"
+
+#. module: el_hospital
+#: model:ir.model.fields.selection,name:el_hospital.selection__hospital_invoice_billing_line__service_type__radiology
+msgid "Radiology"
+msgstr "أشعة"
+
+#. module: el_hospital
+#: model:ir.model.fields.selection,name:el_hospital.selection__hospital_invoice_billing_line__service_type__pharmacy
+msgid "Pharmacy"
+msgstr "صيدلية"
+
+#. module: el_hospital
+#: model:ir.model.fields.selection,name:el_hospital.selection__hospital_invoice_billing_line__service_type__room
+msgid "Room Charges"
+msgstr "رسوم الغرفة"
+
+#. module: el_hospital
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_invoice_billing_line__price_unit
+msgid "Unit Price"
+msgstr "سعر الوحدة"
+
+#. module: el_hospital
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_invoice_billing_line__price_subtotal
+msgid "Subtotal"
+msgstr "المجموع الفرعي"
+
+#. module: el_hospital
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_physician__specialization
+msgid "Specialization"
+msgstr "التخصص"
+
+#. module: el_hospital
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_physician__medical_license
+msgid "Medical License"
+msgstr "الترخيص الطبي"
+
+#. module: el_hospital
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_physician__employee_id
+msgid "Employee"
+msgstr "الموظف"
+
+#. module: el_hospital
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_department__head_physician_id
+msgid "Head Physician"
+msgstr "رئيس القسم"
+
+#. module: el_hospital
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_appointment__medical_record_id
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_lab_test__medical_record_id
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_radiology_order__medical_record_id
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_prescription__medical_record_id
+msgid "Medical Record"
+msgstr "السجل الطبي"
+
+#. module: el_hospital
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_admission__bed_id
+msgid "Bed"
+msgstr "السرير"
+
+#. module: el_hospital
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_admission__ward_id
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_bed__ward_id
+msgid "Ward"
+msgstr "الجناح"
+
+#. module: el_hospital
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_bed__patient_id
+msgid "Patient"
+msgstr "المريض"
+
+#. module: el_hospital
+#: model:ir.model.fields,field_description:el_hospital.field_hospital_radiology_order__image_ids
+msgid "Images"
+msgstr "الصور"
