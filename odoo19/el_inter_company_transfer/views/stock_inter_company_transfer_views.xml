@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_stock_inter_company_transfer_list" model="ir.ui.view">
+        <field name="name">stock.inter.company.transfer.list</field>
+        <field name="model">stock.inter.company.transfer</field>
+        <field name="arch" type="xml">
+            <list string="InterCompany Transactions">
+                <field name="name"/>
+                <field name="date"/>
+                <field name="source_company_id"/>
+                <field name="dest_company_id"/>
+                <field name="from_warehouse_id"/>
+                <field name="to_warehouse_id"/>
+                <field name="partner_id"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_stock_inter_company_transfer_form" model="ir.ui.view">
+        <field name="name">stock.inter.company.transfer.form</field>
+        <field name="model">stock.inter.company.transfer</field>
+        <field name="arch" type="xml">
+            <form string="InterCompany Transaction">
+                <header>
+                    <button name="action_process" string="Process" type="object" class="btn-primary" invisible="state != 'draft'"/>
+                    <button name="action_reverse" string="Reverse" type="object" invisible="state not in ('confirmed', 'done')"/>
+                    <button name="action_cancel" string="Cancel" type="object" invisible="state in ('done', 'cancel')"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,done"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_sale_order" type="object" class="oe_stat_button" icon="fa-dollar" invisible="not sale_order_id">
+                            <field name="sale_order_id" string="Sales Order" widget="statinfo"/>
+                        </button>
+                        <button name="action_view_purchase_order" type="object" class="oe_stat_button" icon="fa-shopping-cart" invisible="not purchase_order_id">
+                            <field name="purchase_order_id" string="Purchase Order" widget="statinfo"/>
+                        </button>
+                        <button name="action_view_delivery_picking" type="object" class="oe_stat_button" icon="fa-truck" invisible="not delivery_picking_id">
+                            <field name="delivery_picking_id" string="Delivery" widget="statinfo"/>
+                        </button>
+                        <button name="action_view_receipt_picking" type="object" class="oe_stat_button" icon="fa-download" invisible="not receipt_picking_id">
+                            <field name="receipt_picking_id" string="Receipt" widget="statinfo"/>
+                        </button>
+                        <button name="action_view_customer_invoice" type="object" class="oe_stat_button" icon="fa-file-text-o" invisible="not customer_invoice_id">
+                            <field name="customer_invoice_id" string="Invoice" widget="statinfo"/>
+                        </button>
+                        <button name="action_view_vendor_bill" type="object" class="oe_stat_button" icon="fa-file-text" invisible="not vendor_bill_id">
+                            <field name="vendor_bill_id" string="Bill" widget="statinfo"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1><field name="name" readonly="1"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="source_company_id"/>
+                            <field name="from_warehouse_id"/>
+                            <field name="partner_id"/>
+                            <field name="date"/>
+                        </group>
+                        <group>
+                            <field name="dest_company_id"/>
+                            <field name="to_warehouse_id"/>
+                            <field name="config_id"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Transfer Lines">
+                            <field name="transfer_line_ids">
+                                <list editable="bottom">
+                                    <field name="product_id"/>
+                                    <field name="quantity"/>
+                                    <field name="uom_id"/>
+                                    <field name="price_unit"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_stock_inter_company_transfer" model="ir.actions.act_window">
+        <field name="name">InterCompany Transaction</field>
+        <field name="res_model">stock.inter.company.transfer</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

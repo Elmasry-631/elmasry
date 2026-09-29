@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem
+        id="menu_inter_company_root"
+        name="InterCompany Transaction"
+        parent="stock.menu_stock_root"
+        sequence="85"/>
+
+    <menuitem
+        id="menu_stock_inter_company_transfer"
+        name="InterCompany Transaction"
+        parent="menu_inter_company_root"
+        action="action_stock_inter_company_transfer"
+        sequence="10"/>
+
+    <menuitem
+        id="menu_return_inter_company_transfer"
+        name="Return InterCompany Transaction"
+        parent="menu_inter_company_root"
+        action="action_return_inter_company_transfer"
+        sequence="20"/>
+
+    <record id="action_inter_company_inventory_breakdown" model="ir.actions.act_window">
+        <field name="name">Inventory Breakdown</field>
+        <field name="res_model">stock.move</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('picking_id.inter_company_transfer_id', '!=', False)]</field>
+        <field name="context">{'search_default_groupby_picking_type_id': 1}</field>
+    </record>
+
+    <menuitem
+        id="menu_inter_company_inventory_breakdown"
+        name="Inventory Breakdown"
+        parent="menu_inter_company_root"
+        action="action_inter_company_inventory_breakdown"
+        sequence="30"/>
+
+    <menuitem
+        id="menu_inter_company_config"
+        name="InterCompany Rules"
+        parent="menu_inter_company_root"
+        action="action_inter_company_config"
+        groups="el_inter_company_transfer.group_inter_company_transaction_manager"
+        sequence="90"/>
+</odoo>

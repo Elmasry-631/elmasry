@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_stock_inter_company_transfer,stock.inter.company.transfer,model_stock_inter_company_transfer,,1,1,1,1
+access_stock_inter_company_transfer_line,stock.inter.company.transfer.line,model_stock_inter_company_transfer_line,,1,1,1,1
+access_return_inter_company_transfer,return.inter.company.transfer,model_return_inter_company_transfer,,1,1,1,1
+access_return_inter_company_transfer_line,return.inter.company.transfer.line,model_return_inter_company_transfer_line,,1,1,1,1
+access_inter_company_config,inter.company.config,model_inter_company_config,,1,1,1,1

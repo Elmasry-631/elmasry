@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="group_inter_company_transaction_manager" model="res.groups">
+        <field name="name">InterCompany Transaction Manager</field>
+        <field name="privilege_id" ref="stock.res_groups_privilege_inventory"/>
+        <field name="implied_ids" eval="[(4, ref('stock.group_stock_user'))]"/>
+    </record>
+
+    <record id="rule_stock_inter_company_transfer_multi_company" model="ir.rule">
+        <field name="name">Inter-company transfers: allowed companies</field>
+        <field name="model_id" ref="model_stock_inter_company_transfer"/>
+        <field name="domain_force">['|', ('source_company_id', 'in', company_ids), ('dest_company_id', 'in', company_ids)]</field>
+        <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
+    <record id="rule_stock_inter_company_transfer_line_multi_company" model="ir.rule">
+        <field name="name">Inter-company transfer lines: allowed companies</field>
+        <field name="model_id" ref="model_stock_inter_company_transfer_line"/>
+        <field name="domain_force">['|', ('transfer_id.source_company_id', 'in', company_ids), ('transfer_id.dest_company_id', 'in', company_ids)]</field>
+        <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
+    <record id="rule_return_inter_company_transfer_multi_company" model="ir.rule">
+        <field name="name">Return inter-company transfers: allowed companies</field>
+        <field name="model_id" ref="model_return_inter_company_transfer"/>
+        <field name="domain_force">['|', ('source_company_id', 'in', company_ids), ('dest_company_id', 'in', company_ids)]</field>
+        <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
+    <record id="rule_return_inter_company_transfer_line_multi_company" model="ir.rule">
+        <field name="name">Return inter-company transfer lines: allowed companies</field>
+        <field name="model_id" ref="model_return_inter_company_transfer_line"/>
+        <field name="domain_force">['|', ('transfer_id.source_company_id', 'in', company_ids), ('transfer_id.dest_company_id', 'in', company_ids)]</field>
+        <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
+    <record id="rule_inter_company_config_multi_company" model="ir.rule">
+        <field name="name">Inter-company configs: allowed companies</field>
+        <field name="model_id" ref="model_inter_company_config"/>
+        <field name="domain_force">['|', ('source_company_id', 'in', company_ids), ('dest_company_id', 'in', company_ids)]</field>
+        <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+</odoo>

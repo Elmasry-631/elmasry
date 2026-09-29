@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_inter_company_config_list" model="ir.ui.view">
+        <field name="name">inter.company.config.list</field>
+        <field name="model">inter.company.config</field>
+        <field name="arch" type="xml">
+            <list string="InterCompany Rules">
+                <field name="display_name"/>
+                <field name="source_company_id"/>
+                <field name="dest_company_id"/>
+                <field name="apply_on"/>
+                <field name="link_document"/>
+                <field name="auto_validate_picking"/>
+                <field name="auto_create_invoice"/>
+                <field name="auto_validate_invoice"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_inter_company_config_form" model="ir.ui.view">
+        <field name="name">inter.company.config.form</field>
+        <field name="model">inter.company.config</field>
+        <field name="arch" type="xml">
+            <form string="InterCompany Rule">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="source_company_id"/>
+                            <field name="dest_company_id"/>
+                            <field name="apply_on" widget="radio"/>
+                        </group>
+                        <group>
+                            <field name="active"/>
+                            <field name="link_document"/>
+                            <field name="auto_validate_picking"/>
+                            <field name="auto_create_invoice"/>
+                            <field name="auto_validate_invoice"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_inter_company_config" model="ir.actions.act_window">
+        <field name="name">InterCompany Rules</field>
+        <field name="res_model">inter.company.config</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>
