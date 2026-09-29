@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="module_category_el_readonly" model="ir.module.category">
+        <field name="name">Readonly Access</field>
+        <field name="sequence">90</field>
+    </record>
+
+    <record id="group_users_readonly" model="res.groups">
+        <field name="name">Readonly Access</field>
+        <field name="category_id" ref="el_readonly_user.module_category_el_readonly"/>
+        <field name="comment">Read-only access to allowed Odoo data. Configuration and Settings menus are hidden; inventory and stock movements remain readable.</field>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+</odoo>
