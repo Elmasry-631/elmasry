@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="payment_provider_form_applepay" model="ir.ui.view">
+        <field name="name">payment.provider.form.applepay</field>
+        <field name="model">payment.provider</field>
+        <field name="inherit_id" ref="payment.payment_provider_form"/>
+        <field name="arch" type="xml">
+            <group name="provider_credentials" position="inside">
+                <group invisible="code != 'applepay'">
+                    <field name="applepay_entity_id"
+                           required="code == 'applepay' and state != 'disabled'"/>
+                    <field name="applepay_authorization_bearer"
+                           required="code == 'applepay' and state != 'disabled'"
+                           password="True"/>
+                </group>
+            </group>
+        </field>
+    </record>
+
+</odoo>

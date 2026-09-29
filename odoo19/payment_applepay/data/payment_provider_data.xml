@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <record id="payment_provider_applepay" model="payment.provider">
+        <field name="name">Apple Pay</field>
+        <field name="code">applepay</field>
+        <field name="state">disabled</field>
+        <field name="is_published">False</field>
+        <field name="redirect_form_view_id" ref="applepay_form"/>
+        <field name="module_id" ref="base.module_payment_applepay"/>
+        <field name="applepay_entity_id">dummy</field>
+        <field name="applepay_authorization_bearer">dummy</field>
+        <field name="pre_msg"><![CDATA[<p>You will be redirected to the Apple Pay payment form after clicking on the payment button.</p>]]></field>
+        <field name="payment_method_ids"
+               eval="[Command.set([ref('payment_applepay.payment_method_applepay')])]"/>
+    </record>
+
+</odoo>
