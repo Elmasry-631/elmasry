@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.mobile.webhook</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+                <app string="Mobile Webhook" name="el_mobile_webhook" groups="base.group_system">
+                    <block title="Outbound Webhooks"><setting string="Endpoint"><field name="mobile_webhook_endpoint" placeholder="https://mobile.example.com/webhooks/odoo"/></setting><setting string="Shared Secret"><field name="mobile_webhook_secret" password="True"/></setting><setting string="Timeout"><field name="mobile_webhook_timeout"/></setting><setting string="Retry Limit"><field name="mobile_webhook_retry_limit"/></setting></block>
+                </app>
+            </xpath>
+        </field>
+    </record>
+</odoo>
