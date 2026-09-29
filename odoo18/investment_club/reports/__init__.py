@@ -4,3 +4,6 @@ from . import returns_report
 from . import renewal_due_report
 from . import investor_report
 from . import project_profit_report
+from . import return_payment_ledger_report
+from . import investment_maturity_report
+from . import investor_statement_report

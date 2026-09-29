@@ -6,15 +6,15 @@ from odoo.exceptions import UserError
 class CrmLead(models.Model):
     _inherit = 'crm.lead'
 
-    # ===== فيلد اختيار المشروع (Dropdown) =====
+    # ===== Project selection field (Dropdown) =====
     interested_project_id = fields.Many2one(
         'investment.project',
         string='Interested Project',
         domain="[('state', '=', 'active')]",
-        help='المشروع الاستثماري اللي العميل مهتم بيه'
+        help='Investment project the customer is interested in'
     )
     
-    # ===== النادي (يظهر تلقائياً من المشروع) =====
+    # ===== Club (automatically populated from project) =====
     club_id = fields.Many2one(
         'investment.club',
         related='interested_project_id.club_id',
@@ -24,14 +24,14 @@ class CrmLead(models.Model):
     )
 
     def action_create_membership(self):
-        """فتح شاشة إنشاء عضوية للعميل"""
+        """Open membership creation form for the customer"""
         self.ensure_one()
         
-        # التحقق من وجود عميل
+        # Validate customer exists
         if not self.partner_id:
             raise UserError(_('Please select a customer first!'))
         
-        # التحقق من وجود مشروع
+        # Validate project exists
         if not self.interested_project_id:
             raise UserError(_('Please select an interested project first!'))
         
@@ -48,7 +48,7 @@ class CrmLead(models.Model):
         }
 
     def action_view_investment_projects(self):
-        """عرض كل المشاريع الاستثمارية"""
+        """Show all investment projects"""
         return {
             'type': 'ir.actions.act_window',
             'name': 'Investment Projects',

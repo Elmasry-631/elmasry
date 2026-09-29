@@ -10,57 +10,99 @@
             <xpath expr="//form" position="inside">
                 <app data-string="Investment Club" string="Investment Club" name="investment_club">
 
-                    <block title="Membership Settings">
-                        <setting string="Default Membership Product">
+                    <block title="Membership Settings" id="membership_settings">
+                        <setting string="Default Membership Product" id="membership_product">
                             <field name="membership_product_id"/>
                         </setting>
-                        <setting string="Default Subscription Product">
+                        <setting string="Default Subscription Product" id="subscription_product">
                             <field name="subscription_product_id"/>
                         </setting>
-                        <setting string="Default Subscription Period">
+                        <setting string="Default Admin Fees Product" id="admin_fees_product">
+                            <field name="admin_fees_product_id"/>
+                        </setting>
+                        <setting string="Default Subscription Period" id="sub_period">
                             <field name="subscription_period"/>
                         </setting>
-                        <setting string="Auto Renewal Days Before">
+                        <setting string="Auto Renewal Days Before" id="auto_renewal">
                             <field name="auto_renewal_days"/>
                         </setting>
                     </block>
 
-                    <block title="Financial Settings">
-                        <setting string="Default Payment Journal">
+                    <block title="Financial Settings" id="financial_settings">
+                        <setting string="Default Payment Journal" id="payment_journal">
                             <field name="payment_journal_id"/>
                         </setting>
-                        <setting string="Returns Payment Journal">
+                        <setting string="Returns Payment Journal" id="return_journal">
                             <field name="return_payment_journal_id"/>
+                        </setting>
+                        <setting string="Invoice Reference Prefix" id="invoice_prefix">
+                            <field name="invoice_prefix"/>
                         </setting>
                     </block>
 
-                    <block title="Project Settings">
-                        <setting string="Auto Activate Projects">
+                    <block title="Project Settings" id="project_settings">
+                        <setting string="Auto Activate Projects" id="auto_activate">
                             <field name="auto_activate_projects"/>
                         </setting>
-                        <setting string="Default Grace Period (Months)">
+                        <setting string="Default Grace Period (Months)" id="grace_period">
                             <field name="grace_period_months"/>
                         </setting>
                     </block>
 
-                    <block title="Security Settings">
-                        <setting string="Restrict Project Creation to Managers">
+                    <block title="Security Settings" id="security_settings">
+                        <setting string="Restrict Project Creation to Managers" id="restrict_project">
                             <field name="restrict_project_creation"/>
                         </setting>
-                        <setting string="Require Approval for Investments">
+                        <setting string="Require Approval for Investments" id="require_approval">
                             <field name="require_approval_for_investment"/>
                         </setting>
-                        <setting string="Enable Investment Club Module Access">
+                        <setting string="Enable Investment Club Module Access" id="module_access">
                             <field name="module_access_enabled"/>
                         </setting>
                     </block>
 
-                    <block title="Notification Settings">
-                        <setting string="Enable Renewal Notifications">
+                    <block title="Notification Settings" id="notification_settings">
+                        <setting string="Enable Renewal Notifications" id="renewal_notif">
                             <field name="enable_renewal_notifications"/>
                         </setting>
-                        <setting string="Enable Payment Notifications">
+                        <setting string="Enable Payment Notifications" id="payment_notif">
                             <field name="enable_payment_notifications"/>
+                        </setting>
+                    </block>
+
+                    <block title="Termination &amp; Death Case Settings" id="termination_settings">
+                        <setting string="Termination Allowed Period (Months)" id="term_allowed_months">
+                            <field name="termination_allowed_months"/>
+                        </setting>
+                        <setting string="Early Termination Deduction Amount" id="term_deduction_amount">
+                            <field name="termination_deduction_amount"/>
+                        </setting>
+                        <setting string="Client Share of Increase (%)" id="term_client_share">
+                            <field name="termination_client_share_pct"/>
+                        </setting>
+                        <setting string="Company Share of Increase (%)" id="term_company_share">
+                            <field name="termination_company_share_pct"/>
+                        </setting>
+                        <setting string="Allow Transfer in Death Case" id="death_allow_transfer">
+                            <field name="death_case_allow_transfer"/>
+                        </setting>
+                        <setting string="Allow Terminate in Death Case" id="death_allow_terminate">
+                            <field name="death_case_allow_terminate"/>
+                        </setting>
+                        <setting string="Death Case Deduction (%)" id="death_deduction_pct">
+                            <field name="death_case_deduction_pct"/>
+                        </setting>
+                        <setting string="Require Inheritance Document" id="death_require_doc">
+                            <field name="death_case_require_inheritance_doc"/>
+                        </setting>
+                    </block>
+
+                    <block title="Report Settings" id="report_settings">
+                        <setting string="Show Company Header in Reports" id="report_header">
+                            <field name="report_company_header"/>
+                        </setting>
+                        <setting string="Show Currency Symbol in Reports" id="report_currency">
+                            <field name="report_show_currency"/>
                         </setting>
                     </block>
 

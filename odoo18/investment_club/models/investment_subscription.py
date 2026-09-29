@@ -52,7 +52,7 @@ class InvestmentSubscription(models.Model):
 
     # ===== Project Return Settings (from project) =====
 
-    # --- العائد الأول ---
+    # --- First Return ---
     return_1_amount = fields.Float(
         related='project_id.return_1_amount',
         string='Return 1 Amount',
@@ -71,8 +71,26 @@ class InvestmentSubscription(models.Model):
         readonly=True,
         store=True
     )
+    return_1_repeat_count = fields.Integer(
+        related='project_id.return_1_repeat_count',
+        string='Return 1 Repeat Count',
+        readonly=True,
+        store=True
+    )
+    return_1_repeat_duration = fields.Integer(
+        related='project_id.return_1_repeat_duration',
+        string='Return 1 Repeat Duration (Months)',
+        readonly=True,
+        store=True
+    )
+    return_1_repeat_until_membership = fields.Boolean(
+        related='project_id.return_1_repeat_until_membership',
+        string='Repeat Return 1 While Membership Active',
+        readonly=True,
+        store=True
+    )
 
-    # --- العائد الثاني ---
+    # --- Second Return ---
     return_2_amount = fields.Float(
         related='project_id.return_2_amount',
         string='Return 2 Amount',
@@ -122,7 +140,7 @@ class InvestmentSubscription(models.Model):
         store=True
     )
 
-    # --- إعدادات عامة ---
+    # --- General Settings ---
     contract_start_date = fields.Date(
         related='project_id.contract_start_date',
         string='Contract Start Date',
@@ -142,7 +160,14 @@ class InvestmentSubscription(models.Model):
         store=True
     )
 
-    # --- الحقول القديمة (للتوافق) ---
+    max_investors = fields.Integer(
+        related='project_id.max_investors',
+        string='Max Investors',
+        readonly=True,
+        store=True
+    )
+
+    # --- Legacy Fields (for compatibility) ---
     grace_period_months = fields.Integer(
         related='project_id.grace_period_months',
         string='Grace Period (Months)',
@@ -213,6 +238,13 @@ class InvestmentSubscription(models.Model):
         store=True
     )
 
+    capital_due = fields.Float(
+        string='Capital Due',
+        compute='_compute_capital_due',
+        store=True,
+        help='Maturity Principal = Investment amount minus total paid returns'
+    )
+
     grace_period_passed = fields.Boolean(
         string='Grace Period Passed',
         compute='_compute_grace_period_status',
@@ -275,6 +307,21 @@ class InvestmentSubscription(models.Model):
         ('not_paid', 'Not Paid'),
         ('paid', 'Paid')
     ], string='Payment Status', default='not_paid', readonly=True)
+
+    admin_fees_amount = fields.Float(
+        related='club_id.administrative_fees',
+        string='Admin Fees',
+        store=True,
+        readonly=True,
+        help='Administrative fees (from club) added to the investment amount in the payment'
+    )
+
+    payment_total_amount = fields.Float(
+        compute='_compute_payment_total',
+        string='Total (Investment + Admin Fees)',
+        store=True,
+        help='Total Payment = Investment Amount + Administrative Fees'
+    )
 
     analytic_account_id = fields.Many2one(
         'account.analytic.account',
@@ -349,7 +396,7 @@ class InvestmentSubscription(models.Model):
                 continue
 
             # Returns start: based on return_2_grace_months (main grace period)
-            grace_months = sub.return_2_grace_months or sub.grace_period_months or 0
+            grace_months = sub.return_2_grace_months or sub.grace_period_months or 3
             sub.returns_start_date = sub.investment_date + relativedelta(months=grace_months)
 
             # Capital return date (contract end)
@@ -399,14 +446,112 @@ class InvestmentSubscription(models.Model):
             paid_returns = sub.actual_return_ids.filtered(lambda r: r.state == 'paid')
             sub.last_return_date = max(paid_returns.mapped('date_to')) if paid_returns else False
 
+    @api.depends('amount', 'total_actual_returns')
+    def _compute_capital_due(self):
+        for sub in self:
+            capital = sub.amount - (sub.total_actual_returns or 0.0)
+            sub.capital_due = max(capital, 0.0)
+
+    @api.depends('amount', 'admin_fees_amount')
+    def _compute_payment_total(self):
+        for sub in self:
+            sub.payment_total_amount = (sub.amount or 0.0) + (sub.admin_fees_amount or 0.0)
+
+    def _allocate_sequence_number(self, sequence, table, column, cache, cache_key):
+        """Allocate the first unused number of a year-based sequence.
+
+        Gap-proof logic: the number is computed from the existing data
+        instead of the mutable sequence counter, so retried uploads /
+        test runs / deleted records never burn numbers (1, 5, 6, 7...).
+        Deleted numbers are automatically reused for the next records.
+
+        :return: (prefix, next_number)
+        """
+        today = fields.Date.context_today(self)
+        mapping = {
+            'year': today.year,
+            'month': today.month,
+            'day': today.day,
+            'y': today.year % 100,
+            'doy': today.timetuple().tm_yday,
+            'woy': today.isocalendar()[1],
+            'weekday': today.weekday(),
+        }
+        try:
+            prefix = (sequence.prefix or '') % mapping
+        except (KeyError, ValueError, TypeError):
+            prefix = sequence.prefix or ''
+
+        if cache_key not in cache:
+            # Lock the sequence row: serializes concurrent allocations
+            self.env.cr.execute(
+                "SELECT id FROM ir_sequence WHERE id = %s FOR UPDATE",
+                [sequence.id],
+            )
+            self.env.cr.execute(
+                "SELECT %s FROM %s WHERE %s LIKE %%s" % (column, table, column),
+                [prefix + '%'],
+            )
+            used = set()
+            for (val,) in self.env.cr.fetchall():
+                try:
+                    used.add(int(str(val)[len(prefix):]))
+                except (TypeError, ValueError):
+                    continue
+            cache[cache_key] = used
+        else:
+            used = cache[cache_key]
+
+        next_num = 1
+        while next_num in used:
+            next_num += 1
+        used.add(next_num)
+        return prefix, next_num
+
     # ===== CRUD Overrides =====
 
     @api.model_create_multi
     def create(self, vals_list):
+        seq_cache = {}
         for vals in vals_list:
             if vals.get('name', 'New') == 'New':
-                vals['name'] = self.env['ir.sequence'].next_by_code('investment.subscription') or 'New'
-        return super(InvestmentSubscription, self).create(vals_list)
+                # Gap-proof number: first unused INV/.../xxxxx (from data)
+                seq = self.env['ir.sequence'].sudo().search([
+                    ('code', '=', 'investment.subscription'),
+                ], limit=1)
+                if seq:
+                    prefix, num = self._allocate_sequence_number(
+                        seq, 'investment_subscription', 'name',
+                        seq_cache, 'investment.subscription',
+                    )
+                    vals['name'] = '%s%s' % (prefix, str(num).zfill(seq.padding or 5))
+                else:
+                    vals['name'] = self.env['ir.sequence'].next_by_code('investment.subscription') or 'New'
+
+            # Check max investors limit before creating subscription
+            project_id = vals.get('project_id')
+            if project_id:
+                project = self.env['investment.project'].browse(project_id)
+                if project.max_investors > 0:
+                    active_states = ('draft', 'reviewed', 'pending_approval', 'approved', 'paid', 'active')
+                    current_count = self.env['investment.subscription'].search_count([
+                        ('project_id', '=', project_id),
+                        ('state', 'in', active_states),
+                    ])
+                    if current_count >= project.max_investors:
+                        raise ValidationError(_(
+                            'Maximum number of investors reached for this project!\n'
+                            'Maximum number of investors (%s) in this project (%s)已被达到!\n'
+                            'New investors cannot be added until an existing investor terminates their subscription.'
+                        ) % (project.max_investors, project.name))
+
+        records = super(InvestmentSubscription, self).create(vals_list)
+
+        # Auto-create the payment in DRAFT state (draft payment)
+        if not self.env.context.get('investment_club_no_auto_payment'):
+            records._auto_create_draft_payment()
+
+        return records
 
     def copy(self, default=None):
         """Reset payment and status fields on duplicate."""
@@ -416,6 +561,24 @@ class InvestmentSubscription(models.Model):
         default['payment_state'] = 'not_paid'
         default['state'] = 'draft'
         return super().copy(default)
+
+    def write(self, vals):
+        # Check max investors when changing project_id on existing subscription
+        if vals.get('project_id'):
+            new_project = self.env['investment.project'].browse(vals['project_id'])
+            if new_project.max_investors > 0:
+                active_states = ('draft', 'reviewed', 'pending_approval', 'approved', 'paid', 'active')
+                current_count = self.env['investment.subscription'].search_count([
+                    ('project_id', '=', new_project.id),
+                    ('state', 'in', active_states),
+                ])
+                if current_count >= new_project.max_investors:
+                    raise ValidationError(_(
+                        'Maximum number of investors reached for this project!\n'
+                        'Maximum number of investors (%s) in this project (%s) Limit reached!\n'
+                        'New investors cannot be added until an existing investor terminates their subscription.'
+                    ) % (new_project.max_investors, new_project.name))
+        return super(InvestmentSubscription, self).write(vals)
 
     # ===== Validation =====
     @api.constrains('share_count', 'max_shares_per_investor')
@@ -488,8 +651,40 @@ class InvestmentSubscription(models.Model):
             if self.state not in ('approved', 'draft'):
                 raise UserError(_('Investment must be approved before payment!'))
 
+        # A draft payment is created automatically with the investment:
+        # this button only confirms (posts) it. The investment is then
+        # ACTIVATED automatically (state -> active + contract generated).
+        if self.payment_id:
+            if self.payment_id.state == 'cancelled':
+                # Revive a cancelled payment (e.g. investment was cancelled
+                # then re-opened): bring it back to draft then post it.
+                self.payment_id.action_draft()
+            if self.payment_id.state != 'draft':
+                raise UserError(_('A payment is already registered for this investment!'))
+            self.payment_id.action_post()
+            # Activation (state -> active + contract) is done by the
+            # payment post hook; called again here just in case.
+            self._activate_after_payment()
+            return {
+                'type': 'ir.actions.act_window',
+                'name': 'Payment',
+                'res_model': 'account.payment',
+                'res_id': self.payment_id.id,
+                'view_mode': 'form',
+            }
+
         if not self.payment_journal_id:
             raise UserError(_('Please select payment journal!'))
+
+        admin_fees = self.admin_fees_amount or 0.0
+        total = self.amount + admin_fees if admin_fees > 0 else self.amount
+
+        if admin_fees > 0:
+            memo = _('Investment %s - %s (Participation: %s + Admin Fees: %s)') % (
+                self.name, self.project_id.name, self.amount, admin_fees,
+            )
+        else:
+            memo = _('Investment %s - %s') % (self.name, self.project_id.name)
 
         payment_vals = {
             'payment_type': 'inbound',
@@ -497,20 +692,31 @@ class InvestmentSubscription(models.Model):
             'partner_id': self.partner_id.id,
             'investment_subscription_id': self.id,
             'journal_id': self.payment_journal_id.id,
-            'amount': self.amount,
+
+            'amount': total,
             'currency_id': self.currency_id.id,
             'date': fields.Date.today(),
-            'memo': _('Investment %s - %s') % (self.name, self.project_id.name),
+            'memo': memo,
+            # Clear breakdown shown on the payment form
+            'investment_amount': self.amount,
+            'investment_admin_fees': admin_fees,
         }
 
         payment = self.env['account.payment'].create(payment_vals)
+
+        if admin_fees > 0:
+            self._apply_admin_fees_split(payment, self.amount, admin_fees)
+
         payment.action_post()
 
-        self.write({
-            'payment_id': payment.id,
-            'payment_state': 'paid',
-            'state': 'paid'
-        })
+        if self.project_id.analytic_account_id:
+            payment.move_id.line_ids.write({
+                'analytic_distribution': {str(self.project_id.analytic_account_id.id): 100},
+            })
+
+        # Activation (state -> active + contract) is done by the payment
+        # post hook; called again here just in case.
+        self._activate_after_payment()
 
         return {
             'type': 'ir.actions.act_window',
@@ -520,8 +726,228 @@ class InvestmentSubscription(models.Model):
             'view_mode': 'form',
         }
 
+    def _get_fallback_payment_journal(self):
+        """Return the first bank/cash journal of the investment company."""
+        company = self.company_id or self.env.company
+        return self.env['account.journal'].search([
+            ('type', 'in', ('bank', 'cash')),
+            ('company_id', '=', company.id),
+        ], limit=1)
+
+    def _get_admin_fees_income_account(self, admin_product):
+        """Income account used for the administrative fees journal line."""
+        account = False
+        if admin_product:
+            account = admin_product.property_account_income_id \
+                or admin_product.categ_id.property_account_income_categ_id
+        if not account:
+            company = self.company_id or self.env.company
+            account = self.env['account.account'].search([
+                ('account_type', '=', 'income'),
+                ('company_id', '=', company.id),
+            ], limit=1)
+        return account
+
+    def _apply_admin_fees_split(self, payment, participation, admin_fees):
+        """Split the payment journal entry into two clear lines
+        (like the membership invoice):
+
+        - Bank (liquidity) line -> total (participation + admin fees)
+        - Receivable line       -> investment amount only
+        - Income line           -> administrative fees
+
+        :return: True if the split was applied
+        """
+        self.ensure_one()
+        if admin_fees <= 0:
+            return False
+
+        move = payment.move_id
+        if not move or move.state != 'draft':
+            return False
+
+        receivable_line = move.line_ids.filtered(
+            lambda l: l.account_id.account_type == 'asset_receivable' and l.credit > 0
+        )[:1]
+        if not receivable_line:
+            return False
+
+        admin_product = self.env['investment.membership']._get_admin_fees_product()
+        income_account = self._get_admin_fees_income_account(admin_product)
+        if not income_account:
+            return False
+
+        line_vals = {
+            'move_id': move.id,
+            'account_id': income_account.id,
+            'partner_id': receivable_line.partner_id.id,
+            'name': _('Administrative Fees - %s') % (self.club_id.name or ''),
+            'debit': 0.0,
+            'credit': admin_fees,
+            'display_type': 'product',
+        }
+        if receivable_line.currency_id:
+            line_vals['currency_id'] = receivable_line.currency_id.id
+            line_vals['amount_currency'] = -admin_fees
+        if self.project_id.analytic_account_id:
+            line_vals['analytic_distribution'] = {
+                str(self.project_id.analytic_account_id.id): 100,
+            }
+
+        # One atomic write (new income line + reduced receivable line):
+        # the entry stays balanced, no intermediate validity error.
+        move.with_context(check_move_validity=False).write({
+            'line_ids': [
+                (0, 0, line_vals),
+                (1, receivable_line.id, {
+                    'debit': 0.0,
+                    'credit': participation,
+                    'amount_currency': -participation if receivable_line.currency_id else 0.0,
+                }),
+            ],
+        })
+        return True
+
+    def _auto_create_draft_payment(self):
+        """Create the investment payment in DRAFT state automatically.
+
+        The payment total = investment amount + administrative fees
+        (when configured on the club), and the journal entry is split
+        into clear lines like the membership invoice:
+        - investment amount (participation)
+        - administrative fees
+        """
+        for sub in self:
+            if sub.payment_id or not sub.partner_id:
+                continue
+            if not sub.amount or sub.amount <= 0:
+                continue
+
+            journal = sub.payment_journal_id or sub._get_fallback_payment_journal()
+            if not journal:
+                sub.message_post(
+                    body=_('Draft payment could not be created automatically: no bank/cash journal found!'),
+                    message_type='notification',
+                )
+                continue
+
+            admin_fees = sub.admin_fees_amount or 0.0
+            total = sub.amount + admin_fees if admin_fees > 0 else sub.amount
+
+            if admin_fees > 0:
+                memo = _('Investment %s - %s (Participation: %s + Admin Fees: %s)') % (
+                    sub.name, sub.project_id.name, sub.amount, admin_fees,
+                )
+            else:
+                memo = _('Investment %s - %s') % (sub.name, sub.project_id.name)
+
+            try:
+                payment = self.env['account.payment'].create({
+                    'payment_type': 'inbound',
+                    'partner_type': 'customer',
+                    'partner_id': sub.partner_id.id,
+                    'investment_subscription_id': sub.id,
+                    'journal_id': journal.id,
+                    'amount': total,
+                    'currency_id': sub.currency_id.id,
+                    'date': sub.investment_date or fields.Date.today(),
+                    'memo': memo,
+                    # Clear breakdown shown on the payment form
+                    'investment_amount': sub.amount,
+                    'investment_admin_fees': admin_fees,
+                })
+                if admin_fees > 0:
+                    sub._apply_admin_fees_split(payment, sub.amount, admin_fees)
+            except Exception as e:
+                # Never block record creation/import because of the payment
+                sub.message_post(
+                    body=_('Draft payment could not be created automatically: %s') % e,
+                    message_type='notification',
+                )
+                continue
+
+            sub.write({
+                'payment_id': payment.id,
+                'payment_journal_id': journal.id,
+            })
+
+    def _activate_after_payment(self):
+        """Activate the investment automatically once its payment is posted.
+
+        - payment_state -> paid
+        - state         -> active (skipping the manual 'paid' step)
+        - the sale contract is generated automatically as well
+
+        Safe to call several times (idempotent).
+        """
+        for sub in self:
+            if sub.state in ('active', 'closed', 'terminated', 'cancelled'):
+                if sub.payment_state != 'paid':
+                    sub.write({'payment_state': 'paid'})
+                continue
+
+            sub.write({'payment_state': 'paid'})
+
+            # Generate the contract silently (never block activation)
+            try:
+                sub._get_or_create_sale_contract()
+            except Exception as e:
+                sub.message_post(
+                    body=_('Contract could not be generated automatically: %s') % e,
+                    message_type='notification',
+                )
+
+            sub.write({'state': 'active'})
+            sub.message_post(
+                body=_('<b>Investment activated automatically after payment confirmation</b>'),
+                message_type='notification',
+                subtype_xmlid='mail.mt_comment',
+            )
+
+    def _sync_after_payment_cancel(self):
+        """Put the investment back to draft when its payment is cancelled."""
+        for sub in self:
+            if sub.state in ('paid', 'active'):
+                sub.write({'payment_state': 'not_paid', 'state': 'draft'})
+                sub.message_post(
+                    body=_('<b>Investment payment cancelled</b> — Subscription reset to draft.'),
+                    message_type='notification',
+                    subtype_xmlid='mail.mt_comment',
+                )
+            elif sub.payment_state != 'not_paid':
+                sub.write({'payment_state': 'not_paid'})
+
+    def action_reset_to_draft(self):
+        """Re-open a cancelled/rejected investment (back to draft)."""
+        for sub in self:
+            if sub.state not in ('cancelled', 'rejected'):
+                raise UserError(_(
+                    'Only cancelled or rejected investments can be reset to draft!'
+                ))
+            sub.write({
+                'state': 'draft',
+                'payment_state': 'not_paid',
+                'rejection_reason': False,
+            })
+            sub.message_post(
+                body=_('<b>Investment reset to draft</b>'),
+                message_type='notification',
+                subtype_xmlid='mail.mt_comment',
+            )
+
     def action_activate(self):
         self.ensure_one()
+        if self.state == 'active':
+            # Already active: just open the contract
+            contract = self._get_or_create_sale_contract()
+            return {
+                'type': 'ir.actions.act_window',
+                'name': _('Contract'),
+                'res_model': 'sale.contract',
+                'res_id': contract.id,
+                'view_mode': 'form',
+                'target': 'current',
+            }
         if self.payment_state != 'paid':
             raise UserError(_('Investment must be paid first!'))
         self.write({'state': 'active'})
@@ -643,33 +1069,82 @@ class InvestmentSubscription(models.Model):
 
         today = fields.Date.today()
 
-        # ===== Check Return 1 (One-time) =====
-        if self.return_1_amount > 0 and self.return_1_date:
-            # Check if Return 1 already exists (any state except cancelled)
+        # ===== Snooze period: 3 months from investment_date =====
+        snooze_months = 3
+        if self.investment_date:
+            snooze_end = self.investment_date + relativedelta(months=snooze_months)
+            if today < snooze_end:
+                remaining = relativedelta(snooze_end, today)
+                raise UserError(_(
+                    'The grace period has not ended yet!\n\n'
+                    'Grace period: %s months\n'
+                    'Investment date: %s\n'
+                    'The grace period ends on: %s\n\n'
+                    'Remaining: %s months and %s day'
+                ) % (
+                    snooze_months,
+                    self.investment_date,
+                    snooze_end.strftime('%Y-%m-%d'),
+                    remaining.months + (remaining.years * 12),
+                    remaining.days,
+                ))
+
+        # ===== Check Return 1 (Repeats while membership is active) =====
+        if self.return_1_amount > 0:
+            # Existing Return 1 payments (any state except cancelled)
             return_1_exists = self.actual_return_ids.filtered(
                 lambda r: r.return_type == 'return_1' and r.state != 'cancelled'
             )
-            if not return_1_exists and today >= self.return_1_date:
-                period_name = _('Return 1 - %s') % (self.return_1_date.strftime('%B %Y'))
-                return_payment = self.env['investment.actual.return'].create({
-                    'subscription_id': self.id,
-                    'return_type': 'return_1',
-                    'date_from': self.return_1_date,
-                    'date_to': self.return_1_date,
-                    'expected_amount': self.return_1_amount * self.share_count,
-                    'actual_amount': self.return_1_amount * self.share_count,
-                    'period_name': period_name,
-                    'state': 'draft',
-                })
-                return {
-                    'type': 'ir.actions.act_window',
-                    'name': _('Review Return 1 Payment'),
-                    'res_model': 'investment.actual.return',
-                    'res_id': return_payment.id,
-                    'view_mode': 'form',
-                    'target': 'current',
-                    'context': {'form_view_initial_mode': 'edit'},
-                }
+            occurrence_index = len(return_1_exists)  # 0-based index
+
+            # Base date: Return 1 Payment Date (optional).
+            # Fallback: investment date, otherwise today.
+            base_date = self.return_1_date or self.investment_date or today
+
+            # Each occurrence is spaced by the repeat duration (months)
+            repeat_duration = self.return_1_repeat_duration or 0
+            payment_date = base_date + relativedelta(months=repeat_duration * occurrence_index)
+
+            if today >= payment_date:
+                # Check whether a new Return 1 occurrence is allowed
+                return_1_allowed = False
+                if self.return_1_repeat_until_membership:
+                    # Repeat as long as the membership is still valid
+                    membership = self.membership_id
+                    if membership and membership.state == 'active':
+                        if membership.expiry_date and membership.expiry_date < today:
+                            return_1_allowed = False
+                        else:
+                            return_1_allowed = True
+                else:
+                    # Fixed repeat count mode
+                    repeat_count = self.return_1_repeat_count or 1
+                    return_1_allowed = occurrence_index < repeat_count
+
+                if return_1_allowed:
+                    period_name = _('Return 1 (#%s) - %s') % (
+                        occurrence_index + 1,
+                        payment_date.strftime('%B %Y')
+                    )
+                    return_payment = self.env['investment.actual.return'].create({
+                        'subscription_id': self.id,
+                        'return_type': 'return_1',
+                        'date_from': payment_date,
+                        'date_to': payment_date,
+                        'expected_amount': self.return_1_amount * self.share_count,
+                        'actual_amount': self.return_1_amount * self.share_count,
+                        'period_name': period_name,
+                        'state': 'draft',
+                    })
+                    return {
+                        'type': 'ir.actions.act_window',
+                        'name': _('Review Return 1 Payment'),
+                        'res_model': 'investment.actual.return',
+                        'res_id': return_payment.id,
+                        'view_mode': 'form',
+                        'target': 'current',
+                        'context': {'form_view_initial_mode': 'edit'},
+                    }
 
         # ===== Check grace period for Return 2 =====
         if not self.grace_period_passed:
@@ -678,12 +1153,12 @@ class InvestmentSubscription(models.Model):
             days_remaining = diff.days
 
             raise UserError(_(
-                'لم تنتهِ فترة السكون بعد!\n\n'
-                'فترة السكون: %s شهر\n'
-                'تاريخ الاستثمار: %s\n'
-                'تاريخ بدء العوائد: %s\n\n'
-                'المتبقي: %s شهر و %s يوم\n\n'
-                'ستكون العوائد متاحة بدءًا من: %s'
+                'The grace period has not ended yet!\n\n'
+                'Grace period: %s Month\n'
+                'Investment date: %s\n'
+                'Return start date: %s\n\n'
+                'Remaining: %s months and %s day\n\n'
+                'Returns will be available starting: %s'
             ) % (
                 self.return_2_grace_months or self.grace_period_months or 0,
                 self.investment_date,
@@ -805,9 +1280,25 @@ class InvestmentSubscription(models.Model):
         }
 
     def action_cancel(self):
-        if self.payment_id and self.payment_id.state == 'posted':
-            self.payment_id.button_cancel()
-        self.write({'state': 'cancelled'})
+        """Cancel the investment (and its linked payment)."""
+        for sub in self:
+            if sub.state == 'cancelled':
+                continue
+            if sub.payment_id and sub.payment_id.state == 'posted':
+                # The payment cancel hook puts the subscription back to
+                # draft first; we then mark it cancelled.
+                sub.payment_id.action_cancel()
+            elif sub.payment_id and sub.payment_id.state == 'draft':
+                try:
+                    sub.payment_id.unlink()
+                except Exception:
+                    pass
+            sub.write({'state': 'cancelled'})
+            sub.message_post(
+                body=_('<b>Investment cancelled</b>'),
+                message_type='notification',
+                subtype_xmlid='mail.mt_comment',
+            )
 
     def name_get(self):
         result = []

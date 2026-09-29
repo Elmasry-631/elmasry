@@ -148,6 +148,43 @@ class InvestmentMembership(models.Model):
         store=True
     )
 
+    # ===== Statement Report Fields =====
+
+    total_returns_due = fields.Float(
+        string='Total Returns Due',
+        compute='_compute_statement_fields',
+        store=True,
+        help='Total Due Returns'
+    )
+
+    total_returns_paid = fields.Float(
+        string='Total Returns Paid',
+        compute='_compute_statement_fields',
+        store=True,
+        help='Total Actual Paid Returns'
+    )
+
+    returns_remaining = fields.Float(
+        string='Returns Remaining',
+        compute='_compute_statement_fields',
+        store=True,
+        help='Remaining = Due Returns - Paid Returns'
+    )
+
+    statement_admin_fees = fields.Float(
+        string='Admin Fees',
+        compute='_compute_statement_fields',
+        store=True,
+        help='Administrative Fees from Club'
+    )
+
+    net_due = fields.Float(
+        string='Net Due',
+        compute='_compute_statement_fields',
+        store=True,
+        help='Net Due = Remaining - Administrative Fees'
+    )
+
     company_id = fields.Many2one(
         'res.company',
         string='Company',
@@ -190,7 +227,7 @@ class InvestmentMembership(models.Model):
     original_paid_fee = fields.Float(
         string='Original Paid Fee',
         default=0.0,
-        help='المبلغ الذي دفعه العميل عند تفعيل العضوية'
+        help='Amount paid by the customer when membership is activated'
     )
 
     termination_date = fields.Date(
@@ -212,7 +249,7 @@ class InvestmentMembership(models.Model):
     termination_deduction = fields.Float(
         string='Termination Deduction',
         readonly=True,
-        help='مبلغ الخصم عند الفسخ خلال أول 3 شهور'
+        help='Termination deduction during the first 3 months'
     )
 
     investor_code = fields.Char(string='Investor code', store=True)
@@ -279,6 +316,35 @@ class InvestmentMembership(models.Model):
                 membership.investment_ids.filtered(lambda i: i.state == 'active').mapped('amount')
             )
 
+    @api.depends('investment_ids', 'club_id.administrative_fees')
+    def _compute_statement_fields(self):
+        for mem in self:
+            investments = mem.investment_ids.filtered(lambda i: i.state in ('paid', 'active'))
+
+            # Total Due Returns (Total Expected)
+            total_due = 0.0
+            for inv in investments:
+                returns = inv.actual_return_ids.filtered(lambda r: r.state != 'cancelled')
+                total_due += sum(r.expected_amount for r in returns)
+
+            # Total Actual Paid Returns
+            total_paid = sum(inv.total_actual_returns or 0.0 for inv in investments)
+
+            # Remaining
+            remaining = total_due - total_paid
+
+            # Administrative Fees
+            admin_fees = mem.club_id.administrative_fees or 0.0
+
+            # Net Due
+            net = remaining - admin_fees
+
+            mem.total_returns_due = total_due
+            mem.total_returns_paid = total_paid
+            mem.returns_remaining = remaining
+            mem.statement_admin_fees = admin_fees
+            mem.net_due = net
+
     @api.depends('initial_invoice_id', 'current_invoice_id')
     def _compute_invoice_count(self):
         for rec in self:
@@ -305,23 +371,27 @@ class InvestmentMembership(models.Model):
         if not self.membership_product_id:
             raise UserError(_('Please select membership product!'))
 
+        # A draft invoice is created automatically with the membership:
+        # this button only confirms (posts) it.
         if self.initial_invoice_id:
-            raise UserError(_('Initial invoice already exists!'))
+            if self.initial_invoice_id.state != 'draft':
+                raise UserError(_('Initial invoice already exists!'))
+            self.initial_invoice_id.action_post()
+            self.write({'state': 'initial_invoiced'})
+            # Update ref after post to include invoice number + membership description
+            membership_desc = _('Club Membership %s - %s') % (self.club_id.name, self.investor_code or '')
+            self.initial_invoice_id.write({
+                'ref': '%s - %s' % (self.initial_invoice_id.name, membership_desc),
+            })
+            return {
+                'type': 'ir.actions.act_window',
+                'name': 'Invoice',
+                'res_model': 'account.move',
+                'view_mode': 'form',
+                'res_id': self.initial_invoice_id.id,
+            }
 
-        invoice_vals = {
-            'move_type': 'out_invoice',
-            'partner_id': self.partner_id.id,
-            'investor_code_id': self.id or False,
-            'invoice_date': fields.Date.today(),
-            'invoice_line_ids': [(0, 0, {
-                'product_id': self.membership_product_id.id,
-                'name': _('Membership Fee - %s %s') % (self.club_id.name, self.investor_code or ''),
-                'quantity': 1,
-                'price_unit': self.initial_membership_fee,
-            })],
-        }
-
-        invoice = self.env['account.move'].create(invoice_vals)
+        invoice = self._prepare_initial_invoice()
 
         self.write({
             'initial_invoice_id': invoice.id,
@@ -332,7 +402,7 @@ class InvestmentMembership(models.Model):
         invoice.action_post()
 
         # Update ref after post to include invoice number + membership description
-        membership_desc = _('عضوية نادي %s - %s') % (self.club_id.name, self.investor_code or '')
+        membership_desc = _('Club Membership %s - %s') % (self.club_id.name, self.investor_code or '')
         invoice.write({
             'ref': '%s - %s' % (invoice.name, membership_desc),
         })
@@ -344,6 +414,83 @@ class InvestmentMembership(models.Model):
             'view_mode': 'form',
             'res_id': invoice.id,
         }
+
+    def _prepare_initial_invoice(self):
+        """Build and create the initial membership invoice (kept in DRAFT)."""
+        self.ensure_one()
+
+        invoice_lines = [(0, 0, {
+            'product_id': self.membership_product_id.id,
+            'name': _('Membership Fee %s - %s') % (self.club_id.name, self.investor_code or ''),
+            'quantity': 1,
+            'price_unit': self.initial_membership_fee,
+        })]
+
+        # Add administrative fees as a separate line if configured on the club
+        admin_fees = self.club_id.administrative_fees if self.club_id else 0.0
+        if admin_fees > 0:
+            admin_product = self._get_admin_fees_product()
+            invoice_lines.append((0, 0, {
+                'product_id': admin_product.id if admin_product else False,
+                'name': _('Administrative Fees - %s') % (self.club_id.name,),
+                'quantity': 1,
+                'price_unit': admin_fees,
+            }))
+
+        return self.env['account.move'].create({
+            'move_type': 'out_invoice',
+            'partner_id': self.partner_id.id,
+            'investor_code_id': self.id or False,
+            'invoice_date': fields.Date.today(),
+            'invoice_line_ids': invoice_lines,
+        })
+
+    def _auto_create_initial_draft_invoice(self):
+        """Create the initial membership invoice in DRAFT state automatically.
+
+        Called from create() so every new membership (manual or uploaded
+        master data) gets its draft invoice ready.
+        """
+        for membership in self:
+            if membership.initial_invoice_id:
+                continue
+            if not membership.partner_id or not membership.club_id:
+                continue
+            if not membership.membership_product_id:
+                continue
+            try:
+                invoice = membership._prepare_initial_invoice()
+            except Exception as e:
+                # Never block record creation/import because of the invoice
+                membership.message_post(
+                    body=_('Draft invoice could not be created automatically: %s') % e,
+                    message_type='notification',
+                )
+                continue
+            membership.write({
+                'initial_invoice_id': invoice.id,
+                'current_invoice_id': invoice.id,
+            })
+
+    def _get_admin_fees_product(self):
+        """Get the administrative fees product from settings or create a default one."""
+        config_product_id = self._get_config('admin_fees_product_id')
+        if config_product_id:
+            try:
+                return self.env['product.product'].browse(int(config_product_id))
+            except (ValueError, TypeError):
+                pass
+        # Fallback: find or create a generic admin fees product
+        admin_product = self.env['product.product'].search([
+            ('name', 'ilike', 'Administrative Fee'),
+            ('type', '=', 'service'),
+        ], limit=1)
+        if not admin_product:
+            admin_product = self.env['product.product'].search([
+                ('name', 'ilike', 'Administrative Fees'),
+                ('type', '=', 'service'),
+            ], limit=1)
+        return admin_product or self.env['product.product']
 
     def action_open_invoice(self):
         self.ensure_one()
@@ -379,16 +526,29 @@ class InvestmentMembership(models.Model):
 
         product = self.subscription_product_id or self.membership_product_id
 
+        invoice_lines = [(0, 0, {
+            'product_id': product.id,
+            'name': _('Club Membership Renewal %s - %s') % (self.club_id.name, self.investor_code or ''),
+            'quantity': 1,
+            'price_unit': self.annual_subscription_fee,
+        })]
+
+        # Add administrative fees as a separate line if configured on the club
+        admin_fees = self.club_id.administrative_fees if self.club_id else 0.0
+        if admin_fees > 0:
+            admin_product = self._get_admin_fees_product()
+            invoice_lines.append((0, 0, {
+                'product_id': admin_product.id if admin_product else False,
+                'name': _('Administrative Fees - %s') % (self.club_id.name,),
+                'quantity': 1,
+                'price_unit': admin_fees,
+            }))
+
         invoice_vals = {
             'move_type': 'out_invoice',
             'partner_id': self.partner_id.id,
             'invoice_date': fields.Date.today(),
-            'invoice_line_ids': [(0, 0, {
-                'product_id': product.id,
-                'name': _('Annual Subscription - %s - %s') % (self.club_id.name,),
-                'quantity': 1,
-                'price_unit': self.annual_subscription_fee,
-            })],
+            'invoice_line_ids': invoice_lines,
         }
 
         invoice = self.env['account.move'].create(invoice_vals)
@@ -397,7 +557,7 @@ class InvestmentMembership(models.Model):
         invoice.action_post()
 
         # Update ref after post to include invoice number + membership description
-        membership_desc = _('تجديد عضوية نادي %s - %s') % (self.club_id.name, self.investor_code or '')
+        membership_desc = _('Club Membership Renewal %s - %s') % (self.club_id.name, self.investor_code or '')
         invoice.write({
             'ref': '%s - %s' % (invoice.name, membership_desc),
         })
@@ -421,17 +581,48 @@ class InvestmentMembership(models.Model):
             rec.state = 'reviewed'
 
 
+    def _auto_activate_after_payment(self):
+        """Activate the membership automatically once its invoice is paid.
+
+        Same logic as the manual "Confirm Payment & Activate" button but
+        triggered from the accounting side (invoice fully settled), so
+        uploaded memberships become ACTIVE right after payment.
+
+        Safe to call several times (idempotent).
+        """
+        for membership in self:
+            if membership.state in ('active', 'expired', 'terminated', 'cancelled'):
+                continue
+
+            vals = {'state': 'active'}
+            # Store original paid fee at activation time
+            if not membership.original_paid_fee or membership.original_paid_fee <= 0:
+                vals['original_paid_fee'] = membership.initial_membership_fee
+            membership.write(vals)
+
+            last_renewal = membership.renewal_ids.sorted('renewal_date', reverse=True)[:1]
+            if last_renewal and last_renewal.state != 'paid':
+                last_renewal.write({'state': 'paid'})
+
+            # ===== Auto-generate Sale Contract (never blocks activation) =====
+            try:
+                membership._get_or_create_membership_contract()
+            except Exception as e:
+                membership.message_post(
+                    body=_('Contract could not be generated automatically: %s') % e,
+                    message_type='notification',
+                )
+
+            membership.message_post(
+                body=_('<b>Membership activated automatically after invoice payment</b>'),
+                message_type='notification',
+                subtype_xmlid='mail.mt_comment',
+            )
+
     def action_confirm_payment(self):
         self.ensure_one()
         if self.payment_state == 'paid':
-            # Store original paid fee at activation time
-            vals = {'state': 'active'}
-            if not self.original_paid_fee or self.original_paid_fee <= 0:
-                vals['original_paid_fee'] = self.initial_membership_fee
-            self.write(vals)
-            last_renewal = self.renewal_ids.sorted('renewal_date', reverse=True)[:1]
-            if last_renewal:
-                last_renewal.write({'state': 'paid'})
+            self._auto_activate_after_payment()
 
             # ===== Auto-generate Sale Contract =====
             contract = self._get_or_create_membership_contract()
@@ -494,12 +685,32 @@ class InvestmentMembership(models.Model):
 
     def action_cancel(self):
         """Cancel membership and cancel unpaid related invoices."""
-        if self.current_invoice_id and self.current_invoice_id.payment_state != 'paid':
-            self.current_invoice_id.button_cancel()
-        for renewal in self.renewal_ids.filtered(lambda r: r.state == 'invoiced'):
-            if renewal.invoice_id and renewal.invoice_id.payment_state != 'paid':
-                renewal.invoice_id.button_cancel()
-        self.write({'state': 'cancelled'})
+        for membership in self:
+            if membership.state == 'cancelled':
+                continue
+            if membership.current_invoice_id and membership.current_invoice_id.payment_state != 'paid':
+                membership.current_invoice_id.button_cancel()
+            for renewal in membership.renewal_ids.filtered(lambda r: r.state == 'invoiced'):
+                if renewal.invoice_id and renewal.invoice_id.payment_state != 'paid':
+                    renewal.invoice_id.button_cancel()
+            membership.write({'state': 'cancelled'})
+            membership.message_post(
+                body=_('<b>Membership cancelled</b>'),
+                message_type='notification',
+                subtype_xmlid='mail.mt_comment',
+            )
+
+    def action_reset_to_draft(self):
+        """Re-open a cancelled membership (back to draft)."""
+        for membership in self:
+            if membership.state != 'cancelled':
+                raise UserError(_('Only cancelled memberships can be reset to draft!'))
+            membership.write({'state': 'draft'})
+            membership.message_post(
+                body=_('<b>Membership reset to draft</b>'),
+                message_type='notification',
+                subtype_xmlid='mail.mt_comment',
+            )
 
     def action_create_investment(self):
         self.ensure_one()
@@ -664,7 +875,7 @@ class InvestmentMembership(models.Model):
     # ===== Sequence / Investor Code (Merged) =====
 
     def _get_club_sequence(self, club_id=None):
-        """Get or create a dedicated sequence for a club."""
+        """Get or create a dedicated sequence for a club (used for prefix/padding)."""
         if club_id:
             club = self.env['investment.club'].browse(club_id)
         elif hasattr(self, 'club_id') and self.club_id:
@@ -694,31 +905,168 @@ class InvestmentMembership(models.Model):
         return sequence
 
     def _generate_investor_code(self):
-        """Generate: INVS-ElAhly-00001 (per club)"""
+        """Generate: INVS-ElAhly-00001 (per club - consecutive, no gaps)"""
         self.ensure_one()
-        sequence = self._get_club_sequence()
-        if sequence:
-            return sequence.next_by_id()
-        return False
+        return self._generate_code_for_vals(self.club_id.id if self.club_id else False)
+
+    def _generate_code_for_vals(self, club_id, counter_cache=None):
+        """Generate the next free investor code for a club.
+
+        The number is derived from the existing records (first unused number)
+        instead of a plain counter sequence, so import test runs / retried
+        uploads / deleted records never leave permanent gaps (1, 4, 7...):
+        deleted numbers are automatically reused for the next records.
+
+        :param counter_cache: dict shared across a whole create() batch so
+            several new lines of the same club keep incrementing correctly
+            before the rows are actually inserted. It holds the set of used
+            numbers per club.
+        """
+        if not club_id:
+            return False
+
+        sequence = self._get_club_sequence(club_id)
+        if not sequence:
+            return False
+
+        if counter_cache is None:
+            counter_cache = {}
+
+        if club_id not in counter_cache:
+            # Lock the club row: serializes concurrent code generation per club
+            self.env.cr.execute(
+                "SELECT id FROM investment_club WHERE id = %s FOR UPDATE",
+                [club_id],
+            )
+            self.env.cr.execute(
+                "SELECT investor_code FROM investment_membership "
+                "WHERE club_id = %s AND investor_code IS NOT NULL",
+                [club_id],
+            )
+            used = set()
+            for (code,) in self.env.cr.fetchall():
+                try:
+                    used.add(int(str(code).rsplit('-', 1)[-1]))
+                except (TypeError, ValueError):
+                    continue
+            counter_cache[club_id] = used
+        else:
+            used = counter_cache[club_id]
+
+        next_num = 1
+        while next_num in used:
+            next_num += 1
+        used.add(next_num)
+
+        prefix = sequence.prefix or 'INVS-'
+        padding = sequence.padding or 5
+        return '%s%s' % (prefix, str(next_num).zfill(padding))
+
+    def _allocate_sequence_number(self, sequence, table, column, cache, cache_key):
+        """Allocate the first unused number of a year-based sequence.
+
+        Same gap-proof logic as the investor code but for standard
+        references like MEM/2026/00001 or INV/2026/00001: the number is
+        computed from the existing data instead of the mutable counter,
+        so retried uploads / test runs / deleted records never burn numbers.
+
+        :return: (prefix, next_number)
+        """
+        today = fields.Date.context_today(self)
+        mapping = {
+            'year': today.year,
+            'month': today.month,
+            'day': today.day,
+            'y': today.year % 100,
+            'doy': today.timetuple().tm_yday,
+            'woy': today.isocalendar()[1],
+            'weekday': today.weekday(),
+        }
+        try:
+            prefix = (sequence.prefix or '') % mapping
+        except (KeyError, ValueError, TypeError):
+            prefix = sequence.prefix or ''
+
+        if cache_key not in cache:
+            # Lock the sequence row: serializes concurrent allocations
+            self.env.cr.execute(
+                "SELECT id FROM ir_sequence WHERE id = %s FOR UPDATE",
+                [sequence.id],
+            )
+            self.env.cr.execute(
+                "SELECT %s FROM %s WHERE %s LIKE %%s" % (column, table, column),
+                [prefix + '%'],
+            )
+            used = set()
+            for (val,) in self.env.cr.fetchall():
+                try:
+                    used.add(int(str(val)[len(prefix):]))
+                except (TypeError, ValueError):
+                    continue
+            cache[cache_key] = used
+        else:
+            used = cache[cache_key]
+
+        next_num = 1
+        while next_num in used:
+            next_num += 1
+        used.add(next_num)
+        return prefix, next_num
 
     # ===== CRUD Overrides =====
 
     @api.model_create_multi
     def create(self, vals_list):
+        code_cache = {}
+        seq_cache = {}
         for vals in vals_list:
             if not vals.get('membership_number') or vals.get('membership_number') == 'New':
-                vals['membership_number'] = self.env['ir.sequence'].next_by_code('investment.membership')
+                # Gap-proof number: first unused MEM/.../xxxxx (from data)
+                seq = self.env['ir.sequence'].sudo().search([
+                    ('code', '=', 'investment.membership'),
+                ], limit=1)
+                if seq:
+                    prefix, num = self._allocate_sequence_number(
+                        seq, 'investment_membership', 'membership_number',
+                        seq_cache, 'investment.membership',
+                    )
+                    vals['membership_number'] = '%s%s' % (prefix, str(num).zfill(seq.padding or 5))
+                else:
+                    vals['membership_number'] = self.env['ir.sequence'].next_by_code('investment.membership')
 
             if vals.get('club_id') and not vals.get('investor_code'):
-                vals['investor_code'] = self._generate_code_for_vals(vals['club_id'])
+                vals['investor_code'] = self._generate_code_for_vals(vals['club_id'], code_cache)
+
+            # Check club max members limit
+            if vals.get('club_id'):
+                club = self.env['investment.club'].browse(vals['club_id'])
+                if club.max_members > 0:
+                    current_count = self.env['investment.membership'].search_count([
+                        ('club_id', '=', club.id),
+                        ('state', 'not in', ('cancelled', 'terminated')),
+                    ])
+                    if current_count >= club.max_members:
+                        raise ValidationError(_(
+                            'Club "%s" has reached the maximum members limit (%s)!'
+                        ) % (club.display_name or club.name_ar or club.name_en, club.max_members))
 
         try:
-            return super().create(vals_list)
+            with self.env.cr.savepoint():
+                records = super().create(vals_list)
         except IntegrityError:
+            # Duplicate investor code (e.g. codes coming from the import file):
+            # regenerate them from scratch and retry once.
             for vals in vals_list:
                 if vals.get('club_id'):
-                    vals['investor_code'] = self._generate_code_for_vals(vals['club_id'])
-            return super().create(vals_list)
+                    vals['investor_code'] = self._generate_code_for_vals(vals['club_id'], code_cache)
+            with self.env.cr.savepoint():
+                records = super().create(vals_list)
+
+        # Auto-create the initial invoice in DRAFT state (draft invoice)
+        if not self.env.context.get('investment_club_no_auto_invoice'):
+            records._auto_create_initial_draft_invoice()
+
+        return records
 
     def copy(self, default=None):
         """Reset investor code and membership number on duplicate."""
@@ -726,13 +1074,6 @@ class InvestmentMembership(models.Model):
         default['investor_code'] = False
         default['membership_number'] = 'New'
         return super().copy(default)
-
-    def _generate_code_for_vals(self, club_id):
-        """Generate investor code from vals dict (used during create)."""
-        sequence = self._get_club_sequence(club_id)
-        if sequence:
-            return sequence.next_by_id()
-        return False
 
     # ===== Cron / Scheduled Actions =====
 
@@ -797,12 +1138,12 @@ class InvestmentMembership(models.Model):
 
     def _send_overdue_notification(self, membership, days_overdue):
         """Send an overdue notification."""
-        subject = _('انتهاء العضوية: %s') % (membership.investor_code or membership.membership_number)
+        subject = _('Membership expiry: %s') % (membership.investor_code or membership.membership_number)
 
         body = _(
-            '<p>عزيزي <b>%s</b>،</p>'
-            '<p>لقد انتهت عضويتك في <b>%s</b> منذ <b>%s يوم</b> بتاريخ <b>%s</b>.</p>'
-            '<p>يرجى تجديد العضوية في أقرب وقت ممكن.</p>'
+            '<p>Dear <b>%s</b>Details</p>'
+            '<p>Your membership in <b>%s</b> has expired since <b>%s day</b> on <b>%s</b>.</p>'
+            '<p>Please renew your membership as soon as possible.</p>'
         ) % (
             membership.partner_id.name or '',
             membership.club_id.name or '',

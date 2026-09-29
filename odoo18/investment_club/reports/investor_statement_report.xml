@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_investor_statement_pdf" model="ir.actions.report">
+        <field name="name">Investor Investment Statement</field>
+        <field name="model">investment.membership</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">investment_club.investor_statement</field>
+        <field name="report_file">investment_club.investor_statement</field>
+        <field name="print_report_name">'Investor Investment Statement'</field>
+        <field name="binding_model_id" ref="model_investment_membership"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="investor_statement">
+        <t t-call="web.html_container">
+            <t t-call="web.basic_layout">
+                <div class="page">
+                    <h2>Investor investment statement</h2>
+                    <p>Investor Investment Statement Report</p>
+                    <p>Generated: <span t-esc="date"/></p>
+                    <table class="table table-sm table-bordered table-striped">
+                        <thead class="bg-info text-white">
+                            <tr>
+                                <th>Investor</th>
+                                <th>Membership Number</th>
+                                <th>Investor Code</th>
+                                <th>Club</th>
+                                <th>Total Investments</th>
+                                <th>Due Returns</th>
+                                <th>Paid Returns</th>
+                                <th>Remaining</th>
+                                <th>Administrative Fees</th>
+                                <th>Net Due</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr t-foreach="data" t-as="line">
+                                <td><span t-esc="line['investor']"/></td>
+                                <td><span t-esc="line['membership_number']"/></td>
+                                <td><span t-esc="line['investor_code']"/></td>
+                                <td><span t-esc="line['club']"/></td>
+                                <td><span t-esc="line['total_invested']"/></td>
+                                <td><span t-esc="line['total_returns_due']"/></td>
+                                <td><span t-esc="line['total_returns_paid']"/></td>
+                                <td><span t-esc="line['remaining']"/></td>
+                                <td><span t-esc="line['admin_fees']"/></td>
+                                <td><span t-esc="line['net_due']"/></td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr class="bg-light font-weight-bold">
+                                <td colspan="4">Total / Grand Total</td>
+                                <td><span t-esc="grand_total_invested"/></td>
+                                <td><span t-esc="grand_total_returns_due"/></td>
+                                <td><span t-esc="grand_total_returns_paid"/></td>
+                                <td><span t-esc="grand_total_remaining"/></td>
+                                <td><span t-esc="grand_total_admin_fees"/></td>
+                                <td><span t-esc="grand_total_net_due"/></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                    <br/>
+                    <p><strong>Investor Count / Total Investors:</strong> <span t-esc="count"/></p>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

@@ -49,7 +49,7 @@ class InvestmentActualReturn(models.Model):
         readonly=True
     )
 
-    # ===== نوع العائد =====
+    # ===== Return Type =====
     return_type = fields.Selection([
         ('return_1', 'Return 1 (One-time)'),
         ('return_2', 'Return 2 (Recurring)'),
@@ -74,7 +74,7 @@ class InvestmentActualReturn(models.Model):
     actual_amount = fields.Float(
         string='Actual Amount',
         required=True,
-        help='المبلغ الفعلي المدفوع للعميل',
+        help='Actual amount paid to the customer',
         default=0.0
     )
 
@@ -121,10 +121,10 @@ class InvestmentActualReturn(models.Model):
             sub = rec.subscription_id
 
             if rec.return_type == 'return_1':
-                # العائد الأول (مرة واحدة)
+                # First Return (One-time)
                 rec.expected_amount = (sub.return_1_amount or 0.0) * sub.share_count
             else:
-                # العائد الثاني (متكرر)
+                # Second Return (Recurring)
                 if sub.return_2_amount > 0:
                     rec.expected_amount = sub.return_2_amount * sub.share_count
                 elif sub.return_2_percentage > 0:
@@ -141,7 +141,16 @@ class InvestmentActualReturn(models.Model):
     def _compute_period_name(self):
         for rec in self:
             if rec.return_type == 'return_1':
-                rec.period_name = _('Return 1 - %s') % (rec.date_from.strftime('%B %Y') if rec.date_from else '')
+                date_str = rec.date_from.strftime('%B %Y') if rec.date_from else ''
+                # Count how many return_1 exist before this one to show occurrence number
+                if rec.subscription_id:
+                    existing = rec.subscription_id.actual_return_ids.filtered(
+                        lambda r: r.return_type == 'return_1' and r.state != 'cancelled'
+                    )
+                    occ = len(existing)
+                    rec.period_name = _('Return 1 (#%s) - %s') % (occ, date_str)
+                else:
+                    rec.period_name = _('Return 1 - %s') % date_str
             else:
                 if rec.date_from and rec.date_to:
                     rec.period_name = '%s - %s' % (
@@ -159,32 +168,62 @@ class InvestmentActualReturn(models.Model):
         sub = self.subscription_id
         today = fields.Date.today()
 
-        # ===== Return 1 (One-time) =====
+        # ===== Return 1 (with repeat duration / while membership active) =====
         if self.return_type == 'return_1':
-            if sub.return_1_amount <= 0 or not sub.return_1_date:
+            if sub.return_1_amount <= 0:
                 raise UserError(_(
                     'Return 1 is not configured for this project!\n'
-                    'Please set Return 1 Amount and Date in the project.'
+                    'Please set Return 1 Amount in the project.'
                 ))
-            
-            # Check if Return 1 already exists
+
+            # Check how many Return 1 payments already exist
             return_1_exists = sub.actual_return_ids.filtered(
                 lambda r: r.return_type == 'return_1' and r.state != 'cancelled'
             )
-            if return_1_exists:
-                raise UserError(_(
-                    'Return 1 has already been created for this investment!\n'
-                    'You can only create one Return 1 payment.'
-                ))
-            
-            if today < sub.return_1_date:
+            occurrence_index = len(return_1_exists)  # 0-based index
+
+            # ===== Limit check =====
+            if sub.return_1_repeat_until_membership:
+                # Repeats as long as the membership is still valid
+                membership = sub.membership_id
+                if not membership or membership.state != 'active':
+                    raise UserError(_(
+                        'Return 1 repeats only while the membership is active!\n'
+                        'Current membership status: %s'
+                    ) % (membership.state if membership else 'N/A'))
+                if membership.expiry_date and membership.expiry_date < today:
+                    raise UserError(_(
+                        'Return 1 repeats only while the membership is valid!\n'
+                        'Membership expired on: %s'
+                    ) % membership.expiry_date.strftime('%Y-%m-%d'))
+            else:
+                # Fixed repeat count mode
+                repeat_count = sub.return_1_repeat_count or 1
+                if occurrence_index >= repeat_count:
+                    raise UserError(_(
+                        'Return 1 has already been created %s time(s) for this investment!\n'
+                        'Maximum repeat count is %s.'
+                    ) % (occurrence_index, repeat_count))
+
+            # ===== Calculate the date for this Return 1 payment =====
+            # Return 1 Payment Date is optional: fallback to investment date or today
+            base_date = sub.return_1_date or sub.investment_date or today
+            repeat_duration = sub.return_1_repeat_duration or 0
+
+            if repeat_duration > 0 and occurrence_index > 0:
+                # Each occurrence is spaced by repeat_duration months
+                payment_date = base_date + relativedelta(months=repeat_duration * occurrence_index)
+            else:
+                payment_date = base_date
+
+            if today < payment_date:
                 raise UserError(_(
                     'Return 1 date (%s) is in the future!\n'
                     'Please wait until the payment date.'
-                ) % sub.return_1_date.strftime('%Y-%m-%d'))
+                ) % payment_date.strftime('%Y-%m-%d'))
             
-            self.date_from = sub.return_1_date
-            self.date_to = sub.return_1_date
+            self.date_from = payment_date
+            self.date_to = payment_date
             self.expected_amount = sub.return_1_amount * sub.share_count
             self.actual_amount = self.expected_amount
             return
@@ -197,12 +236,12 @@ class InvestmentActualReturn(models.Model):
             days_remaining = (sub.returns_start_date - today).days
 
             raise UserError(_(
-                '⛔ لا يمكن إنشاء دفع عائد الآن!\n\n'
-                'فترة السكون: %s شهور\n'
-                'تاريخ الاستثمار: %s\n'
-                'تاريخ بدء العوائد: %s\n\n'
-                'الوقت المتبقي: %s شهر (%s يوم)\n\n'
-                'يمكنك إنشاء دفع العائد بعد: %s'
+                '⛔ A return payment cannot be created now!\n\n'
+                'Grace period: %s months\n'
+                'Investment date: %s\n'
+                'Return start date: %s\n\n'
+                'Time remaining: %s month (%s days)\n\n'
+                'You can create the return payment after: %s'
             ) % (
                 sub.return_2_grace_months or sub.grace_period_months or 0,
                 sub.investment_date,
@@ -223,11 +262,11 @@ class InvestmentActualReturn(models.Model):
             next_date_from = sub.return_2_first_date or sub.returns_start_date
 
         if not next_date_from:
-            raise UserError(_('خطأ: تاريخ بدء العوائد غير محدد!'))
+            raise UserError(_('Error: Return start date is not defined!'))
 
         if next_date_from > today:
             raise UserError(_(
-                '⏳ تاريخ العائد القادم (%s) في المستقبل!'
+                '⏳ Next return date (%s) is in the future!'
             ) % next_date_from.strftime('%Y-%m-%d'))
 
         # Check last date

@@ -17,6 +17,35 @@
                         </div>
                     </button>
                 </div>
+
+                <group string="Investment Breakdown (Participation + Admin Fees)"
+                       name="investment_breakdown"
+                       invisible="not investment_subscription_id"
+                       class="oe_subtotal_footer_separator">
+                    <group>
+                        <field name="investment_amount" readonly="1"
+                               string="Participation Amount"/>
+                        <field name="investment_admin_fees" readonly="1"
+                               string="Administrative Fees"/>
+                        <field name="amount" readonly="1" class="fw-bold"
+                               string="Total"/>
+                    </group>
+                </group>
+
+                <group string="Journal Items (Investment: Participation + Admin Fees)"
+                       name="investment_journal_items"
+                       invisible="not investment_subscription_id">
+                    <field name="investment_line_ids" nolabel="1" readonly="1">
+                        <list create="0" edit="0" delete="0">
+                            <field name="account_id"/>
+                            <field name="name"/>
+                            <field name="partner_id" optional="hide"/>
+                            <field name="debit" sum="Total Debit"/>
+                            <field name="credit" sum="Total Credit"/>
+                            <field name="currency_id" column_invisible="1"/>
+                        </list>
+                    </field>
+                </group>
             </xpath>
         </field>
     </record>

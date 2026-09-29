@@ -6,39 +6,58 @@
         <field name="report_type">qweb-pdf</field>
         <field name="report_name">investment_club.investor_summary</field>
         <field name="report_file">investment_club.investor_summary</field>
-        <field name="print_report_name">'Investor Summary'</field>
+        <field name="print_report_name">'Investor Summary Report'</field>
+        <field name="binding_model_id" ref="model_investment_membership"/>
+        <field name="binding_type">report</field>
     </record>
 
     <template id="investor_summary">
         <t t-call="web.html_container">
             <t t-call="web.basic_layout">
                 <div class="page">
-                    <h2>Investor Summary</h2>
+                    <h2>Investor Summary Report</h2>
+                    <p>Investor Summary Report</p>
                     <p>Generated: <span t-esc="date"/></p>
-                    <table class="table table-sm table-striped">
-                        <thead>
+                    <table class="table table-sm table-bordered table-striped">
+                        <thead class="bg-primary text-white">
                             <tr>
-                                <th>Membership</th>
+                                <th>Membership #</th>
+                                <th>Investor Code</th>
                                 <th>Investor</th>
+                                <th>Phone</th>
                                 <th>Club</th>
                                 <th>Investments</th>
                                 <th>Total Invested</th>
                                 <th>Period Return</th>
+                                <th>Membership Fee</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr t-foreach="investors" t-as="line">
                                 <td><span t-esc="line['membership']"/></td>
+                                <td><span t-esc="line.get('investor_code', '')"/></td>
                                 <td><span t-esc="line['partner']"/></td>
+                                <td><span t-esc="line.get('phone', '')"/></td>
                                 <td><span t-esc="line['club']"/></td>
                                 <td><span t-esc="line['investment_count']"/></td>
                                 <td><span t-esc="line['total_invested']"/></td>
                                 <td><span t-esc="line['monthly_return']"/></td>
+                                <td><span t-esc="line.get('membership_fee', '')"/></td>
                             </tr>
                         </tbody>
                     </table>
-                    <p><strong>Total Membership Fees:</strong> <span t-esc="total_membership"/></p>
-                    <p><strong>Total Invested:</strong> <span t-esc="total_investment"/></p>
+                    <br/>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <p><strong>Total Members:</strong> <span t-esc="count"/></p>
+                        </div>
+                        <div class="col-md-4">
+                            <p><strong>Total Membership Fees:</strong> <span t-esc="total_membership"/></p>
+                        </div>
+                        <div class="col-md-4">
+                            <p><strong>Total Invested:</strong> <span t-esc="total_investment"/></p>
+                        </div>
+                    </div>
                 </div>
             </t>
         </t>

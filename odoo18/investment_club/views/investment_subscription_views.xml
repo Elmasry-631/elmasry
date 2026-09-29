@@ -14,7 +14,7 @@
                 <field name="grace_period_passed" invisible="1"/>
                 <field name="contract_printed" widget="boolean_toggle" 
                        decoration-success="contract_printed == True"
-                       decoration-danger="contract_printed == False"/>
+                       decoration-danger="contract_printed == False" readonly="1"/>
                 <field name="months_until_returns_start"/>
                 <field name="share_count"/>
                 <field name="amount"/>
@@ -32,9 +32,9 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <button name="action_register_payment" type="object" 
-                            string="Register Payment" 
-                            invisible="state != 'reviewed'"
+                    <button name="action_register_payment" type="object"
+                            string="Confirm Payment"
+                            invisible="state not in ('reviewed', 'approved')"
                             class="btn-primary"/>
                     
                     <button name="action_activate" type="object" 
@@ -58,14 +58,19 @@
                             class="btn-danger"/>
                     
                     <button name="action_death_case" type="object" 
-                            string="Death Case / حالة وفاة" 
+                            string="Death Case" 
                             invisible="state not in ('paid', 'active')"
                             class="btn-secondary" icon="fa-heartbeat"/>
                     
                     <button name="action_cancel" type="object" 
                             string="Cancel" 
-                            invisible="state in ('closed', 'cancelled')"
+                            invisible="state in ('closed', 'cancelled', 'terminated')"
                             class="btn-danger"/>
+
+                    <button name="action_reset_to_draft" type="object" 
+                            string="Reset to Draft"
+                            invisible="state not in ('cancelled', 'rejected')"
+                            class="btn-warning"/>
                     <button name="action_review_money_bank_inv" type="object"
                             string="bank reviewed" invisible="state != 'draft'"/>
                     
@@ -75,7 +80,7 @@
                 <div class="alert alert-info" role="alert" 
                      invisible="grace_period_passed == True or state != 'active'">
                     <strong>Grace Period Active!</strong> 
-                    Returns will start on <field name="returns_start_date"/> 
+                    Returns will start on <field name="returns_start_date" options="{'format': 'DD - MM - YYYY'}"/> 
                     (<field name="months_until_returns_start"/> months and <field name="days_until_returns_start"/> days remaining)
                 </div>
                 
@@ -88,6 +93,12 @@
                      invisible="not contract_id or contract_printed">
                     <strong>Contract not printed yet!</strong> 
                     Please print the contract or mark it as printed.
+                </div>
+
+                <div class="alert alert-warning" role="alert" 
+                     invisible="max_investors &lt;= 0 or state not in ('draft')">
+                    <strong>Max Investors Limit!</strong> 
+                    This project has a maximum of <field name="max_investors"/> investors.
                 </div>
                 
                 <sheet>
@@ -131,6 +142,7 @@
                             <field name="contract_start_date" readonly="1"/>
                             <field name="contract_end_date" readonly="1"/>
                             <field name="max_shares_per_investor" readonly="1"/>
+                            <field name="max_investors" readonly="1"/>
                             <field name="grace_period_months" readonly="1"/>
                         </group>
                     </group>
@@ -140,6 +152,9 @@
                             <field name="return_1_amount" readonly="1"/>
                             <field name="return_1_grace_months" readonly="1"/>
                             <field name="return_1_date" readonly="1"/>
+                            <field name="return_1_repeat_count" readonly="1" invisible="return_1_repeat_until_membership"/>
+                            <field name="return_1_repeat_duration" readonly="1"/>
+                            <field name="return_1_repeat_until_membership" readonly="1"/>
                         </group>
                         
                         <group string="Return 2 (Recurring)">
@@ -158,7 +173,9 @@
                         <group string="Financials">
                             <field name="share_count"/>
                             <field name="share_value"/>
-                            <field name="amount"/>
+                            <field name="amount" string="Investment Amount (Participation)"/>
+                            <field name="admin_fees_amount"/>
+                            <field name="payment_total_amount" class="fw-bold"/>
                             <field name="expected_period_return"/>
                         </group>
                         
@@ -177,7 +194,7 @@
                             <field name="contract_id" readonly="1"/>
                         </group>
                         <group>
-                            <field name="contract_printed"/>
+                            <field name="contract_printed" readonly="1"/>
                             <field name="contract_print_date" readonly="1"/>
                             <button name="action_print_contract" type="object" 
                                     string="Print Contract" 

@@ -7,6 +7,8 @@
         <field name="report_name">investment_club.monthly_returns</field>
         <field name="report_file">investment_club.monthly_returns</field>
         <field name="print_report_name">'Monthly Returns Report'</field>
+        <field name="binding_model_id" ref="model_investment_subscription"/>
+        <field name="binding_type">report</field>
     </record>
 
     <template id="monthly_returns">
@@ -14,10 +16,11 @@
             <t t-call="web.basic_layout">
                 <div class="page">
                     <h2>Monthly Returns Report</h2>
+                    <p>Monthly Returns Report</p>
                     <p>Month: <span t-esc="month"/></p>
                     <p>Generated: <span t-esc="date"/></p>
-                    <table class="table table-sm table-striped">
-                        <thead>
+                    <table class="table table-sm table-bordered table-striped">
+                        <thead class="bg-success text-white">
                             <tr>
                                 <th>Project</th>
                                 <th>Investors</th>
@@ -36,8 +39,18 @@
                             </tr>
                         </tbody>
                     </table>
-                    <p><strong>Total Period Return:</strong> <span t-esc="total_monthly"/></p>
-                    <p><strong>Total Annual Return:</strong> <span t-esc="total_annual"/></p>
+                    <br/>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <p><strong>Total Active Investments:</strong> <span t-esc="count"/></p>
+                        </div>
+                        <div class="col-md-4">
+                            <p><strong>Total Period Return:</strong> <span t-esc="total_monthly"/></p>
+                        </div>
+                        <div class="col-md-4">
+                            <p><strong>Total Annual Return:</strong> <span t-esc="total_annual"/></p>
+                        </div>
+                    </div>
                 </div>
             </t>
         </t>

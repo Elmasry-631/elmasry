@@ -8,7 +8,6 @@ class InvestorSummaryReport(models.AbstractModel):
 
     @api.model
     def _get_report_values(self, docids, data=None):
-        # كل الأعضاء النشطاء
         memberships = self.env['investment.membership'].search([
             ('state', '=', 'active')
         ])
@@ -18,17 +17,15 @@ class InvestorSummaryReport(models.AbstractModel):
         total_investment = 0
         
         for mem in memberships:
-            # استثمارات العضو
             investments = mem.investment_ids.filtered(lambda i: i.state == 'active')
-            
-            # ✅ إصلاح: expected_period_return هو الفيلد الصحيح الموجود في الموديل
             period_return = sum(inv.expected_period_return for inv in investments)
 
             report_data.append({
                 'membership': mem.membership_number,
+                'investor_code': mem.investor_code or '',
                 'partner': mem.partner_id.name,
                 'phone': mem.partner_id.phone or '',
-                'club': mem.club_id.name,
+                'club': mem.club_id.display_name or mem.club_id.name or '',
                 'expiry_date': mem.expiry_date,
                 'membership_fee': mem.annual_subscription_fee,
                 'investment_count': len(investments),

@@ -13,18 +13,18 @@ class ProjectProfitReport(models.AbstractModel):
         report_data = []
         
         for project in projects:
-            # إجمالي الاستثمارات (إيرادات)
+            # Total Investments (Revenue)
             investments = self.env['investment.subscription'].search([
                 ('project_id', '=', project.id),
                 ('state', '=', 'active')
             ])
             total_revenue = sum(inv.amount for inv in investments)
             
-            # العوائد المتوقعة (مصروفات)
+            # Expected Returns (Expense)
             monthly_returns = sum(inv.expected_period_return for inv in investments)
             annual_returns = monthly_returns * 12
             
-            # من Analytic Account (لو فيه مصروفات حقيقية)
+            # From Analytic Account (if actual expenses exist)
             analytic_lines = self.env['account.analytic.line'].search([
                 ('account_id', '=', project.analytic_account_id.id)
             ])
@@ -32,7 +32,7 @@ class ProjectProfitReport(models.AbstractModel):
             
             report_data.append({
                 'name': project.name,
-                'code': project.code,
+                'code': project.code or '',
                 'investors': len(investments),
                 'total_revenue': total_revenue,
                 'annual_returns': annual_returns,

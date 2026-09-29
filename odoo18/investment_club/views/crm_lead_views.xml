@@ -16,13 +16,12 @@
                         invisible="not partner_id or not interested_project_id"/>
             </xpath>
 
-            <!-- نضيف الفيلدز بعد العنوان مباشرة -->
             <xpath expr="//div[hasclass('oe_title')]" position="after">
                 <div class="o_group">
                     <span class="o_form_label">Interested Project:</span>
                     <field name="interested_project_id" 
                            options="{'no_create': True, 'no_edit': True}"
-                           placeholder="اختر المشروع..."/>
+                           placeholder="Select Project..."/>
                     <span class="o_form_label">Club:</span>
                     <field name="club_id" readonly="1"/>
                 </div>

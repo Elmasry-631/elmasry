@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_investment_maturity_pdf" model="ir.actions.report">
+        <field name="name">Investment Maturity Report</field>
+        <field name="model">investment.subscription</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">investment_club.investment_maturity</field>
+        <field name="report_file">investment_club.investment_maturity</field>
+        <field name="print_report_name">'Investment Maturity Report'</field>
+        <field name="binding_model_id" ref="model_investment_subscription"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="investment_maturity">
+        <t t-call="web.html_container">
+            <t t-call="web.basic_layout">
+                <div class="page">
+                    <h2>Investment Maturity Report</h2>
+                    <p>Investment Maturity Report</p>
+                    <p>Generated: <span t-esc="date"/></p>
+                    <table class="table table-sm table-bordered table-striped">
+                        <thead class="bg-success text-white">
+                            <tr>
+                                <th>Investor</th>
+                                <th>Project</th>
+                                <th>Investment Amount</th>
+                                <th>Investment Date</th>
+                                <th>Contract End Date</th>
+                                <th>Maturity Principal</th>
+                                <th>Last Paid Return</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr t-foreach="data" t-as="line">
+                                <td><span t-esc="line['investor']"/></td>
+                                <td><span t-esc="line['project']"/></td>
+                                <td><span t-esc="line['investment_amount']"/></td>
+                                <td><span t-esc="line['investment_date']"/></td>
+                                <td><span t-esc="line['contract_end_date']"/></td>
+                                <td><span t-esc="line['capital_due']"/></td>
+                                <td><span t-esc="line['last_return_date']"/></td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr class="bg-light font-weight-bold">
+                                <td colspan="2">Total / Grand Total</td>
+                                <td><span t-esc="total_invested"/></td>
+                                <td colspan="2"></td>
+                                <td><span t-esc="total_capital_due"/></td>
+                                <td></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                    <br/>
+                    <p><strong>Number Details / Total Investments:</strong> <span t-esc="count"/></p>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

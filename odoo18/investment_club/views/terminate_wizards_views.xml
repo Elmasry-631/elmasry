@@ -2,7 +2,7 @@
 <odoo>
 
     <!-- ============================================ -->
-    <!-- ويزارد فسخ عقد العضوية                        -->
+    <!-- Membership Termination Wizard                        -->
     <!-- ============================================ -->
 
     <record id="membership_terminate_wizard_form" model="ir.ui.view">
@@ -32,33 +32,33 @@
                     </group>
                 </group>
 
-                <!-- تنبيه حالة أول 3 شهور -->
+                <!-- First 3 Months Notice -->
                 <div class="alert alert-warning" role="alert" invisible="not is_first_3_months">
-                    <strong>تنبيه:</strong> الفسخ خلال أول 3 شهور يتم خصم مبلغ 6,500 جنيه من قيمة العضوية.
-                    <br/>يأخذ العميل أصل مبلغ العضوية بعد خصم 6,500 جنيه.
-                    <br/>مبلغ الخصم يتحول لإيراد للشركة.
+                    <strong>Notice:</strong> Termination within the first 3 months deducts EGP 6,500 from the membership value..
+                    <br/>The customer receives the membership principal after deducting EGP 6,500..
+                    <br/>The deduction is recognized as company revenue..
                 </div>
 
-                <!-- تنبيه حالة وجود زيادة (بعد 3 شهور) -->
+                <!-- Post-3 Months Increase Notice -->
                 <div class="alert alert-info" role="alert" invisible="increase_amount &lt;= 0 or is_first_3_months">
-                    <strong>يوجد زيادة في قيمة العضوية!</strong>
-                    <br/>يأخذ العميل أصل مبلغ العضوية + 70% من قيمة الزيادة.
-                    <br/>الشركة تحصل على 30% من قيمة الزيادة كإيراد.
+                    <strong>The membership value has increased!</strong>
+                    <br/>The customer receives the membership principal plus 70% of the increase..
+                    <br/>The company recognizes 30% of the increase as revenue..
                 </div>
 
-                <!-- تنبيه حالة بعد 3 شهور بدون زيادة -->
+                <!-- Post-3 Months No Increase Notice -->
                 <div class="alert alert-info" role="alert" invisible="is_first_3_months or increase_amount &gt; 0">
-                    <strong>لا توجد زيادة في قيمة العضوية.</strong>
-                    <br/>يأخذ العميل أصل مبلغ العضوية كاملاً.
+                    <strong>There is no increase in the membership value.</strong>
+                    <br/>The customer receives the full membership principal..
                 </div>
 
                 <group string="Termination Calculation">
                     <group>
-                        <!-- حالة أول 3 شهور -->
+                        <!-- First 3 Months Case -->
                         <field name="deduction_amount" invisible="not is_first_3_months"/>
                         <field name="actual_deduction" invisible="not is_first_3_months"/>
 
-                        <!-- حالة بعد 3 شهور وفيه زيادة -->
+                        <!-- Post-3 Months Case with Increase -->
                         <field name="client_share_increase" invisible="increase_amount &lt;= 0 or is_first_3_months"/>
                         <field name="company_share_increase" invisible="increase_amount &lt;= 0 or is_first_3_months"/>
                     </group>
@@ -73,31 +73,31 @@
                     </group>
                 </group>
 
-                <!-- ملخص التوزيع (بعد 3 شهور وفيه زيادة) -->
+                <!-- Distribution Summary (Post-3 Months with Increase) -->
                 <group string="Distribution Summary" invisible="is_first_3_months or increase_amount &lt;= 0">
                     <div class="row">
                         <div class="col-md-12">
                             <table class="table table-bordered">
                                 <thead>
                                     <tr class="bg-info text-white">
-                                        <th>البيان</th>
-                                        <th>العميل (70%)</th>
-                                        <th>الشركة (30%)</th>
+                                        <th>Description</th>
+                                        <th>Customer (70%)</th>
+                                        <th>Company (30%)</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td><b>أصل المبلغ المدفوع</b></td>
+                                        <td><b>Paid Principal</b></td>
                                         <td><field name="original_paid_fee" nolabel="1" readonly="1"/></td>
                                         <td>-</td>
                                     </tr>
                                     <tr class="bg-light">
-                                        <td><b>قيمة الزيادة</b></td>
+                                        <td><b>Increase Amount</b></td>
                                         <td><field name="client_share_increase" nolabel="1" readonly="1"/></td>
                                         <td><field name="company_share_increase" nolabel="1" readonly="1"/></td>
                                     </tr>
                                     <tr class="bg-success text-white">
-                                        <td><b>الإجمالي</b></td>
+                                        <td><b>Total</b></td>
                                         <td><b><field name="refund_amount" nolabel="1" readonly="1"/></b></td>
                                         <td><b><field name="company_income" nolabel="1" readonly="1"/></b></td>
                                     </tr>
@@ -112,8 +112,8 @@
                 </group>
 
                 <group string="Reason">
-                    <field name="reason" placeholder="سبب الفسخ..."/>
-                    <field name="notes" placeholder="ملاحظات إضافية..."/>
+                    <field name="reason" domain="['|', ('type', '=', 'membership'), ('type', '=', 'both')]"/>
+                    <field name="notes" placeholder="Additional Notes..."/>
                 </group>
 
                 <footer>
@@ -126,7 +126,7 @@
     </record>
 
     <!-- ============================================ -->
-    <!-- ويزارد فسخ عقد الحصة الاستثمارية                -->
+    <!-- Investment Subscription Termination Wizard                -->
     <!-- ============================================ -->
 
     <record id="subscription_terminate_wizard_form" model="ir.ui.view">
@@ -156,13 +156,12 @@
                     </group>
                 </group>
 
-                <!-- تنبيه -->
                 <div class="alert alert-warning" role="alert" invisible="is_first_3_months">
-                    <strong>تنبيه:</strong> يمكن فقط فسخ الحصة الاستثمارية خلال أول 3 شهور من العضوية!
+                    <strong>Notice:</strong> The investment subscription can only be terminated within the first 3 months of membership!
                 </div>
 
                 <div class="alert alert-success" role="alert" invisible="not is_first_3_months">
-                    <strong>يمكن الفسخ:</strong> خلال أول 3 شهور من العضوية، يحصل المستثمر على أصل قيمة الحصة المسددة.
+                    <strong>Termination is allowed:</strong> Within the first 3 months of membership, the investor receives the paid share principal..
                 </div>
 
                 <group string="Termination Calculation">
@@ -179,8 +178,8 @@
                 </group>
 
                 <group string="Reason">
-                    <field name="reason" placeholder="سبب الفسخ..."/>
-                    <field name="notes" placeholder="ملاحظات إضافية..."/>
+                    <field name="reason" domain="['|', ('type', '=', 'subscription'), ('type', '=', 'both')]"/>
+                    <field name="notes" placeholder="Additional Notes..."/>
                 </group>
 
                 <footer>
@@ -193,7 +192,7 @@
     </record>
 
     <!-- ============================================ -->
-    <!-- ويزارد حالة وفاة المستثمر                    -->
+    <!-- Investor Death Case Wizard                    -->
     <!-- ============================================ -->
 
     <record id="investor_death_wizard_form" model="ir.ui.view">
@@ -201,12 +200,12 @@
         <field name="model">investor.death.wizard</field>
         <field name="arch" type="xml">
             <form string="Investor Death Case">
-                <!-- تنبيه علوي -->
+                <!-- Top Notice -->
                 <div class="alert alert-danger" role="alert">
-                    <strong>حالة وفاة المستثمر</strong><br/>
-                    يرجى إرفاق إعلام الوراثة واختيار الإجراء المطلوب:<br/>
-                    <b>نقل الملكية:</b> نقل ملكية العضوية/الحصة للوريث المفوض من قبل الورثة<br/>
-                    <b>فسخ وتوزيع:</b> فسخ العقد وتوزيع قيمة الحصة طبقا لإعلام الوراثة
+                    <strong>Investor Death Case</strong><br/>
+                    Please attach the inheritance certificate and select the required action:<br/>
+                    <b>Ownership Transfer:</b> Transfer the membership/share to the heir authorized by the heirs<br/>
+                    <b>Termination Details:</b> Terminate the contract and distribute the share value according to the inheritance certificate
                 </div>
 
                 <group>
@@ -218,7 +217,7 @@
                     <field name="membership_date"/>
                 </group>
 
-                <group string="Death Information / معلومات الوفاة">
+                <group string="Death Information">
                     <group>
                         <field name="death_date"/>
                         <field name="inheritance_document" filename="inheritance_document_name"/>
@@ -231,14 +230,14 @@
 
                 <!-- ===== Case 1: Transfer Ownership ===== -->
                 <div class="alert alert-info" role="alert" invisible="action_type != 'transfer'">
-                    <strong>نقل الملكية:</strong> سيتم نقل ملكية العضوية وجميع الحصص الاستثمارية النشطة إلى الوريث المفوض.
+                    <strong>Ownership Transfer:</strong> The membership and all active investment shares will be transferred to the authorized heir..
                 </div>
 
-                <group string="Transfer Details / تفاصيل نقل الملكية" invisible="action_type != 'transfer'">
+                <group string="Transfer Details" invisible="action_type != 'transfer'">
                     <group>
                         <field name="new_partner_id"
                                domain="[('is_company', '=', False)]"
-                               placeholder="اختر الوريث المفوض..."/>
+                               placeholder="Select Authorized Heir..."/>
                     </group>
                     <group>
                         <field name="new_investor_code"/>
@@ -247,10 +246,10 @@
 
                 <!-- ===== Case 2: Terminate & Distribute ===== -->
                 <div class="alert alert-warning" role="alert" invisible="action_type != 'terminate'">
-                    <strong>فسخ وتوزيع:</strong> سيتم فسخ العقد واسترداد أصل قيمة الحصة/العضوية المسددة (بدون خصومات). يتم التوزيع على الورثة طبقا لإعلام الوراثة.
+                    <strong>Termination Details:</strong> The contract will be terminated and the paid share/membership principal will be refunded without deductions.. The amount will be distributed to the heirs according to the inheritance certificate..
                 </div>
 
-                <group string="Investment Details / تفاصيل الاستثمار" invisible="action_type != 'terminate'">
+                <group string="Investment Details" invisible="action_type != 'terminate'">
                     <group>
                         <!-- Details for subscription -->
                         <field name="subscription_project" invisible="not subscription_id"/>
@@ -269,8 +268,8 @@
                     <field name="refund_journal_id"/>
                 </group>
 
-                <group string="Notes / ملاحظات">
-                    <field name="notes" placeholder="ملاحظات إضافية..." nolabel="1"/>
+                <group string="Notes">
+                    <field name="notes" placeholder="Additional Notes..." nolabel="1"/>
                 </group>
 
                 <footer>

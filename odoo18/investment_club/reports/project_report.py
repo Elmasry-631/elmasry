@@ -26,22 +26,14 @@ class ProjectSummaryReport(models.AbstractModel):
 
             total_invested = sum(inv.amount for inv in investments)
             investor_count = len(investments)
-
-            # ✅ إصلاح: استبدال expected_monthly_return (غير موجود)
-            # بـ expected_period_return (الفيلد الفعلي في الموديل)
             period_return = sum(inv.expected_period_return for inv in investments)
 
-            # ✅ إصلاح: حذف investors_per_branch و expected_customers_min/max
-            # (فيلدات غير موجودة في investment.project)
             report_data.append({
                 'name': project.name,
                 'code': project.code,
                 'club': project.club_id.name,
                 'analytic_account': project.analytic_account_id.name,
                 'share_value': project.share_value,
-                'return_type': dict(project._fields['return_calculation_type'].selection).get(
-                    project.return_calculation_type, project.return_calculation_type
-                ),
                 'actual_investors': investor_count,
                 'total_invested': total_invested,
                 'period_return': period_return,

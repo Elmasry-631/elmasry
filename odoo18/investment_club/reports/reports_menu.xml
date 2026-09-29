@@ -1,16 +1,161 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- ==================== ACTIONS ==================== -->
-    
+    <!-- ==================== DEDICATED LIST VIEWS FOR REPORTS 1-7 ==================== -->
+
+    <!-- 1. Renewal Due - Dedicated List View -->
+    <record id="view_renewal_due_report_list" model="ir.ui.view">
+        <field name="name">renewal.due.report.list</field>
+        <field name="model">investment.membership</field>
+        <field name="arch" type="xml">
+            <list string="Renewal Due Report"
+                  decoration-warning="renewal_status == 'due'"
+                  decoration-danger="renewal_status == 'overdue'">
+                <field name="membership_number" string="Membership Number"/>
+                <field name="investor_code" string="Investor Code"/>
+                <field name="partner_id" string="Investor"/>
+                <field name="club_id" string="Club"/>
+                <field name="expiry_date" string="Expiry Date"/>
+                <field name="next_renewal_date" string="Renewal Date"/>
+                <field name="next_renewal_amount" string="Due Amount" sum="Total"/>
+                <field name="renewal_status" string="Status" widget="badge"
+                       decoration-success="renewal_status == 'paid'"
+                       decoration-warning="renewal_status == 'due'"
+                       decoration-danger="renewal_status == 'overdue'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- 2. Monthly Returns - Dedicated List View -->
+    <record id="view_monthly_returns_report_list" model="ir.ui.view">
+        <field name="name">monthly.returns.report.list</field>
+        <field name="model">investment.subscription</field>
+        <field name="arch" type="xml">
+            <list string="Monthly Returns Report">
+                <field name="name" string="Investment Number" optional="hide"/>
+                <field name="partner_id" string="Investor"/>
+                <field name="club_id" string="Club"/>
+                <field name="project_id" string="Project"/>
+                <field name="share_count" string="Share Count" sum="Total"/>
+                <field name="amount" string="Investment Amount" sum="Total"/>
+                <field name="expected_period_return" string="Expected Return" sum="Total"/>
+                <field name="total_actual_returns" string="Total Paid Returns" sum="Total"/>
+                <field name="payment_state" string="Payment Status" widget="badge"/>
+                <field name="state" string="Status" widget="badge"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- 3. Investor Summary - Dedicated List View -->
+    <record id="view_investor_summary_report_list" model="ir.ui.view">
+        <field name="name">investor.summary.report.list</field>
+        <field name="model">investment.membership</field>
+        <field name="arch" type="xml">
+            <list string="Investor Summary Report">
+                <field name="membership_number" string="Membership Number" optional="hide"/>
+                <field name="investor_code" string="Investor Code"/>
+                <field name="partner_id" string="Investor"/>
+                <field name="club_id" string="Club"/>
+                <field name="membership_date" string="Membership Date"/>
+                <field name="investment_count" string="Number Details"/>
+                <field name="total_invested" string="Total Investments" sum="Total"/>
+                <field name="initial_membership_fee" string="Membership Fee"/>
+                <field name="state" string="Status" widget="badge"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- 4. Active Investments - Dedicated List View -->
+    <record id="view_active_investments_report_list" model="ir.ui.view">
+        <field name="name">active.investments.report.list</field>
+        <field name="model">investment.subscription</field>
+        <field name="arch" type="xml">
+            <list string="Active Investments">
+                <field name="name" string="Investment Number"/>
+                <field name="partner_id" string="Investor"/>
+                <field name="club_id" string="Club"/>
+                <field name="project_id" string="Project"/>
+                <field name="investment_date" string="Investment Date"/>
+                <field name="share_count" string="Share Count" sum="Total"/>
+                <field name="amount" string="Investment Amount" sum="Total"/>
+                <field name="contract_end_date" string="Contract Expiry"/>
+                <field name="payment_state" string="Payment Status" widget="badge"/>
+                <field name="state" string="Status" widget="badge"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- 5. All Investors - Dedicated List View -->
+    <record id="view_all_investors_report_list" model="ir.ui.view">
+        <field name="name">all.investors.report.list</field>
+        <field name="model">investment.membership</field>
+        <field name="arch" type="xml">
+            <list string="All Investors">
+                <field name="membership_number" string="Membership Number" optional="hide"/>
+                <field name="investor_code" string="Investor Code"/>
+                <field name="partner_id" string="Investor"/>
+                <field name="club_id" string="Club"/>
+                <field name="membership_date" string="Membership Date"/>
+                <field name="expiry_date" string="Expiry Date"/>
+                <field name="total_invested" string="Total Investments" sum="Total"/>
+                <field name="renewal_status" string="Renewal Status" widget="badge"/>
+                <field name="state" string="Status" widget="badge"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- 6. Return Payments Summary - Dedicated List View -->
+    <record id="view_return_payments_summary_report_list" model="ir.ui.view">
+        <field name="name">return.payments.summary.report.list</field>
+        <field name="model">investment.actual.return</field>
+        <field name="arch" type="xml">
+            <list string="Return Payments Summary / Return Payment Summary"
+                  decoration-success="state == 'paid'">
+                <field name="name" string="Reference Number" optional="hide"/>
+                <field name="partner_id" string="Investor"/>
+                <field name="project_id" string="Project"/>
+                <field name="return_type" string="Return Type"/>
+                <field name="period_name" string="Period"/>
+                <field name="expected_amount" string="Expected" sum="Total"/>
+                <field name="actual_amount" string="Actual" sum="Total"/>
+                <field name="difference" string="Difference" sum="Total"
+                       decoration-danger="difference &lt; 0"
+                       decoration-success="difference &gt; 0"/>
+                <field name="state" string="Status" widget="badge"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- 7. Pending Return Payments - Dedicated List View -->
+    <record id="view_pending_returns_report_list" model="ir.ui.view">
+        <field name="name">pending.returns.report.list</field>
+        <field name="model">investment.actual.return</field>
+        <field name="arch" type="xml">
+            <list string="Pending Return Payments / Pending Returns"
+                  decoration-warning="state == 'draft'">
+                <field name="name" string="Reference Number"/>
+                <field name="partner_id" string="Investor"/>
+                <field name="project_id" string="Project"/>
+                <field name="return_type" string="Return Type"/>
+                <field name="period_name" string="Period"/>
+                <field name="expected_amount" string="Expected" sum="Total"/>
+                <field name="date_from" string="From Date"/>
+                <field name="date_to" string="To Date"/>
+                <field name="state" string="Status" widget="badge"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ==================== WINDOW ACTIONS (1-7) WITH EXPLICIT view_id ==================== -->
+
     <!-- 1. Renewal Due Action -->
     <record id="action_renewal_due_window" model="ir.actions.act_window">
         <field name="name">Renewal Due Report</field>
         <field name="res_model">investment.membership</field>
         <field name="view_mode">list</field>
         <field name="domain">[('renewal_status', 'in', ['due', 'overdue'])]</field>
-        <field name="context">{'search_default_renewal_due': 1}</field>
+        <field name="view_id" ref="view_renewal_due_report_list"/>
     </record>
-    
+
     <!-- 2. Monthly Returns Action -->
     <record id="action_monthly_returns_window" model="ir.actions.act_window">
         <field name="name">Monthly Returns Report</field>
@@ -18,8 +163,9 @@
         <field name="view_mode">list</field>
         <field name="domain">[('state', '=', 'active')]</field>
         <field name="context">{'group_by': 'project_id'}</field>
+        <field name="view_id" ref="view_monthly_returns_report_list"/>
     </record>
-    
+
     <!-- 3. Investor Summary Action -->
     <record id="action_investor_summary_window" model="ir.actions.act_window">
         <field name="name">Investor Summary Report</field>
@@ -27,64 +173,219 @@
         <field name="view_mode">list</field>
         <field name="domain">[('state', '=', 'active')]</field>
         <field name="context">{'group_by': 'club_id'}</field>
+        <field name="view_id" ref="view_investor_summary_report_list"/>
     </record>
-    
+
     <!-- 4. Active Investments Action -->
     <record id="action_active_investments_window" model="ir.actions.act_window">
         <field name="name">Active Investments</field>
         <field name="res_model">investment.subscription</field>
         <field name="view_mode">list,form</field>
         <field name="domain">[('state', '=', 'active')]</field>
+        <field name="view_id" ref="view_active_investments_report_list"/>
     </record>
-    
+
     <!-- 5. All Investors Action -->
     <record id="action_all_investors_window" model="ir.actions.act_window">
         <field name="name">All Investors</field>
         <field name="res_model">investment.membership</field>
         <field name="view_mode">list,form</field>
         <field name="domain">[('state', '=', 'active')]</field>
+        <field name="view_id" ref="view_all_investors_report_list"/>
     </record>
-    
-    <!-- ==================== MENU ==================== -->
-    
+
+    <!-- 6. Return Payments Summary Action -->
+    <record id="action_return_payments_summary_window" model="ir.actions.act_window">
+        <field name="name">Return Payments Summary</field>
+        <field name="res_model">investment.actual.return</field>
+        <field name="view_mode">list</field>
+        <field name="domain">[('state', '=', 'paid')]</field>
+        <field name="context">{'search_default_paid': 1, 'group_by': 'project_id'}</field>
+        <field name="view_id" ref="view_return_payments_summary_report_list"/>
+    </record>
+
+    <!-- 7. Pending Return Payments Action -->
+    <record id="action_draft_returns_window" model="ir.actions.act_window">
+        <field name="name">Pending Return Payments</field>
+        <field name="res_model">investment.actual.return</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('state', '=', 'draft')]</field>
+        <field name="view_id" ref="view_pending_returns_report_list"/>
+    </record>
+
+    <!-- ==================== REPORT LIST VIEWS (8, 9, 10) - ALREADY DEDICATED ==================== -->
+
+    <!-- 8. Return Payment Ledger - Dedicated List View -->
+    <record id="view_return_payment_ledger_list" model="ir.ui.view">
+        <field name="name">return.payment.ledger.list</field>
+        <field name="model">investment.actual.return</field>
+        <field name="arch" type="xml">
+            <list decoration-success="state == 'paid'" string="Return Payment Ledger / Return payment ledger">
+                <field name="name" string="Reference Number"/>
+                <field name="partner_id" string="Investor"/>
+                <field name="project_id" string="Project"/>
+                <field name="return_type" string="Return Type"/>
+                <field name="period_name" string="Period"/>
+                <field name="date_from" string="From Date"/>
+                <field name="date_to" string="To Date"/>
+                <field name="expected_amount" string="Expected" sum="Total"/>
+                <field name="actual_amount" string="Actual" sum="Total"/>
+                <field name="difference" string="Difference" decoration-danger="difference &lt; 0" decoration-success="difference &gt; 0" sum="Total"/>
+                <field name="state" string="Payment Status" widget="badge"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- 9. Investment Maturity - Dedicated List View -->
+    <record id="view_investment_maturity_list" model="ir.ui.view">
+        <field name="name">investment.maturity.list</field>
+        <field name="model">investment.subscription</field>
+        <field name="arch" type="xml">
+            <list string="Investment Maturity">
+                <field name="name" string="Investment Number"/>
+                <field name="partner_id" string="Investor"/>
+                <field name="project_id" string="Project"/>
+                <field name="amount" string="Investment Amount" sum="Total"/>
+                <field name="investment_date" string="Investment Date"/>
+                <field name="contract_end_date" string="Contract End Date"/>
+                <field name="capital_due" string="Maturity Principal" sum="Total"/>
+                <field name="total_actual_returns" string="Total Paid Returns" sum="Total"/>
+                <field name="last_return_date" string="Last Paid Return"/>
+                <field name="state" invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- 10. Investor Statement - Dedicated List View -->
+    <record id="view_investor_statement_list" model="ir.ui.view">
+        <field name="name">investor.statement.list</field>
+        <field name="model">investment.membership</field>
+        <field name="arch" type="xml">
+            <list string="Investor Statement / Investor investment statement">
+                <field name="partner_id" string="Investor"/>
+                <field name="membership_number" string="Membership Number"/>
+                <field name="investor_code" string="Investor Code"/>
+                <field name="club_id" string="Club"/>
+                <field name="total_invested" string="Total Investments" sum="Total"/>
+                <field name="total_returns_due" string="Due Returns" sum="Total"/>
+                <field name="total_returns_paid" string="Paid Returns" sum="Total"/>
+                <field name="returns_remaining" string="Remaining" sum="Total" decoration-danger="returns_remaining &gt; 0"/>
+                <field name="statement_admin_fees" string="Administrative Fees" sum="Total"/>
+                <field name="net_due" string="Net Due" sum="Total"/>
+                <field name="state" invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ==================== WINDOW ACTIONS FOR REPORTS 8, 9, 10 ==================== -->
+
+    <!-- 8. Return Payment Ledger Window Action -->
+    <record id="action_return_payment_ledger_window" model="ir.actions.act_window">
+        <field name="name">Return Payment Ledger / Return payment ledger</field>
+        <field name="res_model">investment.actual.return</field>
+        <field name="view_mode">list</field>
+        <field name="domain">[('state', '=', 'paid')]</field>
+        <field name="context">{'search_default_paid': 1}</field>
+        <field name="search_view_id" ref="view_actual_return_search"/>
+        <field name="view_id" ref="view_return_payment_ledger_list"/>
+    </record>
+
+    <!-- 9. Investment Maturity Window Action -->
+    <record id="action_investment_maturity_window" model="ir.actions.act_window">
+        <field name="name">Investment Maturity / Investment Maturity</field>
+        <field name="res_model">investment.subscription</field>
+        <field name="view_mode">list</field>
+        <field name="domain">[('state', 'in', ('paid', 'active'))]</field>
+        <field name="search_view_id" ref="view_investment_subscription_search"/>
+        <field name="view_id" ref="view_investment_maturity_list"/>
+    </record>
+
+    <!-- 10. Investor Statement Window Action -->
+    <record id="action_investor_statement_window" model="ir.actions.act_window">
+        <field name="name">Investor Statement / Investor investment statement</field>
+        <field name="res_model">investment.membership</field>
+        <field name="view_mode">list</field>
+        <field name="domain">[('state', '=', 'active')]</field>
+        <field name="search_view_id" ref="view_investment_membership_search"/>
+        <field name="view_id" ref="view_investor_statement_list"/>
+    </record>
+
+    <!-- ==================== MENU (No more Print PDF sub-menus) ==================== -->
+
     <!-- Main Reports Menu -->
-    <menuitem id="menu_reports_root" 
-              name="Reports" 
-              parent="menu_investment_root" 
+    <menuitem id="menu_reports_root"
+              name="Reports"
+              parent="menu_investment_root"
               sequence="20"/>
-    
+
     <!-- 1. Renewal Due -->
-    <menuitem id="menu_renewal_due_report" 
-              name="1. Renewal Due" 
-              parent="menu_reports_root" 
-              action="action_renewal_due_window" 
+    <menuitem id="menu_renewal_due_report"
+              name="1. Renewal Due"
+              parent="menu_reports_root"
+              action="action_renewal_due_window"
               sequence="1"/>
-    
+
     <!-- 2. Monthly Returns -->
-    <menuitem id="menu_monthly_returns_report" 
-              name="2. Monthly Returns" 
-              parent="menu_reports_root" 
-              action="action_monthly_returns_window" 
+    <menuitem id="menu_monthly_returns_report"
+              name="2. Monthly Returns"
+              parent="menu_reports_root"
+              action="action_monthly_returns_window"
               sequence="2"/>
-    
+
     <!-- 3. Investor Summary -->
-    <menuitem id="menu_investor_summary_report" 
-              name="3. Investor Summary" 
-              parent="menu_reports_root" 
-              action="action_investor_summary_window" 
+    <menuitem id="menu_investor_summary_report"
+              name="3. Investor Summary"
+              parent="menu_reports_root"
+              action="action_investor_summary_window"
               sequence="3"/>
-    
+
     <!-- 4. Active Investments -->
-    <menuitem id="menu_active_investments_report" 
-              name="4. Active Investments" 
-              parent="menu_reports_root" 
-              action="action_active_investments_window" 
+    <menuitem id="menu_active_investments_report"
+              name="4. Active Investments"
+              parent="menu_reports_root"
+              action="action_active_investments_window"
               sequence="4"/>
-    
+
     <!-- 5. All Investors -->
-    <menuitem id="menu_all_investors_report" 
-              name="5. All Investors" 
-              parent="menu_reports_root" 
-              action="action_all_investors_window" 
+    <menuitem id="menu_all_investors_report"
+              name="5. All Investors"
+              parent="menu_reports_root"
+              action="action_all_investors_window"
               sequence="5"/>
+
+    <!-- 6. Return Payments Summary -->
+    <menuitem id="menu_return_payments_summary_report"
+              name="6. Return Payments Summary"
+              parent="menu_reports_root"
+              action="action_return_payments_summary_window"
+              sequence="6"/>
+
+    <!-- 7. Pending Return Payments -->
+    <menuitem id="menu_draft_returns_report"
+              name="7. Pending Return Payments"
+              parent="menu_reports_root"
+              action="action_draft_returns_window"
+              sequence="7"/>
+
+    <!-- 8. Return Payment Ledger (direct, no sub-menus) -->
+    <menuitem id="menu_return_payment_ledger_report"
+              name="8. Return Payment Ledger / Return payment ledger"
+              parent="menu_reports_root"
+              action="action_return_payment_ledger_window"
+              sequence="8"/>
+
+    <!-- 9. Investment Maturity (direct, no sub-menus) -->
+    <menuitem id="menu_investment_maturity_report"
+              name="9. Investment Maturity / Investment Maturity"
+              parent="menu_reports_root"
+              action="action_investment_maturity_window"
+              sequence="9"/>
+
+    <!-- 10. Investor Statement (direct, no sub-menus) -->
+    <menuitem id="menu_investor_statement_report"
+              name="10. Investor Statement / Investor investment statement"
+              parent="menu_reports_root"
+              action="action_investor_statement_window"
+              sequence="10"/>
+
 </odoo>

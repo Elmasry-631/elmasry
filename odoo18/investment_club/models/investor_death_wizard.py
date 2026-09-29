@@ -17,7 +17,7 @@ class InvestorDeathWizard(models.TransientModel):
     subscription_id = fields.Many2one(
         'investment.subscription',
         string='Investment Subscription (Optional)',
-        help='إذا كان الفسخ لحصة استثمارية محددة'
+        help='Details Details Details Details Details Details'
     )
 
     partner_id = fields.Many2one(
@@ -54,10 +54,10 @@ class InvestorDeathWizard(models.TransientModel):
     )
 
     inheritance_document = fields.Binary(
-        string='Inheritance Document (إعلام الوراثة)',
+        string='Inheritance Document (Inheritance Certificate)',
         required=True,
         attachment=True,
-        help='يرجى إرفاق صورة إعلام الوراثة'
+        help='Please attach a copy of the inheritance certificate'
     )
 
     inheritance_document_name = fields.Char(
@@ -67,24 +67,24 @@ class InvestorDeathWizard(models.TransientModel):
 
     # ===== Action Choice =====
     action_type = fields.Selection([
-        ('transfer', 'Transfer Ownership to Authorized Heir (نقل الملكية)'),
-        ('terminate', 'Terminate & Distribute (فسخ وتوزيع)'),
+        ('transfer', 'Transfer Ownership to Authorized Heir (Ownership Transfer)'),
+        ('terminate', 'Terminate & Distribute (Termination Details)'),
     ], string='Action', required=True, default='terminate',
-        help='نقل الملكية: نقل ملكية العضوية/الحصة للوريث المفوض\n'
-             'فسخ وتوزيع: فسخ العقد وتوزيع القيمة طبقا لإعلام الوراثة'
+        help='Ownership Transfer: Transfer Details Membership/Share to heir Authorized\n'
+             'Termination Details: Termination Contract Details Details Details DetailsInheritance Certificate'
     )
 
     # ===== Transfer Fields =====
     new_partner_id = fields.Many2one(
         'res.partner',
-        string='Authorized Heir (الوريث المفوض)',
-        help='الشخص المفوض من قبل الورثة لنقل الملكية باسمه'
+        string='Authorized Heir (Authorized Heir)',
+        help='Person authorized by the heirs to receive the ownership transfer'
     )
 
     new_investor_code = fields.Char(
         string='New Investor Code',
         readonly=True,
-        help='سيتم توليده تلقائياً بعد التأكيد'
+        help='It will be generated automatically after confirmation'
     )
 
     # ===== Financial Fields (for terminate case) =====
@@ -123,7 +123,7 @@ class InvestorDeathWizard(models.TransientModel):
     # ===== Notes =====
     notes = fields.Text(
         string='Notes',
-        placeholder='ملاحظات إضافية...'
+        placeholder='Additional Notes...'
     )
 
     # ===== Compute Methods =====
@@ -150,10 +150,10 @@ class InvestorDeathWizard(models.TransientModel):
                 continue
 
             if wizard.subscription_id:
-                # فسخ حصة استثمارية: أصل قيمة الحصة المسددة
+                # Investment subscription termination: paid share principal
                 wizard.refund_amount = wizard.subscription_total
             else:
-                # فسخ عضوية: أصل مبلغ العضوية المدفوع
+                # Membership termination: paid membership principal
                 wizard.refund_amount = wizard.membership_original_paid
 
     @api.onchange('action_type')
@@ -168,9 +168,9 @@ class InvestorDeathWizard(models.TransientModel):
     def _check_required_fields(self):
         for wizard in self:
             if not wizard.inheritance_document:
-                raise ValidationError(_('يرجى إرفاق إعلام الوراثة!'))
+                raise ValidationError(_('Please attach the inheritance certificate!'))
             if not wizard.death_date:
-                raise ValidationError(_('يرجى تحديد تاريخ الوفاة!'))
+                raise ValidationError(_('Please specify the date of death!'))
 
     # ===== Actions =====
 
@@ -179,10 +179,10 @@ class InvestorDeathWizard(models.TransientModel):
         self.ensure_one()
 
         if not self.inheritance_document:
-            raise UserError(_('يرجى إرفاق إعلام الوراثة!'))
+            raise UserError(_('Please attach the inheritance certificate!'))
 
         if not self.death_date:
-            raise UserError(_('يرجى تحديد تاريخ الوفاة!'))
+            raise UserError(_('Please specify the date of death!'))
 
         if self.action_type == 'transfer':
             return self._action_transfer_ownership()
@@ -193,13 +193,12 @@ class InvestorDeathWizard(models.TransientModel):
         """Attach the inheritance document to the membership record."""
         if self.inheritance_document:
             self.env['ir.attachment'].create({
-                'name': 'إعلام وراثة - %s' % (membership.investor_code or ''),
+                'name': 'Inheritance Certificate - %s' % (membership.investor_code or ''),
                 'res_model': 'investment.membership',
                 'res_id': membership.id,
                 'type': 'binary',
                 'datas': self.inheritance_document,
-                'datas_fname': self.inheritance_document_name or 'inheritance_document.pdf',
-                'description': 'إعلام وراثة مرفق - حالة وفاة المستثمر',
+                'description': 'Attached inheritance certificate - investor death case',
             })
 
     def _action_transfer_ownership(self):
@@ -212,12 +211,12 @@ class InvestorDeathWizard(models.TransientModel):
         4. Post chatter messages
         """
         if not self.new_partner_id:
-            raise UserError(_('يرجى اختيار الوريث المفوض لنقل الملكية!'))
+            raise UserError(_('Please select the authorized heir for the ownership transfer!'))
 
         membership = self.membership_id
 
         if membership.state not in ('active', 'initial_invoiced'):
-            raise UserError(_('العضوية يجب أن تكون نشطة لنقل الملكية!'))
+            raise UserError(_('The membership must be active to transfer ownership!'))
 
         # Attach inheritance document
         self._attach_inheritance_document(membership)
@@ -228,7 +227,7 @@ class InvestorDeathWizard(models.TransientModel):
         if self.subscription_id:
             sub = self.subscription_id
             if sub.state not in ('paid', 'active'):
-                raise UserError(_('الحصة الاستثمارية يجب أن تكون مدفوعة أو نشطة لنقل الملكية!'))
+                raise UserError(_('The investment subscription must be paid or active to transfer ownership!'))
 
             sub.write({
                 'partner_id': self.new_partner_id.id,
@@ -237,25 +236,24 @@ class InvestorDeathWizard(models.TransientModel):
             # Also attach document to subscription
             if self.inheritance_document:
                 self.env['ir.attachment'].create({
-                    'name': 'إعلام وراثة - %s' % (sub.name or ''),
+                    'name': 'Inheritance Certificate - %s' % (sub.name or ''),
                     'res_model': 'investment.subscription',
                     'res_id': sub.id,
                     'type': 'binary',
                     'datas': self.inheritance_document,
-                    'datas_fname': self.inheritance_document_name or 'inheritance_document.pdf',
-                    'description': 'إعلام وراثة مرفق - حالة وفاة المستثمر',
+                    'description': 'Attached inheritance certificate - investor death case',
                 })
 
             # Post message on subscription
             sub.message_post(
                 body=_(
-                    '<p><b>تم نقل ملكية الحصة الاستثمارية - حالة وفاة</b></p>'
+                    '<p><b>Investment subscription ownership transferred - death case</b></p>'
                     '<ul>'
-                    '<li>المستثمر المتوفى: <b>%s</b></li>'
-                    '<li>المشروع: <b>%s</b></li>'
-                    '<li>تم النقل إلى: <b>%s</b></li>'
-                    '<li>تاريخ الوفاة: <b>%s</b></li>'
-                    '<li>تم إرفاق إعلام الوراثة</li>'
+                    '<li>Deceased investor: <b>%s</b></li>'
+                    '<li>Project: <b>%s</b></li>'
+                    '<li>Transferred to: <b>%s</b></li>'
+                    '<li>Date of death: <b>%s</b></li>'
+                    '<li>Inheritance certificate attached</li>'
                     '</ul>'
                 ) % (
                     old_partner_name,
@@ -285,14 +283,14 @@ class InvestorDeathWizard(models.TransientModel):
         # Post message on membership
         membership.message_post(
             body=_(
-                '<p><b>تم نقل ملكية العضوية - حالة وفاة</b></p>'
+                '<p><b>Membership ownership transferred - death case</b></p>'
                 '<ul>'
-                '<li>المستثمر المتوفى: <b>%s</b></li>'
-                '<li>كود المستثمر: <b>%s</b></li>'
-                '<li>تم النقل إلى: <b>%s</b></li>'
-                '<li>تاريخ الوفاة: <b>%s</b></li>'
-                '<li>عدد الحصص المنقولة: <b>%s</b></li>'
-                '<li>تم إرفاق إعلام الوراثة</li>'
+                '<li>Deceased investor: <b>%s</b></li>'
+                '<li>Investor Code: <b>%s</b></li>'
+                '<li>Transferred to: <b>%s</b></li>'
+                '<li>Date of death: <b>%s</b></li>'
+                '<li>Transferred Share Count: <b>%s</b></li>'
+                '<li>Inheritance certificate attached</li>'
                 '%s'
                 '</ul>'
             ) % (
@@ -301,7 +299,7 @@ class InvestorDeathWizard(models.TransientModel):
                 self.new_partner_id.name,
                 self.death_date,
                 len(active_investments),
-                _('<li>ملاحظات: <b>%s</b></li>') % self.notes if self.notes else '',
+                _('<li>Notes: <b>%s</b></li>') % self.notes if self.notes else '',
             ),
             partner_ids=[self.new_partner_id.id],
             message_type='notification',
@@ -322,7 +320,7 @@ class InvestorDeathWizard(models.TransientModel):
         membership = self.membership_id
 
         if membership.state not in ('active', 'initial_invoiced'):
-            raise UserError(_('العضوية يجب أن تكون نشطة للفسخ!'))
+            raise UserError(_('The membership must be active for termination!'))
 
         # Attach inheritance document
         self._attach_inheritance_document(membership)
@@ -331,7 +329,7 @@ class InvestorDeathWizard(models.TransientModel):
         if self.subscription_id:
             sub = self.subscription_id
             if sub.state not in ('paid', 'active'):
-                raise UserError(_('الحصة الاستثمارية يجب أن تكون مدفوعة أو نشطة!'))
+                raise UserError(_('The investment subscription must be paid or active!'))
 
             # Create refund payment for the subscription
             if self.refund_amount > 0:
@@ -353,13 +351,12 @@ class InvestorDeathWizard(models.TransientModel):
                 # Attach document to subscription too
                 if self.inheritance_document:
                     self.env['ir.attachment'].create({
-                        'name': 'إعلام وراثة - %s' % (sub.name or ''),
+                        'name': 'Inheritance Certificate - %s' % (sub.name or ''),
                         'res_model': 'investment.subscription',
                         'res_id': sub.id,
                         'type': 'binary',
                         'datas': self.inheritance_document,
-                        'datas_fname': self.inheritance_document_name or 'inheritance_document.pdf',
-                        'description': 'إعلام وراثة مرفق - حالة وفاة المستثمر',
+                        'description': 'Attached inheritance certificate - investor death case',
                     })
 
             # Update subscription state
@@ -368,15 +365,15 @@ class InvestorDeathWizard(models.TransientModel):
             # Post message on subscription
             sub.message_post(
                 body=_(
-                    '<p><b>تم فسخ الحصة الاستثمارية - حالة وفاة</b></p>'
+                    '<p><b>Investment subscription terminated - death case</b></p>'
                     '<ul>'
-                    '<li>المستثمر المتوفى: <b>%s</b></li>'
-                    '<li>المشروع: <b>%s</b></li>'
-                    '<li>عدد الحصص: <b>%s</b></li>'
-                    '<li>قيمة الحصة: <b>%s</b></li>'
-                    '<li>إجمالي المبلغ المسترد: <b>%s</b></li>'
-                    '<li>تاريخ الوفاة: <b>%s</b></li>'
-                    '<li>يتم التوزيع طبقا لإعلام الوراثة المرفق</li>'
+                    '<li>Deceased investor: <b>%s</b></li>'
+                    '<li>Project: <b>%s</b></li>'
+                    '<li>Share Count: <b>%s</b></li>'
+                    '<li>Share Value: <b>%s</b></li>'
+                    '<li>Total Refunded Amount: <b>%s</b></li>'
+                    '<li>Date of death: <b>%s</b></li>'
+                    '<li>Distributed according to the attached inheritance certificate</li>'
                     '</ul>'
                 ) % (
                     membership.partner_id.name or '',
@@ -422,7 +419,7 @@ class InvestorDeathWizard(models.TransientModel):
                 'state': 'terminated',
                 'termination_date': fields.Date.today(),
                 'termination_reason': _(
-                    'حالة وفاة - يتم التوزيع طبقا لإعلام الوراثة بتاريخ %s'
+                    'Death case - distributed according to the inheritance certificate dated %s'
                 ) % self.death_date,
                 'termination_refund_amount': self.refund_amount,
                 'termination_deduction': 0.0,
@@ -431,16 +428,16 @@ class InvestorDeathWizard(models.TransientModel):
             # Post message on membership
             membership.message_post(
                 body=_(
-                    '<p><b>تم فسخ العضوية - حالة وفاة</b></p>'
+                    '<p><b>Membership terminated - death case</b></p>'
                     '<ul>'
-                    '<li>المستثمر المتوفى: <b>%s</b></li>'
-                    '<li>كود المستثمر: <b>%s</b></li>'
-                    '<li>أصل مبلغ العضوية المدفوع: <b>%s</b></li>'
-                    '<li>مبلغ الاسترداد (أصل المبلغ): <b>%s</b></li>'
-                    '<li>عدد الحصص المستثمارية المغلقة: <b>%s</b></li>'
-                    '<li>تاريخ الوفاة: <b>%s</b></li>'
-                    '<li>يتم التوزيع طبقا لإعلام الوراثة المرفق</li>'
-                    '<li>لا يوجد خصومات (حالة وفاة)</li>'
+                    '<li>Deceased investor: <b>%s</b></li>'
+                    '<li>Investor Code: <b>%s</b></li>'
+                    '<li>Paid Membership Principal: <b>%s</b></li>'
+                    '<li>Refund Amount (Principal): <b>%s</b></li>'
+                    '<li>Closed Investment Subscription Count: <b>%s</b></li>'
+                    '<li>Date of death: <b>%s</b></li>'
+                    '<li>Distributed according to the attached inheritance certificate</li>'
+                    '<li>No deductions (death case)</li>'
                     '%s'
                     '</ul>'
                 ) % (
@@ -450,7 +447,7 @@ class InvestorDeathWizard(models.TransientModel):
                     self.refund_amount,
                     len(active_investments),
                     self.death_date,
-                    _('<li>ملاحظات: <b>%s</b></li>') % self.notes if self.notes else '',
+                    _('<li>Notes: <b>%s</b></li>') % self.notes if self.notes else '',
                 ),
                 partner_ids=[membership.partner_id.id],
                 message_type='notification',

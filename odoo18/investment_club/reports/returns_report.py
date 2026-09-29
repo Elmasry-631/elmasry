@@ -31,14 +31,14 @@ class MonthlyReturnsReport(models.AbstractModel):
             by_project[proj_name]['shares'] += inv.share_count
             by_project[proj_name]['invested'] += inv.amount
 
-            # ✅ إصلاح: expected_period_return بدل expected_monthly_return (غير موجود)
+            # Comment translated/normalized to English.
             by_project[proj_name]['monthly_return'] += inv.expected_period_return
 
             club_name = inv.club_id.name
             if club_name not in by_club:
                 by_club[club_name] = 0
 
-            # ✅ إصلاح نفس الفيلد هنا
+            # Comment translated/normalized to English.
             by_club[club_name] += inv.expected_period_return
 
             total += inv.expected_period_return

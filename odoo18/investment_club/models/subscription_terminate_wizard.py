@@ -1,3 +1,4 @@
+# investment_club/models/subscription_terminate_wizard.py
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 from dateutil.relativedelta import relativedelta
@@ -107,9 +108,10 @@ class SubscriptionTerminateWizard(models.TransientModel):
     )
 
     # ===== Notes =====
-    reason = fields.Text(
+    reason = fields.Many2one(
+        'terminate.reason',
         string='Termination Reason',
-        required=True
+        required=True,
     )
 
     notes = fields.Text(string='Additional Notes')
@@ -137,9 +139,10 @@ class SubscriptionTerminateWizard(models.TransientModel):
                 continue
 
             if wizard.is_first_3_months:
-                # خلال أول 3 شهور من العضوية: يسترد أصل قيمة الحصة المسددة
+                # Within the first 3 months of membership: refund the paid share principal
                 wizard.refund_amount = wizard.total_amount
             else:
+                # After the first 3 months: termination is allowed, but the share principal is not refunded
                 wizard.refund_amount = 0.0
 
     # ===== Actions =====
@@ -149,34 +152,30 @@ class SubscriptionTerminateWizard(models.TransientModel):
         if not self.reason:
             raise UserError(_('Please provide a termination reason!'))
 
-        if not self.is_first_3_months:
-            raise UserError(_(
-                'Cannot terminate this investment!\n'
-                'Investment shares can only be terminated during the first 3 months of membership.'
-            ))
-
-        if self.refund_amount <= 0:
-            raise UserError(_('Refund amount is zero! Cannot proceed.'))
-
         subscription = self.subscription_id
 
         if subscription.state not in ('paid', 'active'):
             raise UserError(_('Investment must be paid or active to terminate!'))
 
-        # Create refund payment
-        payment_vals = {
-            'payment_type': 'outbound',
-            'partner_type': 'customer',
-            'partner_id': subscription.partner_id.id,
-            'journal_id': self.refund_journal_id.id,
-            'amount': self.refund_amount,
-            'currency_id': subscription.currency_id.id,
-            'date': fields.Date.today(),
-            'memo': _('Investment Share Termination Refund - %s') % subscription.name,
-        }
+        refund_amount = self.refund_amount or 0.0
 
-        payment = self.env['account.payment'].create(payment_vals)
-        payment.action_post()
+        # Create refund payment only when there is something to refund
+        # (within the first 3 months of membership). Beyond that the
+        # termination proceeds WITHOUT refund instead of being blocked.
+        if refund_amount > 0:
+            payment_vals = {
+                'payment_type': 'outbound',
+                'partner_type': 'customer',
+                'partner_id': subscription.partner_id.id,
+                'journal_id': self.refund_journal_id.id,
+                'amount': refund_amount,
+                'currency_id': subscription.currency_id.id,
+                'date': fields.Date.today(),
+                'memo': _('Investment Share Termination Refund - %s') % subscription.name,
+            }
+
+            payment = self.env['account.payment'].create(payment_vals)
+            payment.action_post()
 
         # Update subscription state
         subscription.write({
@@ -186,15 +185,15 @@ class SubscriptionTerminateWizard(models.TransientModel):
         # Post chatter message
         subscription.message_post(
             body=_(
-                '<p><b>تم فسخ عقد الحصة الاستثمارية</b></p>'
+                '<p><b>Investment subscription contract terminated</b></p>'
                 '<ul>'
-                '<li>المستثمر: <b>%s</b></li>'
-                '<li>المشروع: <b>%s</b></li>'
-                '<li>عدد الحصص: <b>%s</b></li>'
-                '<li>قيمة الحصة: <b>%s</b></li>'
-                '<li>إجمالي المبلغ: <b>%s</b></li>'
-                '<li>مبلغ الاسترداد: <b>%s</b></li>'
-                '<li>السبب: <b>%s</b></li>'
+                '<li>Investor: <b>%s</b></li>'
+                '<li>Project: <b>%s</b></li>'
+                '<li>Share Count: <b>%s</b></li>'
+                '<li>Share Value: <b>%s</b></li>'
+                '<li>Total Amount: <b>%s</b></li>'
+                '<li>Refund Amount: <b>%s</b>%s</li>'
+                '<li>Reason: <b>%s</b></li>'
                 '</ul>'
             ) % (
                 subscription.partner_id.name or '',
@@ -202,8 +201,10 @@ class SubscriptionTerminateWizard(models.TransientModel):
                 subscription.share_count,
                 subscription.share_value,
                 subscription.amount,
-                self.refund_amount,
-                self.reason,
+                refund_amount,
+                _(' (Details Details 3 months)') if self.is_first_3_months
+                else _(' (after Details 3 months - without Details)'),
+                self.reason.name,
             ),
             partner_ids=[subscription.partner_id.id],
             message_type='notification',

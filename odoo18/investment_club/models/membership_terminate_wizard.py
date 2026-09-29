@@ -66,7 +66,7 @@ class MembershipTerminateWizard(models.TransientModel):
         string='Increase Amount',
         compute='_compute_financials',
         store=True,
-        help='الفرق بين القيمة الحالية والمبلغ المدفوع'
+        help='Difference between current value and paid amount'
     )
 
     # ===== Termination Calculations =====
@@ -85,35 +85,35 @@ class MembershipTerminateWizard(models.TransientModel):
     deduction_amount = fields.Float(
         string='Deduction (First 3 Months)',
         default=6500.0,
-        help='مبلغ 6500 جنيه يخصم في حالة الفسخ خلال أول 3 شهور'
+        help='EGP 6,500 deduction applied for termination during the first 3 months'
     )
 
     actual_deduction = fields.Float(
         string='Actual Deduction Applied',
         compute='_compute_refund',
         store=True,
-        help='الخصم الفعلي المطبق (الخصم أو قيمة العضوية أيهما أقل)'
+        help='Actual deduction applied (deduction or membership value, whichever is lower)'
     )
 
     client_share_increase = fields.Float(
         string='Client Share of Increase (70%)',
         compute='_compute_financials',
         store=True,
-        help='نصيب العميل 70% من قيمة الزيادة'
+        help='Customer share: 70% of the increase'
     )
 
     company_share_increase = fields.Float(
         string='Company Share of Increase (30%)',
         compute='_compute_financials',
         store=True,
-        help='نصيب الشركة 30% من قيمة الزيادة'
+        help='Company share: 30% of the increase'
     )
 
     company_income = fields.Float(
         string='Company Income Amount',
         compute='_compute_refund',
         store=True,
-        help='إجمالي المبلغ الذي يحق للشركة'
+        help='Total amount due to the company'
     )
 
     refund_amount = fields.Float(
@@ -131,9 +131,10 @@ class MembershipTerminateWizard(models.TransientModel):
     )
 
     # ===== Notes =====
-    reason = fields.Text(
+    reason = fields.Many2one(
+        'terminate.reason',
         string='Termination Reason',
-        required=True
+        required=True,
     )
 
     notes = fields.Text(string='Additional Notes')
@@ -195,20 +196,20 @@ class MembershipTerminateWizard(models.TransientModel):
                 continue
 
             if wizard.is_first_3_months:
-                # خلال أول 3 شهور: أصل المبلغ - خصم (مش أكتر من المبلغ نفسه)
+                # First 3 months: principal minus deduction (not more than the principal)
                 wizard.actual_deduction = min(wizard.deduction_amount, wizard.original_paid_fee)
                 refund = wizard.original_paid_fee - wizard.actual_deduction
                 wizard.refund_amount = max(refund, 0.0)
-                # الشركة تستفيد بمبلغ الخصم
+                # Company benefits from the deduction
                 wizard.company_income = wizard.actual_deduction
             elif wizard.increase_amount > 0:
-                # بعد 3 شهور وفيه زيادة: أصل المبلغ + 70% من الزيادة للعميل
+                # After 3 months with an increase: principal plus 70% of the increase to the customer
                 wizard.refund_amount = wizard.original_paid_fee + wizard.client_share_increase
                 wizard.actual_deduction = 0.0
-                # الشركة تستفيد بـ 30% من الزيادة
+                # Company benefits from 30% of the increase
                 wizard.company_income = wizard.company_share_increase
             else:
-                # بعد 3 شهور ومفيش زيادة: أصل المبلغ كامل للعميل
+                # After 3 months with no increase: full principal to the customer
                 wizard.refund_amount = wizard.original_paid_fee
                 wizard.actual_deduction = 0.0
                 wizard.company_income = 0.0
@@ -380,7 +381,7 @@ class MembershipTerminateWizard(models.TransientModel):
         company_income_move = False
 
         if self.is_first_3_months and self.actual_deduction > 0:
-            # خلال أول 3 شهور: الخصم يبقى إيراد للشركة
+            # First 3 months: deduction becomes company revenue
             description = _(
                 'Membership early termination penalty (deduction) - %s'
             ) % (membership.investor_code or '')
@@ -389,7 +390,7 @@ class MembershipTerminateWizard(models.TransientModel):
             )
 
         elif not self.is_first_3_months and self.company_share_increase > 0:
-            # بعد 3 شهور وفيه زيادة: 30% من الزيادة بيبقوا إيراد للشركة
+            # After 3 months with an increase: 30% of the increase becomes company revenue
             description = _(
                 'Company share (30%% of membership value increase) - %s'
             ) % (membership.investor_code or '')
@@ -401,7 +402,7 @@ class MembershipTerminateWizard(models.TransientModel):
         membership.write({
             'state': 'terminated',
             'termination_date': fields.Date.today(),
-            'termination_reason': self.reason,
+            'termination_reason': self.reason.name,
             'termination_refund_amount': self.refund_amount,
             'termination_deduction': self.actual_deduction,
         })
@@ -410,11 +411,11 @@ class MembershipTerminateWizard(models.TransientModel):
 
         # ===== 4. Post chatter message =====
         summary = _(
-            '<p><b>تم فسخ عقد العضوية</b></p>'
+            '<p><b>Membership contract terminated</b></p>'
             '<ul>'
-            '<li>العميل: <b>%s</b></li>'
-            '<li>كود المستثمر: <b>%s</b></li>'
-            '<li>المبلغ الأصلي المدفوع: <b>%s</b></li>'
+            '<li>Customer: <b>%s</b></li>'
+            '<li>Investor Code: <b>%s</b></li>'
+            '<li>Original Paid Amount: <b>%s</b></li>'
         ) % (
             membership.partner_id.name or '',
             membership.investor_code or '',
@@ -423,9 +424,9 @@ class MembershipTerminateWizard(models.TransientModel):
 
         if self.is_first_3_months:
             summary += _(
-                '<li>الخصم المطبق: <b>%s</b></li>'
-                '<li>مبلغ الاسترداد للعميل: <b>%s</b></li>'
-                '<li>إيراد الشركة (الخصم): <b>%s</b></li>'
+                '<li>Applied Deduction: <b>%s</b></li>'
+                '<li>Customer Refund Amount: <b>%s</b></li>'
+                '<li>Company Revenue (Deduction): <b>%s</b></li>'
             ) % (
                 self.actual_deduction,
                 self.refund_amount,
@@ -433,11 +434,11 @@ class MembershipTerminateWizard(models.TransientModel):
             )
         elif self.increase_amount > 0:
             summary += _(
-                '<li>القيمة الحالية للعضوية: <b>%s</b></li>'
-                '<li>قيمة الزيادة: <b>%s</b></li>'
-                '<li>نصيب العميل (70%% من الزيادة): <b>%s</b></li>'
-                '<li>نصيب الشركة (30%% من الزيادة): <b>%s</b></li>'
-                '<li>مبلغ الاسترداد النهائي للعميل: <b>%s</b></li>'
+                '<li>Current Membership Value: <b>%s</b></li>'
+                '<li>Increase Amount: <b>%s</b></li>'
+                '<li>Customer Share (70%% of Increase): <b>%s</b></li>'
+                '<li>Company Share (30%% of Increase): <b>%s</b></li>'
+                '<li>Final Customer Refund Amount: <b>%s</b></li>'
             ) % (
                 self.current_fee,
                 self.increase_amount,
@@ -447,14 +448,14 @@ class MembershipTerminateWizard(models.TransientModel):
             )
         else:
             summary += _(
-                '<li>مبلغ الاسترداد للعميل: <b>%s</b></li>'
+                '<li>Customer Refund Amount: <b>%s</b></li>'
             ) % self.refund_amount
 
-        summary += _('<li>السبب: <b>%s</b></li>') % self.reason
+        summary += _('<li>Reason: <b>%s</b></li>') % self.reason.name
 
         if company_income_move:
             summary += _(
-                '<li>قيد المحاسبة للشركة: <b>%s</b></li>'
+                '<li>Company Accounting Entry: <b>%s</b></li>'
             ) % company_income_move.name
 
         summary += '</ul>'

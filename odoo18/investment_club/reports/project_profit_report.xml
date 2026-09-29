@@ -16,12 +16,14 @@
         <t t-call="web.html_container">
             <t t-call="web.basic_layout">
                 <div class="page">
-                    <h2>Project Profit and Loss</h2>
+                    <h2>Profit &amp; Loss Report</h2>
+                    <p>Project Profit and Loss Report</p>
                     <p>Generated: <span t-esc="date"/></p>
-                    <table class="table table-sm table-striped">
-                        <thead>
+                    <table class="table table-sm table-bordered table-striped">
+                        <thead class="bg-danger text-white">
                             <tr>
                                 <th>Project</th>
+                                <th>Code</th>
                                 <th>Investors</th>
                                 <th>Total Revenue</th>
                                 <th>Annual Returns</th>
@@ -33,6 +35,7 @@
                         <tbody>
                             <tr t-foreach="projects" t-as="line">
                                 <td><span t-esc="line['name']"/></td>
+                                <td><span t-esc="line['code']"/></td>
                                 <td><span t-esc="line['investors']"/></td>
                                 <td><span t-esc="line['total_revenue']"/></td>
                                 <td><span t-esc="line['annual_returns']"/></td>
