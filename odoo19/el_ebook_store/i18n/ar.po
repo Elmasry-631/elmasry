@@ -1,0 +1,92 @@
+# Arabic translations for el_ebook_store
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo 19.0\n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "E-Book Store"
+msgstr "متجر الكتب الإلكترونية"
+
+msgid "Is E-Book"
+msgstr "كتاب إلكتروني"
+
+msgid "E-Book File (PDF)"
+msgstr "ملف الكتاب (PDF)"
+
+msgid "Access Type"
+msgstr "نوع الوصول"
+
+msgid "Online Reader Only"
+msgstr "قارئ أونلاين فقط"
+
+msgid "Download Only"
+msgstr "تحميل فقط"
+
+msgid "Both Online & Download"
+msgstr "أونلاين وتحميل"
+
+msgid "Author"
+msgstr "المؤلف"
+
+msgid "Pages"
+msgstr "الصفحات"
+
+msgid "Total Codes"
+msgstr "إجمالي الأكواد"
+
+msgid "Codes Used"
+msgstr "الأكواد المستخدمة"
+
+msgid "Codes Available"
+msgstr "الأكواد المتاحة"
+
+msgid "Available"
+msgstr "متاح"
+
+msgid "Assigned"
+msgstr "مخصص"
+
+msgid "Used"
+msgstr "مستخدم"
+
+msgid "Expired"
+msgstr "منتهي"
+
+msgid "Generate Codes"
+msgstr "توليد الأكواد"
+
+msgid "Auto Generate (Random)"
+msgstr "توليد تلقائي (عشوائي)"
+
+msgid "Manual Entry"
+msgstr "إدخال يدوي"
+
+msgid "Number of Codes"
+msgstr "عدد الأكواد"
+
+msgid "Manual Codes"
+msgstr "أكواد يدوية"
+
+msgid "Max Access per Code"
+msgstr "حد الوصول لكل كود"
+
+msgid "My Library"
+msgstr "مكتبتي"
+
+msgid "Customer Libraries"
+msgstr "مكتبات العملاء"
+
+msgid "Access Logs"
+msgstr "سجلات الوصول"
+
+msgid "Access Code"
+msgstr "كود الوصول"
+
+msgid "Purchased"
+msgstr "مشترى"
+
+msgid "Accessible"
+msgstr "متاح للوصول"

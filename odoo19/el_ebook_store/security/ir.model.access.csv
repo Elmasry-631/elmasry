@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_ebook_code_user,ebook.code.user,model_ebook_code,group_ebook_user,1,0,0,0
+access_ebook_code_manager,ebook.code.manager,model_ebook_code,group_ebook_manager,1,1,1,1
+access_ebook_library_user,ebook.library.user,model_ebook_library,group_ebook_user,1,0,0,0
+access_ebook_library_manager,ebook.library.manager,model_ebook_library,group_ebook_manager,1,1,1,1
+access_ebook_access_log_user,ebook.access.log.user,model_ebook_access_log,group_ebook_user,1,0,0,0
+access_ebook_access_log_manager,ebook.access.log.manager,model_ebook_access_log,group_ebook_manager,1,1,1,1
+access_generate_codes_wizard,generate.codes.wizard,model_generate_codes_wizard,group_ebook_manager,1,1,1,1

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_ebook_root" name="E-Book Store" sequence="20"/>
+
+    <menuitem id="menu_ebook_codes" name="Access Codes"
+              parent="menu_ebook_root" sequence="10"
+              action="action_ebook_code"/>
+
+    <menuitem id="menu_ebook_library" name="Customer Libraries"
+              parent="menu_ebook_root" sequence="20"
+              action="action_ebook_library"/>
+
+    <menuitem id="menu_ebook_logs" name="Access Logs"
+              parent="menu_ebook_root" sequence="30"
+              action="action_ebook_access_log"/>
+</odoo>

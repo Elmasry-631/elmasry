@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_generate_codes_wizard_form" model="ir.ui.view">
+        <field name="name">generate.codes.wizard.form</field>
+        <field name="model">generate.codes.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Generate E-Book Codes">
+                <group>
+                    <field name="product_tmpl_id" readonly="1"/>
+                    <field name="generation_mode" widget="radio"/>
+                    <field name="code_count" invisible="generation_mode == 'manual'"/>
+                    <field name="manual_codes" invisible="generation_mode == 'auto'"
+                           placeholder="Enter one code per line..."/>
+                    <field name="max_access"/>
+                </group>
+                <footer>
+                    <button name="action_generate" string="Generate Codes" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_generate_codes_wizard" model="ir.actions.act_window">
+        <field name="name">Generate Codes</field>
+        <field name="res_model">generate.codes.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+</odoo>

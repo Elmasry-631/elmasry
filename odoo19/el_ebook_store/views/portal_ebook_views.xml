@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="portal_my_library" name="My E-Book Library">
+        <t t-call="portal.portal_layout">
+            <t t-set="no_breadcrumbs" t-value="True"/>
+            <div class="container mt-4">
+                <h2 class="mb-4">My Library</h2>
+                <t t-if="libraries">
+                    <div class="row">
+                        <t t-foreach="libraries" t-as="lib">
+                            <div class="col-12 col-md-6 col-lg-4 mb-4">
+                                <div class="card ebook-card h-100">
+                                    <div class="card-body">
+                                        <h5 class="card-title" t-out="lib.product_tmpl_id.name"/>
+                                        <p class="text-muted small">
+                                            by <span t-out="lib.product_tmpl_id.ebook_author or 'Unknown'"/>
+                                        </p>
+                                        <div class="mb-2">
+                                            <span class="badge badge-success" t-if="lib.state == 'accessible'">Owned</span>
+                                            <span class="badge badge-danger" t-if="lib.state == 'expired'">Expired</span>
+                                        </div>
+                                        <div class="mb-3 text-muted small">
+                                            Purchased: <span t-out="lib.purchase_date"/>
+                                        </div>
+                                        <div class="btn-group w-100" role="group">
+                                            <a t-if="lib.product_tmpl_id.ebook_access_type in ('online', 'both')"
+                                               t-attf-href="/my/ebook/#{lib.id}/read"
+                                               class="btn btn-primary btn-sm" target="_blank">
+                                                <i class="fa fa-book"/> Read
+                                            </a>
+                                            <a t-if="lib.product_tmpl_id.ebook_access_type in ('download', 'both')"
+                                               t-attf-href="/my/ebook/#{lib.id}/download"
+                                               class="btn btn-success btn-sm">
+                                                <i class="fa fa-download"/> Download
+                                            </a>
+                                        </div>
+                                        <div class="mt-2 text-muted small">
+                                            Opens: <span t-out="lib.access_count"/> times
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </div>
+                </t>
+                <t t-else="">
+                    <div class="alert alert-info">
+                        <p>You haven't purchased any e-books yet.</p>
+                        <a href="/shop" class="btn btn-primary">Browse E-Books</a>
+                    </div>
+                </t>
+            </div>
+        </t>
+    </template>
+</odoo>

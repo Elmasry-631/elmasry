@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="mail_template_ebook_code_delivery" model="mail.template">
+        <field name="name">E-Book: Code Delivery</field>
+        <field name="model_id" ref="sale.model_sale_order"/>
+        <field name="subject">Your E-Book Access Codes for {{ object.name }}</field>
+        <field name="email_to">{{ object.partner_id.email }}</field>
+        <field name="body_html" type="html">
+            <div style="margin:0px; padding:0px; font-family:Arial,sans-serif;">
+                <p>Hello <span t-out="object.partner_id.name"/>,</p>
+                <p>Thank you for your purchase! Here are your e-book access codes:</p>
+                <table style="border-collapse:collapse; width:100%; margin:10px 0;">
+                    <tr style="background:#f0f0f0;">
+                        <th style="padding:8px; border:1px solid #ddd; text-align:left;">E-Book</th>
+                        <th style="padding:8px; border:1px solid #ddd; text-align:left;">Access Code</th>
+                    </tr>
+                    <t t-foreach="object.env['ebook.code'].search([('order_id', '=', object.id)])" t-as="code">
+                        <tr>
+                            <td style="padding:8px; border:1px solid #ddd;"><span t-out="code.product_tmpl_id.name"/></td>
+                            <td style="padding:8px; border:1px solid #ddd; font-family:monospace; font-size:1.1em; color:#2e7d32;"><span t-out="code.name"/></td>
+                        </tr>
+                    </t>
+                </table>
+                <p>Visit your library to start reading: <a href="/my/library">My Library</a></p>
+                <p>Enjoy your reading!</p>
+            </div>
+        </field>
+    </record>
+
+</odoo>
