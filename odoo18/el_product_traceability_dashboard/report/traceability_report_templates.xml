@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_traceability_movement_pdf" model="ir.actions.report">
+        <field name="name">Traceability Movement Details</field>
+        <field name="model">el.product.traceability.report</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">el_product_traceability_dashboard.movement_pdf_template</field>
+        <field name="report_file">el_product_traceability_dashboard.movement_pdf_template</field>
+        <field name="binding_model_id" ref="model_el_product_traceability_report"/>
+        <field name="binding_type">report</field>
+    </record>
+    <template id="movement_pdf_template">
+        <t t-call="web.external_layout">
+            <div class="page">
+                <h2>Product Traceability - Movement Details</h2>
+                <table class="table table-sm">
+                    <thead><tr><th>Date</th><th>Operation</th><th>Product</th><th>Qty</th><th>Lot / Serial</th><th>Partner</th><th>Reference</th><th>Value</th></tr></thead>
+                    <tbody><t t-foreach="docs" t-as="o"><tr><td><span t-field="o.date"/></td><td><span t-field="o.operation_type"/></td><td><span t-field="o.product_id"/></td><td><span t-field="o.quantity"/></td><td><span t-field="o.lot_id"/></td><td><span t-field="o.partner_id"/></td><td><span t-field="o.reference"/></td><td><span t-field="o.total_value"/></td></tr></t></tbody>
+                </table>
+            </div>
+        </t>
+    </template>
+
+    <record id="action_report_traceability_manufacturing_pdf" model="ir.actions.report">
+        <field name="name">Manufacturing Genealogy</field>
+        <field name="model">el.product.traceability.manufacturing</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">el_product_traceability_dashboard.manufacturing_pdf_template</field>
+        <field name="report_file">el_product_traceability_dashboard.manufacturing_pdf_template</field>
+        <field name="binding_model_id" ref="model_el_product_traceability_manufacturing"/>
+        <field name="binding_type">report</field>
+    </record>
+    <template id="manufacturing_pdf_template">
+        <t t-call="web.external_layout">
+            <div class="page">
+                <h2>Manufacturing Genealogy - What Was Made From What?</h2>
+                <table class="table table-sm">
+                    <thead><tr><th>MO</th><th>Finished Product</th><th>Produced</th><th>Component</th><th>Consumed</th><th>Component Value</th><th>Status</th></tr></thead>
+                    <tbody><t t-foreach="docs" t-as="o"><tr><td><span t-field="o.reference"/></td><td><span t-field="o.finished_product_id"/></td><td><span t-field="o.finished_qty"/> <span t-field="o.finished_uom_id"/></td><td><span t-field="o.component_product_id"/></td><td><span t-field="o.component_qty"/> <span t-field="o.component_uom_id"/></td><td><span t-field="o.component_value"/></td><td><span t-field="o.state"/></td></tr></t></tbody>
+                </table>
+                <p class="text-muted">This report links completed component consumption moves to completed finished-product moves within the same Manufacturing Order. Lot/serial is optional and is not required for the relation.</p>
+            </div>
+        </t>
+    </template>
+</odoo>

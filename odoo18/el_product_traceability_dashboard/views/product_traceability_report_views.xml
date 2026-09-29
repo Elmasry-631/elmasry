@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_product_traceability_report_list" model="ir.ui.view">
+        <field name="name">el.product.traceability.report.list</field>
+        <field name="model">el.product.traceability.report</field>
+        <field name="arch" type="xml">
+            <list string="Traceability Movements" create="0" edit="0" delete="0">
+                <field name="date"/>
+                <field name="operation_type"/>
+                <field name="product_id"/>
+                <field name="quantity"/>
+                <field name="signed_quantity"/>
+                <field name="uom_id"/>
+                <field name="lot_id" optional="show"/>
+                <field name="partner_id" optional="show"/>
+                <field name="purchase_order_id" optional="show"/>
+                <field name="production_id" optional="show"/>
+                <field name="sale_order_id" optional="show"/>
+                <field name="reference"/>
+                <field name="source_document" optional="show"/>
+                <field name="purchase_unit_price" optional="hide"/>
+                <field name="purchase_total_value" optional="hide"/>
+                <field name="unit_cost" optional="hide"/>
+                <field name="total_value" optional="show"/>
+                <field name="warehouse_id" optional="hide"/>
+                <field name="company_id" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_product_traceability_report_search" model="ir.ui.view">
+        <field name="name">el.product.traceability.report.search</field>
+        <field name="model">el.product.traceability.report</field>
+        <field name="arch" type="xml">
+            <search string="Traceability Movements">
+                <field name="product_id"/>
+                <field name="lot_id"/>
+                <field name="partner_id"/>
+                <field name="reference"/>
+                <field name="source_document"/>
+                <field name="purchase_order_id"/>
+                <field name="production_id"/>
+                <field name="sale_order_id"/>
+                <separator/>
+                <filter name="receipts" string="Receipts" domain="[('operation_type','=','receipt')]"/>
+                <filter name="vendor_returns" string="Vendor Returns" domain="[('operation_type','=','vendor_return')]"/>
+                <filter name="manufacturing_consume" string="Consumed" domain="[('operation_type','=','manufacturing_consume')]"/>
+                <filter name="manufacturing_produce" string="Produced" domain="[('operation_type','=','manufacturing_produce')]"/>
+                <filter name="customer_returns" string="Customer Returns" domain="[('operation_type','=','customer_return')]"/>
+                <filter name="deliveries" string="Deliveries" domain="[('operation_type','=','delivery')]"/>
+                <filter name="scrap" string="Scrap / Waste" domain="[('operation_type','=','scrap')]"/>
+                <filter name="internal" string="Internal Transfers" domain="[('operation_type','=','internal')]"/>
+                <group expand="0" string="Group By">
+                    <filter name="group_product" string="Product" context="{'group_by':'product_id'}"/>
+                    <filter name="group_operation" string="Operation" context="{'group_by':'operation_type'}"/>
+                    <filter name="group_partner" string="Partner" context="{'group_by':'partner_id'}"/>
+                    <filter name="group_production" string="Manufacturing Order" context="{'group_by':'production_id'}"/>
+                    <filter name="group_lot" string="Lot / Serial" context="{'group_by':'lot_id'}"/>
+                    <filter name="group_date" string="Month" context="{'group_by':'date:month'}"/>
+                    <filter name="group_warehouse" string="Warehouse" context="{'group_by':'warehouse_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_product_traceability_report_pivot" model="ir.ui.view">
+        <field name="name">el.product.traceability.report.pivot</field>
+        <field name="model">el.product.traceability.report</field>
+        <field name="arch" type="xml">
+            <pivot string="Traceability Analysis">
+                <field name="product_id" type="row"/>
+                <field name="operation_type" type="col"/>
+                <field name="quantity" type="measure"/>
+                <field name="signed_quantity" type="measure"/>
+                <field name="total_value" type="measure"/>
+                <field name="purchase_total_value" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_product_traceability_report_graph" model="ir.ui.view">
+        <field name="name">el.product.traceability.report.graph</field>
+        <field name="model">el.product.traceability.report</field>
+        <field name="arch" type="xml">
+            <graph string="Traceability Analysis" type="bar">
+                <field name="operation_type"/>
+                <field name="quantity" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="action_product_traceability_report" model="ir.actions.act_window">
+        <field name="name">Traceability Movements</field>
+        <field name="res_model">el.product.traceability.report</field>
+        <field name="view_mode">list,pivot,graph</field>
+        <field name="search_view_id" ref="view_product_traceability_report_search"/>
+    </record>
+
+    <record id="view_product_traceability_manufacturing_list" model="ir.ui.view">
+        <field name="name">el.product.traceability.manufacturing.list</field>
+        <field name="model">el.product.traceability.manufacturing</field>
+        <field name="arch" type="xml">
+            <list string="Manufacturing Genealogy" create="0" edit="0" delete="0">
+                <field name="date"/>
+                <field name="reference"/>
+                <field name="finished_product_id"/>
+                <field name="finished_qty"/>
+                <field name="finished_uom_id"/>
+                <field name="component_product_id"/>
+                <field name="component_qty"/>
+                <field name="component_uom_id"/>
+                <field name="component_value"/>
+                <field name="state"/>
+                <field name="company_id" optional="hide"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_product_traceability_manufacturing_search" model="ir.ui.view">
+        <field name="name">el.product.traceability.manufacturing.search</field>
+        <field name="model">el.product.traceability.manufacturing</field>
+        <field name="arch" type="xml">
+            <search string="Manufacturing Genealogy">
+                <field name="production_id"/>
+                <field name="finished_product_id"/>
+                <field name="component_product_id"/>
+                <field name="reference"/>
+                <group expand="0" string="Group By">
+                    <filter name="group_mo" string="Manufacturing Order" context="{'group_by':'production_id'}"/>
+                    <filter name="group_finished" string="Finished Product" context="{'group_by':'finished_product_id'}"/>
+                    <filter name="group_component" string="Component" context="{'group_by':'component_product_id'}"/>
+                    <filter name="group_date" string="Month" context="{'group_by':'date:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+    <record id="action_product_traceability_manufacturing" model="ir.actions.act_window">
+        <field name="name">Manufacturing Genealogy</field>
+        <field name="res_model">el.product.traceability.manufacturing</field>
+        <field name="view_mode">list</field>
+        <field name="search_view_id" ref="view_product_traceability_manufacturing_search"/>
+    </record>
+</odoo>

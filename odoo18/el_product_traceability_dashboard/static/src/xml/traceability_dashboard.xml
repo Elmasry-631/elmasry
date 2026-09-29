@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="el_product_traceability_dashboard.Dashboard">
+        <div class="o_action" t-att-class="props.className">
+            <div class="o_content">
+                <div class="o_el_traceability_dashboard">
+            <div class="trace_header">
+                <div>
+                    <div class="trace_kicker">INVENTORY INTELLIGENCE</div>
+                    <h1>Product Traceability</h1>
+                    <p>Follow every quantity from purchase and receipt to production, return, delivery and scrap.</p>
+                </div>
+                <div class="trace_header_actions">
+                    <button class="btn btn-light" t-on-click="openMovements"><i class="fa fa-list me-1"/> Movement Details</button>
+                    <button class="btn btn-light" t-on-click="openManufacturing"><i class="fa fa-cogs me-1"/> Manufacturing Genealogy</button>
+                </div>
+            </div>
+
+            <div class="trace_filters">
+                <div class="trace_filter_title"><i class="fa fa-filter me-2"/>Filters</div>
+                <div class="trace_periods">
+                    <button t-att-class="state.period === 'month' ? 'active' : ''" t-on-click="() => setPeriod('month')">Month</button>
+                    <button t-att-class="state.period === 'quarter' ? 'active' : ''" t-on-click="() => setPeriod('quarter')">Quarter</button>
+                    <button t-att-class="state.period === 'year' ? 'active' : ''" t-on-click="() => setPeriod('year')">Year</button>
+                    <button t-att-class="state.period === 'all' ? 'active' : ''" t-on-click="() => setPeriod('all')">All</button>
+                </div>
+                <input type="date" t-att-value="state.filters.date_from" t-on-change="(ev) => onDateChange('date_from', ev)"/>
+                <input type="date" t-att-value="state.filters.date_to" t-on-change="(ev) => onDateChange('date_to', ev)"/>
+                <select t-on-change="(ev) => onFilterChange('product_id', ev)"><option value="">All Products</option><t t-foreach="state.options.products" t-as="x" t-key="x.id"><option t-att-value="x.id" t-att-selected="state.filters.product_id === x.id"><t t-esc="x.name"/></option></t></select>
+                <select t-on-change="(ev) => onFilterChange('categ_id', ev)"><option value="">All Categories</option><t t-foreach="state.options.categories" t-as="x" t-key="x.id"><option t-att-value="x.id"><t t-esc="x.name"/></option></t></select>
+                <select t-on-change="(ev) => onFilterChange('partner_id', ev)"><option value="">All Vendors / Partners</option><t t-foreach="state.options.vendors" t-as="x" t-key="x.id"><option t-att-value="x.id"><t t-esc="x.name"/></option></t></select>
+                <select t-on-change="(ev) => onFilterChange('warehouse_id', ev)"><option value="">All Warehouses</option><t t-foreach="state.options.warehouses" t-as="x" t-key="x.id"><option t-att-value="x.id"><t t-esc="x.name"/></option></t></select>
+                <select t-on-change="(ev) => onFilterChange('lot_id', ev)"><option value="">Lot / Serial (optional)</option><t t-foreach="state.options.lots" t-as="x" t-key="x.id"><option t-att-value="x.id"><t t-esc="x.name"/></option></t></select>
+                <select t-on-change="(ev) => onFilterChange('operation_type', ev)">
+                    <option value="">All Operations</option>
+                    <option value="receipt">Purchase Receipt</option><option value="vendor_return">Vendor Return</option><option value="manufacturing_consume">Consumed</option><option value="manufacturing_produce">Manufactured</option><option value="internal">Internal Transfer</option><option value="delivery">Delivery</option><option value="customer_return">Customer Return</option><option value="scrap">Scrap / Waste</option>
+                </select>
+                <button class="trace_reset" t-on-click="reset"><i class="fa fa-refresh"/></button>
+            </div>
+
+            <t t-if="state.loading"><div class="trace_loading"><div class="spinner-border"/><span>Building traceability view…</span></div></t>
+            <t t-elif="state.error"><div class="alert alert-danger"><t t-esc="state.error"/></div></t>
+            <t t-else="">
+                <div class="trace_kpis">
+                    <div class="trace_kpi purchase"><span>Purchased / Received</span><strong><t t-esc="format(metric('receipt').qty)"/></strong><small><t t-esc="format(metric('receipt').value)"/> value · <t t-esc="metric('receipt').count"/> movements</small></div>
+                    <div class="trace_kpi production"><span>Manufactured</span><strong><t t-esc="format(metric('manufacturing_produce').qty)"/></strong><small><t t-esc="format(metric('manufacturing_produce').value)"/> valuation · <t t-esc="state.data.totals.manufacturing_orders"/> MOs</small></div>
+                    <div class="trace_kpi consumption"><span>Consumed in Production</span><strong><t t-esc="format(metric('manufacturing_consume').qty)"/></strong><small><t t-esc="format(metric('manufacturing_consume').value)"/> valuation</small></div>
+                    <div class="trace_kpi delivery"><span>Customer Deliveries</span><strong><t t-esc="format(metric('delivery').qty)"/></strong><small><t t-esc="metric('delivery').count"/> delivery movements</small></div>
+                    <div class="trace_kpi returns"><span>Returns</span><strong><t t-esc="format(metric('customer_return').qty + metric('vendor_return').qty)"/></strong><small>Customer <t t-esc="format(metric('customer_return').qty)"/> · Vendor <t t-esc="format(metric('vendor_return').qty)"/></small></div>
+                    <div class="trace_kpi scrap"><span>Scrap / Waste</span><strong><t t-esc="format(metric('scrap').qty)"/></strong><small><t t-esc="format(metric('scrap').value)"/> valuation</small></div>
+                </div>
+
+                <div class="trace_grid trace_grid_main">
+                    <section class="trace_panel flow_panel">
+                        <div class="trace_panel_head"><div><h3>Material Flow</h3><span>Quantity by business operation</span></div></div>
+                        <div class="flow_rows">
+                            <t t-foreach="['receipt','manufacturing_consume','manufacturing_produce','delivery','customer_return','scrap']" t-as="op" t-key="op">
+                                <div class="flow_row"><div class="flow_label"><span class="flow_dot" t-att-class="'dot_' + op"/><span><t t-esc="operationLabel(op)"/></span></div><div class="flow_bar"><span t-att-style="'width:' + pct(metric(op).qty, flowMax) + '%'"/></div><strong><t t-esc="format(metric(op).qty)"/></strong></div>
+                            </t>
+                        </div>
+                    </section>
+                    <section class="trace_panel stock_panel">
+                        <div class="trace_panel_head"><div><h3>Current Stock</h3><span>Current internal quantity, independent of period filter</span></div></div>
+                        <div class="stock_big"><strong><t t-esc="format(state.data.totals.current_stock)"/></strong><span>units in internal locations</span></div>
+                        <div class="stock_stats"><div><b><t t-esc="state.data.totals.movement_count"/></b><span>Movements</span></div><div><b><t t-esc="state.data.totals.purchase_orders"/></b><span>Purchase Orders</span></div><div><b><t t-esc="state.data.totals.lots"/></b><span>Lots used</span></div></div>
+                    </section>
+                </div>
+
+                <div class="trace_grid trace_grid_main">
+                    <section class="trace_panel">
+                        <div class="trace_panel_head"><div><h3>Manufacturing: What was made from what?</h3><span>Actual done component moves linked to finished production moves. Lot/serial is optional.</span></div><button class="btn btn-sm btn-outline-primary" t-on-click="openManufacturing">Open full genealogy</button></div>
+                        <div class="trace_table_wrap"><table class="trace_table"><thead><tr><th>MO</th><th>Finished Product</th><th>Produced</th><th>Component</th><th>Consumed</th><th>Component Value</th></tr></thead><tbody><t t-if="!state.data.manufacturing.length"><tr><td colspan="6" class="empty">No completed manufacturing relation found for these filters.</td></tr></t><t t-foreach="state.data.manufacturing" t-as="row" t-key="row.production_id + '-' + row.component_product_id"><tr><td><span class="badge_mo"><t t-esc="row.reference"/></span></td><td><b><t t-esc="row.finished_product_id[1]"/></b></td><td><t t-esc="format(row.finished_qty)"/></td><td><t t-esc="row.component_product_id[1]"/></td><td><t t-esc="format(row.component_qty)"/></td><td><t t-esc="format(row.component_value)"/></td></tr></t></tbody></table></div>
+                    </section>
+                </div>
+
+                <div class="trace_grid trace_grid_main">
+                    <section class="trace_panel">
+                        <div class="trace_panel_head"><div><h3>Product Movement Summary</h3><span>Incoming, outgoing, production and waste by product</span></div></div>
+                        <div class="trace_table_wrap"><table class="trace_table"><thead><tr><th>Product</th><th>Qty In</th><th>Qty Out</th><th>Produced</th><th>Consumed</th><th>Returns</th><th>Scrap</th><th>Movement Value</th></tr></thead><tbody><t t-if="!state.data.products.length"><tr><td colspan="8" class="empty">No data.</td></tr></t><t t-foreach="state.data.products" t-as="row" t-key="row.product_id"><tr><td><b><t t-esc="row.product_name"/></b></td><td class="in"><t t-esc="format(row.qty_in)"/></td><td class="out"><t t-esc="format(row.qty_out)"/></td><td><t t-esc="format(row.produced_qty)"/></td><td><t t-esc="format(row.consumed_qty)"/></td><td><t t-esc="format(row.returned_qty)"/></td><td><t t-esc="format(row.scrap_qty)"/></td><td><t t-esc="format(row.movement_value)"/></td></tr></t></tbody></table></div>
+                    </section>
+                    <section class="trace_panel">
+                        <div class="trace_panel_head"><div><h3>Top Vendors</h3><span>Receipts vs vendor returns</span></div></div>
+                        <div class="vendor_list"><t t-if="!state.data.vendors.length"><div class="empty">No vendor data.</div></t><t t-foreach="state.data.vendors" t-as="row" t-key="row.partner_id"><div class="vendor_item"><div><b><t t-esc="row.partner_name"/></b><small>Received <t t-esc="format(row.received)"/> · Returned <t t-esc="format(row.returned)"/></small></div><span><t t-esc="format(row.received - row.returned)"/></span></div></t></div>
+                    </section>
+                </div>
+
+                <section class="trace_panel">
+                    <div class="trace_panel_head"><div><h3>Recent Trace Activity</h3><span>Latest completed stock events</span></div><button class="btn btn-sm btn-outline-primary" t-on-click="openMovements">Open detailed report</button></div>
+                    <div class="trace_table_wrap"><table class="trace_table"><thead><tr><th>Date</th><th>Operation</th><th>Product</th><th>Qty</th><th>Reference</th><th>Source</th><th>Lot / Serial</th></tr></thead><tbody><t t-foreach="state.data.activity" t-as="row" t-key="row.date + '-' + row.reference + '-' + row.product_name"><tr><td><t t-esc="formatDate(row.date)"/></td><td><span class="op_badge"><t t-esc="operationLabel(row.operation_type)"/></span></td><td><b><t t-esc="row.product_name"/></b></td><td><t t-esc="format(row.quantity)"/></td><td><t t-esc="row.reference"/></td><td><t t-esc="row.source_document"/></td><td><t t-esc="row.lot_name"/></td></tr></t></tbody></table></div>
+                </section>
+            </t>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>
