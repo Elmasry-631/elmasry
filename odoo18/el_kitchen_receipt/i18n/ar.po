@@ -1,0 +1,32 @@
+# Arabic translations for el_kitchen_receipt
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo 18.0\n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. module: el_kitchen_receipt
+msgid "العمارة / الدور"
+msgstr "العمارة / الدور"
+
+#. module: el_kitchen_receipt
+msgid "علامة مميزة"
+msgstr "علامة مميزة"
+
+#. module: el_kitchen_receipt
+msgid "اسم الطيار"
+msgstr "اسم الطيار"
+
+#. module: el_kitchen_receipt
+msgid "طباعة اذن المطبخ"
+msgstr "طباعة اذن المطبخ"
+
+#. module: el_kitchen_receipt
+msgid "تقرير الطيار"
+msgstr "تقرير الطيار"
+
+#. module: el_kitchen_receipt
+msgid "طباعة التقرير"
+msgstr "طباعة التقرير"

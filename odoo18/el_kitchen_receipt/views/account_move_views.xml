@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="account_move_form_inherit_kitchen_driver" model="ir.ui.view">
+        <field name="name">account.move.form.inherit.kitchen.driver</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@id='header_left_group']/div[hasclass('o_col')]" position="after">
+                <label for="x_driver_name" string="اسم الطيار"
+                       invisible="move_type not in ('out_invoice', 'out_refund', 'out_receipt', 'in_invoice', 'in_refund', 'in_receipt')"/>
+                <field name="x_driver_name" nolabel="1"
+                       invisible="move_type not in ('out_invoice', 'out_refund', 'out_receipt', 'in_invoice', 'in_refund', 'in_receipt')"
+                       readonly="state != 'draft'"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="account_move_search_inherit_kitchen" model="ir.ui.view">
+        <field name="name">account.move.search.inherit.kitchen.receipt</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_account_invoice_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="x_driver_name" string="اسم الطيار"/>
+            </xpath>
+            <xpath expr="//filter[@name='status']" position="after">
+                <separator/>
+                <filter string="اسم الطيار" name="group_by_driver" context="{'group_by': 'x_driver_name'}"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="account_move_tree_inherit_kitchen" model="ir.ui.view">
+        <field name="name">account.move.tree.inherit.kitchen.receipt</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_invoice_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="x_driver_name" string="اسم الطيار" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

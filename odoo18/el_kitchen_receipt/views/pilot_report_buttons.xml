@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_pilot_report"
+              name="تقرير الطيار"
+              parent="sale.menu_reporting_sales"
+              action="action_pilot_report_wizard"
+              sequence="10"/>
+</odoo>

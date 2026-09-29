@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="pilot_report_wizard_form" model="ir.ui.view">
+        <field name="name">pilot.report.wizard.form</field>
+        <field name="model">pilot.report.wizard</field>
+        <field name="arch" type="xml">
+            <form string="تقرير الطيار">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="x_driver_name" string="الطيار" widget="many2many_tags"/>
+                            <field name="sale_order_id" string="أمر بيع "/>
+                        </group>
+                        <group>
+                            <field name="date_from" string="من تاريخ"/>
+                            <field name="date_to" string="إلى تاريخ"/>
+                        </group>
+                    </group>
+                    <div class="alert alert-info" role="alert" style="margin-top: 10px;">
+                        <i class="fa fa-info-circle"/> يمكنك ترك حقل الطيار فارغاً لطباعة تقارير جميع الطيارين.
+                    </div>
+                </sheet>
+                <footer>
+                    <button name="action_print_report" string="طباعة التقرير" type="object" class="btn-primary"/>
+                    <button string="إلغاء" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_pilot_report_wizard" model="ir.actions.act_window">
+        <field name="name">تقرير الطيار</field>
+        <field name="res_model">pilot.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+</odoo>

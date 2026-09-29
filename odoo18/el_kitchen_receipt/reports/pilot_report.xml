@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- ========================= -->
+    <!-- Paper Format -->
+    <!-- ========================= -->
+
+<!--    <record id="paperformat_pilot_report" model="report.paperformat">-->
+<!--        <field name="name">Pilot Report A4</field>-->
+<!--        <field name="default" eval="False"/>-->
+<!--        <field name="format">A4</field>-->
+<!--        <field name="orientation">Portrait</field>-->
+<!--        <field name="margin_top">15</field>-->
+<!--        <field name="margin_bottom">15</field>-->
+<!--        <field name="margin_left">10</field>-->
+<!--        <field name="margin_right">10</field>-->
+<!--        <field name="header_spacing">5</field>-->
+<!--        <field name="dpi">90</field>-->
+<!--    </record>-->
+
+    <!-- ========================= -->
+    <!-- Report Action -->
+    <!-- ========================= -->
+
+    <record id="action_pilot_report" model="ir.actions.report">
+        <field name="name">تقرير الطيار</field>
+        <field name="model">sale.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">el_kitchen_receipt.pilot_report_template</field>
+        <field name="report_file">el_kitchen_receipt.pilot_report_template</field>
+<!--        <field name="paperformat_id" ref="el_kitchen_receipt.paperformat_pilot_report"/>-->
+        <field name="print_report_name">'تقرير الطيار'</field>
+    </record>
+
+    <!-- ========================= -->
+    <!-- Main Report Template -->
+    <!-- Uses web.external_layout (the same wrapper Odoo's own -->
+    <!-- Arabic-capable reports use), instead of a bare custom -->
+    <!-- html_container, so it inherits the exact font/encoding -->
+    <!-- setup already confirmed to work on this server. -->
+    <!-- ========================= -->
+
+    <template id="pilot_report_template">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page" style="direction: rtl; text-align: right; font-size: 12px; color: #000;">
+
+                    <!-- ========================= -->
+                    <!-- Report Header -->
+                    <!-- ========================= -->
+
+                    <div style="text-align: center; margin-bottom: 20px;">
+
+                        <h2 style="margin: 0; font-size: 20px;">
+                            تقرير أوامر البيع حسب الطيار
+                        </h2>
+
+                        <!-- Filters -->
+                        <div style="margin-top: 8px; font-size: 11px; color: #555;">
+
+                            <t t-if="env.context.get('wizard_date_from')">
+                                <span style="margin-left: 15px;">
+                                    من:
+                                    <strong t-esc="env.context.get('wizard_date_from')"/>
+                                </span>
+                            </t>
+
+                            <t t-if="env.context.get('wizard_date_to')">
+                                <span style="margin-left: 15px;">
+                                    إلى:
+                                    <strong t-esc="env.context.get('wizard_date_to')"/>
+                                </span>
+                            </t>
+
+                            <t t-if="env.context.get('wizard_driver_name')">
+                                <span style="margin-left: 15px;">
+                                    الطيار:
+                                    <strong t-esc="env.context.get('wizard_driver_name')"/>
+                                </span>
+                            </t>
+
+                        </div>
+
+                    </div>
+
+                    <!-- ========================= -->
+                    <!-- Pilot Sections -->
+                    <!-- Grouping is done in the wizard action_print_report method -->
+                    <!-- ========================= -->
+
+                    <t t-set="pilot_groups" t-value="env.context.get('wizard_pilot_groups', [])"/>
+
+                    <t t-foreach="pilot_groups" t-as="pilot">
+
+                        <div style="border: 1px solid #ccc; margin-bottom: 20px; page-break-inside: avoid;">
+
+                            <!-- Pilot Header -->
+                            <div style="background-color: #333; color: #fff; padding: 10px 12px; font-size: 15px;">
+                                <strong>
+                                    الطيار:
+                                    <span t-esc="pilot['name']"/>
+                                </strong>
+                            </div>
+
+                            <!-- ========================= -->
+                            <!-- Statistics Table -->
+                            <!-- ========================= -->
+
+                            <div style="padding: 10px; background-color: #f8f9fa;">
+                                <table style="width: 100%; border-collapse: collapse; text-align: center;">
+                                    <thead>
+                                        <tr style="background-color: #e9ecef; border-bottom: 2px solid #333;">
+                                            <th style="padding: 8px;">عدد الطلبات</th>
+                                            <th style="padding: 8px;">إجمالي الطلبات</th>
+                                            <th style="padding: 8px;">متوسط الطلب</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-set="pilot_count" t-value="pilot['count']"/>
+                                        <t t-set="pilot_total" t-value="pilot['total']"/>
+                                        <t t-set="pilot_average" t-value="pilot['average']"/>
+                                        <tr>
+                                            <td style="padding: 10px; font-size: 16px; font-weight: bold;">
+                                                <span t-esc="pilot_count"/>
+                                            </td>
+                                            <td style="padding: 10px; font-size: 16px; font-weight: bold; direction: ltr;">
+                                                <span t-esc="'%.2f' % pilot_total"/>
+                                                ج.م
+                                            </td>
+                                            <td style="padding: 10px; font-size: 16px; font-weight: bold; direction: ltr;">
+                                                <span t-esc="'%.2f' % pilot_average"/>
+                                                ج.م
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- ========================= -->
+                            <!-- Orders Table -->
+                            <!-- ========================= -->
+
+                            <div style="padding: 10px;">
+                                <table style="width: 100%; border-collapse: collapse; font-size: 11px;">
+                                    <thead>
+                                        <tr style="background-color: #e9ecef; border-bottom: 2px solid #333;">
+                                            <th style="width: 25%; text-align: right; padding: 7px;">رقم الطلب</th>
+                                            <th style="width: 25%; text-align: center; padding: 7px;">التاريخ</th>
+                                            <th style="width: 25%; text-align: right; padding: 7px;">العميل</th>
+                                            <th style="width: 25%; text-align: left; padding: 7px;">الإجمالي</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-set="pilot_order_records" t-value="env['sale.order'].browse(pilot['order_ids'])"/>
+                                        <t t-foreach="pilot_order_records" t-as="order">
+                                            <tr style="border-bottom: 1px solid #ddd;">
+
+                                                <!-- Order -->
+                                                <td style="text-align: right; padding: 6px; font-weight: bold;">
+                                                    <span t-esc="order.name"/>
+                                                </td>
+
+                                                <!-- Date -->
+                                                <td style="text-align: center; padding: 6px; direction: ltr;">
+                                                    <span t-if="order.date_order"
+                                                          t-field="order.date_order"
+                                                          t-options='{"widget": "datetime", "format": "dd/MM/yyyy"}'/>
+                                                </td>
+
+                                                <!-- Customer -->
+                                                <td style="text-align: right; padding: 6px;">
+                                                    <span t-esc="order.partner_id.name or '-'"/>
+                                                </td>
+
+                                                <!-- Total -->
+                                                <td style="text-align: left; padding: 6px; direction: ltr; font-weight: bold;">
+                                                    <span t-field="order.amount_total"
+                                                          t-options='{"widget": "monetary", "display_currency": order.currency_id}'/>
+                                                </td>
+
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+
+                    </t>
+
+                    <!-- ========================= -->
+                    <!-- Empty Result -->
+                    <!-- ========================= -->
+
+                    <t t-if="not pilot_groups">
+                        <div style="text-align: center; padding: 40px; color: #777;">
+                            لا توجد أوامر بيع مطابقة للبحث.
+                        </div>
+                    </t>
+
+                    <!-- ========================= -->
+                    <!-- Footer -->
+                    <!-- ========================= -->
+
+                    <div style="text-align: center; font-size: 10px; color: #999; margin-top: 15px; border-top: 1px solid #eee; padding-top: 6px;">
+                        المستخدم: <strong t-esc="env.user.name"/> &#160;|&#160;&#160;
+                        تاريخ الطباعة: <span t-esc="time.strftime('%d/%m/%Y %H:%M')"/> &#160;|&#160;&#160;
+                        تم إنشاء هذا التقرير تلقائياً من النظام
+                    </div>
+
+                </div>
+            </t>
+        </t>
+    </template>
+
+</odoo>

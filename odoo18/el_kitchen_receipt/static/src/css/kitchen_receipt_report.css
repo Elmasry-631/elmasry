@@ -1,0 +1,221 @@
+/* ===== Kitchen Receipt 80mm RTL — wkhtmltopdf safe ===== */
+
+/* Reset */
+* {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+html, body {
+    direction: rtl;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Traditional Arabic', 'Simplified Arabic', 'Arial', 'Tahoma', sans-serif !important;
+    text-align: right;
+}
+
+/* Page container */
+.page {
+    direction: rtl;
+    font-family: 'Traditional Arabic', 'Simplified Arabic', 'Arial', 'Tahoma', sans-serif !important;
+    font-size: 11px;
+    color: #000;
+    width: 100%;
+    max-width: 280px;
+    margin: 0 auto;
+    padding: 0;
+    line-height: 1.3;
+}
+
+/* Header banner */
+.receipt-header {
+    border-top: 1px solid #000;
+    border-bottom: 1px solid #000;
+    text-align: center;
+    padding: 3px 0;
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+/* Info table */
+.receipt-info-table {
+    width: 100%;
+    font-size: 11px;
+    border-collapse: collapse;
+    margin-bottom: 5px;
+}
+
+.receipt-info-table td {
+    padding: 1px 0;
+}
+
+.receipt-info-table .label {
+    text-align: right;
+    width: 35%;
+    font-weight: bold;
+}
+
+.receipt-info-table .value {
+    text-align: left;
+    width: 65%;
+    direction: ltr;
+    unicode-bidi: embed;
+}
+
+.receipt-info-table .label-normal {
+    text-align: right;
+    font-weight: normal;
+}
+
+.receipt-info-table .value-normal {
+    text-align: left;
+    direction: ltr;
+    unicode-bidi: embed;
+}
+
+/* Section title (black bar) */
+.receipt-section-title {
+    background-color: #000;
+    color: #fff;
+    text-align: center;
+    padding: 2px 0;
+    font-size: 11px;
+    font-weight: bold;
+    margin: 4px 0;
+}
+
+/* Items table */
+.receipt-items-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 5px;
+    font-size: 11px;
+}
+
+.receipt-items-table thead tr {
+    border-bottom: 1px solid #000;
+    font-weight: bold;
+    background-color: #f2f2f2;
+}
+
+.receipt-items-table thead td {
+    padding: 3px 2px;
+}
+
+.receipt-items-table thead td.col-item {
+    text-align: right;
+    width: 50%;
+}
+
+.receipt-items-table thead td.col-qty {
+    text-align: center;
+    width: 15%;
+}
+
+.receipt-items-table thead td.col-price {
+    text-align: left;
+    width: 35%;
+    direction: ltr;
+}
+
+.receipt-items-table tbody tr {
+    border-bottom: 1px dashed #ddd;
+}
+
+.receipt-items-table tbody td {
+    padding: 4px 2px;
+    font-weight: bold;
+}
+
+.receipt-items-table tbody td.col-item {
+    text-align: right;
+}
+
+.receipt-items-table tbody td.col-qty {
+    text-align: center;
+}
+
+.receipt-items-table tbody td.col-price {
+    text-align: left;
+    direction: ltr;
+}
+
+/* Totals section */
+.receipt-totals {
+    border-top: 1px solid #000;
+    padding-top: 3px;
+    font-size: 11px;
+}
+
+.receipt-totals .total-row {
+    display: block;
+    overflow: hidden;
+    margin-bottom: 2px;
+}
+
+.receipt-totals .total-label {
+    float: right;
+}
+
+.receipt-totals .total-value {
+    float: left;
+    direction: ltr;
+    unicode-bidi: embed;
+}
+
+.receipt-totals .total-grand {
+    display: block;
+    overflow: hidden;
+    background-color: #000;
+    color: #fff;
+    padding: 3px 5px;
+    font-size: 12px;
+    font-weight: bold;
+    margin-top: 3px;
+}
+
+.receipt-totals .total-grand .total-label {
+    float: right;
+}
+
+.receipt-totals .total-grand .total-value {
+    float: left;
+    direction: ltr;
+}
+
+/* Footer elements */
+.receipt-id {
+    text-align: center;
+    font-size: 11px;
+    padding: 4px 0;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.receipt-user {
+    border: 1px solid #000;
+    text-align: center;
+    padding: 2px;
+    margin-top: 2px;
+    font-size: 10px;
+}
+
+.receipt-footer-note {
+    text-align: center;
+    font-size: 10px;
+    font-weight: bold;
+    margin-top: 8px;
+    line-height: 1.4;
+    border-top: 1px dashed #000;
+    padding-top: 4px;
+}
+
+/* Utility: force LTR for numbers */
+.ltr {
+    direction: ltr;
+    unicode-bidi: embed;
+}
