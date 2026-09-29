@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ==================== LIST VIEW ==================== -->
+    <record id="view_commission_type_tree" model="ir.ui.view">
+        <field name="name">sales.commission.type.tree</field>
+        <field name="model">sales.commission.type</field>
+        <field name="arch" type="xml">
+            <list string="Commission Types" default_order="name asc">
+                <field name="name"/>
+                <field name="team_member_type"/>
+                <field name="commission_percentage" widget="percentage"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ==================== FORM VIEW ==================== -->
+    <record id="view_commission_type_form" model="ir.ui.view">
+        <field name="name">sales.commission.type.form</field>
+        <field name="model">sales.commission.type</field>
+        <field name="arch" type="xml">
+            <form string="Commission Type">
+                <sheet>
+                    <!-- Computed Name (READONLY) - Displayed prominently at top -->
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1" class="o_field_char" style="color: #6C757D; font-size: 24px;"/>
+                        </h1>
+                    </div>
+                    
+                    <!-- Main Content - Two Column Layout -->
+                    <group>
+                        <group string="Commission Configuration">
+                            <field name="team_member_type" 
+                                   options="{'no_create': True, 'no_open': True}"/>
+                            <field name="commission_percentage" 
+                                   widget="percentage"
+                                   string="Commission Percentage (%)"/>
+                        </group>
+                        <group string="Company Information">
+                            <field name="company_id" 
+                                   groups="base.group_multi_company"
+                                   options="{'no_create': True, 'no_open': True}"/>
+                        </group>
+                    </group>
+                    
+                    <!-- Chatter for notes and activities (Odoo 19 style) -->
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ==================== SEARCH VIEW ==================== -->
+    <record id="view_commission_type_search" model="ir.ui.view">
+        <field name="name">sales.commission.type.search</field>
+        <field name="model">sales.commission.type</field>
+        <field name="arch" type="xml">
+            <search string="Search Commission Types">
+                <field name="name" string="Commission Name"/>
+                <field name="team_member_type" string="Team Member Type"/>
+                
+                <separator/>
+                
+                <!-- Filters -->
+                <filter string="My Company" 
+                        name="my_company" 
+                        domain="[('company_id', '=', current_company_id)]"/>
+                
+                <filter string="Team Member Type" 
+                        name="group_by_type" 
+                        context="{'group_by': 'team_member_type'}"/>
+                        
+                <filter string="Company" 
+                        name="group_by_company" 
+                        context="{'group_by': 'company_id'}"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- ==================== ACTION ==================== -->
+    <record id="action_commission_type" model="ir.actions.act_window">
+        <field name="name">Commission Types</field>
+        <field name="res_model">sales.commission.type</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'default_company_id': allowed_company_ids[0]}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first Commission Type!
+            </p>
+            <p>
+                Define commission percentages for different team member roles.
+                The commission name will be generated automatically.
+            </p>
+        </field>
+    </record>
+
+</odoo>

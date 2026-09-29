@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ==================== TOP-LEVEL MENU: Commissions ==================== -->
+    <menuitem id="menu_commissions_root"
+              name="Commissions"
+              sequence="100"
+              web_icon="el_commission_type,static/description/icon.png"/>
+
+    <!-- ==================== SUBMENU: Commissions ==================== -->
+    <menuitem id="menu_commission"
+              name="Commissions"
+              parent="menu_commissions_root"
+              action="action_sales_commission"
+              sequence="5"
+              groups="group_commission_user"/>
+
+    <!-- ==================== SUBMENU: Commission Types ==================== -->
+    <menuitem id="menu_commission_type"
+              name="Commission Types"
+              parent="menu_commissions_root"
+              action="action_commission_type"
+              sequence="10"
+              groups="group_commission_user"/>
+
+</odoo>

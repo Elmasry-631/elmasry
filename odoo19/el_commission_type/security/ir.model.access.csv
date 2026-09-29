@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_commission_type_all,sales.commission.type.all,model_sales_commission_type,base.group_user,1,0,0,0
+access_commission_type_user,sales.commission.type.user,model_sales_commission_type,group_commission_user,1,1,1,0
+access_commission_type_manager,sales.commission.type.manager,model_sales_commission_type,group_commission_manager,1,1,1,1
+access_commission_all,sales.commission.all,model_sales_commission,base.group_user,1,0,0,0
+access_commission_user,sales.commission.user,model_sales_commission,group_commission_user,1,1,1,0
+access_commission_manager,sales.commission.manager,model_sales_commission,group_commission_manager,1,1,1,1
