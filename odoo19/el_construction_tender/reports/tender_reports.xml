@@ -1,0 +1,192 @@
+<odoo>
+<template id="report_tender_opportunity_document">
+<t t-call="web.external_layout">
+<t t-call="el_construction_management.report_construction_styles"/>
+<div class="ec"><div class="page">
+    <div class="hero">
+        <h1>Price Bid Submission</h1>
+        <div class="sub">Commercial offer prepared for tender submission</div>
+        <table class="meta">
+            <tr>
+                <td><div class="label">Tender Reference</div><div class="value"><span t-field="o.name"/></div></td>
+                <td><div class="label">Client's Tender No.</div><div class="value"><span t-field="o.reference_no"/></div></td>
+                <td><div class="label">Status</div><div class="value"><span class="badge" t-att-class="'badge ec-state-' + (o.state or '')"><span t-field="o.state"/></span></div></td>
+            </tr>
+        </table>
+    </div>
+    <table class="meta">
+        <tr>
+            <td><div class="label">Tender Title</div><div class="value"><span t-field="o.title"/></div></td>
+            <td><div class="label">Client / Authority</div><div class="value"><span t-field="o.client_id"/></div></td>
+            <td><div class="label">Tender Type</div><div class="value"><span t-field="o.tender_type"/></div></td>
+        </tr>
+        <tr>
+            <td><div class="label">Estimator</div><div class="value"><span t-field="o.user_id"/></div></td>
+            <td><div class="label">Submission Deadline</div><div class="value"><span t-field="o.submission_deadline"/></div></td>
+            <td><div class="label">Company</div><div class="value"><span t-field="o.company_id"/></div></td>
+        </tr>
+    </table>
+    <table class="kpis">
+        <tr>
+            <td><div class="kpi"><div class="s">Items</div><div class="n"><t t-esc="len(o.line_ids)"/></div></div></td>
+            <td><div class="kpi"><div class="s">Total Direct Cost</div><div class="n"><t t-esc="o.total_cost"/></div></div></td>
+            <td><div class="kpi"><div class="s">Total Bid Price</div><div class="n"><t t-esc="o.total_price"/></div></div></td>
+            <td><div class="kpi"><div class="s">Margin</div><div class="n"><t t-esc="('%.1f' % o.margin_percent)"/>%</div></div></td>
+        </tr>
+    </table>
+    <div class="section">Priced Bill of Quantities <small>submitted commercial offer</small></div>
+    <table class="data">
+        <thead>
+            <tr><th>#</th><th>Description</th><th class="right">Qty</th><th>UoM</th><th class="right">Unit Price</th><th class="right">Amount</th></tr>
+        </thead>
+        <tbody>
+            <tr t-foreach="o.line_ids" t-as="l">
+                <td><t t-esc="l_index + 1"/></td>
+                <td><span t-field="l.description"/></td>
+                <td class="right"><span t-field="l.quantity"/></td>
+                <td><span t-field="l.uom_id"/></td>
+                <td class="right"><span t-field="l.unit_price"/></td>
+                <td class="right"><span t-field="l.amount"/></td>
+            </tr>
+            <tr t-if="not o.line_ids"><td colspan="6" class="muted">No priced items.</td></tr>
+        </tbody>
+        <tfoot>
+            <tr><td colspan="5" class="right">Total Bid Price</td><td class="right"><span t-field="o.total_price"/></td></tr>
+        </tfoot>
+    </table>
+    <div class="section">Bid Bond</div>
+    <table class="meta">
+        <tr>
+            <td><div class="label">Required</div><div class="value"><t t-esc="'Yes' if o.bid_bond_required else 'No'"/></div></td>
+            <td><div class="label">Amount</div><div class="value"><span t-field="o.bid_bond_amount"/></div></td>
+            <td><div class="label">Expiry</div><div class="value"><span t-field="o.bid_bond_expiry"/></div></td>
+        </tr>
+    </table>
+    <table class="signature">
+        <tr>
+            <td>Prepared By</td>
+            <td>Reviewed By</td>
+            <td>Authorized Signature</td>
+        </tr>
+    </table>
+</div></div>
+</t>
+</template>
+<template id="report_tender_opportunity">
+<t t-call="web.html_container">
+    <t t-foreach="docs" t-as="o">
+        <t t-call="el_construction_tender.report_tender_opportunity_document"/>
+    </t>
+</t>
+</template>
+<record id="action_report_tender_opportunity" model="ir.actions.report">
+    <field name="name">Price Bid Submission</field>
+    <field name="model">el_construction.tender.opportunity</field>
+    <field name="report_type">qweb-pdf</field>
+    <field name="report_name">el_construction_tender.report_tender_opportunity</field>
+    <field name="report_file">el_construction_tender.report_tender_opportunity</field>
+    <field name="paperformat_id" ref="el_construction_management.paperformat_construction_portrait"/>
+    <field name="binding_model_id" ref="model_el_construction_tender_opportunity"/>
+    <field name="binding_type">report</field>
+</record>
+
+<!-- RFQ Bid Comparison: Vendor x Item matrix -->
+<template id="report_tender_rfq_document">
+<t t-call="web.external_layout">
+<t t-call="el_construction_management.report_construction_styles"/>
+<div class="ec"><div class="page">
+    <div class="hero">
+        <h1>Subcontractor / Vendor Bid Comparison</h1>
+        <div class="sub">Item-by-item comparison of invited vendors' bids</div>
+        <table class="meta">
+            <tr>
+                <td><div class="label">RFQ Reference</div><div class="value"><span t-field="o.name"/></div></td>
+                <td><div class="label">Project</div><div class="value"><span t-field="o.project_id"/></div></td>
+                <td><div class="label">Status</div><div class="value"><span class="badge" t-att-class="'badge ec-state-' + (o.state or '')"><span t-field="o.state"/></span></div></td>
+            </tr>
+        </table>
+    </div>
+    <table class="meta">
+        <tr>
+            <td><div class="label">Tender Opportunity</div><div class="value"><span t-field="o.tender_opportunity_id"/></div></td>
+            <td><div class="label">Work Type</div><div class="value"><span t-field="o.work_type_id"/></div></td>
+            <td><div class="label">Submission Deadline</div><div class="value"><span t-field="o.submission_deadline"/></div></td>
+        </tr>
+    </table>
+    <table class="kpis">
+        <tr>
+            <td><div class="kpi"><div class="s">Vendors Invited</div><div class="n"><t t-esc="o.vendor_count"/></div></div></td>
+            <td><div class="kpi"><div class="s">Bids Submitted</div><div class="n"><t t-esc="len(o.vendor_ids.filtered(lambda v: v.state in ('submitted','awarded','rejected')))"/></div></div></td>
+            <td><div class="kpi"><div class="s">Lowest Total Bid</div><div class="n"><t t-esc="o.lowest_amount"/></div></div></td>
+            <td><div class="kpi"><div class="s">Awarded Vendor</div><div class="n"><span t-field="o.winner_vendor_id.partner_id"/></div></div></td>
+        </tr>
+    </table>
+    <div class="section">Bid Matrix <small>unit price per item, per vendor — lowest highlighted</small></div>
+    <table class="data">
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th class="right">Qty</th>
+                <th>UoM</th>
+                <t t-foreach="o.vendor_ids" t-as="v">
+                    <th class="right"><span t-field="v.partner_id"/></th>
+                </t>
+            </tr>
+        </thead>
+        <tbody>
+            <tr t-foreach="o.line_ids" t-as="l">
+                <td><span t-field="l.description"/></td>
+                <td class="right"><span t-field="l.quantity"/></td>
+                <td><span t-field="l.uom_id"/></td>
+                <t t-foreach="o.vendor_ids" t-as="v">
+                    <t t-set="bl" t-value="v.bid_line_ids.filtered(lambda b: b.rfq_line_id == l)"/>
+                    <td t-att-class="'right strong' if (bl and bl[0].is_lowest) else 'right'">
+                        <t t-if="bl" t-esc="bl[0].unit_price"/>
+                        <t t-if="not bl">—</t>
+                    </td>
+                </t>
+            </tr>
+            <tr t-if="not o.line_ids"><td t-att-colspan="3 + len(o.vendor_ids)" class="muted">No requested items.</td></tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="3" class="right">Total Bid</td>
+                <t t-foreach="o.vendor_ids" t-as="v">
+                    <td class="right"><span t-field="v.total_amount"/></td>
+                </t>
+            </tr>
+        </tfoot>
+    </table>
+    <div class="section">Vendor Status</div>
+    <table class="data">
+        <thead><tr><th>Vendor</th><th>Status</th><th>Submission Date</th><th class="right">Total Amount</th></tr></thead>
+        <tbody>
+            <tr t-foreach="o.vendor_ids" t-as="v">
+                <td><span t-field="v.partner_id"/></td>
+                <td><span class="badge" t-att-class="'badge ec-state-' + (v.state or '')"><span t-field="v.state"/></span></td>
+                <td><span t-field="v.submission_date"/></td>
+                <td class="right"><span t-field="v.total_amount"/></td>
+            </tr>
+        </tbody>
+    </table>
+</div></div>
+</t>
+</template>
+<template id="report_tender_rfq">
+<t t-call="web.html_container">
+    <t t-foreach="docs" t-as="o">
+        <t t-call="el_construction_tender.report_tender_rfq_document"/>
+    </t>
+</t>
+</template>
+<record id="action_report_tender_rfq" model="ir.actions.report">
+    <field name="name">Bid Comparison</field>
+    <field name="model">el_construction.tender.rfq</field>
+    <field name="report_type">qweb-pdf</field>
+    <field name="report_name">el_construction_tender.report_tender_rfq</field>
+    <field name="report_file">el_construction_tender.report_tender_rfq</field>
+    <field name="paperformat_id" ref="el_construction_management.paperformat_construction_landscape"/>
+    <field name="binding_model_id" ref="model_el_construction_tender_rfq"/>
+    <field name="binding_type">report</field>
+</record>
+</odoo>

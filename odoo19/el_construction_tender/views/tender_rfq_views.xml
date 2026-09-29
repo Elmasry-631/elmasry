@@ -1,0 +1,149 @@
+<odoo>
+    <!-- RFQ -->
+    <record id="view_construction_tender_rfq_list" model="ir.ui.view">
+        <field name="name">el_construction.tender.rfq.list</field>
+        <field name="model">el_construction.tender.rfq</field>
+        <field name="arch" type="xml">
+            <list string="Subcontractor / Vendor RFQs">
+                <field name="name" />
+                <field name="project_id" />
+                <field name="tender_opportunity_id" />
+                <field name="work_type_id" />
+                <field name="submission_deadline" />
+                <field name="vendor_count" />
+                <field name="lowest_amount" sum="Total" />
+                <field name="state" widget="badge"
+                       decoration-success="state == 'awarded'"
+                       decoration-danger="state == 'cancelled'"
+                       decoration-info="state in ('sent', 'bidding', 'comparison')" />
+            </list>
+        </field>
+    </record>
+
+    <record id="view_construction_tender_rfq_form" model="ir.ui.view">
+        <field name="name">el_construction.tender.rfq.form</field>
+        <field name="model">el_construction.tender.rfq</field>
+        <field name="arch" type="xml">
+            <form string="Subcontractor / Vendor RFQ">
+                <header>
+                    <button name="action_send" string="Send RFQ" type="object" class="oe_highlight" invisible="state != 'draft'" />
+                    <button name="action_start_bidding" string="Start Bidding" type="object" class="oe_highlight" invisible="state != 'sent'" />
+                    <button name="action_go_comparison" string="Go to Comparison" type="object" class="oe_highlight" invisible="state != 'bidding'" />
+                    <button name="action_open_compare_wizard" string="Compare Bids" type="object" invisible="state not in ('bidding', 'comparison')" />
+                    <button name="action_reset_draft" string="Reset to Draft" type="object" invisible="state in ('draft', 'awarded')" />
+                    <button name="action_cancel" string="Cancel" type="object" invisible="state in ('awarded', 'cancelled')" />
+                    <field name="state" widget="statusbar" statusbar_visible="draft,sent,bidding,comparison,awarded" />
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_create_subcontract" type="object" class="oe_stat_button" icon="fa-file-text-o"
+                                invisible="not subcontract_id">
+                            <div class="o_stat_info">
+                                <span class="o_stat_text">Subcontract</span>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1" />
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="project_id" />
+                            <field name="sub_project_id" domain="[('project_id', '=', project_id)]" invisible="not project_id" />
+                            <field name="tender_opportunity_id" />
+                        </group>
+                        <group>
+                            <field name="work_type_id" />
+                            <field name="submission_deadline" />
+                            <field name="company_id" groups="base.group_multi_company" />
+                        </group>
+                    </group>
+                    <group string="Scope of Work">
+                        <field name="scope_description" nolabel="1" />
+                    </group>
+                    <notebook>
+                        <page string="Requested Items">
+                            <field name="line_ids">
+                                <list editable="bottom">
+                                    <field name="boq_line_id" optional="hide" />
+                                    <field name="product_id" optional="show" />
+                                    <field name="description" />
+                                    <field name="quantity" />
+                                    <field name="uom_id" />
+                                    <field name="awarded_unit_price" readonly="1" optional="show" />
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Vendors / Bids">
+                            <field name="winner_vendor_id" invisible="not winner_vendor_id" readonly="1" />
+                            <field name="vendor_ids">
+                                <list editable="bottom" decoration-success="state == 'awarded'" decoration-muted="state in ('declined', 'rejected')">
+                                    <field name="partner_id" />
+                                    <field name="state" widget="badge" />
+                                    <field name="submission_date" />
+                                    <field name="total_amount" sum="Total" />
+                                    <button name="action_mark_submitted" string="Mark Submitted" type="object" icon="fa-check" invisible="state != 'invited'" />
+                                    <button name="action_award" string="Award" type="object" icon="fa-trophy" invisible="state != 'submitted'" />
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_construction_tender_rfq" model="ir.actions.act_window">
+        <field name="name">Subcontractor / Vendor RFQs</field>
+        <field name="res_model">el_construction.tender.rfq</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Create your first RFQ</p>
+            <p>Invite subcontractors or suppliers to bid on a scope of work, compare their prices, and award.</p>
+        </field>
+    </record>
+
+    <!-- Vendor (opened from the RFQ's Vendors / Bids tab to enter bid lines) -->
+    <record id="view_construction_tender_rfq_vendor_form" model="ir.ui.view">
+        <field name="name">el_construction.tender.rfq.vendor.form</field>
+        <field name="model">el_construction.tender.rfq.vendor</field>
+        <field name="arch" type="xml">
+            <form string="Vendor Bid">
+                <header>
+                    <button name="action_mark_submitted" string="Mark Submitted" type="object" class="oe_highlight" invisible="state != 'invited'" />
+                    <button name="action_award" string="Award to this Vendor" type="object" class="oe_highlight" invisible="state != 'submitted'" />
+                    <button name="action_mark_declined" string="Mark Declined" type="object" invisible="state not in ('invited',)" />
+                    <field name="state" widget="statusbar" statusbar_visible="invited,submitted,awarded" />
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="partner_id" />
+                        </h1>
+                    </div>
+                    <group>
+                        <field name="rfq_id" readonly="1" />
+                        <field name="submission_date" readonly="1" />
+                        <field name="total_amount" />
+                    </group>
+                    <field name="bid_line_ids">
+                        <list editable="bottom" decoration-success="is_lowest">
+                            <field name="rfq_line_id" readonly="1" />
+                            <field name="unit_price" />
+                            <field name="amount" sum="Total" />
+                            <field name="is_lowest" column_invisible="1" />
+                            <field name="remarks" />
+                        </list>
+                    </field>
+                    <group>
+                        <field name="notes" nolabel="1" placeholder="Notes about this vendor's bid..." />
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+</odoo>

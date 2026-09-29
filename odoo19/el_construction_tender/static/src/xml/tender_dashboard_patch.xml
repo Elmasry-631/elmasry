@@ -1,0 +1,22 @@
+<templates xml:space="preserve">
+    <t t-name="el_construction_tender.DashboardPatch"
+       t-inherit="el_construction_management.Dashboard"
+       t-inherit-mode="extension">
+        <xpath expr="//div[contains(@class, 'kpi-card') and contains(@class, 'kpi-purple')]/parent::div" position="after">
+            <div class="col-lg-2 col-md-4 col-sm-6">
+                <div class="kpi-card kpi-indigo cursor-pointer" t-on-click="onTendersOpenClick">
+                    <div class="kpi-icon"><i class="fa fa-file-text-o"/></div>
+                    <div class="kpi-label">Open Tenders</div>
+                    <div class="kpi-value"><t t-esc="state.tenderOpen"/></div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-4 col-sm-6">
+                <div class="kpi-card kpi-rose cursor-pointer" t-on-click="onRfqOpenClick">
+                    <div class="kpi-icon"><i class="fa fa-handshake-o"/></div>
+                    <div class="kpi-label">Open RFQs</div>
+                    <div class="kpi-value"><t t-esc="state.rfqOpen"/></div>
+                </div>
+            </div>
+        </xpath>
+    </t>
+</templates>

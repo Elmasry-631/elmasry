@@ -1,0 +1,9 @@
+.o_construction_dashboard .kpi-indigo { background: linear-gradient(145deg, #eef0fd, #dde1f9); }
+.o_construction_dashboard .kpi-indigo .kpi-icon i, .o_construction_dashboard .kpi-indigo .kpi-label { color: #4f5bd5; }
+.o_construction_dashboard .kpi-indigo .kpi-value { color: #363f9e; }
+.o_construction_dashboard .kpi-indigo::before { background: linear-gradient(90deg, #4f5bd5, #7c86f0); }
+
+.o_construction_dashboard .kpi-rose { background: linear-gradient(145deg, #fdeaf1, #fad4e3); }
+.o_construction_dashboard .kpi-rose .kpi-icon i, .o_construction_dashboard .kpi-rose .kpi-label { color: #d6336c; }
+.o_construction_dashboard .kpi-rose .kpi-value { color: #a3244f; }
+.o_construction_dashboard .kpi-rose::before { background: linear-gradient(90deg, #d6336c, #f06595); }

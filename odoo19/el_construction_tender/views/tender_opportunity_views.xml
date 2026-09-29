@@ -1,0 +1,129 @@
+<odoo>
+    <record id="view_construction_tender_opportunity_list" model="ir.ui.view">
+        <field name="name">el_construction.tender.opportunity.list</field>
+        <field name="model">el_construction.tender.opportunity</field>
+        <field name="arch" type="xml">
+            <list string="Tenders">
+                <field name="name" />
+                <field name="title" />
+                <field name="client_id" />
+                <field name="tender_type" />
+                <field name="submission_deadline" />
+                <field name="total_price" sum="Total" />
+                <field name="margin_percent" avg="Avg Margin %" />
+                <field name="state" widget="badge"
+                       decoration-success="state == 'won'"
+                       decoration-danger="state in ('lost', 'cancelled')"
+                       decoration-info="state in ('submitted', 'review')" />
+            </list>
+        </field>
+    </record>
+
+    <record id="view_construction_tender_opportunity_form" model="ir.ui.view">
+        <field name="name">el_construction.tender.opportunity.form</field>
+        <field name="model">el_construction.tender.opportunity</field>
+        <field name="arch" type="xml">
+            <form string="Tender Opportunity">
+                <header>
+                    <button name="action_set_qualification" string="Qualify" type="object" class="oe_highlight" invisible="state != 'draft'" />
+                    <button name="action_start_estimating" string="Start Estimating" type="object" class="oe_highlight" invisible="state != 'qualification'" />
+                    <button name="action_send_review" string="Send for Pricing Review" type="object" class="oe_highlight" invisible="state != 'estimating'" />
+                    <button name="action_submit" string="Submit Bid" type="object" class="oe_highlight" invisible="state != 'review'" />
+                    <button name="action_mark_won" string="Mark Won" type="object" class="oe_highlight" invisible="state != 'submitted'" confirm="Marking this tender as Won will automatically create a Project, Sub Project and BOQ. Continue?" />
+                    <button name="action_mark_lost" string="Mark Lost" type="object" invisible="state != 'submitted'" />
+                    <button name="action_reset_draft" string="Reset to Draft" type="object" invisible="state in ('draft', 'won')" />
+                    <button name="action_cancel" string="Cancel" type="object" invisible="state in ('won', 'cancelled')" />
+                    <field name="state" widget="statusbar" statusbar_visible="draft,qualification,estimating,review,submitted,won" />
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_rfqs" type="object" class="oe_stat_button" icon="fa-handshake-o">
+                            <field name="rfq_count" widget="statinfo" string="Subcontractor RFQs" />
+                        </button>
+                        <button name="action_create_project" type="object" class="oe_stat_button" icon="fa-building"
+                                invisible="not project_id">
+                            <div class="o_stat_info">
+                                <span class="o_stat_text">Project</span>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <label for="title" />
+                        <h1>
+                            <field name="title" placeholder="e.g. New Headquarters Building - Tower A" />
+                        </h1>
+                        <h3>
+                            <field name="name" readonly="1" />
+                        </h3>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="client_id" />
+                            <field name="tender_type" />
+                            <field name="reference_no" />
+                            <field name="company_id" groups="base.group_multi_company" />
+                        </group>
+                        <group>
+                            <field name="user_id" />
+                            <field name="submission_deadline" />
+                            <field name="site_visit_date" />
+                        </group>
+                    </group>
+                    <group string="Bid Bond">
+                        <group>
+                            <field name="bid_bond_required" />
+                        </group>
+                        <group invisible="not bid_bond_required">
+                            <field name="bid_bond_amount" />
+                            <field name="bid_bond_expiry" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Priced Items (BOQ)">
+                            <field name="line_ids">
+                                <list editable="bottom">
+                                    <field name="work_type_id" optional="show" />
+                                    <field name="work_sub_type_id" optional="hide" />
+                                    <field name="product_id" optional="show" />
+                                    <field name="description" />
+                                    <field name="quantity" />
+                                    <field name="uom_id" />
+                                    <field name="cost_source_rfq_line_id" optional="hide" />
+                                    <field name="cost_unit" />
+                                    <field name="overhead_percent" />
+                                    <field name="profit_percent" />
+                                    <field name="unit_price" />
+                                    <field name="cost_amount" sum="Total Cost" />
+                                    <field name="amount" sum="Total Price" />
+                                </list>
+                            </field>
+                            <group class="oe_subtotal_footer">
+                                <field name="total_cost" />
+                                <field name="total_price" />
+                                <field name="margin_amount" />
+                                <field name="margin_percent" />
+                            </group>
+                        </page>
+                        <page string="Lost Reason" invisible="state != 'lost'">
+                            <field name="lost_reason" />
+                        </page>
+                        <page string="Notes">
+                            <field name="notes" />
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_construction_tender_opportunity" model="ir.actions.act_window">
+        <field name="name">Tenders</field>
+        <field name="res_model">el_construction.tender.opportunity</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Create your first tender</p>
+            <p>Track tenders you bid for, build up pricing per item, submit, and convert a Win into a Project automatically.</p>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,34 @@
+<odoo>
+    <record id="view_construction_tender_rfq_compare_wizard_form" model="ir.ui.view">
+        <field name="name">el_construction.tender.rfq.compare.wizard.form</field>
+        <field name="model">el_construction.tender.rfq.compare.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Bid Comparison">
+                <sheet>
+                    <field name="rfq_id" invisible="1" />
+                    <field name="comparison_html" nolabel="1" />
+                    <separator string="Award" />
+                    <field name="vendor_ids" nolabel="1">
+                        <list decoration-success="state == 'awarded'" decoration-muted="state in ('declined', 'rejected')">
+                            <field name="partner_id" />
+                            <field name="state" widget="badge" />
+                            <field name="total_amount" sum="Total" />
+                            <button name="action_award" string="Award" type="object" icon="fa-trophy"
+                                    invisible="state != 'submitted'" />
+                        </list>
+                    </field>
+                </sheet>
+                <footer>
+                    <button string="Close" special="cancel" class="oe_highlight" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_construction_tender_rfq_compare_wizard" model="ir.actions.act_window">
+        <field name="name">Bid Comparison</field>
+        <field name="res_model">el_construction.tender.rfq.compare.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>
