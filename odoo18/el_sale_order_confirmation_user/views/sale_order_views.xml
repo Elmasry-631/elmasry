@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_order_form_inherit_confirmed_by" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit.confirmed.by</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='user_id']" position="after">
+                <field name="confirmed_by_id" readonly="1" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Extend the BASE sale.order search view. Both the Quotations and the
+         Sales Orders menus use views that inherit from this base view, so
+         adding the field/filter here makes it available in both places. -->
+    <record id="view_sales_order_filter_inherit_confirmed_by" model="ir.ui.view">
+        <field name="name">sale.order.search.inherit.confirmed.by</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_sales_order_filter"/>
+        <field name="arch" type="xml">
+
+            <!-- Filter: let the user search/filter by a specific Confirmed By user -->
+            <xpath expr="//field[@name='user_id']" position="after">
+                <field name="confirmed_by_id" string="Confirmed By"/>
+            </xpath>
+
+            <!-- Group By: Confirmed By -->
+            <xpath expr="//filter[@name='customer']" position="after">
+                <filter name="groupby_confirmed_by_id"
+                        string="Confirmed By"
+                        context="{'group_by': 'confirmed_by_id'}"/>
+            </xpath>
+
+        </field>
+    </record>
+
+</odoo>
