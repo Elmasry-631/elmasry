@@ -1,0 +1,28 @@
+<odoo>
+    <record id="view_foodics_partner_list" model="ir.ui.view">
+        <field name="name">foodics.res.partner.list</field>
+        <field name="model">res.partner</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="phone"/>
+                <field name="email"/>
+                <field name="foodics_id"/>
+                <field name="foodics_loyalty_points"/>
+                <field name="foodics_sync_enabled"/>
+                <field name="foodics_last_sync_date"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_foodics_customers" model="ir.actions.act_window">
+        <field name="name">Customers</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_id" ref="view_foodics_partner_list"/>
+        <field name="domain">[('customer_rank', '&gt;', 0)]</field>
+    </record>
+
+    <menuitem id="menu_foodics_customers" name="Customers" parent="menu_foodics_data" action="action_foodics_customers" sequence="20"/>
+</odoo>
+

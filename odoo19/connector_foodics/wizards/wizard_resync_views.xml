@@ -1,0 +1,36 @@
+<odoo>
+    <record id="view_foodics_resync_wizard_form" model="ir.ui.view">
+        <field name="name">foodics.resync.wizard.form</field>
+        <field name="model">foodics.resync.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="connection_id"/>
+                    <field name="start_date"/>
+                </group>
+                <group string="Entities">
+                    <field name="sync_products"/>
+                    <field name="sync_categories"/>
+                    <field name="sync_customers"/>
+                    <field name="sync_orders"/>
+                    <field name="sync_inventory"/>
+                    <field name="sync_taxes"/>
+                </group>
+                <footer>
+                    <button name="action_resync" type="object" string="Start Resync" class="btn-primary"/>
+                    <button string="Cancel" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_foodics_resync_wizard" model="ir.actions.act_window">
+        <field name="name">Full Resync</field>
+        <field name="res_model">foodics.resync.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_foodics_full_resync" name="Full Resync" parent="menu_foodics_monitoring" action="action_foodics_resync_wizard" sequence="30"/>
+</odoo>
+

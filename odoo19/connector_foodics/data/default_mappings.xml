@@ -1,0 +1,33 @@
+<odoo noupdate="1">
+    <record id="mapping_product_name" model="foodics.mapping">
+        <field name="odoo_model">product.product</field>
+        <field name="foodics_resource">products</field>
+        <field name="odoo_field">name</field>
+        <field name="foodics_field">name</field>
+    </record>
+    <record id="mapping_product_sku" model="foodics.mapping">
+        <field name="odoo_model">product.product</field>
+        <field name="foodics_resource">products</field>
+        <field name="odoo_field">default_code</field>
+        <field name="foodics_field">sku</field>
+    </record>
+    <record id="mapping_product_price" model="foodics.mapping">
+        <field name="odoo_model">product.product</field>
+        <field name="foodics_resource">products</field>
+        <field name="odoo_field">lst_price</field>
+        <field name="foodics_field">price</field>
+    </record>
+    <record id="mapping_partner_name" model="foodics.mapping">
+        <field name="odoo_model">res.partner</field>
+        <field name="foodics_resource">customers</field>
+        <field name="odoo_field">name</field>
+        <field name="foodics_field">name</field>
+    </record>
+    <record id="mapping_partner_phone" model="foodics.mapping">
+        <field name="odoo_model">res.partner</field>
+        <field name="foodics_resource">customers</field>
+        <field name="odoo_field">phone</field>
+        <field name="foodics_field">phone</field>
+    </record>
+</odoo>
+

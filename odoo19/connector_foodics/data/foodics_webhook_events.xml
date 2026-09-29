@@ -1,0 +1,19 @@
+<odoo noupdate="1">
+    <record id="webhook_event_order_created" model="foodics.webhook.event">
+        <field name="name">Order Created</field>
+        <field name="event_type">order.created</field>
+    </record>
+    <record id="webhook_event_order_updated" model="foodics.webhook.event">
+        <field name="name">Order Updated</field>
+        <field name="event_type">order.updated</field>
+    </record>
+    <record id="webhook_event_product_updated" model="foodics.webhook.event">
+        <field name="name">Product Updated</field>
+        <field name="event_type">product.updated</field>
+    </record>
+    <record id="webhook_event_stock_updated" model="foodics.webhook.event">
+        <field name="name">Stock Updated</field>
+        <field name="event_type">stock.updated</field>
+    </record>
+</odoo>
+

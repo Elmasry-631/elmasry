@@ -1,0 +1,48 @@
+<odoo noupdate="1">
+    <record id="ir_cron_foodics_product_sync" model="ir.cron">
+        <field name="name">Foodics: Product Sync</field>
+        <field name="model_id" ref="model_foodics_connection"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_sync_products()</field>
+        <field name="interval_number">30</field>
+        <field name="interval_type">minutes</field>
+        <field name="active">False</field>
+    </record>
+    <record id="ir_cron_foodics_order_sync" model="ir.cron">
+        <field name="name">Foodics: Order Import</field>
+        <field name="model_id" ref="model_foodics_connection"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_sync_orders()</field>
+        <field name="interval_number">15</field>
+        <field name="interval_type">minutes</field>
+        <field name="active">False</field>
+    </record>
+    <record id="ir_cron_foodics_customer_sync" model="ir.cron">
+        <field name="name">Foodics: Customer Sync</field>
+        <field name="model_id" ref="model_foodics_connection"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_sync_customers()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">hours</field>
+        <field name="active">False</field>
+    </record>
+    <record id="ir_cron_foodics_inventory_sync" model="ir.cron">
+        <field name="name">Foodics: Inventory Sync</field>
+        <field name="model_id" ref="model_foodics_connection"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_sync_inventory()</field>
+        <field name="interval_number">30</field>
+        <field name="interval_type">minutes</field>
+        <field name="active">False</field>
+    </record>
+    <record id="ir_cron_foodics_retry_failed" model="ir.cron">
+        <field name="name">Foodics: Retry Failed Syncs</field>
+        <field name="model_id" ref="model_foodics_sync_log"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_retry_failed()</field>
+        <field name="interval_number">5</field>
+        <field name="interval_type">minutes</field>
+        <field name="active">True</field>
+    </record>
+</odoo>
+

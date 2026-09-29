@@ -1,0 +1,169 @@
+<odoo>
+    <record id="view_foodics_connection_list" model="ir.ui.view">
+        <field name="name">foodics.connection.list</field>
+        <field name="model">foodics.connection</field>
+        <field name="arch" type="xml">
+            <list decoration-success="state == 'connected'" decoration-danger="state == 'error'">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="business_id"/>
+                <field name="company_id"/>
+                <field name="state"/>
+                <field name="last_successful_call"/>
+                <field name="failed_log_count"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_foodics_connection_form" model="ir.ui.view">
+        <field name="name">foodics.connection.form</field>
+        <field name="model">foodics.connection</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_test_connection" type="object" string="Test Connection" class="btn-primary"/>
+                    <button name="action_generate_webhook_secret" type="object" string="Generate Webhook Secret"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,connected,error,disabled"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_open_sync_logs" type="object" class="oe_stat_button" icon="fa-history">
+                            <field name="sync_log_count" widget="statinfo" string="Logs"/>
+                        </button>
+                        <button name="action_open_failed_sync_logs" type="object" class="oe_stat_button" icon="fa-exclamation-triangle">
+                            <field name="failed_log_count" widget="statinfo" string="Failures"/>
+                        </button>
+                    </div>
+                    <group>
+                        <group string="Connection">
+                            <field name="name"/>
+                            <field name="business_id"/>
+                            <field name="base_url"/>
+                            <field name="test_mode"/>
+                            <field name="company_id"/>
+                            <field name="active"/>
+                        </group>
+                        <group string="Credentials" groups="connector_foodics.group_foodics_admin">
+                            <field name="api_key" password="True"/>
+                            <field name="api_secret" password="True"/>
+                            <field name="token" password="True"/>
+                            <field name="token_expires_at"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Status">
+                            <field name="last_successful_call" readonly="1"/>
+                            <field name="last_sync_date" readonly="1"/>
+                            <field name="last_error" readonly="1"/>
+                        </group>
+                        <group string="Webhook">
+                            <field name="webhook_secret" password="True"/>
+                            <field name="webhook_url" readonly="1"/>
+                            <field name="sync_mode"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Sync Settings">
+                            <group>
+                                <group string="Enabled Syncs">
+                                    <field name="sync_products"/>
+                                    <field name="sync_categories"/>
+                                    <field name="sync_customers"/>
+                                    <field name="sync_orders"/>
+                                    <field name="sync_inventory"/>
+                                    <field name="sync_taxes"/>
+                                </group>
+                                <group string="Intervals and Limits">
+                                    <field name="product_sync_interval"/>
+                                    <field name="order_sync_interval"/>
+                                    <field name="inventory_sync_interval"/>
+                                    <field name="customer_sync_interval"/>
+                                    <field name="max_retries"/>
+                                    <field name="rate_limit"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Order Import">
+                            <group>
+                                <field name="order_import_mode"/>
+                                <field name="order_prefix"/>
+                                <field name="default_customer_id"/>
+                                <field name="order_journal_id"/>
+                            </group>
+                        </page>
+                        <page string="Branch Mappings">
+                            <field name="branch_mapping_ids">
+                                <list editable="bottom">
+                                    <field name="name"/>
+                                    <field name="foodics_branch_id"/>
+                                    <field name="warehouse_id"/>
+                                    <field name="location_id"/>
+                                    <field name="pos_config_id"/>
+                                    <field name="active"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Field Mappings">
+                            <field name="mapping_ids">
+                                <list editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="odoo_model"/>
+                                    <field name="foodics_resource"/>
+                                    <field name="odoo_field"/>
+                                    <field name="foodics_field"/>
+                                    <field name="mapping_type"/>
+                                    <field name="active"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Webhook Events">
+                            <field name="webhook_event_ids">
+                                <list editable="bottom">
+                                    <field name="name"/>
+                                    <field name="event_type"/>
+                                    <field name="active"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_foodics_connection_search" model="ir.ui.view">
+        <field name="name">foodics.connection.search</field>
+        <field name="model">foodics.connection</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="business_id"/>
+                <filter name="connected" string="Connected" domain="[('state','=','connected')]"/>
+                <filter name="failed" string="Error" domain="[('state','=','error')]"/>
+                <filter name="active" string="Active" domain="[('active','=',True)]"/>
+                <group>
+                    <filter name="group_company" string="Company" context="{'group_by':'company_id'}"/>
+                    <filter name="group_state" string="Status" context="{'group_by':'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_foodics_connection" model="ir.actions.act_window">
+        <field name="name">Connections</field>
+        <field name="res_model">foodics.connection</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem
+        id="menu_foodics_root"
+        name="Foodics Connector"
+        sequence="70"
+        groups="connector_foodics.group_foodics_operator"
+        web_icon="connector_foodics,static/description/icon.png"
+    />
+    <menuitem id="menu_foodics_configuration" name="Configuration" parent="menu_foodics_root" sequence="80" groups="connector_foodics.group_foodics_admin"/>
+    <menuitem id="menu_foodics_connections" name="Connections" parent="menu_foodics_configuration" action="action_foodics_connection" sequence="10"/>
+</odoo>

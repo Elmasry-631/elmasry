@@ -1,0 +1,37 @@
+<odoo>
+    <record id="view_foodics_dashboard_kanban" model="ir.ui.view">
+        <field name="name">foodics.dashboard.kanban</field>
+        <field name="model">foodics.connection</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <field name="name"/>
+                <field name="state"/>
+                <field name="last_successful_call"/>
+                <field name="last_sync_date"/>
+                <field name="sync_log_count"/>
+                <field name="failed_log_count"/>
+                <templates>
+                    <t t-name="card">
+                        <div class="oe_kanban_global_click">
+                            <strong><field name="name"/></strong>
+                            <div>Status: <field name="state"/></div>
+                            <div>Last API Call: <field name="last_successful_call"/></div>
+                            <div>Last Sync: <field name="last_sync_date"/></div>
+                            <div>Logs: <field name="sync_log_count"/> / Failures: <field name="failed_log_count"/></div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="action_foodics_dashboard" model="ir.actions.act_window">
+        <field name="name">Dashboard</field>
+        <field name="res_model">foodics.connection</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="view_id" ref="view_foodics_dashboard_kanban"/>
+    </record>
+
+    <menuitem id="menu_foodics_dashboard" name="Dashboard" parent="menu_foodics_root" action="action_foodics_dashboard" sequence="5"/>
+</odoo>
+

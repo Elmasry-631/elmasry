@@ -1,0 +1,16 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_foodics_connection_admin,foodics.connection admin,model_foodics_connection,connector_foodics.group_foodics_admin,1,1,1,1
+access_foodics_connection_operator,foodics.connection operator,model_foodics_connection,connector_foodics.group_foodics_operator,1,0,0,0
+access_foodics_mapping_admin,foodics.mapping admin,model_foodics_mapping,connector_foodics.group_foodics_admin,1,1,1,1
+access_foodics_mapping_operator,foodics.mapping operator,model_foodics_mapping,connector_foodics.group_foodics_operator,1,0,0,0
+access_foodics_branch_mapping_admin,foodics.branch.mapping admin,model_foodics_branch_mapping,connector_foodics.group_foodics_admin,1,1,1,1
+access_foodics_branch_mapping_operator,foodics.branch.mapping operator,model_foodics_branch_mapping,connector_foodics.group_foodics_operator,1,0,0,0
+access_foodics_sync_log_admin,foodics.sync.log admin,model_foodics_sync_log,connector_foodics.group_foodics_admin,1,1,1,1
+access_foodics_sync_log_operator,foodics.sync.log operator,model_foodics_sync_log,connector_foodics.group_foodics_operator,1,1,0,0
+access_foodics_webhook_event_admin,foodics.webhook.event admin,model_foodics_webhook_event,connector_foodics.group_foodics_admin,1,1,1,1
+access_foodics_webhook_event_operator,foodics.webhook.event operator,model_foodics_webhook_event,connector_foodics.group_foodics_operator,1,0,0,0
+access_foodics_webhook_log_admin,foodics.webhook.log admin,model_foodics_webhook_log,connector_foodics.group_foodics_admin,1,1,1,1
+access_foodics_webhook_log_operator,foodics.webhook.log operator,model_foodics_webhook_log,connector_foodics.group_foodics_operator,1,1,0,0
+access_foodics_test_connection_wizard,foodics.test.connection.wizard,model_foodics_test_connection_wizard,connector_foodics.group_foodics_admin,1,1,1,1
+access_foodics_resync_wizard,foodics.resync.wizard,model_foodics_resync_wizard,connector_foodics.group_foodics_admin,1,1,1,1
+
