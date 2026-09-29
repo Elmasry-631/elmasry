@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Warehouse-Based Access Control - Security Groups
+    
+    This file defines security groups for warehouse access control:
+    - group_warehouse_user: Users with restricted warehouse access
+    - group_warehouse_manager: Managers who can bypass restrictions
+    - group_warehouse_admin: Full administrators (inherits system)
+    
+    Author: Ibrahim Elmasry
+    License: LGPL-3
+-->
+<odoo>
+    <!-- ============================================ -->
+    <!-- Module Category (Standalone - LAW G)        -->
+    <!-- ============================================ -->
+    <record id="module_category_warehouse_access" model="ir.module.category">
+        <field name="name">Warehouse Access Control</field>
+    </record>
+
+    <!-- ============================================ -->
+    <!-- Group: Warehouse User                       -->
+    <!-- Regular users with warehouse restrictions   -->
+    <!-- ============================================ -->
+    <record id="group_warehouse_user" model="res.groups">
+        <field name="name">Warehouse: Restricted User</field>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="comment">User with restricted access to warehouses. Can only see data from assigned warehouses.</field>
+    </record>
+
+    <!-- ============================================ -->
+    <!-- Group: Warehouse Manager                    -->
+    <!-- Can bypass warehouse restrictions           -->
+    <!-- ============================================ -->
+    <record id="group_warehouse_manager" model="res.groups">
+        <field name="name">Warehouse Manager</field>
+        <field name="implied_ids" eval="[(4, ref('group_warehouse_user'))]"/>
+        <field name="comment">Warehouse manager who can see all warehouses and manage user assignments.</field>
+    </record>
+
+
+
+</odoo>

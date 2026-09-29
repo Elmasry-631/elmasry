@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_picking_form_warehouse_access" model="ir.ui.view">
+        <field name="name">stock.picking.form.warehouse.access</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='picking_type_id']" position="after">
+                <field name="user_warehouse_count" invisible="1"/>
+                <field name="is_single_warehouse_user" invisible="1"/>
+            </xpath>
+            <xpath expr="//field[@name='location_dest_id']" position="attributes">
+                <attribute name="domain">[('usage','!=','view')]</attribute>
+                <attribute name="readonly">is_single_warehouse_user and picking_type_code == 'internal'</attribute>
+            </xpath>
+            <xpath expr="//field[@name='location_id']" position="attributes">
+                <attribute name="readonly">is_single_warehouse_user and picking_type_code == 'internal'</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

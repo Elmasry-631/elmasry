@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data noupdate="0">
+
+    <record id="stock_picking_warehouse_rule" model="ir.rule">
+        <field name="name">Stock Picking: Warehouse-Based Access</field>
+        <field name="model_id" ref="stock.model_stock_picking"/>
+        <field name="domain_force">[
+            '|', '|', '|',
+                ('picking_type_id.warehouse_id', 'in', user._get_allowed_warehouse_ids()),
+                ('sale_id.warehouse_id', 'in', user._get_allowed_warehouse_ids()),
+                ('picking_type_id', '=', False),
+            '|',
+                ('location_id', 'in', user._get_allowed_location_ids()),
+                '&amp;',
+                    ('location_dest_id', 'in', user._get_allowed_location_ids()),
+                    ('location_dest_id.usage', '=', 'internal')
+        ]</field>
+        <field eval="True" name="global"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+
+    <record id="stock_move_warehouse_rule" model="ir.rule">
+        <field name="name">Stock Move: Warehouse-Based Access</field>
+        <field name="model_id" ref="stock.model_stock_move"/>
+        <field name="domain_force">[
+            '|', '|',
+                '&amp;',
+                    ('picking_id.picking_type_id.warehouse_id', 'in', user._get_allowed_warehouse_ids()),
+                    ('picking_id', '!=', False),
+                '&amp;',
+                    ('picking_id.sale_id.warehouse_id', 'in', user._get_allowed_warehouse_ids()),
+                    ('picking_id', '!=', False),
+            '|',
+                '&amp;',
+                    ('picking_type_id.warehouse_id', 'in', user._get_allowed_warehouse_ids()),
+                    ('picking_type_id', '!=', False),
+                '|',
+                    ('location_id', 'in', user._get_allowed_location_ids()),
+                    ('location_dest_id', 'in', user._get_allowed_location_ids())
+        ]</field>
+        <field eval="True" name="global"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+
+    <record id="stock_move_line_warehouse_rule" model="ir.rule">
+        <field name="name">Stock Move Line: Warehouse-Based Access</field>
+        <field name="model_id" ref="stock.model_stock_move_line"/>
+        <field name="domain_force">[
+            '|',
+                ('move_id.picking_id.picking_type_id.warehouse_id', 'in', user._get_allowed_warehouse_ids()),
+                '|',
+                    ('location_id', 'in', user._get_allowed_location_ids()),
+                    ('location_dest_id', 'in', user._get_allowed_location_ids())
+        ]</field>
+        <field eval="True" name="global"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+
+    <record id="stock_quant_warehouse_rule" model="ir.rule">
+        <field name="name">Stock Quant: Location-Based Access</field>
+        <field name="model_id" ref="stock.model_stock_quant"/>
+        <field name="domain_force">[
+            '|',
+                ('location_id', 'in', user._get_allowed_location_ids()),
+                ('location_id', '=', False)
+        ]</field>
+        <field eval="True" name="global"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+
+    <record id="stock_location_warehouse_rule" model="ir.rule">
+        <field name="name">Stock Location: Warehouse-Based Access</field>
+        <field name="model_id" ref="stock.model_stock_location"/>
+        <field name="domain_force">[
+            '|',
+            '|',
+                ('id', 'in', user._get_allowed_location_ids()),
+                ('usage', 'in', ['view', 'customer', 'supplier', 'inventory', 'transit', 'internal', 'production']),
+                '&amp;',
+                    ('id', 'child_of', user._get_allowed_location_ids()),
+                    ('id', 'not in', user._get_allowed_location_ids())
+        ]</field>
+        <field eval="True" name="global"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <record id="stock_warehouse_visibility_rule" model="ir.rule">
+        <field name="name">Stock Warehouse: Assigned Only</field>
+        <field name="model_id" ref="stock.model_stock_warehouse"/>
+        <field name="domain_force">['|', ('id', 'in', user._get_allowed_warehouse_ids()), ('id', '=', 1)]</field>
+        <field eval="True" name="global"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <record id="stock_picking_type_warehouse_rule" model="ir.rule">
+        <field name="name">Picking Type: Warehouse-Based Access</field>
+        <field name="model_id" ref="stock.model_stock_picking_type"/>
+        <field name="domain_force">[
+            '|',
+                ('warehouse_id', 'in', user._get_allowed_warehouse_ids()),
+                ('warehouse_id', '=', False)
+        ]</field>
+        <field eval="True" name="global"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <record id="stock_scrap_warehouse_rule" model="ir.rule">
+        <field name="name">Stock Scrap: Location-Based Access</field>
+        <field name="model_id" ref="stock.model_stock_scrap"/>
+        <field name="domain_force">[
+            '|',
+                ('location_id', 'in', user._get_allowed_location_ids()),
+                ('location_id', '=', False)
+        ]</field>
+        <field eval="True" name="global"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+
+    <record id="sale_order_warehouse_rule" model="ir.rule">
+        <field name="name">Sale Order: Warehouse-Based Access</field>
+        <field name="model_id" ref="sale.model_sale_order"/>
+        <field name="domain_force">[('warehouse_id', 'in', user._get_allowed_warehouse_ids())]</field>
+        <field eval="True" name="global"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+
+    <record id="sale_order_line_warehouse_rule" model="ir.rule">
+        <field name="name">Sale Order Line: Warehouse-Based Access</field>
+        <field name="model_id" ref="sale.model_sale_order_line"/>
+        <field name="domain_force">[('order_id.warehouse_id', 'in', user._get_allowed_warehouse_ids())]</field>
+        <field eval="True" name="global"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+
+</data>
+</odoo>

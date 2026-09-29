@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_users_form_warehouse_access" model="ir.ui.view">
+        <field name="name">res.users.form.warehouse.access</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='access_rights']" position="after">
+                <page string="Warehouse Access" name="warehouse_access">
+                    <group>
+                        <group string="Warehouse Assignment">
+                            <field name="warehouse_ids"
+                                   widget="many2many_tags"
+                                   options="{'no_create': True, 'no_create_edit': True}"
+                                   domain="[('company_id', '=', company_id)]"/>
+                            <field name="warehouse_count" readonly="1"/>
+                        </group>
+                        <group string="Access Information">
+                            <div name="warehouse_info">
+                                <div class="text-muted">
+                                    Assign warehouses this user can access.
+                                    Users will ONLY see stock data from these warehouses.
+                                </div>
+                                <div class="mt-2" invisible="warehouse_count == 0">
+                                    <button name="action_view_warehouses"
+                                            type="object"
+                                            string="View Assigned Warehouses"
+                                            class="btn btn-primary btn-sm"/>
+                                </div>
+                                <div class="mt-2 text-warning" invisible="warehouse_count &gt; 0">
+                                    <i class="fa fa-exclamation-triangle"/>
+                                    This user has NO warehouse assigned and cannot access any stock operations.
+                                </div>
+                            </div>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

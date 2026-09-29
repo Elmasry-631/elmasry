@@ -1,0 +1,301 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* el_warehouse_access
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-12-25 07:40+0000\n"
+"PO-Revision-Date: 2024-12-25 07:40+0000\n"
+"Last-Translator: Ibrahim Elmasry <ibrahim@example.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
+"&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
+"Language: ar_EG\n"
+
+#. module: el_warehouse_access
+#: model:ir.model.fields,field_description:el_warehouse_access.field_res_users__warehouse_count
+msgid "Warehouse Count"
+msgstr "عدد المستودعات"
+
+#. module: el_warehouse_access
+#: model:ir.model.fields,field_description:el_warehouse_access.field_res_users__warehouse_ids
+msgid "Allowed Warehouses"
+msgstr "المستودعات المسموح بها"
+
+#. module: el_warehouse_access
+#: model:ir.ui.view,arch_db:el_warehouse_access.view_users_form_warehouse_access
+msgid "Warehouse Access"
+msgstr "صلاحية المستودع"
+
+#. module: el_warehouse_access
+#: model:ir.ui.view,arch_db:el_warehouse_access.view_users_form_warehouse_access
+msgid "Warehouse Assignment"
+msgstr "تعيين المستودعات"
+
+#. module: el_warehouse_access
+#: model:ir.ui.view,arch_db:el_warehouse_access.view_users_form_warehouse_access
+msgid "Access Information"
+msgstr "معلومات الصلاحيات"
+
+#. module: el_warehouse_access
+#: model:ir.ui.view,arch_db:el_warehouse_access.view_users_form_warehouse_access
+msgid "Access Statistics"
+msgstr "إحصائيات الوصول"
+
+#. module: el_warehouse_access
+#: model:ir.ui.view,arch_db:el_warehouse_access.view_users_form_warehouse_access
+msgid "Assign warehouses this user can access."
+msgstr "حدد المستودعات التي يمكن لهذا المستخدم الوصول إليها."
+
+#. module: el_warehouse_access
+#: model:ir.ui.view,arch_db:el_warehouse_access.view_users_form_warehouse_access
+msgid "Users will ONLY see stock data from these warehouses."
+msgstr "المستخدمون سيرون فقط بيانات المخزون من هذه المستودعات."
+
+#. module: el_warehouse_access
+#: model:ir.ui.view,arch_db:el_warehouse_access.view_users_form_warehouse_access
+msgid "View Assigned Warehouses"
+msgstr "عرض المستودعات المعينة"
+
+#. module: el_warehouse_access
+#: model:ir.ui.view,arch_db:el_warehouse_access.view_users_form_warehouse_access
+msgid "This user has NO warehouse assigned and cannot access any stock operations."
+msgstr "هذا المستخدم ليس لديه مستودع معين ولا يمكنه الوصول إلى أي عمليات مخزنية."
+
+#. module: el_warehouse_access
+#: model:ir.ui.view,arch_db:el_warehouse_access.view_users_tree_warehouse_access
+msgid "WHs"
+msgstr "مستودعات"
+
+#. module: el_warehouse_access
+#: model:ir.ui.view,arch_db:el_warehouse_access.view_users_search_warehouse_access
+msgid "With Warehouse Access"
+msgstr "مع صلاحية مستودع"
+
+#. module: el_warehouse_access
+#: model:ir.ui.view,arch_db:el_warehouse_access.view_users_search_warehouse_access
+msgid "No Warehouse Access"
+msgstr "بدون صلاحية مستودع"
+
+#. module: el_warehouse_access
+#: model:ir.ui.view,arch_db:el_warehouse_access.view_users_search_warehouse_access
+msgid "Warehouse Count"
+msgstr "عدد المستودعات"
+
+#. module: el_warehouse_access
+#: model:ir.actions.act_window,name:el_warehouse_access.action_warehouse_access_matrix
+#: model:ir.ui.menu,name:el_warehouse_access.menu_warehouse_access_report
+msgid "Warehouse Access Matrix"
+msgstr "مصفوفة صلاحيات المستودعات"
+
+#. module: el_warehouse_access
+#: model:ir.ui.menu,name:el_warehouse_access.menu_warehouse_user_assignment
+msgid "User Warehouse Assignments"
+msgstr "تعيينات المستخدمين للمستودعات"
+
+#. module: el_warehouse_access
+#: model:ir.ui.menu,name:el_warehouse_access.menu_warehouse_access_root
+msgid "Warehouse Access Control"
+msgstr "التحكم في صلاحيات المستودعات"
+
+#. module: el_warehouse_access
+#: model:ir.model.constraint,message:el_warehouse_access.constraint_res_users_check_warehouses_active
+msgid "Cannot assign inactive warehouse(s): %s\nPlease activate the warehouse(s) first or remove them from assignment."
+msgstr "لا يمكن تعيين مستودعات غير نشطة: %s\nيرجى تفعيل المستودعات أولاً أو إزالتها من التعيين."
+
+#. module: el_warehouse_access
+#, python-format
+msgid "You cannot create a transfer in warehouse '%s'. You don't have access to this warehouse."
+msgstr "لا يمكنك إنشاء نقل في المستودع '%s'. ليس لديك صلاحية للوصول إلى هذا المستودع."
+
+#. module: el_warehouse_access
+#, python-format
+msgid "You don't have access to warehouse '%s'."
+msgstr "ليس لديك صلاحية للوصول إلى المستودع '%s'."
+
+#. module: el_warehouse_access
+#, python-format
+msgid "Warehouse access changed from <b>%s</b> to <b>%s</b> by <b>%s</b>"
+msgstr "تغيرت صلاحية المستودع من <b>%s</b> إلى <b>%s</b> بواسطة <b>%s</b>"
+
+#. module: el_warehouse_access
+#: model:ir.model.fields,help:el_warehouse_access.field_res_users__warehouse_ids
+msgid "Warehouses this user is permitted to access. Leave empty for NO access to any stock operations. Administrators bypass this restriction."
+msgstr "المستودعات المسموح لهذا المستخدم بالوصول إليها. اتركها فارغة لعدم الوصول لأي عمليات مخزنية. المسؤولون يتجاوزون هذا القيد."
+
+#. module: el_warehouse_access
+#: model:res.groups,name:el_warehouse_access.group_warehouse_user
+msgid "Warehouse: Restricted User"
+msgstr "مستخدم محدود الصلاحيات"
+
+#. module: el_warehouse_access
+#: model:res.groups,name:el_warehouse_access.group_warehouse_manager
+msgid "Warehouse Manager"
+msgstr "مدير المستودع"
+
+#. module: el_warehouse_access
+#: model:res.groups,comment:el_warehouse_access.group_warehouse_user
+msgid "User with restricted access to warehouses. Can only see data from assigned warehouses."
+msgstr "مستخدم بصلاحيات محدودة للمستودعات. يمكنه رؤية البيانات من المستودعات المعينة فقط."
+
+#. module: el_warehouse_access
+#: model:res.groups,comment:el_warehouse_access.group_warehouse_manager
+msgid "Warehouse manager who can see all warehouses and manage user assignments."
+msgstr "مدير مستودع يمكنه رؤية جميع المستودعات وإدارة تعيينات المستخدمين."
+
+#. module: el_warehouse_access
+#: model:ir.module.category,name:el_warehouse_access.module_category_warehouse_access
+msgid "Warehouse Access Control"
+msgstr "التحكم في صلاحيات المستودعات"
+
+#. module: el_warehouse_access
+#: model:ir.model.fields,field_description:el_warehouse_access.field_stock_picking__is_user_accessible
+#: model:ir.model.fields,field_description:el_warehouse_access.field_stock_move__is_user_accessible
+#: model:ir.model.fields,field_description:el_warehouse_access.field_stock_move_line__is_user_accessible
+#: model:ir.model.fields,field_description:el_warehouse_access.field_stock_quant__is_user_accessible
+#: model:ir.model.fields,field_description:el_warehouse_access.field_stock_location__is_user_accessible
+#: model:ir.model.fields,field_description:el_warehouse_access.field_stock_picking_type__is_user_accessible
+#: model:ir.model.fields,field_description:el_warehouse_access.field_stock_inventory__is_user_accessible
+#: model:ir.model.fields,field_description:el_warehouse_access.field_stock_scrap__is_user_accessible
+msgid "Accessible to Current User"
+msgstr "متاح للمستخدم الحالي"
+
+#. module: el_warehouse_access
+#, python-format
+msgid "Cannot create move: You don't have access to this warehouse."
+msgstr "لا يمكن إنشاء حركة: ليس لديك صلاحية للوصول إلى هذا المستودع."
+
+#. module: el_warehouse_access
+#, python-format
+msgid "Cannot create inventory quantity at location '%s'. You don't have access to this location/warehouse."
+msgstr "لا يمكن إنشاء كمية مخزن في الموقع '%s'. ليس لديك صلاحية للوصول إلى هذا الموقع/المستودع."
+
+#. module: el_warehouse_access
+#, python-format
+msgid "Cannot create inventory adjustment for this location. You don't have access to it."
+msgstr "لا يمكن إنشاء تعديل جرد لهذا الموقع. ليس لديك صلاحية للوصول إليه."
+
+#. module: el_warehouse_access
+#, python-format
+msgid "Cannot create scrap at location '%s'. You don't have access to this location/warehouse."
+msgstr "لا يمكن إنشاء تالف في الموقع '%s'. ليس لديك صلاحية للوصول إلى هذا الموقع/المستودع."
+
+#. module: el_warehouse_access
+#, python-format
+msgid "Cannot start inventory '%s' - you don't have access to some of its locations: %s"
+msgstr "لا يمكن بدء الجرد '%s' - ليس لديك صلاحية للوصول إلى بعض مواقعه: %s"
+
+#. module: el_warehouse_access
+#, python-format
+msgid "Cannot validate scrap '%s' - you don't have access to its location '%s'."
+msgstr "لا يمكن اعتماد التالف '%s' - ليس لديك صلاحية للوصول إلى موقعه '%s'."
+
+#. module: el_warehouse_access
+#, python-format
+msgid "You are selecting an operation type from warehouse '%s' which you don't have access to. You may not be able to save this record."
+msgstr "أنت تختار نوع عملية من المستودع '%s' الذي ليس لديك صلاحية للوصول إليه. قد لا تتمكن من حفظ هذا السجل."
+
+#. module: el_warehouse_access
+#, python-format
+msgid "You are selecting a picking type outside your warehouses."
+msgstr "أنت تختار نوع استلام خارج مستودعاتك."
+
+#. module: el_warehouse_access
+#, python-format
+msgid "You don't have access to location '%s'. You may not be able to validate this record."
+msgstr "ليس لديك صلاحية للوصول إلى الموقع '%s'. قد لا تتمكن من اعتماد هذا السجل."
+
+#. module: el_warehouse_access
+#: model:ir.model,name:el_warehouse_access.model_res_users
+msgid "Users"
+msgstr "المستخدمون"
+
+#. module: el_warehouse_access
+#: model:ir.model,name:el_warehouse_access.model_stock_picking
+msgid "Transfer"
+msgstr "النقل"
+
+#. module: el_warehouse_access
+#: model:ir.model,name:el_warehouse_access.model_stock_move
+msgid "Stock Move"
+msgstr "حركة المخزون"
+
+#. module: el_warehouse_access
+#: model:ir.model,name:el_warehouse_access.model_stock_move_line
+msgid "Stock Move Line"
+msgstr "بند حركة المخزون"
+
+#. module: el_warehouse_access
+#: model:ir.model,name:el_warehouse_access.model_stock_quant
+msgid "Stock Quant"
+msgstr "كمية المخزون"
+
+#. module: el_warehouse_access
+#: model:ir.model,name:el_warehouse_access.model_stock_location
+msgid "Location"
+msgstr "الموقع"
+
+#. module: el_warehouse_access
+#: model:ir.model,name:el_warehouse_access.model_stock_picking_type
+msgid "Operation Type"
+msgstr "نوع العملية"
+
+#. module: el_warehouse_access
+#: model:ir.model,name:el_warehouse_access.model_stock_inventory
+msgid "Inventory"
+msgstr "الجرد"
+
+#. module: el_warehouse_access
+#: model:ir.model,name:el_warehouse_access.model_stock_scrap
+msgid "Scrap/Terminate"
+msgstr "التالف/الإنهاء"
+
+#. module: el_warehouse_access
+#: model:ir.model,name:el_warehouse_access.model_stock_warehouse
+msgid "Warehouse"
+msgstr "المستودع"
+
+#. module: el_warehouse_access
+#: model:ir.rule,name:el_warehouse_access.stock_picking_warehouse_rule
+msgid "Stock Picking: Warehouse-Based Access"
+msgstr "أمر التحويل: وصول بناءً على المستودع"
+
+#. module: el_warehouse_access
+#: model:ir.rule,name:el_warehouse_access.stock_move_warehouse_rule
+msgid "Stock Move: Warehouse-Based Access"
+msgstr "حركة المخزون: وصول بناءً على المستودع"
+
+#. module: el_warehouse_access
+#: model:ir.rule,name:el_warehouse_access.stock_quant_warehouse_rule
+msgid "Stock Quant: Location-Based Access"
+msgstr "كمية المخزون: وصول بناءً على الموقع"
+
+#. module: el_warehouse_access
+#: model:ir.rule,name:el_warehouse_access.stock_location_warehouse_rule
+msgid "Stock Location: Warehouse-Based Access"
+msgstr "الموقع: وصول بناءً على المستودع"
+
+#. module: el_warehouse_access
+#: model:ir.rule,name:el_warehouse_access.stock_warehouse_visibility_rule
+msgid "Stock Warehouse: Assigned Only"
+msgstr "المستودع: المعينات فقط"
+
+#. module: el_warehouse_access
+#: model:ir.rule,name:el_warehouse_access.stock_picking_type_warehouse_rule
+msgid "Picking Type: Warehouse-Based Access"
+msgstr "نوع الاستلام: وصول بناءً على المستودع"
+
+#. module: el_warehouse_access
+#: model:ir.rule,name:el_warehouse_access.stock_inventory_warehouse_rule
+msgid "Stock Inventory: Location-Based Access"
+msgstr "الجرد: وصول بناءً على الموقع"
+
+#. module: el_warehouse_access
+#: model:ir.rule,name:el_warehouse_access.stock_scrap_warehouse_rule
+msgid "Stock Scrap: Location-Based Access"
+msgstr "التالف: وصول بناءً على الموقع"

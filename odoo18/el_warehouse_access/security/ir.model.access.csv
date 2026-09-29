@@ -1,0 +1,20 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_res_users_warehouse_user,res.users warehouse user,base.model_res_users,el_warehouse_access.group_warehouse_user,1,0,0,0
+access_res_users_warehouse_manager,res.users warehouse manager,base.model_res_users,el_warehouse_access.group_warehouse_manager,1,1,0,0
+access_res_users_warehouse_admin,res.users warehouse admin,base.model_res_users,el_warehouse_access.group_warehouse_manager,1,1,1,0
+access_stock_warehouse_warehouse_user,stock.warehouse warehouse user,stock.model_stock_warehouse,el_warehouse_access.group_warehouse_user,1,0,0,0
+access_stock_warehouse_warehouse_manager,stock.warehouse warehouse manager,stock.model_stock_warehouse,el_warehouse_access.group_warehouse_manager,1,1,1,0
+access_stock_location_warehouse_user,stock.location warehouse user,stock.model_stock_location,el_warehouse_access.group_warehouse_user,1,0,0,0
+access_stock_location_warehouse_manager,stock.location warehouse manager,stock.model_stock_location,el_warehouse_access.group_warehouse_manager,1,1,1,0
+access_stock_picking_warehouse_user,stock.picking warehouse user,stock.model_stock_picking,el_warehouse_access.group_warehouse_user,1,1,1,0
+access_stock_picking_warehouse_manager,stock.picking warehouse manager,stock.model_stock_picking,el_warehouse_access.group_warehouse_manager,1,1,1,1
+access_stock_move_warehouse_user,stock.move warehouse user,stock.model_stock_move,el_warehouse_access.group_warehouse_user,1,1,1,0
+access_stock_move_warehouse_manager,stock.move warehouse manager,stock.model_stock_move,el_warehouse_access.group_warehouse_manager,1,1,1,1
+access_stock_move_line_warehouse_user,stock.move.line warehouse user,stock.model_stock_move_line,el_warehouse_access.group_warehouse_user,1,1,1,0
+access_stock_move_line_warehouse_manager,stock.move.line warehouse manager,stock.model_stock_move_line,el_warehouse_access.group_warehouse_manager,1,1,1,1
+access_stock_quant_warehouse_user,stock.quant warehouse user,stock.model_stock_quant,el_warehouse_access.group_warehouse_user,1,1,1,0
+access_stock_quant_warehouse_manager,stock.quant warehouse manager,stock.model_stock_quant,el_warehouse_access.group_warehouse_manager,1,1,1,1
+access_stock_picking_type_warehouse_user,stock.picking.type warehouse user,stock.model_stock_picking_type,el_warehouse_access.group_warehouse_user,1,0,0,0
+access_stock_picking_type_warehouse_manager,stock.picking.type warehouse manager,stock.model_stock_picking_type,el_warehouse_access.group_warehouse_manager,1,1,1,0
+access_stock_scrap_warehouse_user,stock.scrap warehouse user,stock.model_stock_scrap,el_warehouse_access.group_warehouse_user,1,1,1,0
+access_stock_scrap_warehouse_manager,stock.scrap warehouse manager,stock.model_stock_scrap,el_warehouse_access.group_warehouse_manager,1,1,1,1
