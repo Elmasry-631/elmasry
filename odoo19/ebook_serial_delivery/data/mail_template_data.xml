@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="mail_template_ebook_serial" model="mail.template">
+            <field name="name">eBook: Serial Number Delivery</field>
+            <field name="description">Sent to the customer with the serial numbers when an eBook delivery is done</field>
+            <field name="model_id" ref="sale.model_sale_order"/>
+            <field name="subject">Your eBook Serial Number(s) — Order {{ object.name }}</field>
+            <field name="email_to">{{ object.partner_id.email }}</field>
+            <field name="email_from">{{ (object.company_id.email or user.email) }}</field>
+            <field name="auto_delete" eval="False"/>
+            <!-- TEMP FOR DEBUGGING: set back to True (eval="True") once
+                 you've confirmed emails are sending correctly, so sent
+                 mail.mail records don't pile up in Technical > Emails. -->
+            <field name="lang">{{ object.partner_id.lang }}</field>
+            <field name="email_layout_xmlid">mail.mail_notification_light</field>
+            <field name="report_template_ids" eval="[(4, ref('ebook_serial_delivery.action_report_ebook_serial'))]"/>
+
+            <field name="body_html" type="html">
+<div style="font-family: 'Segoe UI', Arial, Helvetica, sans-serif; font-size: 14px; color: #333; max-width: 600px; margin: 0 auto; line-height: 1.6;">
+
+    <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 25px; border-radius: 8px 8px 0 0; text-align: center;">
+        <h1 style="color: white; margin: 0; font-size: 24px;">Your eBook Is Ready</h1>
+    </div>
+
+    <div style="padding: 25px; background: white; border: 1px solid #e0e0e0; border-top: none;">
+        <p>Dear <t t-out="object.partner_id.name"/>,</p>
+        <p>Thank you for your purchase! Your eBook serial number(s) are listed below and attached as a PDF to this email.</p>
+
+        <div t-if="object.ebook_serial_numbers_html" style="background-color: #f5f6ff; border: 1px solid #d9dcf5; padding: 12px 16px; margin: 16px 0; border-radius: 4px;">
+            <t t-out="object.ebook_serial_numbers_html"/>
+        </div>
+
+        <div style="background-color: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; margin: 20px 0; border-radius: 4px;">
+            <p style="margin: 0; color: #856404; font-size: 13px;">
+                <strong>Important:</strong> each serial number can only be used once.
+                Please keep it safe and do not share it with others.
+            </p>
+        </div>
+
+        <p>If you have any trouble activating your eBook, simply reply to this email
+        and we'll be happy to help.</p>
+
+        <p>Thank you for choosing <strong><t t-out="object.company_id.name"/></strong>!</p>
+    </div>
+
+    <div style="padding: 15px; text-align: center; font-size: 12px; color: #888; background: #f9f9f9; border-radius: 0 0 8px 8px;">
+        <p style="margin: 0;">
+            This email was sent regarding order <strong><t t-out="object.name"/></strong>.<br/>
+            If you did not make this purchase, please contact us immediately.
+        </p>
+    </div>
+
+</div>
+            </field>
+        </record>
+    </data>
+</odoo>

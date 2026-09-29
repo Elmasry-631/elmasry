@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="action_report_ebook_serial" model="ir.actions.report">
+        <field name="name">eBook Serial Numbers</field>
+        <field name="model">sale.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">ebook_serial_delivery.report_ebook_serial_document</field>
+        <field name="report_file">ebook_serial_delivery.report_ebook_serial_document</field>
+        <field name="print_report_name">'eBook_Codes_%s' % (object.name,)</field>
+        <field name="binding_model_id" ref="sale.model_sale_order"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="report_ebook_serial_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <div class="page">
+
+                    <div style="text-align: center; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 2px solid #667eea;">
+                        <h2 style="color: #333; margin: 0; font-size: 28px;">eBook Serial Numbers</h2>
+                        <p style="color: #666; margin: 10px 0 0 0;">
+                            Order Reference: <strong t-out="doc.name"/>
+                        </p>
+                    </div>
+
+                    <div style="margin-bottom: 25px;">
+                        <p>Dear <t t-out="doc.partner_id.name"/>,</p>
+                        <p style="color: #555;">
+                            Please find your eBook serial number(s) below.
+                        </p>
+                    </div>
+
+                    <!-- Pull straight from the delivery: no custom model, just
+                         the standard stock.move.line -> stock.lot chain. -->
+                    <t t-set="ebook_lines"
+                       t-value="doc.picking_ids.move_line_ids.filtered(
+                                    lambda ml: ml.product_id.is_ebook_with_codes
+                                               and ml.state == 'done'
+                                               and ml.lot_id)"/>
+
+                    <table class="table table-striped" style="width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 14px;">
+                        <thead>
+                            <tr style="background-color: #667eea; color: white;">
+                                <th style="padding: 12px; text-align: left; border: 1px solid #5a6fd6;">#</th>
+                                <th style="padding: 12px; text-align: left; border: 1px solid #5a6fd6;">Product</th>
+                                <th style="padding: 12px; text-align: left; border: 1px solid #5a6fd6;">Serial Number</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="ebook_lines" t-as="ml">
+                                <tr>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">
+                                        <span t-out="ml_index + 1"/>
+                                    </td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;" t-out="ml.product_id.display_name"/>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">
+                                        <code style="background: #f0f0f0; padding: 4px 8px; border-radius: 4px; font-family: 'Courier New', monospace;">
+                                            <strong t-out="ml.lot_id.name"/>
+                                        </code>
+                                    </td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+
+                    <div style="margin-top: 35px; padding: 15px; background-color: #fff3cd; border-left: 4px solid #ffc107; border-radius: 4px;">
+                        <p style="margin: 0; color: #856404; font-size: 13px;">
+                            <strong>Important:</strong> each serial number can only be used once.
+                            Please keep it safe and do not share it with others.
+                        </p>
+                    </div>
+
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+</odoo>

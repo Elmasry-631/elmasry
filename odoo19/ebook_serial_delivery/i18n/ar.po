@@ -1,0 +1,64 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* ebook_serial_delivery
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-09-27 14:20+0000\n"
+"PO-Revision-Date: 2026-09-27 14:20+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: ebook_serial_delivery
+#: model:ir.model.fields,field_description:ebook_serial_delivery.field_sale_order__ebook_serial_numbers_html
+msgid "Delivered eBook Serials"
+msgstr "سيريالات الكتب الإلكترونية المسلّمة"
+
+#. module: ebook_serial_delivery
+#: model:ir.model.fields,help:ebook_serial_delivery.field_sale_order__ebook_serial_numbers_html
+msgid ""
+"Delivered eBook serial numbers of this order, for use in email templates."
+msgstr ""
+"أرقام السيريال التي سُلّمت في هذا الطلب، لاستخدامها داخل قوالب البريد."
+
+#. module: ebook_serial_delivery
+#: model_terms:ir.ui.view,arch_db:ebook_serial_delivery.res_config_settings_view_form_ebook_serial
+msgid "Edit eBook Email"
+msgstr "تعديل بريد الكتب الإلكترونية"
+
+#. module: ebook_serial_delivery
+#: model_terms:ir.ui.view,arch_db:ebook_serial_delivery.res_config_settings_view_form_ebook_serial
+msgid ""
+"Email sent to the customer with the serial numbers when an eBook delivery is"
+" done"
+msgstr "البريد الذي يُرسل للعميل بأرقام السيريال عند إتمام تسليم الكتاب الإلكتروني"
+
+#. module: ebook_serial_delivery
+#: model:ir.model.fields,help:ebook_serial_delivery.field_res_company__ebook_serial_mail_template_id
+#: model:ir.model.fields,help:ebook_serial_delivery.field_res_config_settings__ebook_serial_mail_template_id
+msgid ""
+"Email sent to the customer with the serial numbers when an eBook delivery is"
+" done."
+msgstr ""
+"البريد الذي يُرسل للعميل بأرقام السيريال عند إتمام تسليم الكتاب الإلكتروني."
+
+#. module: ebook_serial_delivery
+#: model_terms:ir.ui.view,arch_db:ebook_serial_delivery.res_config_settings_view_form_ebook_serial
+msgid "Template"
+msgstr "القالب"
+
+#. module: ebook_serial_delivery
+#. odoo-python
+#: code:addons/ebook_serial_delivery/models/res_config_settings.py:0
+#: model:ir.model.fields,field_description:ebook_serial_delivery.field_res_company__ebook_serial_mail_template_id
+#: model:ir.model.fields,field_description:ebook_serial_delivery.field_res_config_settings__ebook_serial_mail_template_id
+#: model_terms:ir.ui.view,arch_db:ebook_serial_delivery.res_config_settings_view_form_ebook_serial
+msgid "eBook Serial Email"
+msgstr "بريد سيريال الكتب الإلكترونية"

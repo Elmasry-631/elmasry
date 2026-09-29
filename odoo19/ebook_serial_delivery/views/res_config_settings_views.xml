@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Inventory > Configuration > Settings > Shipping -->
+    <record id="res_config_settings_view_form_ebook_serial" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.ebook.serial</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="stock.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//setting[@id='stock_move_email']" position="after">
+                <setting id="ebook_serial_email" company_dependent="1" string="eBook Serial Email"
+                         help="Email sent to the customer with the serial numbers when an eBook delivery is done">
+                    <div class="content-group">
+                        <div class="row mt16">
+                            <label for="ebook_serial_mail_template_id" string="Template" class="o_light_label col-lg-3"/>
+                            <field name="ebook_serial_mail_template_id" options="{'no_create': True}"/>
+                        </div>
+                        <div class="mt8">
+                            <button name="action_open_ebook_serial_mail_template" type="object"
+                                    string="Edit eBook Email" icon="oi-arrow-right" class="btn-link"/>
+                        </div>
+                    </div>
+                </setting>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_product_template_form_ebook_serial" model="ir.ui.view">
+        <field name="name">product.template.form.ebook.serial</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='options']" position="inside">
+                <div class="row mt16" id="ebook_serial_section">
+                    <label for="is_ebook_with_codes" class="col-lg-3 o_light_label"/>
+                    <div class="col-lg-9">
+                        <field name="is_ebook_with_codes"/>
+                        <div class="text-muted small" invisible="not is_ebook_with_codes">
+                            Each unit sold will consume one available Serial Number
+                            from Inventory and email it to the customer automatically.
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Manual resend button on the delivery, for support staff -->
+    <record id="view_picking_form_ebook_resend" model="ir.ui.view">
+        <field name="name">stock.picking.form.ebook.resend</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_resend_ebook_email" type="object"
+                        string="Resend eBook Email" class="oe_stat_button"
+                        icon="fa-envelope"
+                        invisible="not ebook_email_sent"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
