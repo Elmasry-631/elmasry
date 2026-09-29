@@ -1,0 +1,11 @@
+@-moz-document url-prefix() { 
+  .wpwl-container{
+    display: block !important;
+              }
+            }
+.wpwl-apple-pay-button{-webkit-appearance: -apple-pay-button !important;}
+@supports (-moz-appearance:none) {
+  .wpwl-container{
+    display: block !important;
+              }
+            }

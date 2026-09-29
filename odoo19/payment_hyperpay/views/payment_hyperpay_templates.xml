@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="hyperpay_form">
+        <input t-if="reference" type="hidden" name="reference" t-att-value="reference"/>
+        <input t-if="txId" id="hyperpay_tx" class="hyperpay_tx" type="hidden" name="txId" t-att-value="txId"/>
+
+        <div class="modal payment_hyper_modal" tabindex="-1" role="dialog" id="payment_hyperpay_modal" style="z-index:2000">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Hyperpay Payment</h4>
+                        <button id="hyperpay_close" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"/>
+                    </div>
+                    <div class="modal-body">
+                        <div id="hyperpay-modal-body">
+                            <div class="hyperpay_loader" style="margin:auto;">
+                                <div class="apple-pay-button apple-pay-button-black"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+</odoo>
