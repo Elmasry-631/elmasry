@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2016-Present Webkul Software Pvt. Ltd. (<https://webkul.com/>) -->
+<!-- See LICENSE file for full copyright and licensing details. -->
+<!-- License URL : <https://store.webkul.com/license.html/> -->
+<odoo>
+    <data noupdate="1">
+        <record forcecreate="True" id="smsa_express_delivery_carrier" model="delivery.carrier">
+            <field name="name">SMSA Express</field>
+            <field name="delivery_type">smsa</field>
+            <field name="product_id" ref="product_smsa_express"/>
+            <field name="smsa_service_type" ref="smsa_service_EDDL"/>
+            <field name="smsa_return_service_type" ref="smsa_return_service_EDCR"/>
+            <field name="uom_id" ref="uom.product_uom_kgm"/>
+            <field name="delivery_uom">KG</field>
+            <!-- <field name="packaging_id" ref="product_packaging_smsa_express"/> -->
+            <field name="packaging_type_id" ref="packaging_smsa_express"/>
+            <field name="void_shipment">False</field>
+        </record>        
+    </data>
+</odoo>

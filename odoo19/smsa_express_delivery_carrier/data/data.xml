@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2016-Present Webkul Software Pvt. Ltd. (<https://webkul.com/>) -->
+<!-- See LICENSE file for full copyright and licensing details. -->
+<!-- License URL : <https://store.webkul.com/license.html/> -->
+<odoo>
+    <data noupdate="1">
+
+        <record forcecreate="True" id="packaging_smsa_express" model="stock.package.type">
+            <field name="name">SMSA Custom Packaging</field>
+            <field name="package_carrier_type">smsa</field>
+            <field name= "shipper_package_code">SMSA_pkg</field>
+            <field name="height">10</field>
+            <field name="width">10</field>
+            <field name="packaging_length">10</field>
+            <field name="max_weight">10</field>
+            <field name="base_weight">0.1</field>
+            <field name="cover_amount">10</field>
+        </record>
+
+        <record forcecreate="True" id="product_smsa_express" model="product.product">
+            <field name="name">Delivery by SMSA Express</field>
+            <field name="default_code">Delivery</field>
+            <field name="type">service</field>
+            <field name="lst_price">10.00</field>
+            <field name="standard_price">10.0</field>
+        </record>        
+
+        <record forcecreate="True" id="smsa_service_EDDL" model="delivery.smsa.service">
+            <field name="name">ECOM Delivery Lite(EDDL)</field>
+            <field name="code">EDDL</field>
+        </record>
+
+        <record forcecreate="True" id="smsa_service_EDDH" model="delivery.smsa.service">
+            <field name="name">ECOM Delivery Heavy(EDDH)</field>
+            <field name="code">EDDH</field>
+        </record>
+
+        <record forcecreate="True" id="smsa_service_EIDL" model="delivery.smsa.service">
+            <field name="name">ECOM International Delivery Lite(EIDL)</field>
+            <field name="code">EIDL</field>
+        </record>
+
+        <record forcecreate="True" id="smsa_service_EIED" model="delivery.smsa.service">
+            <field name="name">ECOM International Economy Delivery(EIED)</field>
+            <field name="code">EIED</field>
+        </record>
+
+        <record forcecreate="True" id="smsa_service_EDSD" model="delivery.smsa.service">
+            <field name="name">ECOM Domestic Same Day Delivery(EDSD)</field>
+            <field name="code">EDSD</field>
+        </record>
+
+        <record forcecreate="True" id="smsa_service_EDHD" model="delivery.smsa.service">
+            <field name="name">ECOM Domestic HAL (Hold At Location) Delivery(EDHD)</field>
+            <field name="code">EDHD</field>
+        </record>
+
+        <record forcecreate="True" id="smsa_service_EIHD" model="delivery.smsa.service">
+            <field name="name">ECOM International HAL (Hold At Location) Delivery(EIHD)</field>
+            <field name="code">EIHD</field>
+        </record>
+
+        <record forcecreate="True" id="smsa_return_service_EDCR" model="delivery.smsa.return.service">
+            <field name="name">ECOM Domestic Customer Return(EDCR)</field>
+            <field name="code">EDCR</field>
+        </record>
+
+        <record forcecreate="True" id="smsa_return_service_EICR" model="delivery.smsa.return.service">
+            <field name="name">ECOM International Customer Return(EICR)</field>
+            <field name="code">EICR</field>
+        </record>
+
+        <record forcecreate="True" id="smsa_return_service_EDRR" model="delivery.smsa.return.service">
+            <field name="name">ECOM Domestic Customer Return - SSC (SMSA Service Center)(EDRR)</field>
+            <field name="code">EDRR</field>
+        </record>
+        
+        <record forcecreate="True" id="smsa_return_service_EIRR" model="delivery.smsa.return.service">
+            <field name="name">ECOM International Customer Return - SSC (SMSA Service Center)(EIRR)</field>
+            <field name="code">EIRR</field>
+        </record>
+        
+        <record forcecreate="True" id="smsa_return_service_EISH" model="delivery.smsa.return.service">
+            <field name="name">ECOM International Economy - SH(EISH)</field>
+            <field name="code">EISH</field>
+        </record>
+        
+        <record forcecreate="True" id="smsa_return_service_EISR" model="delivery.smsa.return.service">
+            <field name="name">ECOM International Economy - SH RTN(EISR)</field>
+            <field name="code">EISR</field>
+        </record>
+       
+    </data>
+</odoo>

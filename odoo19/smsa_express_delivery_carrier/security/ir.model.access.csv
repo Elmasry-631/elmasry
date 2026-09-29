@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+
+access_smsa_service_users,delivery.smsa.service,model_delivery_smsa_service,stock.group_stock_user,1,0,0,0
+access_smsa_service_admin,delivery.smsa.service,model_delivery_smsa_service,stock.group_stock_manager,1,1,1,1
+access_smsa_return_service_users,delivery.smsa.return.service,model_delivery_smsa_return_service,stock.group_stock_user,1,0,0,0
+access_smsa_return_service_admin,delivery.smsa.return.service,model_delivery_smsa_return_service,stock.group_stock_manager,1,1,1,1

@@ -1,0 +1,345 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* smsa_express_delivery_carrier
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-09-28 08:57+0000\n"
+"PO-Revision-Date: 2026-09-28 08:57+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: smsa_express_delivery_carrier
+#. odoo-python
+#: code:addons/smsa_express_delivery_carrier/models/smsa_delivery_carrier.py:0
+msgid "%(who)s: the city is missing."
+msgstr "%(who)s: المدينة غير مسجلة."
+
+#. module: smsa_express_delivery_carrier
+#. odoo-python
+#: code:addons/smsa_express_delivery_carrier/models/smsa_delivery_carrier.py:0
+msgid "%(who)s: the city must be between 3 and 50 characters."
+msgstr "%(who)s: اسم المدينة يجب أن يكون بين 3 و50 حرفًا."
+
+#. module: smsa_express_delivery_carrier
+#. odoo-python
+#: code:addons/smsa_express_delivery_carrier/models/smsa_delivery_carrier.py:0
+msgid "%(who)s: the country is missing."
+msgstr "%(who)s: الدولة غير مسجلة."
+
+#. module: smsa_express_delivery_carrier
+#. odoo-python
+#: code:addons/smsa_express_delivery_carrier/models/smsa_delivery_carrier.py:0
+msgid "%(who)s: the name is missing."
+msgstr "%(who)s: الاسم غير مسجل."
+
+#. module: smsa_express_delivery_carrier
+#. odoo-python
+#: code:addons/smsa_express_delivery_carrier/models/smsa_delivery_carrier.py:0
+msgid "%(who)s: the phone number %(phone)s is not valid."
+msgstr "%(who)s: رقم الجوال %(phone)s غير صالح."
+
+#. module: smsa_express_delivery_carrier
+#. odoo-python
+#: code:addons/smsa_express_delivery_carrier/models/smsa_delivery_carrier.py:0
+msgid "%(who)s: the phone number is missing."
+msgstr "%(who)s: رقم الجوال غير مسجل."
+
+#. module: smsa_express_delivery_carrier
+#. odoo-python
+#: code:addons/smsa_express_delivery_carrier/models/smsa_delivery_carrier.py:0
+msgid "%(who)s: the street address is missing."
+msgstr "%(who)s: عنوان الشارع غير مسجل."
+
+#. module: smsa_express_delivery_carrier
+#. odoo-python
+#: code:addons/smsa_express_delivery_carrier/models/smsa_delivery_carrier.py:0
+msgid "Cash on delivery amount"
+msgstr "مبلغ الدفع عند الاستلام"
+
+#. module: smsa_express_delivery_carrier
+#. odoo-python
+#: code:addons/smsa_express_delivery_carrier/models/smsa_delivery_carrier.py:0
+msgid "City"
+msgstr "المدينة"
+
+#. module: smsa_express_delivery_carrier
+#. odoo-python
+#: code:addons/smsa_express_delivery_carrier/models/smsa_delivery_carrier.py:0
+msgid "Content description"
+msgstr "وصف المحتوى"
+
+#. module: smsa_express_delivery_carrier
+#. odoo-python
+#: code:addons/smsa_express_delivery_carrier/models/smsa_delivery_carrier.py:0
+msgid ""
+"Could not connect to SMSA. Check the server's internet connection and try "
+"again."
+msgstr "تعذّر الاتصال بسمسا. تحقق من اتصال السيرفر بالإنترنت ثم أعد المحاولة."
+
+#. module: smsa_express_delivery_carrier
+#. odoo-python
+#: code:addons/smsa_express_delivery_carrier/models/smsa_delivery_carrier.py:0
+msgid "Country"
+msgstr "الدولة"
+
+#. module: smsa_express_delivery_carrier
+#. odoo-python
+#: code:addons/smsa_express_delivery_carrier/models/smsa_delivery_carrier.py:0
+msgid "Currency"
+msgstr "العملة"
+
+#. module: smsa_express_delivery_carrier
+#. odoo-python
+#: code:addons/smsa_express_delivery_carrier/models/smsa_delivery_carrier.py:0
+msgid "Customer %(name)s"
+msgstr "العميل %(name)s"
+
+#. module: smsa_express_delivery_carrier
+#. odoo-python
+#: code:addons/smsa_express_delivery_carrier/models/smsa_delivery_carrier.py:0
+msgid "Customer address"
+msgstr "عنوان العميل"
+
+#. module: smsa_express_delivery_carrier
+#. odoo-python
+#: code:addons/smsa_express_delivery_carrier/models/smsa_delivery_carrier.py:0
+msgid "Declared value"
+msgstr "القيمة المصرّح بها"
+
+#. module: smsa_express_delivery_carrier
+#. odoo-python
+#: code:addons/smsa_express_delivery_carrier/models/smsa_delivery_carrier.py:0
+msgid ""
+"Delivery method %(carrier)s: the SMSA %(environment)s passkey is missing."
+msgstr "طريقة التوصيل %(carrier)s: مفتاح سمسا لبيئة %(environment)s غير مسجل."
+
+#. module: smsa_express_delivery_carrier
+#. odoo-python
+#: code:addons/smsa_express_delivery_carrier/models/smsa_delivery_carrier.py:0
+msgid "Delivery method %(carrier)s: the SMSA service type is missing."
+msgstr "طريقة التوصيل %(carrier)s: نوع خدمة سمسا غير محدد."
+
+#. module: smsa_express_delivery_carrier
+#. odoo-python
+#: code:addons/smsa_express_delivery_carrier/models/smsa_delivery_carrier.py:0
+msgid "Delivery method %(carrier)s: the weight unit must be KG or LB."
+msgstr "طريقة التوصيل %(carrier)s: وحدة الوزن يجب أن تكون KG أو LB."
+
+#. module: smsa_express_delivery_carrier
+#. odoo-python
+#: code:addons/smsa_express_delivery_carrier/models/smsa_delivery_carrier.py:0
+msgid "Label type"
+msgstr "نوع البوليصة"
+
+#. module: smsa_express_delivery_carrier
+#. odoo-python
+#: code:addons/smsa_express_delivery_carrier/models/smsa_delivery_carrier.py:0
+#: model:ir.model.fields,field_description:smsa_express_delivery_carrier.field_delivery_smsa_return_service__name
+#: model:ir.model.fields,field_description:smsa_express_delivery_carrier.field_delivery_smsa_service__name
+msgid "Name"
+msgstr "الاسم"
+
+#. module: smsa_express_delivery_carrier
+#. odoo-python
+#: code:addons/smsa_express_delivery_carrier/models/smsa_delivery_carrier.py:0
+msgid "Number of packages"
+msgstr "عدد الطرود"
+
+#. module: smsa_express_delivery_carrier
+#. odoo-python
+#: code:addons/smsa_express_delivery_carrier/models/smsa_delivery_carrier.py:0
+msgid "Order number"
+msgstr "رقم الطلب"
+
+#. module: smsa_express_delivery_carrier
+#. odoo-python
+#: code:addons/smsa_express_delivery_carrier/models/smsa_delivery_carrier.py:0
+msgid "Package %(package)s: the shipping weight is missing."
+msgstr "الطرد %(package)s: الوزن عند الشحن غير مسجل."
+
+#. module: smsa_express_delivery_carrier
+#. odoo-python
+#: code:addons/smsa_express_delivery_carrier/models/smsa_delivery_carrier.py:0
+msgid "Phone"
+msgstr "الجوال"
+
+#. module: smsa_express_delivery_carrier
+#. odoo-python
+#: code:addons/smsa_express_delivery_carrier/models/smsa_delivery_carrier.py:0
+msgid "Production"
+msgstr "الإنتاج"
+
+#. module: smsa_express_delivery_carrier
+#. odoo-python
+#: code:addons/smsa_express_delivery_carrier/models/smsa_delivery_carrier.py:0
+msgid ""
+"Put the products in a package (Put in Pack in the Operations tab) and enter "
+"its weight."
+msgstr "ضع المنتجات في طرد (زر «تغليف في طرد» في تبويب العمليات) وأدخل وزنه."
+
+#. module: smsa_express_delivery_carrier
+#. odoo-python
+#: code:addons/smsa_express_delivery_carrier/models/smsa_delivery_carrier.py:0
+msgid ""
+"Return shipment sent to carrier %(carrier)s with tracking number "
+"%(reference)s"
+msgstr "تم إرسال شحنة الإرجاع إلى %(carrier)s برقم التتبع %(reference)s"
+
+#. module: smsa_express_delivery_carrier
+#. odoo-python
+#: code:addons/smsa_express_delivery_carrier/models/smsa_delivery_carrier.py:0
+msgid "SMSA cannot create the return waybill for %(picking)s:"
+msgstr "لا يمكن إنشاء بوليصة الإرجاع من سمسا لـ %(picking)s:"
+
+#. module: smsa_express_delivery_carrier
+#. odoo-python
+#: code:addons/smsa_express_delivery_carrier/models/smsa_delivery_carrier.py:0
+msgid "SMSA cannot create the waybill for %(picking)s:"
+msgstr "لا يمكن إنشاء بوليصة سمسا لـ %(picking)s:"
+
+#. module: smsa_express_delivery_carrier
+#. odoo-python
+#: code:addons/smsa_express_delivery_carrier/models/smsa_delivery_carrier.py:0
+msgid ""
+"SMSA created shipment %(reference)s but did not send the waybill file. "
+"Download it from the SMSA portal."
+msgstr ""
+"أنشأت سمسا الشحنة %(reference)s لكنها لم ترسل ملف البوليصة. حمّله من بوابة "
+"سمسا."
+
+#. module: smsa_express_delivery_carrier
+#. odoo-python
+#: code:addons/smsa_express_delivery_carrier/models/smsa_delivery_carrier.py:0
+msgid "SMSA did not answer within %(seconds)s seconds. Please try again."
+msgstr "لم ترد سمسا خلال %(seconds)s ثانية. أعد المحاولة."
+
+#. module: smsa_express_delivery_carrier
+#. odoo-python
+#: code:addons/smsa_express_delivery_carrier/models/smsa_delivery_carrier.py:0
+msgid ""
+"SMSA rejected the %(environment)s passkey of delivery method %(carrier)s. "
+"Check the passkey, and that Production Environment matches the kind of key."
+msgstr ""
+"رفضت سمسا مفتاح بيئة %(environment)s لطريقة التوصيل %(carrier)s. راجع "
+"المفتاح، وتأكد أن خيار «Production Environment» يطابق نوع المفتاح."
+
+#. module: smsa_express_delivery_carrier
+#. odoo-python
+#: code:addons/smsa_express_delivery_carrier/models/smsa_delivery_carrier.py:0
+msgid "SMSA returned an error (HTTP %(status)s): %(detail)s"
+msgstr "أرجعت سمسا خطأ (HTTP %(status)s): %(detail)s"
+
+#. module: smsa_express_delivery_carrier
+#. odoo-python
+#: code:addons/smsa_express_delivery_carrier/models/smsa_delivery_carrier.py:0
+msgid "SMSA sent an answer that could not be read."
+msgstr "أرسلت سمسا ردًا لا يمكن قراءته."
+
+#. module: smsa_express_delivery_carrier
+#. odoo-python
+#: code:addons/smsa_express_delivery_carrier/models/smsa_delivery_carrier.py:0
+msgid ""
+"SMSA shipments cannot be cancelled from Odoo. Cancel the shipment on the "
+"SMSA portal."
+msgstr "لا يمكن إلغاء شحنات سمسا من أودو. ألغِ الشحنة من بوابة سمسا."
+
+#. module: smsa_express_delivery_carrier
+#. odoo-python
+#: code:addons/smsa_express_delivery_carrier/models/smsa_delivery_carrier.py:0
+msgid "Service type"
+msgstr "نوع الخدمة"
+
+#. module: smsa_express_delivery_carrier
+#. odoo-python
+#: code:addons/smsa_express_delivery_carrier/models/smsa_delivery_carrier.py:0
+msgid "Shipping date"
+msgstr "تاريخ الشحن"
+
+#. module: smsa_express_delivery_carrier
+#. odoo-python
+#: code:addons/smsa_express_delivery_carrier/models/smsa_delivery_carrier.py:0
+msgid "Street"
+msgstr "الشارع"
+
+#. module: smsa_express_delivery_carrier
+#. odoo-python
+#: code:addons/smsa_express_delivery_carrier/models/smsa_delivery_carrier.py:0
+msgid "Street 2"
+msgstr "الشارع 2"
+
+#. module: smsa_express_delivery_carrier
+#. odoo-python
+#: code:addons/smsa_express_delivery_carrier/models/smsa_delivery_carrier.py:0
+msgid "Test"
+msgstr "التجربة"
+
+#. module: smsa_express_delivery_carrier
+#. odoo-python
+#: code:addons/smsa_express_delivery_carrier/models/smsa_delivery_carrier.py:0
+msgid ""
+"The SMSA service is not available right now (HTTP %(status)s). Please try "
+"again later."
+msgstr "خدمة سمسا غير متاحة حاليًا (HTTP %(status)s). أعد المحاولة لاحقًا."
+
+#. module: smsa_express_delivery_carrier
+#. odoo-python
+#: code:addons/smsa_express_delivery_carrier/models/smsa_delivery_carrier.py:0
+msgid "The declared value of the shipment must be at least 0.1."
+msgstr "القيمة المصرّح بها للشحنة يجب ألا تقل عن 0.1."
+
+#. module: smsa_express_delivery_carrier
+#. odoo-python
+#: code:addons/smsa_express_delivery_carrier/models/smsa_delivery_carrier.py:0
+msgid "The delivery has no customer address."
+msgstr "أمر التوصيل ليس له عنوان عميل."
+
+#. module: smsa_express_delivery_carrier
+#. odoo-python
+#: code:addons/smsa_express_delivery_carrier/models/smsa_delivery_carrier.py:0
+msgid "Warehouse %(name)s"
+msgstr "المستودع %(name)s"
+
+#. module: smsa_express_delivery_carrier
+#. odoo-python
+#: code:addons/smsa_express_delivery_carrier/models/smsa_delivery_carrier.py:0
+msgid ""
+"Warehouse %(warehouse)s has no address. Set it in Inventory > Configuration "
+"> Warehouses."
+msgstr ""
+"المستودع %(warehouse)s ليس له عنوان. أضفه من المخزون ← التهيئة ← المستودعات."
+
+#. module: smsa_express_delivery_carrier
+#. odoo-python
+#: code:addons/smsa_express_delivery_carrier/models/smsa_delivery_carrier.py:0
+msgid "Warehouse address"
+msgstr "عنوان المستودع"
+
+#. module: smsa_express_delivery_carrier
+#. odoo-python
+#: code:addons/smsa_express_delivery_carrier/models/smsa_delivery_carrier.py:0
+msgid "Weight"
+msgstr "الوزن"
+
+#. module: smsa_express_delivery_carrier
+#. odoo-python
+#: code:addons/smsa_express_delivery_carrier/models/smsa_delivery_carrier.py:0
+msgid "Weight unit"
+msgstr "وحدة الوزن"
+
+#. module: smsa_express_delivery_carrier
+#: model:ir.model.fields,field_description:smsa_express_delivery_carrier.field_stock_picking__wk_content_description
+msgid "Content Description"
+msgstr "وصف المحتوى"
+
+#. module: smsa_express_delivery_carrier
+#: model:ir.model.fields,help:smsa_express_delivery_carrier.field_stock_picking__wk_content_description
+msgid "Shipment Content description"
+msgstr "وصف محتوى الشحنة. إذا تُرك فارغًا تُرسل أسماء المنتجات."
