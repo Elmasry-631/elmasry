@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Inherit partner form view to add the "Print Balance Confirmation" button -->
+    <record id="view_partner_form_balance_confirmation" model="ir.ui.view">
+        <field name="name">res.partner.form.balance.confirmation</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <!-- Add a new header before the sheet (res.partner form has no native header in Odoo 19) -->
+            <xpath expr="//sheet" position="before">
+                <header>
+                    <button name="action_open_balance_confirmation"
+                            type="object"
+                            string="Print Confirmation"
+                            class="oe_highlight"
+                            groups="account.group_account_invoice"/>
+                </header>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,326 @@
+# Arabic translation for Balance Confirmation module
+# Copyright (C) 2026 Z.ai
+# This file is distributed under the LGPL-3 license.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-07-10 00:00+0000\n"
+"PO-Revision-Date: 2026-07-10 00:00+0000\n"
+"Last-Translator: Z.ai\n"
+"Language-Team: Arabic\n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 ? 4 : 5);\n"
+
+#. module: partner_balance_confirmation
+#: model:ir.actions.report,name:partner_balance_confirmation.action_report_balance_confirmation
+msgid "مطابقة رصيد العميل"
+msgstr "مطابقة رصيد العميل"
+
+#. module: partner_balance_confirmation
+#: model:ir.model.fields,field_description:partner_balance_confirmation.field_balance_confirmation_wizard__partner_id
+msgid "Customer"
+msgstr "العميل"
+
+#. module: partner_balance_confirmation
+#: model:ir.model.fields,field_description:partner_balance_confirmation.field_balance_confirmation_wizard__confirmation_date
+msgid "Confirmation Date"
+msgstr "تاريخ المطابقة"
+
+#. module: partner_balance_confirmation
+#: model:ir.model.fields,field_description:partner_balance_confirmation.field_balance_confirmation_wizard__template_type
+msgid "Template"
+msgstr "القالب"
+
+#. module: partner_balance_confirmation
+#: model:ir.model.fields,field_description:partner_balance_confirmation.field_balance_confirmation_wizard__notes
+msgid "Additional Notes"
+msgstr "ملاحظات إضافية"
+
+#. module: partner_balance_confirmation
+#: model:ir.model.fields,field_description:partner_balance_confirmation.field_balance_confirmation_wizard__printed_by
+msgid "Printed By"
+msgstr "طُبع بواسطة"
+
+#. module: partner_balance_confirmation
+#: model:ir.model.fields,field_description:partner_balance_confirmation.field_balance_confirmation_wizard__balance
+msgid "Balance"
+msgstr "الرصيد"
+
+#. module: partner_balance_confirmation
+#: model:ir.model.fields,field_description:partner_balance_confirmation.field_balance_confirmation_wizard__balance_text
+msgid "Balance in Words"
+msgstr "الرصيد كتابة"
+
+#. module: partner_balance_confirmation
+#: model:ir.model.fields,field_description:partner_balance_confirmation.field_balance_confirmation_wizard__currency_id
+msgid "Currency"
+msgstr "العملة"
+
+#. module: partner_balance_confirmation
+#: model:ir.model.fields.selection,name:partner_balance_confirmation.field_balance_confirmation_wizard__template_type_selection
+msgid "Imdad"
+msgstr "امداد"
+
+#. module: partner_balance_confirmation
+#: model:ir.model.fields.selection,name:partner_balance_confirmation.field_balance_confirmation_wizard__template_type_selection
+msgid "Namo"
+msgstr "نمو"
+
+#. module: partner_balance_confirmation
+#: model_terms:ir.ui.view,arch_db:partner_balance_confirmation.view_balance_confirmation_wizard_form
+msgid "Balance Confirmation"
+msgstr "مطابقة رصيد العميل"
+
+#. module: partner_balance_confirmation
+#: model_terms:ir.ui.view,arch_db:partner_balance_confirmation.view_balance_confirmation_wizard_form
+msgid "Notes shown in the confirmation report..."
+msgstr "ملاحظات تظهر في تقرير المطابقة..."
+
+#. module: partner_balance_confirmation
+#: model_terms:ir.ui.view,arch_db:partner_balance_confirmation.view_balance_confirmation_wizard_form
+msgid "Print PDF"
+msgstr "طباعة PDF"
+
+#. module: partner_balance_confirmation
+#: model_terms:ir.ui.view,arch_db:partner_balance_confirmation.view_balance_confirmation_wizard_form
+msgid "Export Word"
+msgstr "تصدير Word"
+
+#. module: partner_balance_confirmation
+#: model_terms:ir.ui.view,arch_db:partner_balance_confirmation.view_balance_confirmation_wizard_form
+msgid "Send by Email"
+msgstr "إرسال بالإيميل"
+
+#. module: partner_balance_confirmation
+#: model_terms:ir.ui.view,arch_db:partner_balance_confirmation.view_balance_confirmation_wizard_form
+msgid "Cancel"
+msgstr "إلغاء"
+
+#. module: partner_balance_confirmation
+#: model_terms:ir.ui.view,arch_db:partner_balance_confirmation.view_partner_form_balance_confirmation
+msgid "Print Confirmation"
+msgstr "طباعة المطابقة"
+
+#. module: partner_balance_confirmation
+#: code:addons/partner_balance_confirmation/models/res_partner.py:24
+#, python-format
+msgid "Balance Confirmation"
+msgstr "مطابقة رصيد العميل"
+
+#. module: partner_balance_confirmation
+#: code:addons/partner_balance_confirmation/wizard/balance_confirmation_wizard.py:143
+#, python-format
+msgid "Saudi Riyal"
+msgstr "ريال سعودي"
+
+#. module: partner_balance_confirmation
+#: code:addons/partner_balance_confirmation/wizard/balance_confirmation_wizard.py:169
+#, python-format
+msgid "Please select a customer first."
+msgstr "يجب اختيار العميل أولاً"
+
+#. module: partner_balance_confirmation
+#: code:addons/partner_balance_confirmation/wizard/balance_confirmation_wizard.py:171
+#, python-format
+msgid "Please select a confirmation date."
+msgstr "يجب تحديد تاريخ المطابقة"
+
+#. module: partner_balance_confirmation
+#: code:addons/partner_balance_confirmation/wizard/balance_confirmation_wizard.py:180
+#: code:addons/partner_balance_confirmation/wizard/balance_confirmation_wizard.py:233
+#, python-format
+msgid "Balance Confirmation - %s.pdf"
+msgstr "مطابقة رصيد - %s.pdf"
+
+#. module: partner_balance_confirmation
+#: code:addons/partner_balance_confirmation/wizard/balance_confirmation_wizard.py:233
+#, python-format
+msgid "Balance Confirmation - %s.docx"
+msgstr "مطابقة رصيد - %s.docx"
+
+#. module: partner_balance_confirmation
+#: code:addons/partner_balance_confirmation/wizard/balance_confirmation_wizard.py:255
+#, python-format
+msgid "No email address registered for this customer: %s"
+msgstr "لا يوجد بريد إلكتروني مسجل لهذا العميل: %s"
+
+#. module: partner_balance_confirmation
+#: code:addons/partner_balance_confirmation/wizard/balance_confirmation_wizard.py:279
+#, python-format
+msgid "Email template not found. Please verify the module installation."
+msgstr "قالب الإيميل غير موجود. تأكد من تثبيت الموديول بشكل صحيح."
+
+#. module: partner_balance_confirmation
+#: code:addons/partner_balance_confirmation/wizard/balance_confirmation_wizard.py:294
+#, python-format
+msgid "Sent"
+msgstr "تم الإرسال"
+
+#. module: partner_balance_confirmation
+#: code:addons/partner_balance_confirmation/wizard/balance_confirmation_wizard.py:295
+#, python-format
+msgid "Confirmation has been emailed to customer: %s"
+msgstr "تم إرسال المطابقة بالبريد الإلكتروني للعميل: %s"
+
+#. module: partner_balance_confirmation
+#: code:addons/partner_balance_confirmation/wizard/balance_confirmation_wizard.py:321
+#, python-format
+msgid "Original Word template not found: %s"
+msgstr "قالب Word الأصلي غير موجود: %s"
+
+#. module: partner_balance_confirmation
+#: code:addons/partner_balance_confirmation/wizard/balance_confirmation_wizard.py:195
+#, python-format
+msgid "PDF generated (limited mode)"
+msgstr "تم إنتاج PDF (وضع محدود)"
+
+#. module: partner_balance_confirmation
+#: code:addons/partner_balance_confirmation/wizard/balance_confirmation_wizard.py:843
+#, python-format
+msgid ""
+"Neither MS Word nor LibreOffice is available on the "
+"server, so this PDF was rendered using the QWeb fallback "
+"and will NOT be a 100%% match of the Word template.\n"
+"\n"
+"For an exact match, install ONE of:\n"
+"\n"
+"Option A — Microsoft Word (Windows only, BEST match):\n"
+"  1. Install MS Office (Word) on the server.\n"
+"  2. Install pywin32: pip install pywin32\n"
+"  3. Restart Odoo.\n"
+"\n"
+"Option B — LibreOffice (any OS):\n"
+"  - Linux: apt-get install -y libreoffice\n"
+"         or yum install -y libreoffice\n"
+"  - Windows: download from "
+"https://www.libreoffice.org/download/"
+msgstr ""
+"لا يوجد MS Word ولا LibreOffice على الخادم، لذلك تم إنتاج هذا الـ PDF "
+"باستخدام QWeb كبديل ولن يكون مطابقاً 100% لقالب Word.\n"
+"\n"
+"للحصول على مطابقة تامة، ثبّت واحد من:\n"
+"\n"
+"الخيار أ — Microsoft Word (Windows فقط، الأفضل):\n"
+"  1. ثبّت MS Office (Word) على الخادم.\n"
+"  2. ثبّت pywin32: pip install pywin32\n"
+"  3. أعد تشغيل Odoo.\n"
+"\n"
+"الخيار ب — LibreOffice (أي نظام تشغيل):\n"
+"  - Linux: apt-get install -y libreoffice\n"
+"         أو yum install -y libreoffice\n"
+"  - Windows: حمل من https://www.libreoffice.org/download/"
+
+#. module: partner_balance_confirmation
+#: code:addons/partner_balance_confirmation/wizard/balance_confirmation_wizard.py:868
+#, python-format
+msgid ""
+"LibreOffice installation appears to be corrupt "
+"(bootstrap.ini error).\n"
+"\n"
+"Two options to fix:\n"
+"\n"
+"Option A — Use Microsoft Word instead (RECOMMENDED on "
+"Windows):\n"
+"  1. Install MS Office (Word) on the server.\n"
+"  2. Install pywin32: pip install pywin32\n"
+"  3. Restart Odoo.\n"
+"(No need to uninstall LibreOffice — Word takes priority)\n"
+"\n"
+"Option B — Repair LibreOffice:\n"
+"  1. Close any running LibreOffice processes.\n"
+"  2. Delete the LibreOffice user profile folder:\n"
+"       %APPDATA%\\LibreOffice\n"
+"  3. Repair the installation:\n"
+"       Control Panel → Programs → LibreOffice → "
+"Change → Repair\n"
+"  4. If repair fails, uninstall LibreOffice, then "
+"reinstall as Administrator from:\n"
+"       https://www.libreoffice.org/download/\n"
+"  5. Run LibreOffice once manually (GUI) to initialize "
+"the profile.\n"
+"  6. Restart Odoo.\n"
+"\n"
+"The PDF was generated using the QWeb fallback and will "
+"NOT be a 100%% match of the Word template."
+msgstr ""
+"تركيب LibreOffice يبدو أنه تالف (خطأ bootstrap.ini).\n"
+"\n"
+"خياران للإصلاح:\n"
+"\n"
+"الخيار أ — استخدم Microsoft Word بدلاً منه (موصى به على Windows):\n"
+"  1. ثبّت MS Office (Word) على الخادم.\n"
+"  2. ثبّت pywin32: pip install pywin32\n"
+"  3. أعد تشغيل Odoo.\n"
+"(لا داعي لإزالة LibreOffice — Word يأخذ الأولوية)\n"
+"\n"
+"الخيار ب — أصلح LibreOffice:\n"
+"  1. أغلق أي عمليات LibreOffice قيد التشغيل.\n"
+"  2. احذف مجلد ملف المستخدم لـ LibreOffice:\n"
+"       %APPDATA%\\LibreOffice\n"
+"  3. أصلح التركيب:\n"
+"       Control Panel → Programs → LibreOffice → Change → Repair\n"
+"  4. لو الإصلاح فشل، احذف LibreOffice، ثم أعد تثبيته كمدير من:\n"
+"       https://www.libreoffice.org/download/\n"
+"  5. شغّل LibreOffice مرة واحدة يدوياً (GUI) لتهيئة الملف الشخصي.\n"
+"  6. أعد تشغيل Odoo.\n"
+"\n"
+"تم إنتاج PDF باستخدام QWeb كبديل ولن يكون مطابقاً 100% لقالب Word."
+
+#. module: partner_balance_confirmation
+#: code:addons/partner_balance_confirmation/wizard/balance_confirmation_wizard.py:894
+#, python-format
+msgid ""
+"LibreOffice failed due to a permission issue.\n"
+"\n"
+"Troubleshooting:\n"
+"  - Make sure the Odoo service user has read access to soffice.exe\n"
+"  - Make sure the Odoo service user has write access to the TEMP folder\n"
+"  - On Windows, run Odoo as a user with normal desktop permissions.\n"
+"\n"
+"The PDF was generated using the QWeb fallback and will NOT be a 100%% match of the Word template."
+msgstr ""
+"فشل LibreOffice بسبب مشكلة صلاحيات.\n"
+"\n"
+"الإصلاح:\n"
+"  - تأكد أن مستخدم خدمة Odoo لديه صلاحية قراءة على soffice.exe\n"
+"  - تأكد أن مستخدم خدمة Odoo لديه صلاحية كتابة على مجلد TEMP\n"
+"  - على Windows، شغّل Odoo كمستخدم لديه صلاحيات سطح مكتب عادية.\n"
+"\n"
+"تم إنتاج PDF باستخدام QWeb كبديل ولن يكون مطابقاً 100% لقالب Word."
+
+#. module: partner_balance_confirmation
+#: code:addons/partner_balance_confirmation/wizard/balance_confirmation_wizard.py:909
+#, python-format
+msgid ""
+"Both MS Word COM and LibreOffice failed to convert Word to "
+"PDF.\n"
+"\n"
+"LibreOffice STDERR: %s\n"
+"\n"
+"Troubleshooting:\n"
+"  - Install MS Office (Word) + pywin32 on the server, OR\n"
+"  - Repair/reinstall LibreOffice.\n"
+"\n"
+"The PDF was generated using the QWeb fallback and will NOT "
+"be a 100%% match of the Word template. Check the Odoo log "
+"for more details."
+msgstr ""
+"فشل كل من MS Word و LibreOffice في تحويل Word إلى PDF.\n"
+"\n"
+"LibreOffice STDERR: %s\n"
+"\n"
+"الإصلاح:\n"
+"  - ثبّت MS Office (Word) + pywin32 على الخادم، أو\n"
+"  - أصلح/أعد تثبيت LibreOffice.\n"
+"\n"
+"تم إنتاج PDF باستخدام QWeb كبديل ولن يكون مطابقاً 100% لقالب Word. راجع سجل Odoo لمزيد من التفاصيل."
+
+#. module: partner_balance_confirmation
+#: model:ir.model,name:partner_balance_confirmation.model_balance_confirmation_wizard
+msgid "Balance Confirmation Wizard"
+msgstr "مطابقة رصيد العميل - Balance Confirmation Wizard"

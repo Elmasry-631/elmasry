@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="mail_template_balance_confirmation" model="mail.template">
+        <field name="name">Balance Confirmation - Send by Email</field>
+        <field name="model_id" ref="model_balance_confirmation_wizard"/>
+        <field name="subject">Balance Confirmation - {{ object.partner_id.name }}</field>
+        <field name="email_from">{{ (object.printed_by.email_formatted or user.email_formatted) }}</field>
+        <field name="email_to">{{ object.partner_id.email_formatted }}</field>
+        <field name="lang">{{ object.partner_id.lang }}</field>
+        <field name="body_html" type="html">
+            <div t-if="object.partner_id.lang and object.partner_id.lang.startswith('ar')"
+                 style="direction: rtl; text-align: right; font-family: Arial, sans-serif;">
+                <p>السادة <strong><t t-out="object.partner_id.name"/></strong> المحترمون،</p>
+                <p>تحية طيبة وبعد،،،</p>
+                <p>
+                    نرفق لكم مطابقة رصيد حسابكم كما في تاريخ
+                    <strong><t t-out="object.confirmation_date"/></strong>.
+                </p>
+                <p>
+                    نرجو منكم مراجعة الرصيد والمصادقة عليه، وفي حال وجود أي اختلاف نرجو التواصل معنا
+                    خلال إسبوع من تاريخ استلامكم لهذه المطابقة.
+                </p>
+                <p>وتفضلوا بقبول خالص التحية والاحترام،،،</p>
+                <p style="margin-top: 15px;">
+                    <strong><t t-out="object.printed_by.name or user.name"/></strong><br/>
+                    <t t-out="user.company_id.name"/>
+                </p>
+            </div>
+            <div t-else=""
+                 style="direction: ltr; text-align: left; font-family: Arial, sans-serif;">
+                <p>Dear <strong><t t-out="object.partner_id.name"/></strong>,</p>
+                <p>Greetings,</p>
+                <p>
+                    Please find attached your balance confirmation as of
+                    <strong><t t-out="object.confirmation_date"/></strong>.
+                </p>
+                <p>
+                    Kindly review the balance and confirm it. In case of any discrepancy,
+                    please contact us within one week of receiving this confirmation.
+                </p>
+                <p>Best regards,</p>
+                <p style="margin-top: 15px;">
+                    <strong><t t-out="object.printed_by.name or user.name"/></strong><br/>
+                    <t t-out="user.company_id.name"/>
+                </p>
+            </div>
+        </field>
+    </record>
+</odoo>
