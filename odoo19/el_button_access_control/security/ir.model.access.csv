@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_el_button_access_rule_user,el.button.access.rule.user,model_el_button_access_rule,group_button_access_user,1,0,0,0
+access_el_button_access_rule_manager,el.button.access.rule.manager,model_el_button_access_rule,group_button_access_manager,1,1,1,1

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="el_button_access_control.ButtonSelector"
+       t-inherit="web.SelectionField"
+       t-inherit-mode="primary">
+    </t>
+</templates>

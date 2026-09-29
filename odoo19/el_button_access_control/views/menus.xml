@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="menu_el_button_access_root"
+              name="Button Access Control"
+              web_icon="el_button_access_control,static/description/icon.png"
+              groups="group_button_access_user"/>
+
+    <menuitem id="menu_el_button_access_rules"
+              name="Rules"
+              parent="menu_el_button_access_root"
+              action="action_el_button_access_rule"
+              sequence="10"/>
+
+    <menuitem id="menu_el_button_access_config"
+              name="Configuration"
+              parent="menu_el_button_access_root"
+              sequence="90"
+              groups="group_button_access_manager"/>
+
+    <menuitem id="menu_el_button_access_groups"
+              name="User Groups"
+              parent="menu_el_button_access_config"
+              action="base.action_res_groups"
+              sequence="10"/>
+
+</odoo>
