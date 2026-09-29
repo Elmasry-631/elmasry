@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="el_purchase_actual_qty.PurchaseActualDashboard">
+        <div class="o_purchase_actual_dashboard p-4" t-att-style="'height:100%;overflow-y:auto;overflow-x:hidden;box-sizing:border-box;background:#f8f9fa'">
+            <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+                <div>
+                    <h2 class="mb-1">Purchase Actual Quantity Dashboard</h2>
+                    <div class="text-muted">Physical quantity, commercial value and supplier variance analysis</div>
+                </div>
+                <div class="d-flex flex-wrap gap-2 align-items-center">
+                    <div class="input-group input-group-sm">
+                        <input type="date" t-att-value="state.date_from" t-on-change="onDateFromChange" class="form-control"/>
+                    </div>
+                    <span class="text-muted">to</span>
+                    <div class="input-group input-group-sm">
+                        <input type="date" t-att-value="state.date_to" t-on-change="onDateToChange" class="form-control"/>
+                    </div>
+                    <select t-on-change="onProductChange" class="form-select form-select-sm">
+                        <option value="">All Products</option>
+                        <t t-foreach="state.data.products" t-as="p" t-key="p.name">
+                            <option t-att-value="p.id"><t t-esc="p.name"/></option>
+                        </t>
+                    </select>
+                    <button t-att-class="state.period === 'all' ? 'btn btn-primary' : 'btn btn-outline-primary'" t-on-click="onSetPeriodAll">All</button>
+                    <button t-att-class="state.period === 'month' ? 'btn btn-primary' : 'btn btn-outline-primary'" t-on-click="onSetPeriodMonth">This Month</button>
+                    <button t-att-class="state.period === 'quarter' ? 'btn btn-primary' : 'btn btn-outline-primary'" t-on-click="onSetPeriodQuarter">This Quarter</button>
+                    <button t-att-class="state.period === 'year' ? 'btn btn-primary' : 'btn btn-outline-primary'" t-on-click="onSetPeriodYear">This Year</button>
+                    <button class="btn btn-secondary" t-on-click="openAnalysis">Analysis</button>
+                    <button class="btn btn-secondary" t-on-click="exportCsv">CSV</button>
+                </div>
+            </div>
+            <t t-if="state.loading"><div class="alert alert-info">Loading dashboard...</div></t>
+            <t t-elif="state.error"><div class="alert alert-danger"><t t-esc="state.error"/></div></t>
+            <t t-else="">
+                <div class="row g-3 mb-4">
+                    <t t-foreach="[
+                        ['Purchase Lines', state.data.kpis.lines, 'card-qty'],
+                        ['Ordered Qty', format(state.data.kpis.ordered), 'card-qty'],
+                        ['Actual Qty', format(state.data.kpis.actual), 'card-actual'],
+                        ['Variance Qty', format(state.data.kpis.variance), 'card-variance'],
+                        ['Variance %', format(state.data.kpis.variance_percent) + '%', 'card-warning'],
+                        ['Purchase Value', format(state.data.kpis.value), 'card-value'],
+                        ['High Variance Lines', state.data.kpis.high, 'card-warning']
+                    ]" t-as="card" t-key="card[0]">
+                        <div class="col-12 col-sm-6 col-xl">
+                            <div class="card h-100 shadow-sm border-0"><div class="card-body"><div class="text-muted small"><t t-esc="card[0]"/></div><div class="fs-3 fw-bold mt-2"><t t-esc="card[1]"/></div></div></div>
+                        </div>
+                    </t>
+                </div>
+                <div class="row g-4">
+                    <div class="col-12 col-xl-6">
+                        <div class="card shadow-sm">
+                            <div class="card-header fw-bold text-primary">Top Vendors by Variance</div>
+                            <div class="table-responsive" style="max-height:600px;overflow-y:auto"><table class="table table-sm table-hover mb-0"><thead><tr><th>Vendor</th><th>Ordered</th><th>Actual</th><th>Variance</th><th>Value</th></tr></thead><tbody>
+                                <t t-foreach="state.data.vendors" t-as="row" t-key="row.name"><tr><td><t t-esc="row.name"/></td><td><t t-esc="format(row.ordered)"/></td><td><t t-esc="format(row.actual)"/></td><td><t t-esc="format(row.variance)"/></td><td><t t-esc="format(row.value)"/></td></tr></t>
+                            </tbody></table></div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-xl-6">
+                        <div class="card shadow-sm">
+                            <div class="card-header fw-bold text-primary">Top Products by Variance</div>
+                            <div class="table-responsive" style="max-height:600px;overflow-y:auto"><table class="table table-sm table-hover mb-0"><thead><tr><th>Product</th><th>Ordered</th><th>Actual</th><th>Variance</th><th>Value</th></tr></thead><tbody>
+                                <t t-foreach="state.data.products" t-as="row" t-key="row.name"><tr><td><t t-esc="row.name"/></td><td><t t-esc="format(row.ordered)"/></td><td><t t-esc="format(row.actual)"/></td><td><t t-esc="format(row.variance)"/></td><td><t t-esc="format(row.value)"/></td></tr></t>
+                            </tbody></table></div>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </div>
+    </t>
+</templates>

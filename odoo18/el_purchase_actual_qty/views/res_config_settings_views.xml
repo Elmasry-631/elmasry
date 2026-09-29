@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_purchase_actual_qty" model="ir.ui.view">
+        <field name="name">res.config.settings.purchase.actual.qty</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="purchase.res_config_settings_view_form_purchase"/>
+        <field name="arch" type="xml">
+            <xpath expr="//app[@name='purchase']" position="inside">
+                <block title="Actual Purchase Quantity">
+                    <setting string="Require Actual Quantity"><field name="actual_qty_required"/></setting>
+                    <setting string="Allow Actual Quantity Above Ordered"><field name="actual_qty_allow_over"/></setting>
+                    <setting string="Variance Warning %"><field name="variance_warning_percent"/></setting>
+                    <setting string="Variance Critical %"><field name="variance_critical_percent"/></setting>
+                </block>
+            </xpath>
+        </field>
+    </record>
+</odoo>

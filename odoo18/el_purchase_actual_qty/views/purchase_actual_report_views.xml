@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="purchase_actual_report_list" model="ir.ui.view">
+        <field name="name">el.purchase.actual.report.list</field>
+        <field name="model">el.purchase.actual.report</field>
+        <field name="arch" type="xml">
+            <list string="Actual Quantity Analysis">
+                <field name="order_name"/>
+                <field name="order_date"/>
+                <field name="partner_id"/>
+                <field name="product_id"/>
+                <field name="ordered_qty" sum="Ordered"/>
+                <field name="actual_qty" sum="Actual"/>
+                <field name="variance_qty" sum="Variance"/>
+                <field name="variance_percent"/>
+                <field name="purchase_value" sum="Purchase Value"/>
+                <field name="effective_unit_cost"/>
+                <field name="variance_status"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+    <record id="purchase_actual_report_pivot" model="ir.ui.view">
+        <field name="name">el.purchase.actual.report.pivot</field>
+        <field name="model">el.purchase.actual.report</field>
+        <field name="arch" type="xml">
+            <pivot string="Actual Quantity Analysis">
+                <field name="product_category_id" type="row"/>
+                <field name="product_id" type="row"/>
+                <field name="partner_id" type="col"/>
+                <field name="ordered_qty" type="measure"/>
+                <field name="actual_qty" type="measure"/>
+                <field name="variance_qty" type="measure"/>
+                <field name="purchase_value" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+    <record id="purchase_actual_report_graph" model="ir.ui.view">
+        <field name="name">el.purchase.actual.report.graph</field>
+        <field name="model">el.purchase.actual.report</field>
+        <field name="arch" type="xml">
+            <graph string="Ordered vs Actual" type="bar">
+                <field name="product_category_id"/>
+                <field name="ordered_qty" type="measure"/>
+                <field name="actual_qty" type="measure"/>
+                <field name="variance_qty" type="measure"/>
+            </graph>
+        </field>
+    </record>
+    <record id="purchase_actual_report_search" model="ir.ui.view">
+        <field name="name">el.purchase.actual.report.search</field>
+        <field name="model">el.purchase.actual.report</field>
+        <field name="arch" type="xml">
+            <search string="Actual Quantity Analysis">
+                <field name="order_name"/>
+                <field name="partner_id"/>
+                <field name="product_id"/>
+                <field name="buyer_id"/>
+                <field name="product_category_id"/>
+                <field name="company_id"/>
+                <field name="variance_status"/>
+                <filter name="high_variance" string="High Variance" domain="[('variance_status','=','high')]"/>
+                <filter name="with_variance" string="With Variance" domain="[('variance_qty','!=',0)]"/>
+                <group string="Group By">
+                    <filter name="group_vendor" string="Vendor" context="{'group_by':'partner_id'}"/>
+                    <filter name="group_product" string="Product" context="{'group_by':'product_id'}"/>
+                    <filter name="group_category" string="Category" context="{'group_by':'product_category_id'}"/>
+                    <filter name="group_buyer" string="Buyer" context="{'group_by':'buyer_id'}"/>
+                    <filter name="group_date" string="Order Month" context="{'group_by':'order_date:month'}"/>
+                    <filter name="group_company" string="Company" context="{'group_by':'company_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+</odoo>

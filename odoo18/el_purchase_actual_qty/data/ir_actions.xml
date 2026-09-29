@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_purchase_actual_dashboard" model="ir.actions.client">
+        <field name="name">Actual Quantity Dashboard</field>
+        <field name="tag">purchase_actual_qty_dashboard</field>
+    </record>
+    <record id="action_purchase_actual_report" model="ir.actions.act_window">
+        <field name="name">Actual Quantity Analysis</field>
+        <field name="res_model">el.purchase.actual.report</field>
+        <field name="view_mode">graph,pivot,list</field>
+    </record>
+    <menuitem id="menu_purchase_actual_dashboard" name="Actual Quantity Dashboard" parent="purchase.menu_purchase_root" action="action_purchase_actual_dashboard" sequence="10" groups="purchase.group_purchase_user"/>
+    <menuitem id="menu_purchase_actual_report" name="Actual Quantity Analysis" parent="purchase.menu_purchase_root" action="action_purchase_actual_report" sequence="20" groups="purchase.group_purchase_user"/>
+</odoo>

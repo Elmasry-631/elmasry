@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_purchase_actual_pdf" model="ir.actions.report">
+        <field name="name">Purchase Actual Quantity Report</field>
+        <field name="model">el.purchase.actual.report</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">el_purchase_actual_qty.purchase_actual_report_document</field>
+        <field name="report_file">el_purchase_actual_qty.purchase_actual_report_document</field>
+        <field name="binding_model_id" ref="model_el_purchase_actual_report"/>
+        <field name="binding_type">report</field>
+    </record>
+    <template id="purchase_actual_report_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>Purchase Actual Quantity</h2>
+                        <table class="table table-sm">
+                            <tr><th>Purchase Order</th><td><span t-field="doc.order_name"/></td></tr>
+                            <tr><th>Vendor</th><td><span t-field="doc.partner_id"/></td></tr>
+                            <tr><th>Product</th><td><span t-field="doc.product_id"/></td></tr>
+                            <tr><th>Ordered Quantity</th><td><span t-field="doc.ordered_qty"/></td></tr>
+                            <tr><th>Actual Quantity</th><td><span t-field="doc.actual_qty"/></td></tr>
+                            <tr><th>Variance Quantity</th><td><span t-field="doc.variance_qty"/></td></tr>
+                            <tr><th>Variance %</th><td><span t-field="doc.variance_percent"/></td></tr>
+                            <tr><th>Purchase Value</th><td><span t-field="doc.purchase_value"/></td></tr>
+                            <tr><th>Effective Unit Cost</th><td><span t-field="doc.effective_unit_cost"/></td></tr>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>
