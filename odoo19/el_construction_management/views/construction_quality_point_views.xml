@@ -1,0 +1,44 @@
+<odoo>
+    <record id="view_construction_quality_point_list" model="ir.ui.view">
+        <field name="name">el_construction.quality.point.list</field>
+        <field name="model">el_construction.quality.point</field>
+        <field name="arch" type="xml">
+            <list string="Project Quality Points">
+                <field name="sequence" widget="handle" />
+                <field name="project_id" />
+                <field name="name" />
+                <field name="check_type" widget="badge" />
+                <field name="standard" />
+                <field name="active" />
+            </list>
+        </field>
+    </record>
+    <record id="view_construction_quality_point_form" model="ir.ui.view">
+        <field name="name">el_construction.quality.point.form</field>
+        <field name="model">el_construction.quality.point</field>
+        <field name="arch" type="xml">
+            <form string="Project Quality Point" class="o_construction_form">
+                <sheet>
+                    <group string="Project Context" class="o_construction_section">
+                        <group>
+                            <field name="project_id" />
+                            <field name="name" />
+                            <field name="check_type" />
+                        </group>
+                        <group>
+                            <field name="sequence" />
+                            <field name="standard" />
+                            <field name="active" />
+                        </group>
+                    </group>
+                    <field name="description" placeholder="Inspection requirement..." />
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="action_construction_quality_point" model="ir.actions.act_window">
+        <field name="name">Project Quality Points</field>
+        <field name="res_model">el_construction.quality.point</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

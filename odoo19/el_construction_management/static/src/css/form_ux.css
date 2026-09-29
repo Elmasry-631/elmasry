@@ -1,0 +1,16 @@
+/* Construction Management form UX - visual hierarchy only. */
+.o_construction_form .o_construction_section>.o_group_name {
+    font-weight: 600;
+}
+
+.o_construction_form .o_notebook {
+    margin-top: 12px;
+}
+
+.o_construction_form .oe_title {
+    margin-bottom: 8px;
+}
+
+.o_construction_form .o_field_widget {
+    max-width: 100%;
+}

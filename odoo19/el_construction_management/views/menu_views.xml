@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Public navigation: shallow, business-oriented, and intentionally consolidated. -->
+    <menuitem id="menu_construction_root" name="Construction" sequence="50"/>
+    <menuitem id="menu_construction_dashboard" name="Dashboard" parent="menu_construction_root" action="action_construction_dashboard" sequence="1"/>
+
+    <menuitem id="menu_construction_projects" name="Projects" parent="menu_construction_root" sequence="10"/>
+    <menuitem id="menu_construction_project_list" name="Projects" parent="menu_construction_projects" action="action_construction_project" sequence="1"/>
+    <menuitem id="menu_construction_sub_projects" name="Sub Projects" parent="menu_construction_projects" action="action_construction_sub_project" sequence="5"/>
+
+    <menuitem id="menu_construction_planning" name="Planning &amp; Execution" parent="menu_construction_root" sequence="20"/>
+    <menuitem id="menu_construction_phases" name="Phases / WBS" parent="menu_construction_planning" action="action_construction_phase" sequence="1"/>
+    <menuitem id="menu_construction_tasks" name="Tasks" parent="menu_construction_planning" action="action_construction_task" sequence="5"/>
+    <menuitem id="menu_construction_task_planning" name="Schedule" parent="menu_construction_planning" action="action_construction_task_gantt" sequence="10"/>
+    <menuitem id="menu_construction_work_orders" name="Work Orders" parent="menu_construction_planning" action="action_construction_work_order" sequence="15"/>
+
+    <menuitem id="menu_construction_commercial" name="Commercial &amp; Cost" parent="menu_construction_root" sequence="30"/>
+    <menuitem id="menu_construction_boq" name="Bill of Quantities" parent="menu_construction_commercial" action="action_construction_boq" sequence="1"/>
+    <menuitem id="menu_construction_budget_list" name="Budgets" parent="menu_construction_commercial" action="action_construction_budget" sequence="5"/>
+    <menuitem id="menu_construction_rate_analysis" name="Rate Analysis" parent="menu_construction_commercial" action="action_construction_rate_analysis" sequence="10"/>
+    <menuitem id="menu_construction_progress_billing" name="Progress Billing" parent="menu_construction_commercial" action="action_construction_progress_billing" sequence="15"/>
+    <menuitem id="menu_construction_contracts" name="Contracts" parent="menu_construction_commercial" sequence="20"/>
+    <menuitem id="menu_construction_subcontract" name="Subcontracting" parent="menu_construction_contracts" action="action_construction_subcontract" sequence="1"/>
+    <menuitem id="menu_construction_consume_order" name="Consume Orders" parent="menu_construction_contracts" action="action_construction_consume_order" sequence="5"/>
+    <menuitem id="menu_construction_ra_billing" name="RA Billings" parent="menu_construction_contracts" action="action_construction_ra_billing" sequence="10"/>
+    <menuitem id="menu_construction_extra_expense" name="Extra Expenses" parent="menu_construction_commercial" action="action_construction_extra_expense" sequence="25"/>
+    <menuitem id="menu_construction_controls" name="Project Controls" parent="menu_construction_commercial" sequence="30"/>
+    <menuitem id="menu_construction_variations" name="Variation Orders" parent="menu_construction_controls" action="action_construction_variation_orders" sequence="1"/>
+    <menuitem id="menu_construction_cost_entries" name="Cost Control" parent="menu_construction_controls" action="action_construction_cost_entries" sequence="5"/>
+    <menuitem id="menu_construction_boq_revisions" name="BOQ Revisions" parent="menu_construction_controls" action="action_construction_boq_revisions" sequence="10"/>
+    <menuitem id="menu_construction_budget_revisions" name="Budget Revisions" parent="menu_construction_controls" action="action_construction_budget_revisions" sequence="15"/>
+    <menuitem id="menu_construction_baseline_revisions" name="Schedule Baselines" parent="menu_construction_controls" action="action_construction_baseline_revisions" sequence="20"/>
+
+    <menuitem id="menu_construction_procurement" name="Procurement &amp; Inventory" parent="menu_construction_root" sequence="40"/>
+    <menuitem id="menu_construction_mreq" name="Material Requisitions" parent="menu_construction_procurement" action="action_construction_material_requisition" sequence="1"/>
+    <menuitem id="menu_construction_material_stock_operations" name="Material Stock Operations" parent="menu_construction_procurement" action="action_construction_material_issue" sequence="5"/>
+
+    <menuitem id="menu_construction_quality" name="Quality &amp; Compliance" parent="menu_construction_root" sequence="50"/>
+    <menuitem id="menu_construction_quality_checks" name="Quality Checks" parent="menu_construction_quality" action="action_construction_quality_check" sequence="1"/>
+    <menuitem id="menu_construction_ncr" name="NCR / CAPA" parent="menu_construction_quality" action="action_construction_ncr" sequence="5"/>
+
+    <menuitem id="menu_construction_reports" name="Reports" parent="menu_construction_root" action="action_construction_report_center" sequence="80"/>
+
+    <menuitem id="menu_construction_configuration" name="Configuration" parent="menu_construction_root" sequence="90"/>
+    <menuitem id="menu_construction_work_types" name="Work Types" parent="menu_construction_configuration" action="action_construction_work_type" sequence="1"/>
+    <menuitem id="menu_construction_work_sub_types" name="Work Sub Types" parent="menu_construction_configuration" action="action_construction_work_sub_type" sequence="5"/>
+    <menuitem id="menu_construction_quality_points" name="Project Quality Points" parent="menu_construction_configuration" action="action_construction_quality_point" sequence="10"/>
+    <menuitem id="menu_construction_approval_matrix" name="Approval Matrix" parent="menu_construction_configuration" action="action_construction_approval_matrix" sequence="15" groups="group_construction_manager"/>
+
+    <!-- Upgrade-safe deactivation of legacy navigation records. -->
+    <record id="menu_construction_operations" model="ir.ui.menu"><field name="name">Operations</field><field name="active">False</field></record>
+    <record id="menu_construction_executions" model="ir.ui.menu"><field name="name">Executions</field><field name="active">False</field></record>
+    <record id="menu_construction_budgets" model="ir.ui.menu"><field name="name">Budgets</field><field name="active">False</field></record>
+    <record id="menu_construction_task_schedule_control" model="ir.ui.menu"><field name="name">Task Schedule Control</field><field name="active">False</field></record>
+    <record id="menu_construction_reports_projects" model="ir.ui.menu"><field name="name">Legacy Report</field><field name="active">False</field></record>
+    <record id="menu_construction_reports_sub_projects" model="ir.ui.menu"><field name="name">Legacy Report</field><field name="active">False</field></record>
+    <record id="menu_construction_reports_boq" model="ir.ui.menu"><field name="name">Legacy Report</field><field name="active">False</field></record>
+    <record id="menu_construction_reports_rate_analysis" model="ir.ui.menu"><field name="name">Legacy Report</field><field name="active">False</field></record>
+    <record id="menu_construction_reports_budgets" model="ir.ui.menu"><field name="name">Legacy Report</field><field name="active">False</field></record>
+    <record id="menu_construction_reports_phases" model="ir.ui.menu"><field name="name">Legacy Report</field><field name="active">False</field></record>
+    <record id="menu_construction_reports_work_orders" model="ir.ui.menu"><field name="name">Legacy Report</field><field name="active">False</field></record>
+    <record id="menu_construction_reports_mreq" model="ir.ui.menu"><field name="name">Legacy Report</field><field name="active">False</field></record>
+    <record id="menu_construction_reports_subcontracts" model="ir.ui.menu"><field name="name">Legacy Report</field><field name="active">False</field></record>
+    <record id="menu_construction_reports_consume_orders" model="ir.ui.menu"><field name="name">Legacy Report</field><field name="active">False</field></record>
+    <record id="menu_construction_reports_ra_billings" model="ir.ui.menu"><field name="name">Legacy Report</field><field name="active">False</field></record>
+    <record id="menu_construction_reports_progress_billing" model="ir.ui.menu"><field name="name">Legacy Report</field><field name="active">False</field></record>
+    <record id="menu_construction_reports_quality" model="ir.ui.menu"><field name="name">Legacy Report</field><field name="active">False</field></record>
+    <record id="menu_construction_reports_tasks" model="ir.ui.menu"><field name="name">Legacy Report</field><field name="active">False</field></record>
+    <record id="menu_construction_reports_expenses" model="ir.ui.menu"><field name="name">Legacy Report</field><field name="active">False</field></record>
+    <record id="menu_construction_reports_permits" model="ir.ui.menu"><field name="name">Legacy Report</field><field name="active">False</field></record>
+    <record id="menu_construction_reports_timesheets" model="ir.ui.menu"><field name="name">Legacy Report</field><field name="active">False</field></record>
+</odoo>

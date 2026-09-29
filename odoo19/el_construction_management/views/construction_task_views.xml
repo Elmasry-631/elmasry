@@ -1,0 +1,360 @@
+<odoo>
+    <record id="view_construction_task_list" model="ir.ui.view">
+        <field name="name">el_construction.task.list</field>
+        <field name="model">el_construction.task</field>
+        <field name="arch" type="xml">
+            <list string="Tasks" decoration-info="state == 'draft'" decoration-success="state == 'done'">
+                <field name="sequence" widget="handle" />
+                <field name="reference" />
+                <field name="name" />
+                <field name="project_id" />
+                <field name="sub_project_id" domain="[('project_id', '=', project_id)]" />
+                <field name="assigned_to" />
+                <field name="date_start" />
+                <field name="date_deadline" />
+                <field name="schedule_health" widget="badge" decoration-success="schedule_health == 'on_track' or schedule_health == 'completed'" decoration-warning="schedule_health == 'at_risk'" decoration-danger="schedule_health == 'delayed'" />
+                <field name="critical_path" />
+                <field name="schedule_slack_days" />
+                <field name="baseline_variance_days" />
+                <field name="priority" widget="priority" />
+                <field name="progress" widget="progressbar" />
+                <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-primary="state == 'in_progress'" decoration-success="state == 'done'" />
+            </list>
+        </field>
+    </record>
+    <record id="view_construction_task_gantt" model="ir.ui.view">
+        <field name="name">el_construction.task.gantt</field>
+        <field name="model">el_construction.task</field>
+        <field name="arch" type="xml">
+            <gantt string="Task Planning" date_start="date_start" date_stop="date_end" progress="progress" default_group_by="project_id" default_scale="month" scales="day,week,month,year" color="state" dependency_field="predecessor_ids" dependency_inverted_field="successor_ids" thumbnails="{'assigned_to': 'image_128'}" total_row="true" collapse_first_level="false" dynamic_range="true" pill_label="true" create="false" cell_create="false" plan="true" sample="false" decoration-success="state == 'done'" decoration-danger="state == 'cancelled' or schedule_health == 'delayed'" decoration-warning="schedule_health == 'at_risk' or critical_path" decoration-info="is_milestone" decoration-secondary="schedule_health == 'no_schedule'">
+                <field name="name" />
+                <field name="reference" />
+                <field name="project_id" />
+                <field name="sub_project_id" />
+                <field name="phase_id" />
+                <field name="assigned_to" />
+                <field name="state" />
+                <field name="progress" />
+                <field name="planned_hours" />
+                <field name="total_hours" />
+                <field name="date_start" />
+                <field name="date_end" />
+                <field name="date_deadline" />
+                <field name="actual_start_date" />
+                <field name="actual_end_date" />
+                <field name="baseline_start" />
+                <field name="baseline_end" />
+                <field name="baseline_variance_days" />
+                <field name="schedule_health" />
+                <field name="critical_path" />
+                <field name="schedule_slack_days" />
+                <field name="delay_days" />
+                <field name="dependency_count" />
+                <field name="successor_count" />
+                <templates>
+                    <div t-name="gantt-popover">
+                        <div class="o_kanban_record_top mb-1">
+                            <div class="o_kanban_record_title fw-bold">
+                                <t t-esc="name" />
+                            </div>
+                        </div>
+                        <div class="o_kanban_record_body">
+                            <div>
+                                <strong>Reference:</strong>
+                                <t t-esc="reference" />
+                            </div>
+                            <div>
+                                <strong>Project:</strong>
+                                <t t-esc="project_id and project_id[1] or ''" />
+                            </div>
+                            <div>
+                                <strong>Sub-project:</strong>
+                                <t t-esc="sub_project_id and sub_project_id[1] or ''" />
+                            </div>
+                            <div>
+                                <strong>Phase:</strong>
+                                <t t-esc="phase_id and phase_id[1] or ''" />
+                            </div>
+                            <div>
+                                <strong>Assigned To:</strong>
+                                <t t-esc="assigned_to and assigned_to[1] or ''" />
+                            </div>
+                            <div>
+                                <strong>Status:</strong>
+                                <t t-esc="state" />
+                            </div>
+                            <div>
+                                <strong>Progress:</strong>
+                                <t t-esc="progress" />%</div>
+                            <div>
+                                <strong>Planned Hours:</strong>
+                                <t t-esc="planned_hours" />
+                            </div>
+                            <div>
+                                <strong>Total Hours:</strong>
+                                <t t-esc="total_hours" />
+                            </div>
+                            <div>
+                                <strong>Start:</strong>
+                                <t t-esc="date_start" />
+                            </div>
+                            <div>
+                                <strong>End:</strong>
+                                <t t-esc="date_end" />
+                            </div>
+                            <div>
+                                <strong>Deadline:</strong>
+                                <t t-esc="date_deadline" />
+                            </div>
+                            <div>
+                                <strong>Actual Start:</strong>
+                                <t t-esc="actual_start_date" />
+                            </div>
+                            <div>
+                                <strong>Actual End:</strong>
+                                <t t-esc="actual_end_date" />
+                            </div>
+                            <div>
+                                <strong>Baseline:</strong>
+                                <t t-esc="baseline_start" /> → <t t-esc="baseline_end" />
+                            </div>
+                            <div>
+                                <strong>Baseline Variance:</strong>
+                                <t t-esc="baseline_variance_days" />
+                            </div>
+                            <div>
+                                <strong>Schedule Health:</strong>
+                                <t t-esc="schedule_health" />
+                            </div>
+                            <div>
+                                <strong>Critical Path:</strong>
+                                <t t-esc="critical_path" />
+                            </div>
+                            <div>
+                                <strong>Schedule Slack:</strong>
+                                <t t-esc="schedule_slack_days" />
+                            </div>
+                            <div>
+                                <strong>Delay:</strong>
+                                <t t-esc="delay_days" />
+                            </div>
+                            <div>
+                                <strong>Dependencies:</strong>
+                                <t t-esc="dependency_count" />
+                            </div>
+                            <div>
+                                <strong>Successors:</strong>
+                                <t t-esc="successor_count" />
+                            </div>
+                        </div>
+                    </div>
+                </templates>
+            </gantt>
+        </field>
+    </record>
+    <record id="view_construction_task_form" model="ir.ui.view">
+        <field name="name">el_construction.task.form</field>
+        <field name="model">el_construction.task</field>
+        <field name="arch" type="xml">
+            <form string="Task" class="o_construction_form">
+                <header>
+                    <button name="action_start" string="Start" type="object" class="oe_highlight" invisible="state != 'draft'" />
+                    <button name="action_timer_start" string="Start Timer" type="object" class="oe_highlight" invisible="state != 'in_progress' or is_timer_running" />
+                    <button name="action_timer_stop" string="⏹ Stop Timer" type="object" class="oe_highlight" invisible="not is_timer_running" />
+                    <button name="action_done" string="Done" type="object" class="oe_highlight" groups="el_construction_management.group_construction_manager" invisible="state != 'in_progress'" />
+                    <button name="action_cancel" string="Cancel" type="object" groups="el_construction_management.group_construction_manager" invisible="state not in ('draft', 'in_progress')" />
+                    <button name="action_reset_draft" string="Reset to Draft" type="object" groups="el_construction_management.group_construction_manager" invisible="state != 'cancelled'" />
+                    <field name="state" widget="statusbar" statusbar_visible="draft,in_progress,done,cancelled" />
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="reference" readonly="1" />
+                        </h1>
+                        <field name="name" placeholder="Task Name..." />
+                    </div>
+                    <group string="Schedule &amp; Responsibility" class="o_construction_section">
+                        <group>
+                            <field name="project_id" />
+                            <field name="sub_project_id" domain="[('project_id', '=', project_id)]" />
+                            <field name="phase_id" domain="[('project_id', '=', project_id)]" />
+                            <field name="work_order_id" domain="[('project_id', '=', project_id)]" />
+                            <field name="assigned_to" />
+                            <field name="department_id" />
+                            <field name="priority" widget="priority" />
+                            <field name="date_start" />
+                            <field name="date_end" />
+                            <field name="date_deadline" />
+                        </group>
+                        <group>
+                            <field name="planned_hours" readonly="state in ('done', 'cancelled')" />
+                            <field name="progress" widget="progressbar" readonly="planned_hours &gt; 0 or state in ('done', 'cancelled')" />
+                            <field name="remaining_hours" readonly="1" />
+                            <field name="total_hours" readonly="1" />
+                            <field name="is_timer_running" readonly="1" />
+                            <field name="timer_start" readonly="1" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Description">
+                            <field name="description" />
+                        </page>
+                        <page string="Planning">
+                            <group>
+                                <group string="Current Plan">
+                                    <field name="date_start" />
+                                    <field name="date_end" />
+                                    <field name="date_deadline" />
+                                    <field name="planned_hours" />
+                                    <field name="is_milestone" />
+                                </group>
+                                <group string="Baseline">
+                                    <button name="action_set_baseline" string="Set / Update Baseline" type="object" class="oe_highlight" groups="el_construction_management.group_construction_manager" invisible="state in ('done', 'cancelled')" />
+                                    <field name="baseline_locked" readonly="1" />
+                                    <field name="baseline_set_on" readonly="1" />
+                                    <field name="baseline_start" readonly="1" />
+                                    <field name="baseline_end" readonly="1" />
+                                    <field name="baseline_hours" readonly="1" />
+                                </group>
+                            </group>
+                            <group string="Actual vs Baseline">
+                                <field name="actual_start_date" readonly="1" />
+                                <field name="actual_end_date" readonly="1" />
+                                <field name="baseline_start_variance_days" readonly="1" />
+                                <field name="baseline_variance_days" readonly="1" />
+                                <field name="schedule_health" readonly="1" />
+                                <field name="delay_days" readonly="1" />
+                                <field name="critical_path" readonly="1" />
+                                <field name="schedule_slack_days" readonly="1" />
+                            </group>
+                            <div class="text-muted">
+                                The baseline is a manager-approved snapshot of the current plan.
+                                Critical Path and Slack are calculated from the current project dependency network.
+                                Delayed and At Risk tasks are early-warning signals for schedule control.
+                            </div>
+                        </page>
+                        <page string="Dependencies">
+                            <group>
+                                <group string="Blocked By">
+                                    <field name="predecessor_ids" domain="[('id', '!=', id), ('project_id', '=', project_id), ('company_id', '=', company_id)]" context="{'default_project_id': project_id}" widget="many2many_tags" />
+                                    <field name="dependency_count" readonly="1" />
+                                </group>
+                                <group string="Blocking Tasks">
+                                    <field name="successor_ids" domain="[('id', '!=', id), ('project_id', '=', project_id), ('company_id', '=', company_id)]" widget="many2many_tags" />
+                                    <field name="successor_count" readonly="1" />
+                                </group>
+                            </group>
+                            <div class="text-muted">
+                                Dependencies are Finish-to-Start: a successor cannot start before its predecessor finishes.
+                                Circular and cross-project dependencies are blocked by the server.
+                            </div>
+                        </page>
+                        <page string="Timesheet">
+                            <field name="timesheet_ids">
+                                <list editable="bottom">
+                                    <field name="date" />
+                                    <field name="employee_id" />
+                                    <field name="description" />
+                                    <field name="hours" sum="Total Hours" />
+                                    <field name="state" />
+                                    <field name="is_internal" />
+                                </list>
+                            </field>
+                            <group>
+                                <field name="total_hours" />
+                            </group>
+                        </page>
+                        <page string="Notes">
+                            <field name="notes" />
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter />
+            </form>
+        </field>
+    </record>
+    <record id="view_construction_task_kanban" model="ir.ui.view">
+        <field name="name">el_construction.task.kanban</field>
+        <field name="model">el_construction.task</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="state">
+                <field name="name" />
+                <field name="project_id" />
+                <field name="assigned_to" />
+                <field name="priority" />
+                <field name="state" />
+                <field name="progress" />
+                <templates>
+                    <t t-name="card">
+                        <field name="priority" widget="priority" />
+                        <field name="name" />
+                        <field name="project_id" />
+                        <div>
+                            <field name="assigned_to" />
+                        </div>
+                        <field name="progress" widget="progressbar" />
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+    <record id="view_construction_task_search" model="ir.ui.view">
+        <field name="name">el_construction.task.search</field>
+        <field name="model">el_construction.task</field>
+        <field name="arch" type="xml">
+            <search string="Tasks">
+                <field name="name" />
+                <field name="reference" />
+                <field name="project_id" />
+                <field name="assigned_to" />
+                <filter name="draft" string="Draft" domain="[('state', '=', 'draft')]" />
+                <filter name="in_progress" string="In Progress" domain="[('state', '=', 'in_progress')]" />
+                <filter name="done" string="Done" domain="[('state', '=', 'done')]" />
+                <filter name="critical_path" string="Critical Path" domain="[('critical_path', '=', True)]" />
+                <filter name="delayed" string="Delayed" domain="[('schedule_health', '=', 'delayed')]" />
+                <filter name="at_risk" string="At Risk" domain="[('schedule_health', '=', 'at_risk')]" />
+                <filter name="my_tasks" string="My Tasks" domain="[('assigned_to.user_id', '=', uid)]" />
+                <group>
+                    <filter name="group_project" string="Project" context="{'group_by': 'project_id'}" />
+                    <filter name="group_sub_project" string="Sub Project" context="{'group_by': 'sub_project_id'}" />
+                    <filter name="group_phase" string="Phase / WBS" context="{'group_by': 'phase_id'}" />
+                    <filter name="group_assigned" string="Assigned To" context="{'group_by': 'assigned_to'}" />
+                    <filter name="group_state" string="Status" context="{'group_by': 'state'}" />
+                    <filter name="group_priority" string="Priority" context="{'group_by': 'priority'}" />
+                </group>
+            </search>
+        </field>
+    </record>
+    <record id="action_construction_task" model="ir.actions.act_window">
+        <field name="name">Tasks</field>
+        <field name="res_model">el_construction.task</field>
+        <field name="view_mode">list,gantt,kanban,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new Task
+            </p>
+        </field>
+    </record>
+    <record id="action_construction_task_gantt" model="ir.actions.act_window">
+        <field name="name">Task Planning</field>
+        <field name="res_model">el_construction.task</field>
+        <field name="view_mode">gantt</field>
+        <field name="view_id" ref="view_construction_task_gantt" />
+        <field name="context">{'search_default_group_project': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Plan construction tasks on a timeline.
+            </p>
+            <p>
+                Use dependencies to model Finish-to-Start sequencing and drag scheduled tasks to adjust the plan.
+            </p>
+        </field>
+    </record>
+    <record id="action_construction_task_schedule_control" model="ir.actions.act_window">
+        <field name="name">Schedule Control</field>
+        <field name="res_model">el_construction.task</field>
+        <field name="view_mode">gantt,list,form</field>
+        <field name="view_id" ref="view_construction_task_gantt" />
+        <field name="context">{'search_default_group_project': 1, 'search_default_critical_path': 1}</field>
+    </record>
+</odoo>

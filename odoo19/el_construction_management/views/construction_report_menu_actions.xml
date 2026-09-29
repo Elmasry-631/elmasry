@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_construction_report_project_menu" model="ir.actions.act_window">
+        <field name="name">Project Reports</field>
+        <field name="res_model">el_construction.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{"default_report_type": "project"}</field>
+    </record>
+    <record id="action_construction_report_sub_project_menu" model="ir.actions.act_window">
+        <field name="name">Sub Project Reports</field>
+        <field name="res_model">el_construction.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{"default_report_type": "sub_project"}</field>
+    </record>
+    <record id="action_construction_report_boq_menu" model="ir.actions.act_window">
+        <field name="name">BOQ Reports</field>
+        <field name="res_model">el_construction.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{"default_report_type": "boq"}</field>
+    </record>
+    <record id="action_construction_report_rate_analysis_menu" model="ir.actions.act_window">
+        <field name="name">Rate Analysis Reports</field>
+        <field name="res_model">el_construction.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{"default_report_type": "rate_analysis"}</field>
+    </record>
+    <record id="action_construction_report_budget_menu" model="ir.actions.act_window">
+        <field name="name">Budget Reports</field>
+        <field name="res_model">el_construction.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{"default_report_type": "budget"}</field>
+    </record>
+    <record id="action_construction_report_phase_menu" model="ir.actions.act_window">
+        <field name="name">Phase / WBS Reports</field>
+        <field name="res_model">el_construction.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{"default_report_type": "phase"}</field>
+    </record>
+    <record id="action_construction_report_work_order_menu" model="ir.actions.act_window">
+        <field name="name">Work Order Reports</field>
+        <field name="res_model">el_construction.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{"default_report_type": "work_order"}</field>
+    </record>
+    <record id="action_construction_report_material_requisition_menu" model="ir.actions.act_window">
+        <field name="name">Material Requisition Reports</field>
+        <field name="res_model">el_construction.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{"default_report_type": "material_requisition"}</field>
+    </record>
+    <record id="action_construction_report_subcontract_menu" model="ir.actions.act_window">
+        <field name="name">Subcontract Reports</field>
+        <field name="res_model">el_construction.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{"default_report_type": "subcontract"}</field>
+    </record>
+    <record id="action_construction_report_consume_order_menu" model="ir.actions.act_window">
+        <field name="name">Consume Order Reports</field>
+        <field name="res_model">el_construction.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{"default_report_type": "consume_order"}</field>
+    </record>
+    <record id="action_construction_report_ra_billing_menu" model="ir.actions.act_window">
+        <field name="name">RA Billing Reports</field>
+        <field name="res_model">el_construction.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{"default_report_type": "ra_billing"}</field>
+    </record>
+    <record id="action_construction_report_progress_billing_menu" model="ir.actions.act_window">
+        <field name="name">Progress Billing Reports</field>
+        <field name="res_model">el_construction.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{"default_report_type": "progress_billing"}</field>
+    </record>
+    <record id="action_construction_report_quality_check_menu" model="ir.actions.act_window">
+        <field name="name">Quality Inspection Reports</field>
+        <field name="res_model">el_construction.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{"default_report_type": "quality_check"}</field>
+    </record>
+    <record id="action_construction_report_task_menu" model="ir.actions.act_window">
+        <field name="name">Task Reports</field>
+        <field name="res_model">el_construction.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{"default_report_type": "task"}</field>
+    </record>
+    <record id="action_construction_report_extra_expense_menu" model="ir.actions.act_window">
+        <field name="name">Extra Expense Reports</field>
+        <field name="res_model">el_construction.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{"default_report_type": "extra_expense"}</field>
+    </record>
+    <record id="action_construction_report_permit_menu" model="ir.actions.act_window">
+        <field name="name">Permit Reports</field>
+        <field name="res_model">el_construction.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{"default_report_type": "permit"}</field>
+    </record>
+    <record id="action_construction_report_timesheet_menu" model="ir.actions.act_window">
+        <field name="name">Timesheet Reports</field>
+        <field name="res_model">el_construction.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{"default_report_type": "timesheet"}</field>
+    </record>
+</odoo>

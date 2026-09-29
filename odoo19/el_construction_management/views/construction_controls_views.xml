@@ -1,0 +1,337 @@
+<odoo>
+    <record id="view_construction_variation_order_list" model="ir.ui.view">
+        <field name="name">el.construction.variation.order.list</field>
+        <field name="model">el_construction.variation.order</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name" />
+                <field name="project_id" />
+                <field name="date" />
+                <field name="amount" />
+                <field name="state" />
+                <field name="approved_by" />
+            </list>
+        </field>
+    </record>
+    <record id="view_construction_variation_order_form" model="ir.ui.view">
+        <field name="name">el.construction.variation.order.form</field>
+        <field name="model">el_construction.variation.order</field>
+        <field name="arch" type="xml">
+            <form class="o_construction_form">
+                <header>
+                    <button name="action_submit" type="object" string="Submit" invisible="state != 'draft'" />
+                    <button name="action_approve" type="object" string="Approve" invisible="state != 'submitted'" class="oe_highlight" />
+                    <button name="action_reject" type="object" string="Reject" invisible="state != 'submitted'" />
+                    <button name="action_cancel" type="object" string="Cancel" invisible="state not in ('draft','submitted')" />
+                    <field name="state" widget="statusbar" statusbar_visible="draft,submitted,approved" />
+                </header>
+                <sheet>
+                    <group string="Schedule &amp; Responsibility" class="o_construction_section">
+                        <group>
+                            <field name="name" />
+                            <field name="project_id" />
+                            <field name="sub_project_id" />
+                            <field name="date" />
+                        </group>
+                        <group>
+                            <field name="amount" />
+                            <field name="reason" />
+                            <field name="description" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Approval History">
+                            <field name="approval_line_ids" readonly="1">
+                                <list>
+                                    <field name="user_id"/>
+                                    <field name="matrix_id"/>
+                                    <field name="approved_on"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Lines">
+                            <field name="line_ids">
+                                <list editable="bottom">
+                                    <field name="boq_line_id" />
+                                    <field name="description" />
+                                    <field name="quantity" />
+                                    <field name="unit_price" />
+                                    <field name="amount" />
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="action_construction_variation_orders" model="ir.actions.act_window">
+        <field name="name">Variation Orders</field>
+        <field name="res_model">el_construction.variation.order</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <record id="view_construction_ncr_list" model="ir.ui.view">
+        <field name="name">el.construction.ncr.list</field>
+        <field name="model">el_construction.ncr</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name" />
+                <field name="project_id" />
+                <field name="severity" />
+                <field name="date" />
+                <field name="state" />
+            </list>
+        </field>
+    </record>
+    <record id="view_construction_ncr_form" model="ir.ui.view">
+        <field name="name">el.construction.ncr.form</field>
+        <field name="model">el_construction.ncr</field>
+        <field name="arch" type="xml">
+            <form class="o_construction_form">
+                <header>
+                    <button name="action_open" type="object" string="Open" invisible="state != 'draft'" />
+                    <button name="action_start_capa" type="object" string="Start CAPA" invisible="state != 'open'" />
+                    <button name="action_verify" type="object" string="Verify" invisible="state != 'action'" />
+                    <button name="action_close" type="object" string="Close" invisible="state != 'verification'" class="oe_highlight" />
+                    <field name="state" widget="statusbar" statusbar_visible="draft,open,action,verification,closed" />
+                </header>
+                <sheet>
+                    <group string="Schedule &amp; Responsibility" class="o_construction_section">
+                        <field name="name" />
+                        <field name="project_id" />
+                        <field name="sub_project_id" />
+                        <field name="quality_check_id" />
+                        <field name="date" />
+                        <field name="severity" />
+                    </group>
+                    <group string="General Information" class="o_construction_section">
+                        <field name="description" />
+                        <field name="root_cause" />
+                    </group>
+                    <field name="capa_ids">
+                        <list editable="bottom">
+                            <field name="name" />
+                            <field name="action_type" />
+                            <field name="owner_id" />
+                            <field name="deadline" />
+                            <field name="state" />
+                        </list>
+                    </field>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="action_construction_ncr" model="ir.actions.act_window">
+        <field name="name">NCR / CAPA</field>
+        <field name="res_model">el_construction.ncr</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <record id="view_construction_cost_entry_list" model="ir.ui.view">
+        <field name="name">el.construction.cost.entry.list</field>
+        <field name="model">el_construction.cost.entry</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name" />
+                <field name="project_id" />
+                <field name="date" />
+                <field name="cost_type" />
+                <field name="cost_category" />
+                <field name="amount" />
+                <field name="analytic_account_id" />
+            </list>
+        </field>
+    </record>
+    <record id="view_construction_cost_entry_form" model="ir.ui.view">
+        <field name="name">el.construction.cost.entry.form</field>
+        <field name="model">el_construction.cost.entry</field>
+        <field name="arch" type="xml">
+            <form class="o_construction_form">
+                <sheet>
+                    <group string="Schedule &amp; Responsibility" class="o_construction_section">
+                        <field name="name" />
+                        <field name="project_id" />
+                        <field name="sub_project_id" />
+                        <field name="date" />
+                        <field name="cost_type" />
+                        <field name="cost_category" />
+                        <field name="amount" />
+                        <field name="analytic_account_id" />
+                        <field name="source_ref" />
+                        <field name="notes" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="action_construction_cost_entries" model="ir.actions.act_window">
+        <field name="name">Cost Control Entries</field>
+        <field name="res_model">el_construction.cost.entry</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <record id="view_construction_approval_matrix_list" model="ir.ui.view">
+        <field name="name">el.construction.approval.matrix.list</field>
+        <field name="model">el_construction.approval.matrix</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="sequence" />
+                <field name="name" />
+                <field name="model_name" />
+                <field name="company_id" />
+                <field name="amount_from" />
+                <field name="amount_to" />
+                <field name="required_approvals" />
+                <field name="active" />
+            </list>
+        </field>
+    </record>
+    <record id="view_construction_approval_matrix_form" model="ir.ui.view">
+        <field name="name">el.construction.approval.matrix.form</field>
+        <field name="model">el_construction.approval.matrix</field>
+        <field name="arch" type="xml">
+            <form class="o_construction_form">
+                <sheet>
+                    <group string="Configuration" class="o_construction_section">
+                        <field name="name" />
+                        <field name="sequence" />
+                        <field name="model_name" />
+                        <field name="company_id" />
+                        <field name="amount_from" />
+                        <field name="amount_to" />
+                        <field name="required_approvals" />
+                        <field name="approver_ids" widget="many2many_tags" />
+                        <field name="active" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="action_construction_approval_matrix" model="ir.actions.act_window">
+        <field name="name">Approval Matrix</field>
+        <field name="res_model">el_construction.approval.matrix</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <record id="view_construction_boq_revision_list" model="ir.ui.view">
+        <field name="name">el.construction.boq.revision.list</field>
+        <field name="model">el_construction.boq.revision</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name" />
+                <field name="boq_id" />
+                <field name="revision_no" />
+                <field name="state" />
+                <field name="reason" />
+            </list>
+        </field>
+    </record>
+    <record id="action_construction_boq_revisions" model="ir.actions.act_window">
+        <field name="name">BOQ Revisions</field>
+        <field name="res_model">el_construction.boq.revision</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <record id="view_construction_budget_revision_list" model="ir.ui.view">
+        <field name="name">el.construction.budget.revision.list</field>
+        <field name="model">el_construction.budget.revision</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name" />
+                <field name="budget_id" />
+                <field name="revision_no" />
+                <field name="state" />
+                <field name="total_amount" />
+            </list>
+        </field>
+    </record>
+    <record id="action_construction_budget_revisions" model="ir.actions.act_window">
+        <field name="name">Budget Revisions</field>
+        <field name="res_model">el_construction.budget.revision</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <record id="view_construction_baseline_revision_list" model="ir.ui.view">
+        <field name="name">el.construction.baseline.revision.list</field>
+        <field name="model">el_construction.task.baseline.revision</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name" />
+                <field name="project_id" />
+                <field name="revision_no" />
+                <field name="state" />
+                <field name="reason" />
+            </list>
+        </field>
+    </record>
+    <record id="action_construction_baseline_revisions" model="ir.actions.act_window">
+        <field name="name">Schedule Baselines</field>
+        <field name="res_model">el_construction.task.baseline.revision</field>
+        <field name="view_mode">list,form</field>
+    </record>
+<record id="view_construction_project_controls_inherit" model="ir.ui.view">
+        <field name="name">el.construction.project.controls.inherit</field>
+        <field name="model">el_construction.project</field>
+        <field name="inherit_id" ref="el_construction_management.view_construction_project_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_rebuild_cost_snapshot" type="object" string="Rebuild Cost Snapshot" />
+            </xpath>
+            <xpath expr="//sheet" position="inside">
+                <group string="Project Controls">
+                    <field name="enforce_closure_gates" />
+                    <field name="analytic_account_id" />
+                    <field name="approved_variation_amount" />
+                    <field name="committed_cost" />
+                    <field name="actual_cost" />
+                    <field name="forecast_cost" />
+                    <field name="closure_gate_summary" readonly="1" />
+                </group>
+            </xpath>
+        </field>
+    </record>
+    <record id="view_construction_task_controls_inherit" model="ir.ui.view">
+        <field name="name">el.construction.task.controls.inherit</field>
+        <field name="model">el_construction.task</field>
+        <field name="inherit_id" ref="el_construction_management.view_construction_task_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="inside">
+                <group string="Physical Progress">
+                    <field name="progress_mode" />
+                    <field name="planned_quantity" invisible="progress_mode != 'quantity'" />
+                    <field name="completed_quantity" invisible="progress_mode != 'quantity'" />
+                    <field name="quantity_uom_id" invisible="progress_mode != 'quantity'" />
+                    <field name="physical_progress" readonly="1" />
+                </group>
+            </xpath>
+        </field>
+    </record>
+    <record id="view_construction_progress_billing_controls_inherit" model="ir.ui.view">
+        <field name="name">el.construction.progress.billing.controls.inherit</field>
+        <field name="model">el_construction.progress.billing</field>
+        <field name="inherit_id" ref="el_construction_management.view_construction_progress_billing_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="inside">
+                <group string="Commercial Controls">
+                    <field name="commercial_status" />
+                    <field name="retention_percent" />
+                    <field name="retention_amount" readonly="1" />
+                    <field name="advance_recovery" />
+                    <field name="other_deductions" />
+                    <field name="net_commercial_amount" readonly="1" />
+                </group>
+            </xpath>
+        </field>
+    </record>
+    <record id="view_construction_ra_billing_controls_inherit" model="ir.ui.view">
+        <field name="name">el.construction.ra.billing.controls.inherit</field>
+        <field name="model">el_construction.ra.billing</field>
+        <field name="inherit_id" ref="el_construction_management.view_construction_ra_billing_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="inside">
+                <group string="Commercial Controls">
+                    <field name="retention_percent" />
+                    <field name="retention_amount" readonly="1" />
+                    <field name="advance_recovery" />
+                    <field name="other_deductions" />
+                    <field name="net_certified_amount" readonly="1" />
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

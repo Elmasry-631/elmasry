@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Construction Module Category -->
+        <record id="module_category_construction" model="ir.module.category">
+            <field name="name">Construction</field>
+            <field name="description">Construction Management Module</field>
+            <field name="sequence">50</field>
+        </record>
+        <!-- Construction Privilege -->
+        <record id="res_groups_privilege_construction" model="res.groups.privilege">
+            <field name="name">Construction</field>
+            <field name="sequence">50</field>
+            <field name="category_id" ref="module_category_construction"/>
+        </record>
+        <!-- Construction User Group -->
+        <record id="group_construction_user" model="res.groups">
+            <field name="name">User</field>
+            <field name="sequence">10</field>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+            <field name="privilege_id" ref="res_groups_privilege_construction"/>
+        </record>
+        <!-- Construction Manager Group -->
+        <record id="group_construction_manager" model="res.groups">
+            <field name="name">Manager</field>
+            <field name="sequence">20</field>
+            <field name="implied_ids" eval="[(4, ref('group_construction_user'))]"/>
+            <field name="privilege_id" ref="res_groups_privilege_construction"/>
+            <field name="user_ids" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+        </record>
+        <!-- Company isolation: construction records are visible only in allowed companies. -->
+        <record id="rule_construction_project_company" model="ir.rule">
+            <field name="name">Construction Project Company</field>
+            <field name="model_id" ref="model_el_construction_project"/>
+            <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+            <field name="groups" eval="[(4, ref('group_construction_user'))]"/>
+        </record>
+        <record id="rule_construction_sub_project_company" model="ir.rule">
+            <field name="name">Construction Sub Project Company</field>
+            <field name="model_id" ref="model_el_construction_sub_project"/>
+            <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+            <field name="groups" eval="[(4, ref('group_construction_user'))]"/>
+        </record>
+        <record id="rule_construction_boq_company" model="ir.rule">
+            <field name="name">Construction BOQ Company</field>
+            <field name="model_id" ref="model_el_construction_boq"/>
+            <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+            <field name="groups" eval="[(4, ref('group_construction_user'))]"/>
+        </record>
+        <record id="rule_construction_budget_company" model="ir.rule">
+            <field name="name">Construction Budget Company</field>
+            <field name="model_id" ref="model_el_construction_budget"/>
+            <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+            <field name="groups" eval="[(4, ref('group_construction_user'))]"/>
+        </record>
+        <record id="rule_construction_work_order_company" model="ir.rule">
+            <field name="name">Construction Work Order Company</field>
+            <field name="model_id" ref="model_el_construction_work_order"/>
+            <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+            <field name="groups" eval="[(4, ref('group_construction_user'))]"/>
+        </record>
+        <record id="rule_construction_mreq_company" model="ir.rule">
+            <field name="name">Construction Material Requisition Company</field>
+            <field name="model_id" ref="model_el_construction_material_requisition"/>
+            <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+            <field name="groups" eval="[(4, ref('group_construction_user'))]"/>
+        </record>
+        <record id="rule_construction_subcontract_company" model="ir.rule">
+            <field name="name">Construction Subcontract Company</field>
+            <field name="model_id" ref="model_el_construction_subcontract"/>
+            <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+            <field name="groups" eval="[(4, ref('group_construction_user'))]"/>
+        </record>
+        <record id="rule_construction_progress_billing_company" model="ir.rule">
+            <field name="name">Construction Progress Billing Company</field>
+            <field name="model_id" ref="model_el_construction_progress_billing"/>
+            <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+            <field name="groups" eval="[(4, ref('group_construction_user'))]"/>
+        </record>
+        <record id="rule_construction_phase_company" model="ir.rule">
+            <field name="name">Construction Phase Company</field>
+            <field name="model_id" ref="model_el_construction_phase"/>
+            <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+            <field name="groups" eval="[(4, ref('group_construction_user'))]"/>
+        </record>
+        <record id="rule_construction_quality_company" model="ir.rule">
+            <field name="name">Construction Quality Check Company</field>
+            <field name="model_id" ref="model_el_construction_quality_check"/>
+            <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+            <field name="groups" eval="[(4, ref('group_construction_user'))]"/>
+        </record>
+        <record id="rule_construction_task_company" model="ir.rule">
+            <field name="name">Construction Task Company</field>
+            <field name="model_id" ref="model_el_construction_task"/>
+            <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+            <field name="groups" eval="[(4, ref('group_construction_user'))]"/>
+        </record>
+        <record id="rule_construction_extra_expense_company" model="ir.rule">
+            <field name="name">Construction Extra Expense Company</field>
+            <field name="model_id" ref="model_el_construction_extra_expense"/>
+            <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+            <field name="groups" eval="[(4, ref('group_construction_user'))]"/>
+        </record>
+        <!-- Missing company isolation rules for configuration and billing masters. -->
+        <record id="rule_construction_quality_point_company" model="ir.rule">
+            <field name="name">Construction Quality Point Company</field>
+            <field name="model_id" ref="model_el_construction_quality_point"/>
+            <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+            <field name="groups" eval="[(4, ref('group_construction_user'))]"/>
+        </record>
+        <record id="rule_construction_ra_billing_company" model="ir.rule">
+            <field name="name">Construction RA Billing Company</field>
+            <field name="model_id" ref="model_el_construction_ra_billing"/>
+            <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+            <field name="groups" eval="[(4, ref('group_construction_user'))]"/>
+        </record>
+        <!-- Approval and revision ledger isolation. These records are directly addressable by RPC, so parent rules are not enough. -->
+        <record id="rule_construction_approval_matrix_company" model="ir.rule">
+            <field name="name">Construction Approval Matrix Company</field>
+            <field name="model_id" ref="model_el_construction_approval_matrix"/>
+            <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+            <field name="groups" eval="[(4, ref('group_construction_user'))]"/>
+        </record>
+        <record id="rule_construction_variation_approval_company" model="ir.rule">
+            <field name="name">Construction Variation Approval Company</field>
+            <field name="model_id" ref="model_el_construction_variation_approval"/>
+            <field name="domain_force">[('variation_id.company_id', 'in', company_ids)]</field>
+            <field name="groups" eval="[(4, ref('group_construction_user'))]"/>
+        </record>
+        <record id="rule_construction_boq_revision_company" model="ir.rule">
+            <field name="name">Construction BOQ Revision Company</field>
+            <field name="model_id" ref="model_el_construction_boq_revision"/>
+            <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+            <field name="groups" eval="[(4, ref('group_construction_user'))]"/>
+        </record>
+        <record id="rule_construction_boq_revision_line_company" model="ir.rule">
+            <field name="name">Construction BOQ Revision Line Company</field>
+            <field name="model_id" ref="model_el_construction_boq_revision_line"/>
+            <field name="domain_force">[('revision_id.company_id', 'in', company_ids)]</field>
+            <field name="groups" eval="[(4, ref('group_construction_user'))]"/>
+        </record>
+        <record id="rule_construction_budget_revision_company" model="ir.rule">
+            <field name="name">Construction Budget Revision Company</field>
+            <field name="model_id" ref="model_el_construction_budget_revision"/>
+            <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+            <field name="groups" eval="[(4, ref('group_construction_user'))]"/>
+        </record>
+        <record id="rule_construction_budget_revision_line_company" model="ir.rule">
+            <field name="name">Construction Budget Revision Line Company</field>
+            <field name="model_id" ref="model_el_construction_budget_revision_line"/>
+            <field name="domain_force">[('revision_id.company_id', 'in', company_ids)]</field>
+            <field name="groups" eval="[(4, ref('group_construction_user'))]"/>
+        </record>
+        <record id="rule_construction_baseline_revision_company" model="ir.rule">
+            <field name="name">Construction Baseline Revision Company</field>
+            <field name="model_id" ref="model_el_construction_task_baseline_revision"/>
+            <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+            <field name="groups" eval="[(4, ref('group_construction_user'))]"/>
+        </record>
+        <record id="rule_construction_baseline_revision_line_company" model="ir.rule">
+            <field name="name">Construction Baseline Revision Line Company</field>
+            <field name="model_id" ref="model_el_construction_task_baseline_revision_line"/>
+            <field name="domain_force">[('revision_id.company_id', 'in', company_ids)]</field>
+            <field name="groups" eval="[(4, ref('group_construction_user'))]"/>
+        </record>
+        <!-- Child/document records inherit company isolation from their construction parent. -->
+        <record id="rule_construction_boq_line_company" model="ir.rule">
+            <field name="name">Construction BOQ Line Company</field>
+            <field name="model_id" ref="model_el_construction_boq_line"/>
+            <field name="domain_force">[('boq_id.company_id', 'in', company_ids)]</field>
+            <field name="groups" eval="[(4, ref('group_construction_user'))]"/>
+        </record>
+        <record id="rule_construction_budget_line_company" model="ir.rule">
+            <field name="name">Construction Budget Line Company</field>
+            <field name="model_id" ref="model_el_construction_budget_line"/>
+            <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+            <field name="groups" eval="[(4, ref('group_construction_user'))]"/>
+        </record>
+        <record id="rule_construction_work_order_line_company" model="ir.rule">
+            <field name="name">Construction Work Order Line Company</field>
+            <field name="model_id" ref="model_el_construction_work_order_line"/>
+            <field name="domain_force">[('work_order_id.company_id', 'in', company_ids)]</field>
+            <field name="groups" eval="[(4, ref('group_construction_user'))]"/>
+        </record>
+        <record id="rule_construction_mreq_line_company" model="ir.rule">
+            <field name="name">Construction MREQ Line Company</field>
+            <field name="model_id" ref="model_el_construction_material_requisition_line"/>
+            <field name="domain_force">[('requisition_id.company_id', 'in', company_ids)]</field>
+            <field name="groups" eval="[(4, ref('group_construction_user'))]"/>
+        </record>
+        <record id="rule_construction_subcontract_line_company" model="ir.rule">
+            <field name="name">Construction Subcontract Line Company</field>
+            <field name="model_id" ref="model_el_construction_subcontract_line"/>
+            <field name="domain_force">[('subcontract_id.company_id', 'in', company_ids)]</field>
+            <field name="groups" eval="[(4, ref('group_construction_user'))]"/>
+        </record>
+        <record id="rule_construction_consume_company" model="ir.rule">
+            <field name="name">Construction Consume Order Company</field>
+            <field name="model_id" ref="model_el_construction_consume_order"/>
+            <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+            <field name="groups" eval="[(4, ref('group_construction_user'))]"/>
+        </record>
+        <record id="rule_construction_consume_line_company" model="ir.rule">
+            <field name="name">Construction Consume Order Line Company</field>
+            <field name="model_id" ref="model_el_construction_consume_order_line"/>
+            <field name="domain_force">[('consume_order_id.company_id', 'in', company_ids)]</field>
+            <field name="groups" eval="[(4, ref('group_construction_user'))]"/>
+        </record>
+        <record id="rule_construction_ra_billing_line_company" model="ir.rule">
+            <field name="name">Construction RA Billing Line Company</field>
+            <field name="model_id" ref="model_el_construction_ra_billing_line"/>
+            <field name="domain_force">[('ra_billing_id.company_id', 'in', company_ids)]</field>
+            <field name="groups" eval="[(4, ref('group_construction_user'))]"/>
+        </record>
+        <record id="rule_construction_progress_billing_line_company" model="ir.rule">
+            <field name="name">Construction Progress Billing Line Company</field>
+            <field name="model_id" ref="model_el_construction_progress_billing_line"/>
+            <field name="domain_force">[('billing_id.company_id', 'in', company_ids)]</field>
+            <field name="groups" eval="[(4, ref('group_construction_user'))]"/>
+        </record>
+        <record id="rule_construction_quality_line_company" model="ir.rule">
+            <field name="name">Construction Quality Check Line Company</field>
+            <field name="model_id" ref="model_el_construction_quality_check_line"/>
+            <field name="domain_force">[('quality_check_id.company_id', 'in', company_ids)]</field>
+            <field name="groups" eval="[(4, ref('group_construction_user'))]"/>
+        </record>
+        <record id="rule_construction_quality_image_company" model="ir.rule">
+            <field name="name">Construction Quality Image Company</field>
+            <field name="model_id" ref="model_el_construction_quality_check_image"/>
+            <field name="domain_force">[('quality_check_id.company_id', 'in', company_ids)]</field>
+            <field name="groups" eval="[(4, ref('group_construction_user'))]"/>
+        </record>
+        <record id="rule_construction_task_timesheet_company" model="ir.rule">
+            <field name="name">Construction Timesheet Company</field>
+            <field name="model_id" ref="model_el_construction_timesheet"/>
+            <field name="domain_force">[('project_id.company_id', 'in', company_ids)]</field>
+            <field name="groups" eval="[(4, ref('group_construction_user'))]"/>
+        </record>
+        <record id="rule_construction_phase_entry_company" model="ir.rule">
+            <field name="name">Construction Phase Entry Company</field>
+            <field name="model_id" ref="model_el_construction_phase_entry"/>
+            <field name="domain_force">[('phase_id.company_id', 'in', company_ids)]</field>
+            <field name="groups" eval="[(4, ref('group_construction_user'))]"/>
+        </record>
+        <record id="rule_construction_permit_company" model="ir.rule">
+            <field name="name">Construction Permit Company</field>
+            <field name="model_id" ref="model_el_construction_permit"/>
+            <field name="domain_force">[('project_id.company_id', 'in', company_ids)]</field>
+            <field name="groups" eval="[(4, ref('group_construction_user'))]"/>
+        </record>
+        <record id="rule_construction_project_image_company" model="ir.rule">
+            <field name="name">Construction Project Image Company</field>
+            <field name="model_id" ref="model_el_construction_project_image"/>
+            <field name="domain_force">[('project_id.company_id', 'in', company_ids)]</field>
+            <field name="groups" eval="[(4, ref('group_construction_user'))]"/>
+        </record>
+        <record id="rule_construction_sub_project_document_company" model="ir.rule">
+            <field name="name">Construction Sub Project Document Company</field>
+            <field name="model_id" ref="model_el_construction_sub_project_document"/>
+            <field name="domain_force">[('sub_project_id.company_id', 'in', company_ids)]</field>
+            <field name="groups" eval="[(4, ref('group_construction_user'))]"/>
+        </record>
+        <record id="rule_construction_rate_analysis_company" model="ir.rule">
+            <field name="name">Construction Rate Analysis Company</field>
+            <field name="model_id" ref="model_el_construction_rate_analysis"/>
+            <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+            <field name="groups" eval="[(4, ref('group_construction_user'))]"/>
+        </record>
+        <record id="rule_construction_rate_analysis_line_company" model="ir.rule">
+            <field name="name">Construction Rate Analysis Line Company</field>
+            <field name="model_id" ref="model_el_construction_rate_analysis_line"/>
+            <field name="domain_force">[('rate_analysis_id.company_id', 'in', company_ids)]</field>
+            <field name="groups" eval="[(4, ref('group_construction_user'))]"/>
+        </record>
+        <record id="rule_construction_variation_order_company" model="ir.rule">
+            <field name="name">Construction Variation Order Company</field>
+            <field name="model_id" ref="model_el_construction_variation_order"/>
+            <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+            <field name="groups" eval="[(4, ref('group_construction_user'))]"/>
+        </record>
+        <record id="rule_construction_cost_entry_company" model="ir.rule">
+            <field name="name">Construction Cost Entry Company</field>
+            <field name="model_id" ref="model_el_construction_cost_entry"/>
+            <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+            <field name="groups" eval="[(4, ref('group_construction_user'))]"/>
+        </record>
+        <record id="rule_construction_ncr_company" model="ir.rule">
+            <field name="name">Construction NCR Company</field>
+            <field name="model_id" ref="model_el_construction_ncr"/>
+            <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+            <field name="groups" eval="[(4, ref('group_construction_user'))]"/>
+        </record>
+        <record id="rule_construction_capa_company" model="ir.rule">
+            <field name="name">Construction CAPA Company</field>
+            <field name="model_id" ref="model_el_construction_capa"/>
+            <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+            <field name="groups" eval="[(4, ref('group_construction_user'))]"/>
+        </record>
+        
+        
+        
+        <record id="rule_construction_variation_order_line_company" model="ir.rule">
+            <field name="name">Construction Variation Order Line Company</field>
+            <field name="model_id" ref="model_el_construction_variation_order_line"/>
+            <field name="domain_force">[('variation_id.company_id', 'in', company_ids)]</field>
+            <field name="groups" eval="[(4, ref('group_construction_user'))]"/>
+        </record>
+        <record id="rule_construction_ncr_capa_company" model="ir.rule">
+            <field name="name">Construction CAPA Parent Company</field>
+            <field name="model_id" ref="model_el_construction_capa"/>
+            <field name="domain_force">[('ncr_id.company_id', 'in', company_ids)]</field>
+            <field name="groups" eval="[(4, ref('group_construction_user'))]"/>
+        </record>
+        <record id="rule_construction_material_issue_company" model="ir.rule">
+            <field name="name">Construction Material Stock Operation Company</field>
+            <field name="model_id" ref="model_el_construction_material_issue"/>
+            <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+            <field name="groups" eval="[(4, ref('group_construction_user'))]"/>
+        </record>
+        <record id="rule_construction_material_issue_line_company" model="ir.rule">
+            <field name="name">Construction Material Stock Operation Line Company</field>
+            <field name="model_id" ref="model_el_construction_material_issue_line"/>
+            <field name="domain_force">[('issue_id.company_id', 'in', company_ids)]</field>
+            <field name="groups" eval="[(4, ref('group_construction_user'))]"/>
+        </record>
+    </data>
+</odoo>

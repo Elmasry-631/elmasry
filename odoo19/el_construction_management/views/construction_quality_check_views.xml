@@ -1,0 +1,138 @@
+<odoo>
+    <record id="view_construction_quality_check_list" model="ir.ui.view">
+        <field name="name">el_construction.quality.check.list</field>
+        <field name="model">el_construction.quality.check</field>
+        <field name="arch" type="xml">
+            <list string="Quality Checks" decoration-success="state in ('pass', 'closed')" decoration-danger="state == 'fail'" decoration-warning="state == 'conditional'">
+                <field name="name" />
+                <field name="project_id" />
+                <field name="sub_project_id" />
+                <field name="phase_id" />
+                <field name="work_order_id" />
+                <field name="check_type" />
+                <field name="date" />
+                <field name="inspector_id" />
+                <field name="completion_percent" widget="progressbar" />
+                <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-primary="state in ('in_progress', 'recheck')" decoration-success="state in ('pass', 'closed')" decoration-danger="state == 'fail'" decoration-warning="state == 'conditional'" decoration-muted="state == 'cancelled'" />
+            </list>
+        </field>
+    </record>
+    <record id="view_construction_quality_check_form" model="ir.ui.view">
+        <field name="name">el_construction.quality.check.form</field>
+        <field name="model">el_construction.quality.check</field>
+        <field name="arch" type="xml">
+            <form string="Quality Check" class="o_construction_form">
+                <header>
+                    <button name="action_load_project_quality_points" string="Load Project Quality Points" type="object" class="btn-secondary" invisible="state != 'draft' or not project_id" />
+                    <button name="action_start" string="Start Inspection" type="object" class="oe_highlight" invisible="state != 'draft'" />
+                    <button name="action_pass" string="Pass" type="object" class="oe_highlight" invisible="state not in ('in_progress', 'recheck')" />
+                    <button name="action_fail" string="Fail" type="object" invisible="state not in ('in_progress', 'recheck')" />
+                    <button name="action_conditional" string="Conditional Pass" type="object" invisible="state not in ('in_progress', 'recheck')" />
+                    <button name="action_recheck" string="Request Re-inspection" type="object" invisible="state != 'fail'" />
+                    <button name="action_close" string="Close" type="object" class="oe_highlight" groups="el_construction_management.group_construction_manager" invisible="state not in ('pass', 'conditional')" />
+                    <button name="action_cancel" string="Cancel" type="object" groups="el_construction_management.group_construction_manager" invisible="state not in ('draft', 'in_progress', 'recheck')" />
+                    <button name="action_reset_draft" string="Reset to Draft" type="object" groups="el_construction_management.group_construction_manager" invisible="state != 'cancelled'" />
+                    <field name="state" widget="statusbar" statusbar_visible="draft,in_progress,pass,conditional,fail,recheck,closed" />
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1" />
+                        </h1>
+                    </div>
+                    <group string="Schedule &amp; Responsibility" class="o_construction_section">
+                        <group string="Scope">
+                            <field name="project_id" readonly="state not in ('draft', 'in_progress')" />
+                            <field name="sub_project_id" readonly="state not in ('draft', 'in_progress')" />
+                            <field name="phase_id" readonly="state not in ('draft', 'in_progress')" />
+                            <field name="work_order_id" readonly="state not in ('draft', 'in_progress')" />
+                        </group>
+                        <group string="Inspection">
+                            <field name="check_type" readonly="state not in ('draft', 'in_progress')" />
+                            <field name="inspection_method" readonly="state not in ('draft', 'in_progress')" />
+                            <field name="date" readonly="state not in ('draft', 'in_progress')" />
+                            <field name="inspector_id" readonly="state not in ('draft', 'in_progress')" />
+                            <field name="recheck_date" invisible="state not in ('fail', 'recheck')" readonly="state not in ('fail', 'recheck')" />
+                        </group>
+                    </group>
+                    <group string="Inspection Progress">
+                        <field name="total_check_points" readonly="1" />
+                        <field name="passed_check_points" readonly="1" />
+                        <field name="failed_check_points" readonly="1" />
+                        <field name="pending_check_points" readonly="1" />
+                        <field name="completion_percent" widget="progressbar" readonly="1" />
+                    </group>
+                    <notebook>
+                        <page string="Check Points">
+                            <field name="check_line_ids" readonly="state not in ('draft', 'in_progress', 'recheck')">
+                                <list editable="bottom">
+                                    <field name="sequence" widget="handle" />
+                                    <field name="name" />
+                                    <field name="description" />
+                                    <field name="standard" />
+                                    <field name="result" decoration-success="result == 'pass'" decoration-danger="result == 'fail'" />
+                                    <field name="remarks" />
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Results">
+                            <group>
+                                <field name="result_notes" readonly="state in ('closed', 'cancelled')" />
+                                <field name="corrective_action" invisible="state not in ('fail', 'conditional', 'recheck')" readonly="state in ('closed', 'cancelled')" />
+                                <field name="closed_date" invisible="state != 'closed'" readonly="1" />
+                                <field name="closed_by_id" invisible="state != 'closed'" readonly="1" />
+                            </group>
+                        </page>
+                        <page string="Evidence">
+                            <group>
+                                <field name="document" filename="document_name" readonly="state not in ('draft', 'in_progress', 'recheck')" />
+                                <field name="document_name" invisible="1" />
+                            </group>
+                            <field name="image_ids" readonly="state not in ('draft', 'in_progress', 'recheck')">
+                                <list editable="bottom">
+                                    <field name="name" />
+                                    <field name="image" widget="image" options="{'size': [100, 100]}" />
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter />
+            </form>
+        </field>
+    </record>
+    <record id="view_construction_quality_check_search" model="ir.ui.view">
+        <field name="name">el_construction.quality.check.search</field>
+        <field name="model">el_construction.quality.check</field>
+        <field name="arch" type="xml">
+            <search string="Quality Checks">
+                <field name="name" />
+                <field name="project_id" />
+                <field name="sub_project_id" />
+                <field name="phase_id" />
+                <field name="work_order_id" />
+                <field name="inspector_id" />
+                <filter name="open" string="Open" domain="[('state', 'not in', ('closed', 'cancelled'))]" />
+                <filter name="passed" string="Passed" domain="[('state', '=', 'pass')]" />
+                <filter name="conditional" string="Conditional" domain="[('state', '=', 'conditional')]" />
+                <filter name="failed" string="Failed" domain="[('state', '=', 'fail')]" />
+                <filter name="recheck" string="Re-inspection Required" domain="[('state', '=', 'recheck')]" />
+                <group>
+                    <filter name="group_project" string="Project" context="{'group_by': 'project_id'}" />
+                    <filter name="group_type" string="Check Type" context="{'group_by': 'check_type'}" />
+                    <filter name="group_state" string="Status" context="{'group_by': 'state'}" />
+                    <filter name="group_inspector" string="Inspector" context="{'group_by': 'inspector_id'}" />
+                </group>
+            </search>
+        </field>
+    </record>
+    <record id="action_construction_quality_check" model="ir.actions.act_window">
+        <field name="name">Quality Checks</field>
+        <field name="res_model">el_construction.quality.check</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Create a new Quality Check</p>
+            <p>Record inspection checkpoints, evidence, results, corrective actions and re-inspections.</p>
+        </field>
+    </record>
+</odoo>
