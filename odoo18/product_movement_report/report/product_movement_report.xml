@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="paperformat_product_movement" model="report.paperformat">
+        <field name="name">Product Movement Landscape</field>
+        <field name="format">A4</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">25</field>
+        <field name="margin_bottom">15</field>
+        <field name="margin_left">7</field>
+        <field name="margin_right">7</field>
+        <field name="header_spacing">20</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <record id="action_report_product_movement" model="ir.actions.report">
+        <field name="name">Product Movement Lifecycle</field>
+        <field name="model">product.movement.wizard</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">product_movement_report.report_product_movement</field>
+        <field name="report_file">product_movement_report.report_product_movement</field>
+        <field name="paperformat_id" ref="paperformat_product_movement"/>
+        <field name="binding_model_id" eval="False"/>
+    </record>
+
+    <template id="report_product_movement">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.internal_layout">
+                    <div class="page">
+                        <h3>Product Movement Lifecycle</h3>
+                        <div class="row mb-3">
+                            <div class="col-4">
+                                <strong>Product:</strong> <span t-field="o.product_id.display_name"/>
+                            </div>
+                            <div class="col-4" t-if="o.lot_id">
+                                <strong>Lot/Serial:</strong> <span t-field="o.lot_id.name"/>
+                            </div>
+                            <div class="col-4" t-if="o.date_from or o.date_to">
+                                <strong>Period:</strong>
+                                <span t-field="o.date_from"/> - <span t-field="o.date_to"/>
+                            </div>
+                        </div>
+
+                        <h5 class="mt-3">Movement Summary</h5>
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Stage</th>
+                                    <th class="text-end">Quantity</th>
+                                    <th class="text-end">Cost</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="o.summary_ids" t-as="s"
+                                    t-att-class="s.is_bold and 'fw-bold' or None">
+                                    <td><span t-esc="s.name"/></td>
+                                    <td class="text-end"><t t-esc="s.qty"/></td>
+                                    <td class="text-end"><t t-esc="s.cost"/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <h5 class="mt-3">Sales &amp; Margin</h5>
+                        <table class="table table-sm" style="width:45%">
+                            <tbody>
+                                <tr>
+                                    <td><strong>Sales Revenue</strong></td>
+                                    <td class="text-end"><t t-esc="o.sales_revenue"/></td>
+                                    <td class="text-end"><span t-field="o.currency_id.symbol"/></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Cost of Goods Sold</strong></td>
+                                    <td class="text-end"><t t-esc="o.sales_cogs"/></td>
+                                    <td class="text-end"><span t-field="o.currency_id.symbol"/></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Margin</strong></td>
+                                    <td class="text-end"><t t-esc="o.margin"/></td>
+                                    <td class="text-end"><span t-field="o.currency_id.symbol"/></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Margin %</strong></td>
+                                    <td class="text-end"><t t-esc="o.margin_pct"/> %</td>
+                                    <td/>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <t t-set="cycles" t-value="sorted(set(o.line_ids.mapped('cycle_no')))"/>
+                        <t t-foreach="cycles" t-as="cyc">
+                            <t t-set="clines" t-value="o.line_ids.filtered(lambda l: l.cycle_no == cyc)"/>
+                            <h5 class="mt-3">
+                                Cycle <t t-esc="cyc"/>
+                                <span t-if="clines[-1].is_sold_out" class="badge text-bg-success">Fully sold / consumed</span>
+                                <span t-else="" class="badge text-bg-warning">Still in stock / open</span>
+                            </h5>
+                            <table class="table table-sm o_main_table">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Reference</th>
+                                        <th>Type</th>
+                                        <th>From</th>
+                                        <th>To</th>
+                                        <th>Partner</th>
+                                        <th t-if="not o.lot_id">Lot/Serial</th>
+                                        <th class="text-end">In</th>
+                                        <th class="text-end">Out</th>
+                                        <th class="text-end">Balance</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr t-foreach="clines" t-as="l">
+                                        <td><span t-field="l.date"/></td>
+                                        <td><span t-esc="l.reference"/></td>
+                                        <td><span t-esc="o.get_move_type_label(l.move_type)"/></td>
+                                        <td><span t-esc="l.location_id.complete_name"/></td>
+                                        <td><span t-esc="l.location_dest_id.complete_name"/></td>
+                                        <td><span t-esc="l.partner_id.name"/></td>
+                                        <td t-if="not o.lot_id"><span t-esc="l.lot_id.name"/></td>
+                                        <td class="text-end"><span t-esc="l.qty_in" t-if="l.qty_in"/></td>
+                                        <td class="text-end"><span t-esc="l.qty_out" t-if="l.qty_out"/></td>
+                                        <td class="text-end"><strong t-esc="l.balance"/></td>
+                                    </tr>
+                                    <tr class="fw-bold">
+                                        <td colspan="6" class="text-end">Cycle Total</td>
+                                        <td t-if="not o.lot_id"/>
+                                        <td class="text-end"><t t-esc="sum(clines.mapped('qty_in'))"/></td>
+                                        <td class="text-end"><t t-esc="sum(clines.mapped('qty_out'))"/></td>
+                                        <td class="text-end"><t t-esc="clines[-1].balance"/></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </t>
+                        <p t-if="not o.line_ids" class="text-muted">No done stock moves found.</p>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+</odoo>
