@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2015-Present Webkul Software Pvt. Ltd. (<https://webkul.com/>) -->
+<!-- See LICENSE file for full copyright and licensing details. -->
+<!-- "License URL : <https://store.webkul.com/license.html/>" -->
+<odoo>
+	<data noupdate="1">
+		<record id="cron_resync_salla_under_review_orders" forcecreate="True" model="ir.cron">
+			<field name="name">Salla - Resync Stalled Orders</field>
+			<field name="active" eval="False"/>
+			<field name="user_id" ref="base.user_root"/>
+			<field name="interval_number">2</field>
+			<field name="interval_type">hours</field>
+			<field name="model_id" ref="odoo_multi_channel_sale.model_multi_channel_sale"/>
+			<field name="state">code</field>
+			<field name="code">model.cron_resync_salla_under_review_orders()</field>
+		</record>
+	</data>
+	<!-- Apply interval on upgrade (noupdate create above would leave old 6h on existing DBs). -->
+	<data>
+		<record id="cron_resync_salla_under_review_orders" model="ir.cron">
+			<field name="interval_number">2</field>
+			<field name="interval_type">hours</field>
+		</record>
+	</data>
+</odoo>

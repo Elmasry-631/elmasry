@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2015-Present Webkul Software Pvt. Ltd. (<https://webkul.com/>) -->
+<!-- See LICENSE file for full copyright and licensing details. -->
+<!--"License URL :<https://store.webkul.com/license.html/>" -->
+<odoo>
+	<data>
+		<record id="salla_instance_view_form" model="ir.ui.view">
+			<field name="name">multi.channel.sale.from</field>
+			<field name="model">multi.channel.sale</field>
+			<field name="inherit_id" ref="odoo_multi_channel_sale.multi_channel_view_form"/>
+			<field name="type">form</field>
+			<field name="arch" type="xml">
+				<xpath expr="//page[@name='credentials']" position="attributes">
+					<attribute name="invisible">False</attribute>
+					<attribute name="invisible">channel == 'salla'</attribute>
+				</xpath>
+
+				<xpath expr="//field[@name='channel']" position="before">
+					<field name="connector_health_banner" invisible="1"/>
+				</xpath>
+
+				<xpath expr="//div[@name='button_box']" position="before">
+					<div class="alert alert-warning mb-3" role="alert"
+						invisible="channel != 'salla' or state != 'validate' or not connector_health_banner or connector_health_banner == 'All checked connector features look configured.'">
+						<strong>Connector attention:</strong>
+						<field name="connector_health_banner" nolabel="1" readonly="1" class="d-inline"/>
+					</div>
+				</xpath>
+
+				<xpath expr="//button[@name='test_connection']" position="before">
+					<button
+						name  ="connect_to_salla"
+						groups="odoo_multi_channel_sale.group_multi_channel_admin"
+						string="Connect Salla"
+						title ="Connect Salla, Click to create connection with salla"
+						type  ="object"
+						class ="oe_highlight"
+						invisible ="state == 'validate' or channel != 'salla'"
+					/>
+				</xpath>
+				<field name="channel" position="after">
+					<group invisible="channel != 'salla'">
+						<field string="Salla Store Name" name="salla_store_name" readonly="1"/>
+					</group>
+				</field>
+
+				<xpath expr="//page[@name='crons']" position="before">
+					<page name="connector_status" string="Connector Status"
+						invisible="'connector_status' not in channel_configs or channel != 'salla' or state != 'validate'">
+						<h2 style="margin-top: 10px !important;background-color: #e9ecef;padding-left: 8px;">
+							Salla Connector Status
+						</h2>
+						<button
+							name="action_salla_product_dedup_diagnostics"
+							string="Product Dedup Diagnostics"
+							type="object"
+							class="btn-secondary mb-2"
+						/>
+						<field name="connector_status_html" nolabel="1" readonly="1"/>
+					</page>
+				</xpath>
+
+				<xpath expr="//div[contains(@class, 'o_settings_container')][.//field[@name='import_order_cron']]" position="after">
+					<div class='row mt16 o_settings_container'
+						invisible="'import_under_review_order_cron' not in channel_configs or channel != 'salla'">
+						<div class="col-xs-12 col-md-4 o_setting_box">
+							<div class="o_setting_left_pane">
+								<b><field name="import_under_review_order_cron"/></b>
+							</div>
+							<div class="o_setting_right_pane">
+								<label string="Resync Stalled Orders" for="import_under_review_order_cron"/>
+								<div class="text-muted">
+									Webhook fallback every 2 hours: re-import non-invoiced orders whose store status
+									is not completed/canceled/delivered, by store order ID.
+									Skips mappings newer than 2 hours (max 200/run, rotated by last resync)
+									and always evaluates feeds.
+								</div>
+							</div>
+						</div>
+						<div class="col-xs-12 col-md-2 o_setting_box" invisible="not import_under_review_order_cron">
+							<div class="o_setting_right_pane">
+								<button
+									name="open_cron_views"
+									string="Configuration"
+									class='oe_link'
+									type="object"
+									context="{'cron_view_id': 'odoo_salla_integration.cron_resync_salla_under_review_orders'}"
+									help="Configure global stalled-order resync cron"
+								/>
+							</div>
+						</div>
+					</div>
+				</xpath>
+
+				<xpath expr="//div[contains(@class, 'o_settings_container')][.//field[@name='import_partner_cron']]" position="inside">
+					<div class="col-12" invisible="not is_import_partner_cron_readonly">
+						<div class="alert alert-secondary py-2 mb-2" role="alert">
+							<strong>Not supported on Salla.</strong>
+							Customer import cron is not implemented for this channel.
+							Use <em>Import → Customer</em> from the dashboard or enable customer webhooks.
+						</div>
+					</div>
+				</xpath>
+			</field>
+		</record>
+
+		<record id="salla_instance_view_kanban" model="ir.ui.view">
+			<field name="name">multi.channel.sale.kanban</field>
+			<field name="model">multi.channel.sale</field>
+			<field name="inherit_id" ref="odoo_multi_channel_sale.multi_channel_view_kanban"/>
+			<field name="arch" type="xml">
+				<xpath expr="//div[hasclass('o_kanban_card_content')]" position="inside">
+					<div class="o_kanban_primary_left" >
+						<div t-if="record.channel.value == 'Salla'" style="color:rgb(162, 70, 137)">
+							<center>
+								<img
+									src="/odoo_salla_integration/static/description/thumbnail.png"
+									alt="salla_logo"
+									style="margin-left: 70px;"
+									height="160" width="160"
+								/>
+								<h3 style="margin-left: 70px;">
+									<t t-esc="record.name.value"/>
+								</h3>
+							</center>
+						</div>
+					</div>
+				</xpath>
+			</field>
+		</record>
+	</data>
+</odoo>
