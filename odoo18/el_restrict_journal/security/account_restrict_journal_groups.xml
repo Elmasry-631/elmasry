@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+        el_restrict_journal — security groups (WHITELIST mode)
+        
+        Two groups:
+          * group_restrict_journal_user    — IMPLICIT, auto-assigned via
+            Python override when admin sets allowed_journal_ids to non-empty.
+            Auto-removed when allowed_journal_ids is cleared.
+            Users in this group have record rules that HIDE non-allowed
+            journals completely.
+          * group_restrict_journal_manager  — can configure allowed journals
+            on user forms.
+        
+        IMPORTANT: group_restrict_journal_user is NOT implied by base.group_user.
+        It is only assigned when a user has a non-empty allowed_journal_ids.
+        This way, users with empty list (default) are unrestricted.
+    -->
+
+    <record id="module_category_restrict_journal" model="ir.module.category">
+        <field name="name">Restrict Journal</field>
+        <field name="sequence">20</field>
+    </record>
+
+    <!-- User group: auto-assigned when user has allowed_journal_ids non-empty -->
+    <record id="group_restrict_journal_user" model="res.groups">
+        <field name="name">Restricted Journal: User (Whitelist Active)</field>
+        <!-- NOTE: No implied_ids — this group is NOT auto-assigned to all users.
+             It is assigned by the res.users.write() override only when
+             allowed_journal_ids is non-empty. -->
+    </record>
+
+    <!-- Manager group: can configure allowed journals on users -->
+    <record id="group_restrict_journal_manager" model="res.groups">
+        <field name="name">Restricted Journal: Manager</field>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+</odoo>

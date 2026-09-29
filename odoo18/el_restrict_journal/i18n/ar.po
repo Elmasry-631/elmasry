@@ -1,0 +1,176 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#   * el_restrict_journal
+#
+# Arabic (ar) translation — WHITELIST mode (v2.0.0)
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-07-14 11:00:00+0000\n"
+"PO-Revision-Date: 2026-07-14 11:00:00+0000\n"
+"Last-Translator: Ibrahim Elmasry <ibrahim.elmasry@example.com>\n"
+"Language-Team: Arabic\n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
+"&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5);\n"
+
+#. module: el_restrict_journal
+#: model:ir.module.category,name:el_restrict_journal.module_category_restrict_journal
+msgid "Restrict Journal"
+msgstr "تقييد اليومية"
+
+#. module: el_restrict_journal
+#: model:res.groups,name:el_restrict_journal.group_restrict_journal_user
+msgid "Restricted Journal: User (Whitelist Active)"
+msgstr "تقييد اليومية: مستخدم (القائمة البيضاء مفعلة)"
+
+#. module: el_restrict_journal
+#: model:res.groups,name:el_restrict_journal.group_restrict_journal_manager
+msgid "Restricted Journal: Manager"
+msgstr "تقييد اليومية: مدير"
+
+#. module: el_restrict_journal
+#: model:ir.model.fields,field_description:el_restrict_journal.field_res_users__allowed_journal_ids
+msgid "Allowed Journals"
+msgstr "اليوميات المسموحة"
+
+#. module: el_restrict_journal
+#: model:ir.model.fields,help:el_restrict_journal.field_res_users__allowed_journal_ids
+msgid ""
+"Journals this user IS ALLOWED to use. Leave empty for unrestricted users "
+"(default Odoo behavior — sees all journals). When non-empty, the user can "
+"ONLY see and use these journals; all other journals are completely hidden."
+msgstr ""
+"اليوميات التي يُسمح لهذا المستخدم باستخدامها. اتركها فارغة للمستخدمين غير "
+"المقيدّين (السلوك الافتراضي لأودو — يرى كل اليوميات). عند تعبئتها، يمكن "
+"للمستخدم رؤية واستخدام هذه اليوميات فقط؛ جميع اليوميات الأخرى مخفية تماماً."
+
+#. module: el_restrict_journal
+#: model:ir.model.fields,field_description:el_restrict_journal.field_account_journal__allowed_user_count
+msgid "Allowed Users"
+msgstr "المستخدمون المسموح لهم"
+
+#. module: el_restrict_journal
+#: model:ir.model.fields,help:el_restrict_journal.field_account_journal__allowed_user_count
+msgid "Number of users who have this journal in their allowed list."
+msgstr "عدد المستخدمين الذين يملكون هذه اليومية في قائمتهم المسموحة."
+
+#. module: el_restrict_journal
+#: code:addons/el_restrict_journal/models/account_move.py:0
+#, python-format
+msgid ""
+"You are not allowed to create entries in the journal '%(journal)s'. Your "
+"allowed journals are: %(allowed)s."
+msgstr ""
+"لا يُسمح لك بإنشاء قيود في اليومية '%(journal)s'. اليوميات المسموحة لك هي: "
+"%(allowed)s."
+
+#. module: el_restrict_journal
+#: code:addons/el_restrict_journal/models/account_move.py:0
+#, python-format
+msgid ""
+"You are not allowed to modify entries in the journal '%(journal)s'. Your "
+"allowed journals are: %(allowed)s."
+msgstr ""
+"لا يُسمح لك بتعديل القيود في اليومية '%(journal)s'. اليوميات المسموحة لك هي: "
+"%(allowed)s."
+
+#. module: el_restrict_journal
+#: code:addons/el_restrict_journal/models/account_move.py:0
+#: code:addons/el_restrict_journal/models/account_payment.py:0
+#, python-format
+msgid ""
+"Journal '%(journal)s' is not in your allowed list. Please select one of: "
+"%(allowed)s."
+msgstr ""
+"اليومية '%(journal)s' ليست في قائمتك المسموحة. اختر واحدة من: %(allowed)s."
+
+#. module: el_restrict_journal
+#: code:addons/el_restrict_journal/models/account_move.py:0
+#, python-format
+msgid "Journal Not Allowed"
+msgstr "اليومية غير مسموحة"
+
+#. module: el_restrict_journal
+#: code:addons/el_restrict_journal/models/account_move.py:0
+#, python-format
+msgid ""
+"The journal '%(journal)s' is not in your allowed list. Please select one of: "
+"%(allowed)s."
+msgstr ""
+"اليومية '%(journal)s' ليست في قائمتك المسموحة. اختر واحدة من: %(allowed)s."
+
+#. module: el_restrict_journal
+#: code:addons/el_restrict_journal/models/account_payment.py:0
+#, python-format
+msgid ""
+"You are not allowed to create payments in the journal '%(journal)s'. Your "
+"allowed journals are: %(allowed)s."
+msgstr ""
+"لا يُسمح لك بإنشاء مدفوعات في اليومية '%(journal)s'. اليوميات المسموحة لك هي: "
+"%(allowed)s."
+
+#. module: el_restrict_journal
+#: code:addons/el_restrict_journal/models/account_payment.py:0
+#, python-format
+msgid ""
+"You are not allowed to modify payments in the journal '%(journal)s'. Your "
+"allowed journals are: %(allowed)s."
+msgstr ""
+"لا يُسمح لك بتعديل المدفوعات في اليومية '%(journal)s'. اليوميات المسموحة لك "
+"هي: %(allowed)s."
+
+#. module: el_restrict_journal
+#: code:addons/el_restrict_journal/models/res_users.py:0
+#, python-format
+msgid ""
+"You cannot modify the Allowed Journals field. Only members of the "
+"'Restricted Journal: Manager' group can configure this."
+msgstr ""
+"لا يمكنك تعديل حقل اليوميات المسموحة. فقط أعضاء مجموعة \"تقييد اليومية: مدير\" "
+"يمكنهم تكوين ذلك."
+
+#. module: el_restrict_journal
+#: model_terms:ir.ui.view,arch_db:el_restrict_journal.view_users_form_restrict_journal
+msgid "Allowed Journals"
+msgstr "اليوميات المسموحة"
+
+#. module: el_restrict_journal
+#: model_terms:ir.ui.view,arch_db:el_restrict_journal.view_users_form_restrict_journal
+msgid "Help"
+msgstr "مساعدة"
+
+#. module: el_restrict_journal
+#: model_terms:ir.ui.view,arch_db:el_restrict_journal.view_users_form_restrict_journal
+msgid ""
+"Select the journals this user is <b>ALLOWED</b> to use. Only these journals "
+"will be visible to the user — all other journals are completely hidden."
+msgstr ""
+"حدد اليوميات التي <b>يُسمح</b> لهذا المستخدم باستخدامها. فقط هذه اليوميات "
+"ستكون مرئية للمستخدم — جميع اليوميات الأخرى مخفية تماماً."
+
+#. module: el_restrict_journal
+#: model_terms:ir.ui.view,arch_db:el_restrict_journal.view_users_form_restrict_journal
+msgid ""
+"Leave <b>empty</b> for unrestricted users (default Odoo behavior — sees all "
+"journals)."
+msgstr ""
+"اتركها <b>فارغة</b> للمستخدمين غير المقيدّين (السلوك الافتراضي لأودو — يرى "
+"كل اليوميات)."
+
+#. module: el_restrict_journal
+#: model_terms:ir.ui.view,arch_db:el_restrict_journal.view_users_form_restrict_journal
+msgid ""
+"When you add journals here, the user is automatically added to the "
+"\"Restricted Journal: User\" group, which activates the visibility "
+"restriction. When you clear the list, the user is removed from that group "
+"and regains full access."
+msgstr ""
+"عند إضافة يوميات هنا، يُضاف المستخدم تلقائياً إلى مجموعة \"تقييد اليومية: "
+"مستخدم\"، مما يُفعل قيد الرؤية. عند مسح القائمة، يُحذف المستخدم من تلك "
+"المجموعة ويستعيد الوصول الكامل."

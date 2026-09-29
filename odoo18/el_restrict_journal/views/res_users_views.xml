@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+        el_restrict_journal — res.users form inheritance (WHITELIST mode)
+        
+        Adds an "Allowed Journals" page to the user form. Only visible
+        to members of group_restrict_journal_manager.
+    -->
+    <record id="view_users_form_restrict_journal" model="ir.ui.view">
+        <field name="name">res.users.form.restrict.journal</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Allowed Journals"
+                      name="allowed_journals"
+                      groups="el_restrict_journal.group_restrict_journal_manager">
+                    <group>
+                        <field name="allowed_journal_ids"
+                               widget="many2many_tags"
+                               options="{'no_create': True, 'no_create_edit': True}"/>
+                    </group>
+                    <group string="Help">
+                        <div colspan="2" class="text-muted">
+                            <p>Select the journals this user is <b>ALLOWED</b> to use.
+                            Only these journals will be visible to the user — all
+                            other journals are completely hidden.</p>
+                            <p>Leave <b>empty</b> for unrestricted users (default
+                            Odoo behavior — sees all journals).</p>
+                            <p>When you add journals here, the user is automatically
+                            added to the "Restricted Journal: User" group, which
+                            activates the visibility restriction. When you clear
+                            the list, the user is removed from that group and
+                            regains full access.</p>
+                        </div>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

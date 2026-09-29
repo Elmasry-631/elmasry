@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+        el_restrict_journal — account.move form inheritance (WHITELIST mode)
+        
+        We do NOT add a domain on journal_id here because the record rule
+        already filters the dropdown automatically. The onchange handles
+        the UX (clears journal + warning popup if user somehow picks a
+        non-allowed journal).
+    -->
+    <record id="view_account_move_form_restrict_journal" model="ir.ui.view">
+        <field name="name">account.move.form.restrict.journal</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='journal_id']" position="attributes">
+                <attribute name="options">{'no_create': True}</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>
