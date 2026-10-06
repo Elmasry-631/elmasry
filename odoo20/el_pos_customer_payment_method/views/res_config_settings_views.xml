@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form_el_pos_default_pm" model="ir.ui.view">
+        <field name="name">res.config.settings.form.el.pos.default.pm</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="point_of_sale.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//setting[@id='payment_methods_new']" position="after">
+                <setting id="el_pos_default_payment_methods"
+                         string="Default Payment Methods"
+                         help="Shown in the POS for customers without a specific allowed list. Leave empty to allow all payment methods.">
+                    <field name="pos_el_default_payment_method_ids"
+                           colspan="4"
+                           widget="many2many_tags"
+                           options="{'no_create': True}"
+                           readonly="pos_has_active_session"/>
+                </setting>
+            </xpath>
+        </field>
+    </record>
+</odoo>
