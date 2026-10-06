@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+        Salary Structure referencing the attendance salary rules.
+
+        `hr.payroll.structure.rule_ids` defaults to a copy of every rule in
+        hr_payroll.default_structure (BASIC, GROSS, NET, ...). Those copies
+        would double-count the employee's salary, so this structure is
+        created with an empty rule list — see
+        `models/hr_payroll_structure.py`.
+
+        The four attendance rules attach themselves to this structure through
+        their `struct_ids` field, in `data/hr_salary_rule_data.xml`.
+
+        The inherited copies already present on upgraded databases are removed
+        by the post-install hook, which never deletes a rule referenced by a
+        payslip line.
+    -->
+    <record id="structure_attendance" model="hr.payroll.structure">
+        <field name="name">Attendance Structure</field>
+        <field name="code">ATT</field>
+        <field name="type_id" ref="hr.structure_type_employee"/>
+        <field name="use_worked_day_lines" eval="False"/>
+        <field name="note" type="html">
+            <p>Attendance-related salary structure: overtime, lateness,
+               absence and difference time.</p>
+            <p>Add it next to the employee's regular salary structure on the
+               contract so both apply to the payslip.</p>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+        Salary Rules for Attendance Sheet
+        These rules compute monetary amounts from the attendance data
+        that the linked hr.attendance.sheet provides on hr.payslip.
+        Available payslip inputs (computed fields):
+          - payslip.overtime_hours    (Float, hours)
+          - payslip.late_in_hours     (Float, hours)
+          - payslip.absence_days      (Float, days)
+          - payslip.difference_hours  (Float, hours)
+        Hourly rate = version.wage / 240 (assuming 30 days * 8h)
+        Daily rate  = version.wage / 30
+
+        Sequences
+        ~~~~~~~~~~
+        Rules are computed in ascending sequence order, so every attendance
+        rule MUST sit below the GROSS (100) and NET (200) rules of the
+        employee's regular structure. Otherwise the deductions are computed
+        after NET and never reach the net salary:
+            OVERT 90 | LATE 150 | ABS 160 | DIFF 170
+    -->
+
+    <!-- ============ OVERTIME RULE ============ -->
+    <record id="salary_rule_overtime" model="hr.salary.rule">
+        <field name="name">Overtime</field>
+        <field name="code">OVERT</field>
+        <field name="sequence">90</field>
+        <field name="category_ids" eval="[(6, 0, [ref('hr_payroll.ALW')])]"/>
+        <field name="struct_ids" eval="[(6, 0, [ref('structure_attendance')])]"/>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = 0.0
+if payslip.attendance_sheet_id and payslip.overtime_hours:
+    version = payslip.version_id
+    hourly_rate = version.wage / 240.0 if version.wage else 0.0
+    policy = version.attendance_policy_id
+    rate = 1.5
+    if policy and policy.overtime_working_id:
+        rate = policy.overtime_working_id.rate
+    result = payslip.overtime_hours * hourly_rate * rate
+        </field>
+        <field name="appears_on_payslip">always</field>
+    </record>
+
+    <!-- ============ LATENESS RULE ============ -->
+    <record id="salary_rule_late_in" model="hr.salary.rule">
+        <field name="name">Lateness Deduction</field>
+        <field name="code">LATE</field>
+        <field name="sequence">150</field>
+        <field name="category_ids" eval="[(6, 0, [ref('hr_payroll.DED')])]"/>
+        <field name="struct_ids" eval="[(6, 0, [ref('structure_attendance')])]"/>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = 0.0
+sheet = payslip.attendance_sheet_id
+late_lines = sheet.line_ids.filtered(lambda l: l.late_in_minutes > 0) if sheet else sheet
+if late_lines:
+    version = payslip.version_id
+    hourly_rate = version.wage / 240.0 if version.wage else 0.0
+    policy = version.attendance_policy_id
+    lateness_rule = policy.lateness_id if policy else None
+    # Each late day is priced on its own escalation tier: the 1st lateness
+    # uses the 1st tier's step, the 2nd lateness the 2nd tier's step, ...
+    hours = 0.0
+    fixed_amounts = 0.0
+    for line in late_lines.sorted('date'):
+        tier = lateness_rule.get_tier(line.late_occurrence or 1) if lateness_rule else None
+        step = tier.get_step_for_minutes(line.late_in_minutes) if tier else None
+        if not step:
+            # No step configured for this tier: charge the raw late hours.
+            hours += line.late_in_minutes / 60.0
+        elif step.penalty_type == 'amount':
+            # Fixed amount charged once per occurrence.
+            fixed_amounts += step.amount
+        elif step.penalty_type == 'hours':
+            # The step charges a flat number of penalised hours.
+            hours += step.penalty_hours
+        else:
+            hours += (line.late_in_minutes / 60.0) * step.initial_rate * step.rate
+    result = -(hours * hourly_rate) - fixed_amounts
+        </field>
+        <field name="appears_on_payslip">always</field>
+    </record>
+
+    <!-- ============ ABSENCE RULE ============ -->
+    <record id="salary_rule_absence" model="hr.salary.rule">
+        <field name="name">Absence Deduction</field>
+        <field name="code">ABS</field>
+        <field name="sequence">160</field>
+        <field name="category_ids" eval="[(6, 0, [ref('hr_payroll.DED')])]"/>
+        <field name="struct_ids" eval="[(6, 0, [ref('structure_attendance')])]"/>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = 0.0
+if payslip.attendance_sheet_id and payslip.absence_days:
+    version = payslip.version_id
+    daily_rate = version.wage / 30.0 if version.wage else 0.0
+    # Escalated deduction days (sum of the per-occurrence step penalties).
+    deduction_days = payslip.absence_penalty_days or payslip.absence_days
+    result = -(deduction_days * daily_rate)
+        </field>
+        <field name="appears_on_payslip">always</field>
+    </record>
+
+    <!-- ============ DIFFERENCE TIME RULE ============ -->
+    <record id="salary_rule_difference" model="hr.salary.rule">
+        <field name="name">Difference Time</field>
+        <field name="code">DIFF</field>
+        <field name="sequence">170</field>
+        <field name="category_ids" eval="[(6, 0, [ref('hr_payroll.DED')])]"/>
+        <field name="struct_ids" eval="[(6, 0, [ref('structure_attendance')])]"/>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = 0.0
+if payslip.attendance_sheet_id and payslip.difference_hours:
+    version = payslip.version_id
+    hourly_rate = version.wage / 240.0 if version.wage else 0.0
+    result = -(payslip.difference_hours * hourly_rate)
+        </field>
+        <field name="appears_on_payslip">always</field>
+    </record>
+</odoo>

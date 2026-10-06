@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ============ ROOT MENU ============ -->
+    <menuitem id="menu_hr_attendance_sheet_root"
+              name="Attendance Sheets"
+              parent="hr_attendance.menu_hr_attendance_root"
+              sequence="20"/>
+
+    <!-- ============ SHEETS ============ -->
+    <menuitem id="menu_hr_attendance_sheet"
+              name="Attendance Sheets"
+              parent="menu_hr_attendance_sheet_root"
+              action="action_hr_attendance_sheet"
+              sequence="10"/>
+
+    <!-- ============ BATCHES ============ -->
+    <menuitem id="menu_hr_attendance_sheet_batch"
+              name="Batches"
+              parent="menu_hr_attendance_sheet_root"
+              action="action_hr_attendance_sheet_batch"
+              sequence="20"/>
+
+    <!-- ============ CONFIGURATION ============ -->
+    <menuitem id="menu_hr_attendance_sheet_config"
+              name="Configuration"
+              parent="menu_hr_attendance_sheet_root"
+              sequence="90"/>
+
+    <menuitem id="menu_hr_attendance_public_holiday"
+              name="Public Holidays"
+              parent="menu_hr_attendance_sheet_config"
+              action="action_hr_attendance_public_holiday"
+              sequence="10"/>
+
+    <menuitem id="menu_hr_attendance_rules"
+              name="Rules"
+              parent="menu_hr_attendance_sheet_config"
+              sequence="20"/>
+
+    <menuitem id="menu_hr_attendance_rule_overtime"
+              name="Overtime Rules"
+              parent="menu_hr_attendance_rules"
+              action="action_hr_attendance_rule_overtime"
+              sequence="10"/>
+
+    <menuitem id="menu_hr_attendance_rule_lateness"
+              name="Lateness Rules"
+              parent="menu_hr_attendance_rules"
+              action="action_hr_attendance_rule_lateness"
+              sequence="20"/>
+
+    <menuitem id="menu_hr_attendance_rule_absence"
+              name="Absence Rules"
+              parent="menu_hr_attendance_rules"
+              action="action_hr_attendance_rule_absence"
+              sequence="30"/>
+
+    <menuitem id="menu_hr_attendance_policy"
+              name="Attendance Policies"
+              parent="menu_hr_attendance_sheet_config"
+              action="action_hr_attendance_policy"
+              sequence="30"/>
+</odoo>

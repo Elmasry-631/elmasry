@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- Sequences -->
+    <record id="seq_hr_attendance_sheet" model="ir.sequence">
+        <field name="name">Attendance Sheet</field>
+        <field name="code">hr.attendance.sheet</field>
+        <field name="prefix">AS/%(year)s/%(month)s/</field>
+        <field name="padding">4</field>
+        <field name="company_id" eval="False"/>
+    </record>
+
+    <record id="seq_hr_attendance_sheet_batch" model="ir.sequence">
+        <field name="name">Attendance Sheet Batch</field>
+        <field name="code">hr.attendance.sheet.batch</field>
+        <field name="prefix">ASB/%(year)s/</field>
+        <field name="padding">4</field>
+        <field name="company_id" eval="False"/>
+    </record>
+
+    <record id="seq_hr_attendance_policy" model="ir.sequence">
+        <field name="name">Attendance Policy</field>
+        <field name="code">hr.attendance.policy</field>
+        <field name="prefix">POL/</field>
+        <field name="padding">4</field>
+        <field name="company_id" eval="False"/>
+    </record>
+</odoo>

@@ -1,0 +1,42 @@
+id,name,model_id,group_id/id,operation,domain
+access_hr_attendance_public_holiday_user,hr.attendance.public.holiday.user,hr.attendance.public.holiday,group_hr_attendance_sheet_user,r,
+access_hr_attendance_public_holiday_officer,hr.attendance.public.holiday.officer,hr.attendance.public.holiday,group_hr_attendance_sheet_officer,crud,
+access_hr_attendance_public_holiday_manager,hr.attendance.public.holiday.manager,hr.attendance.public.holiday,group_hr_attendance_sheet_manager,crud,
+access_hr_attendance_public_holiday_line_user,hr.attendance.public.holiday.line.user,hr.attendance.public.holiday.line,group_hr_attendance_sheet_user,r,
+access_hr_attendance_public_holiday_line_officer,hr.attendance.public.holiday.line.officer,hr.attendance.public.holiday.line,group_hr_attendance_sheet_officer,crud,
+access_hr_attendance_public_holiday_line_manager,hr.attendance.public.holiday.line.manager,hr.attendance.public.holiday.line,group_hr_attendance_sheet_manager,crud,
+access_hr_attendance_rule_overtime_user,hr.attendance.rule.overtime.user,hr.attendance.rule.overtime,group_hr_attendance_sheet_user,r,
+access_hr_attendance_rule_overtime_manager,hr.attendance.rule.overtime.manager,hr.attendance.rule.overtime,group_hr_attendance_sheet_manager,crud,
+access_hr_attendance_rule_lateness_user,hr.attendance.rule.lateness.user,hr.attendance.rule.lateness,group_hr_attendance_sheet_user,r,
+access_hr_attendance_rule_lateness_manager,hr.attendance.rule.lateness.manager,hr.attendance.rule.lateness,group_hr_attendance_sheet_manager,crud,
+access_hr_attendance_rule_lateness_step_user,hr.attendance.rule.lateness.step.user,hr.attendance.rule.lateness.step,group_hr_attendance_sheet_user,r,
+access_hr_attendance_rule_lateness_step_manager,hr.attendance.rule.lateness.step.manager,hr.attendance.rule.lateness.step,group_hr_attendance_sheet_manager,crud,
+access_hr_attendance_rule_lateness_tier_user,hr.attendance.rule.lateness.tier.user,hr.attendance.rule.lateness.tier,group_hr_attendance_sheet_user,r,
+access_hr_attendance_rule_lateness_tier_manager,hr.attendance.rule.lateness.tier.manager,hr.attendance.rule.lateness.tier,group_hr_attendance_sheet_manager,crud,
+access_hr_attendance_rule_absence_user,hr.attendance.rule.absence.user,hr.attendance.rule.absence,group_hr_attendance_sheet_user,r,
+access_hr_attendance_rule_absence_manager,hr.attendance.rule.absence.manager,hr.attendance.rule.absence,group_hr_attendance_sheet_manager,crud,
+access_hr_attendance_rule_absence_step_user,hr.attendance.rule.absence.step.user,hr.attendance.rule.absence.step,group_hr_attendance_sheet_user,r,
+access_hr_attendance_rule_absence_step_manager,hr.attendance.rule.absence.step.manager,hr.attendance.rule.absence.step,group_hr_attendance_sheet_manager,crud,
+access_hr_attendance_rule_absence_tier_user,hr.attendance.rule.absence.tier.user,hr.attendance.rule.absence.tier,group_hr_attendance_sheet_user,r,
+access_hr_attendance_rule_absence_tier_manager,hr.attendance.rule.absence.tier.manager,hr.attendance.rule.absence.tier,group_hr_attendance_sheet_manager,crud,
+access_hr_attendance_policy_user,hr.attendance.policy.user,hr.attendance.policy,group_hr_attendance_sheet_user,r,
+access_hr_attendance_policy_manager,hr.attendance.policy.manager,hr.attendance.policy,group_hr_attendance_sheet_manager,crud,
+access_hr_attendance_sheet_user,hr.attendance.sheet.user,hr.attendance.sheet,group_hr_attendance_sheet_user,r,
+access_hr_attendance_sheet_officer,hr.attendance.sheet.officer,hr.attendance.sheet,group_hr_attendance_sheet_officer,crud,
+access_hr_attendance_sheet_manager,hr.attendance.sheet.manager,hr.attendance.sheet,group_hr_attendance_sheet_manager,crud,
+access_hr_attendance_sheet_line_user,hr.attendance.sheet.line.user,hr.attendance.sheet.line,group_hr_attendance_sheet_user,r,
+access_hr_attendance_sheet_line_officer,hr.attendance.sheet.line.officer,hr.attendance.sheet.line,group_hr_attendance_sheet_officer,crud,
+access_hr_attendance_sheet_line_manager,hr.attendance.sheet.line.manager,hr.attendance.sheet.line,group_hr_attendance_sheet_manager,crud,
+access_hr_attendance_sheet_batch_officer,hr.attendance.sheet.batch.officer,hr.attendance.sheet.batch,group_hr_attendance_sheet_officer,crud,
+access_hr_attendance_sheet_batch_manager,hr.attendance.sheet.batch.manager,hr.attendance.sheet.batch,group_hr_attendance_sheet_manager,crud,
+access_hr_attendance_sheet_batch_line_officer,hr.attendance.sheet.batch.line.officer,hr.attendance.sheet.batch.line,group_hr_attendance_sheet_officer,crud,
+access_hr_attendance_sheet_batch_line_manager,hr.attendance.sheet.batch.line.manager,hr.attendance.sheet.batch.line,group_hr_attendance_sheet_manager,crud,
+access_hr_attendance_change_data_wizard,hr.attendance.change.data.wizard,hr.attendance.change.data.wizard,group_hr_attendance_sheet_officer,crud,
+access_hr_attendance_sheet_batch_wizard,hr.attendance.sheet.batch.wizard,hr.attendance.sheet.batch.wizard,group_hr_attendance_sheet_officer,crud,
+access_hr_attendance_create_payslip_wizard,hr.attendance.create.payslip.wizard,hr.attendance.create.payslip.wizard,group_hr_attendance_sheet_officer,crud,
+rule_hr_attendance_sheet_company,Attendance Sheet: multi-company,hr.attendance.sheet,,crud,"['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]"
+rule_hr_attendance_policy_company,Attendance Policy: multi-company,hr.attendance.policy,,crud,"['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]"
+rule_hr_attendance_public_holiday_company,Public Holiday: multi-company,hr.attendance.public.holiday,,crud,"['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]"
+rule_hr_attendance_sheet_batch_company,Attendance Sheet Batch: multi-company,hr.attendance.sheet.batch,,crud,"['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]"
+rule_hr_attendance_rule_overtime_company,Overtime Rule: multi-company,hr.attendance.rule.overtime,,crud,"['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]"
+rule_hr_attendance_sheet_personal,Attendance Sheet: see own,hr.attendance.sheet,base.group_user,r,"[('employee_id.user_id', '=', user.id)]"

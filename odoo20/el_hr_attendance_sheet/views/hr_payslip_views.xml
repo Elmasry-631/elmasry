@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Add attendance_sheet_id + computed fields to hr.payslip form -->
+    <record id="view_hr_payslip_form_attendance" model="ir.ui.view">
+        <field name="name">hr.payslip.form.attendance</field>
+        <field name="model">hr.payslip</field>
+        <field name="inherit_id" ref="hr_payroll.view_hr_payslip_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Attendance" name="attendance">
+                    <div class="alert alert-warning" role="alert"
+                         invisible="not no_attendance_sheet">
+                        This payslip is not linked to an attendance sheet, so
+                        overtime, lateness and absence amounts are all zero.
+                    </div>
+                    <group>
+                        <group>
+                            <field name="no_attendance_sheet" column_invisible="True"/>
+                            <field name="attendance_sheet_id" readonly="state != 'draft'"/>
+                            <button name="action_link_attendance_sheet"
+                                    string="Link Attendance Sheet" type="object"
+                                    class="btn-link"
+                                    invisible="attendance_sheet_id or state != 'draft'"/>
+                            <button name="action_open_attendance_sheet"
+                                    string="Open Sheet" type="object"
+                                    class="btn-link"
+                                    invisible="not attendance_sheet_id"/>
+                        </group>
+                    </group>
+                    <group string="Computed Inputs">
+                        <group>
+                            <field name="overtime_hours"/>
+                            <field name="late_in_hours"/>
+                            <field name="absence_days"/>
+                            <field name="difference_hours"/>
+                        </group>
+                        <group string="Escalated Penalties">
+                            <field name="late_penalty_hours"/>
+                            <field name="absence_penalty_days"/>
+                            <field name="number_late_occurrences"/>
+                            <field name="number_absence_occurrences"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

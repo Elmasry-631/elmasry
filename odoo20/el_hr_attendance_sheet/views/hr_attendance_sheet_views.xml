@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ============ ACTION ============ -->
+    <record id="action_hr_attendance_sheet" model="ir.actions.act_window">
+        <field name="name">Attendance Sheets</field>
+        <field name="res_model">hr.attendance.sheet</field>
+        <field name="view_mode">kanban,list,form,pivot,graph</field>
+        <field name="context">{'search_default_filter_draft': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Create your first attendance sheet</p>
+            <p>Generate per-employee per-period attendance sheets that compute
+               overtime, lateness, absence and difference time, then feed them
+               to the payslip.</p>
+        </field>
+    </record>
+
+    <!-- ============ KANBAN ============ -->
+    <record id="view_hr_attendance_sheet_kanban" model="ir.ui.view">
+        <field name="name">hr.attendance.sheet.kanban</field>
+        <field name="model">hr.attendance.sheet</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="state" sample="1">
+                <field name="name"/>
+                <field name="employee_id"/>
+                <field name="date_from"/>
+                <field name="date_to"/>
+                <field name="state"/>
+                <field name="total_overtime"/>
+                <field name="total_late_in"/>
+                <field name="total_absence"/>
+                <templates>
+                    <t t-name="card">
+                        <div t-attf-class="oe_kanban_card oe_kanban_global_click">
+                            <div class="o_kanban_record_top">
+                                <div class="o_kanban_record_head">
+                                    <strong><field name="name"/></strong>
+                                </div>
+                                <field name="state" widget="label_selection"
+                                       options="{'classes': {'draft': 'default', 'computed': 'info', 'approved': 'success', 'done': 'success', 'cancelled': 'danger'}}"/>
+                            </div>
+                            <div><field name="employee_id"/></div>
+                            <div>
+                                <small>
+                                    <field name="date_from"/> → <field name="date_to"/>
+                                </small>
+                            </div>
+                            <div class="o_kanban_record_body">
+                                <div>OT: <field name="total_overtime"/>h</div>
+                                <div>Late: <field name="total_late_in"/>min</div>
+                                <div>Absence: <field name="total_absence"/>d</div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- ============ LIST ============ -->
+    <record id="view_hr_attendance_sheet_list" model="ir.ui.view">
+        <field name="name">hr.attendance.sheet.list</field>
+        <field name="model">hr.attendance.sheet</field>
+        <field name="arch" type="xml">
+            <list string="Attendance Sheets" decoration-info="state == 'draft'"
+                  decoration-success="state == 'done'"
+                  decoration-danger="state == 'cancelled'">
+                <field name="name"/>
+                <field name="employee_id"/>
+                <field name="date_from"/>
+                <field name="date_to"/>
+                <field name="contract_id" optional="hide"/>
+                <field name="policy_id" optional="hide"/>
+                <field name="total_overtime" sum="Total OT"/>
+                <field name="total_late_in" sum="Total Late"/>
+                <field name="total_absence" sum="Total Absence"/>
+                <field name="total_difference" sum="Total Diff"/>
+                <field name="state" widget="badge"
+                       decoration-success="state == 'done'"
+                       decoration-info="state == 'computed'"
+                       decoration-warning="state == 'approved'"
+                       decoration-danger="state == 'cancelled'"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ============ FORM ============ -->
+    <record id="view_hr_attendance_sheet_form" model="ir.ui.view">
+        <field name="name">hr.attendance.sheet.form</field>
+        <field name="model">hr.attendance.sheet</field>
+        <field name="arch" type="xml">
+            <form string="Attendance Sheet">
+                <header>
+                    <button name="action_compute" string="Compute" type="object"
+                            class="btn-primary" invisible="state not in ('draft','computed')"/>
+                    <button name="action_approve" string="Approve" type="object"
+                            class="btn-primary" invisible="state != 'computed'"/>
+                    <button name="action_create_payslip" string="Create Payslip" type="object"
+                            class="btn-primary" invisible="state != 'approved' or payslip_id"/>
+                    <button name="action_done" string="Set to Done" type="object"
+                            class="btn-primary" invisible="state != 'approved'"/>
+                    <button name="action_cancel" string="Cancel" type="object"
+                            invisible="state not in ('draft','computed','approved')"/>
+                    <button name="action_draft" string="Reset to Draft" type="object"
+                            invisible="state != 'cancelled'"/>
+                    <button name="action_print_report" string="Print" type="object"
+                            invisible="state == 'draft'"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,computed,approved,done"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_open_payslip" type="object"
+                                class="oe_stat_button" icon="fa-money"
+                                invisible="not payslip_id">
+                            <field name="payslip_id" widget="statinfo"
+                                   string="Payslip"/>
+                        </button>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="name" readonly="state != 'draft'"/>
+                            <field name="employee_id"
+                                   readonly="state != 'draft'"/>
+                            <field name="date_from"
+                                   readonly="state != 'draft'"/>
+                            <field name="date_to"
+                                   readonly="state != 'draft'"/>
+                        </group>
+                        <group>
+                            <field name="contract_id" readonly="state != 'draft'"/>
+                            <field name="policy_id" readonly="state != 'draft'"/>
+                            <field name="company_id" groups="base.group_multi_company"
+                                   readonly="state != 'draft'"/>
+                            <field name="currency_id" column_invisible="True"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Attendance Lines" name="lines">
+                            <field name="line_ids" readonly="state not in ('draft','computed')">
+                                <list string="Daily Lines" editable="bottom">
+                                    <field name="date"/>
+                                    <field name="day_type"/>
+                                    <field name="planned_hours"/>
+                                    <field name="worked_hours"/>
+                                    <field name="overtime_hours"/>
+                                    <field name="late_in_minutes"/>
+                                    <field name="late_occurrence" optional="hide"/>
+                                    <field name="late_penalty" optional="hide"/>
+                                    <field name="difference_hours"/>
+                                    <field name="is_absent" widget="boolean_toggle"/>
+                                    <field name="absence_occurrence" optional="hide"/>
+                                    <field name="absence_penalty_days" optional="hide"/>
+                                    <field name="is_leave" widget="boolean_toggle"/>
+                                    <field name="leave_id" optional="hide"/>
+                                    <field name="changed_manually" optional="hide"/>
+                                    <button name="action_open_change_wizard"
+                                            string="Change" type="object"
+                                            icon="fa-pencil"
+                                            invisible="parent.state != 'computed'"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Summary" name="summary">
+                            <group>
+                                <group string="Totals">
+                                    <field name="total_planned"/>
+                                    <field name="total_worked"/>
+                                    <field name="total_overtime"/>
+                                    <field name="total_late_in"/>
+                                    <field name="total_absence"/>
+                                    <field name="total_difference"/>
+                                </group>
+                                <group string="Escalated Penalties">
+                                    <field name="total_late_penalty_hours"/>
+                                    <field name="total_absence_penalty_days"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- ============ SEARCH ============ -->
+    <record id="view_hr_attendance_sheet_search" model="ir.ui.view">
+        <field name="name">hr.attendance.sheet.search</field>
+        <field name="model">hr.attendance.sheet</field>
+        <field name="arch" type="xml">
+            <search string="Search Attendance Sheets">
+                <field name="name"/>
+                <field name="employee_id"/>
+                <field name="contract_id"/>
+                <field name="policy_id"/>
+                <separator/>
+                <filter name="filter_draft" string="Draft"
+                        domain="[('state', '=', 'draft')]"/>
+                <filter name="filter_computed" string="Computed"
+                        domain="[('state', '=', 'computed')]"/>
+                <filter name="filter_approved" string="Approved"
+                        domain="[('state', '=', 'approved')]"/>
+                <filter name="filter_done" string="Done"
+                        domain="[('state', '=', 'done')]"/>
+                <filter name="filter_cancelled" string="Cancelled"
+                        domain="[('state', '=', 'cancelled')]"/>
+                <separator/>
+                <filter name="filter_has_overtime" string="Has Overtime"
+                        domain="[('total_overtime', '>', 0)]"/>
+                <filter name="filter_has_absence" string="Has Absence"
+                        domain="[('total_absence', '>', 0)]"/>
+                <separator/>
+                <filter name="group_state" string="Status"
+                        context="{'group_by': 'state'}"/>
+                <filter name="group_employee" string="Employee"
+                        context="{'group_by': 'employee_id'}"/>
+                <filter name="group_company" string="Company"
+                        context="{'group_by': 'company_id'}"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- ============ PIVOT ============ -->
+    <record id="view_hr_attendance_sheet_pivot" model="ir.ui.view">
+        <field name="name">hr.attendance.sheet.pivot</field>
+        <field name="model">hr.attendance.sheet</field>
+        <field name="arch" type="xml">
+            <pivot string="Attendance Sheets Analysis">
+                <field name="employee_id" type="row"/>
+                <field name="date_from" type="col"/>
+                <field name="total_overtime" type="measure"/>
+                <field name="total_late_in" type="measure"/>
+                <field name="total_absence" type="measure"/>
+                <field name="total_difference" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!-- ============ GRAPH ============ -->
+    <record id="view_hr_attendance_sheet_graph" model="ir.ui.view">
+        <field name="name">hr.attendance.sheet.graph</field>
+        <field name="model">hr.attendance.sheet</field>
+        <field name="arch" type="xml">
+            <graph string="Attendance Sheets Chart" type="bar">
+                <field name="employee_id" type="row"/>
+                <field name="total_overtime" type="measure"/>
+            </graph>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_hr_attendance_sheet_document">
+        <t t-call="web.external_layout">
+            <div class="page">
+                <h2 class="text-center">Attendance Sheet</h2>
+                <div class="row mt-3">
+                    <div class="col-6">
+                        <strong>Reference:</strong> <span t-field="doc.name"/><br/>
+                        <strong>Employee:</strong> <span t-field="doc.employee_id.name"/><br/>
+                        <strong>Department:</strong> <span t-field="doc.employee_id.department_id.name"/>
+                    </div>
+                    <div class="col-6">
+                        <strong>Period:</strong>
+                        <span t-field="doc.date_from"/> → <span t-field="doc.date_to"/><br/>
+                        <strong>Contract:</strong> <span t-field="doc.contract_id.name"/><br/>
+                        <strong>Status:</strong> <span t-field="doc.state"/>
+                    </div>
+                </div>
+                <h4 class="mt-4">Daily Lines</h4>
+                <table class="table table-sm table-bordered mt-2">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Day Type</th>
+                            <th class="text-right">Planned (h)</th>
+                            <th class="text-right">Worked (h)</th>
+                            <th class="text-right">Overtime (h)</th>
+                            <th class="text-right">Late (min)</th>
+                            <th class="text-right">Diff (h)</th>
+                            <th class="text-center">Absent</th>
+                            <th class="text-center">Leave</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr t-foreach="doc.line_ids" t-as="line">
+                            <td><span t-field="line.date"/></td>
+                            <td><span t-field="line.day_type"/></td>
+                            <td class="text-right"><span t-field="line.planned_hours"/></td>
+                            <td class="text-right"><span t-field="line.worked_hours"/></td>
+                            <td class="text-right"><span t-field="line.overtime_hours"/></td>
+                            <td class="text-right"><span t-field="line.late_in_minutes"/></td>
+                            <td class="text-right"><span t-field="line.difference_hours"/></td>
+                            <td class="text-center">
+                                <span t-if="line.is_absent">✓</span>
+                            </td>
+                            <td class="text-center">
+                                <span t-if="line.is_leave">✓</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr class="fw-bold">
+                            <td colspan="2">Totals</td>
+                            <td class="text-right"><span t-field="doc.total_planned"/></td>
+                            <td class="text-right"><span t-field="doc.total_worked"/></td>
+                            <td class="text-right"><span t-field="doc.total_overtime"/></td>
+                            <td class="text-right"><span t-field="doc.total_late_in"/></td>
+                            <td class="text-right"><span t-field="doc.total_difference"/></td>
+                            <td class="text-right"><span t-field="doc.total_absence"/></td>
+                            <td></td>
+                        </tr>
+                    </tfoot>
+                </table>
+                <div class="row mt-4" t-if="doc.note">
+                    <div class="col-12">
+                        <strong>Notes:</strong>
+                        <p t-field="doc.note"/>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="report_hr_attendance_sheet">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="el_hr_attendance_sheet.report_hr_attendance_sheet_document"
+                   t-lang="user.lang"/>
+            </t>
+        </t>
+    </template>
+</odoo>
