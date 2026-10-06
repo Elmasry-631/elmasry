@@ -63,8 +63,8 @@
 | Odoo Version | Compatible | Notes |
 |---|---|---|
 | 19.0 | ✅ Target | Uses Odoo 19 APIs (models.Constraint, Domain, etc.) |
-| 18.0 | ⚠️ Likely compatible | Minor differences in OWL — not used here |
-| 17.0 and below | ❌ Not tested | `<list>` tag introduced in 17, but other APIs differ |
+| 18.0 | ⚠️ Not runtime-validated | This module targets Odoo 19 APIs; Odoo 18 compatibility is not guaranteed |
+| 17.0 and below | ❌ Not supported | Not tested and outside the declared target |
 
 ## Install Order
 

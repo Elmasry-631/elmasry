@@ -198,14 +198,15 @@ All documentation embedded inside the module ZIP:
 | Documentation completeness | 100% ✅ | 18 files |
 | Test coverage | 80% ⚠️ | 8 unit tests + 50-case test plan; needs runtime verification |
 | Performance patterns | 90% ✅ | Bulk fetch + stored computes; batch could be slow |
-| Security (groups + rules + access) | 100% ✅ | 3-tier + multi-company + self |
+| Security documentation | ⚠️ | Employee-self rule exists, but model ACL still requires Attendance Sheet User |
 | Accessibility | 100% ✅ | All strings + labels present |
 | Validation errors (real) | 0 ✅ | Only false positive remains |
 
-### Overall Grade: **A**
+### Overall Grade: **A- (documentation/build review)**
 
-> The module is production-ready. The only outstanding item is runtime test execution
-> (which requires a running Odoo 19 + PostgreSQL instance with `hr_payroll` installed).
+> Static source validation is clean, but this report must not be treated as runtime proof.
+> Runtime Odoo + PostgreSQL validation remains required. A known security gap also remains:
+> employee self-service is described by the record rule, but the ACL requires Attendance Sheet User.
 
 ## Rollback Plan
 

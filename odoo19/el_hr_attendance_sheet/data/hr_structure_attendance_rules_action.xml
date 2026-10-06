@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+        Server action: add the attendance salary rules (OVERT, LATE, ABS)
+        to the payroll structures selected in the list.
+
+        A payslip applies a single structure, so an employee cannot rely on a
+        separate "Attendance Structure" to get the overtime / lateness /
+        absence lines: those rules must live in the same structure as the
+        basic salary. This action therefore copies the module's rules into each
+        target structure instead of moving them, since hr.salary.rule.struct_id
+        is a required Many2one and a rule cannot belong to two structures.
+
+        Targets already carrying one of the codes are skipped, so the action
+        can be run again safely.
+
+        It is executed automatically by the post-install hook (see hooks.py)
+        and stays available in the Structures list view for later use.
+    -->
+    <record id="action_propagate_attendance_rules" model="ir.actions.server">
+        <field name="name">Add Attendance Rules (Overtime, Lateness, Absence)</field>
+        <field name="model_id" ref="hr_payroll.model_hr_payroll_structure"/>
+        <field name="state">code</field>
+        <field name="code">
+structures = records
+added = structures.action_propagate_attendance_rules()
+# Report the result to the user. Raising UserError from a server action
+# aborts the whole transaction and would roll the new rules back, so the
+# message is only raised when nothing had to be written (a no-op run).
+if not added and structures and not env.context.get('attendance_propagate_silent'):
+    raise UserError(
+        "All selected structures already carry the overtime, lateness and "
+        "absence rules - nothing to add.")
+        </field>
+    </record>
+</odoo>

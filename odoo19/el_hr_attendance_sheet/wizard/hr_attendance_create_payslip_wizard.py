@@ -61,8 +61,10 @@ class HrAttendanceCreatePayslipWizard(models.TransientModel):
         draft = self.env['hr.payslip'].new(vals)
         draft._compute_name()
         payslip = self.env['hr.payslip'].create(dict(vals, name=draft.name))
-        # Compute payslip inputs from sheet
-        sheet.write({'payslip_id': payslip.id, 'state': 'done'})
+        # Link both ways and compute the salary rules, otherwise every
+        # attendance-driven amount (overtime, lateness, absence) stays at 0.
+        sheet.write({'payslip_id': payslip.id})
+        payslip.compute_sheet()
         return {
             'type': 'ir.actions.act_window',
             'name': _('Payslip'),

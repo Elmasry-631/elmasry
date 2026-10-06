@@ -59,7 +59,9 @@ Each major model has a record rule restricting access to the user's companies:
 |------|-------|-------|--------|
 | `rule_hr_attendance_sheet_personal` | hr.attendance.sheet | `base.group_user` | Read-only on own sheets |
 
-This allows regular employees to view their own attendance sheets without needing the Attendance Sheet User group.
+Important: the record rule alone does not grant model access. The current `ir.model.access.csv` grants `hr.attendance.sheet` read access through `group_hr_attendance_sheet_user`, so employees must currently be assigned to Attendance Sheet User. Once they have that ACL, this record rule limits them to their own sheets.
+
+**Known functional/security gap:** if the intended requirement is true employee self-service with no Attendance Sheet User assignment, the ACL layer must be changed. This review does not change functional code.
 
 ## Salary Rules
 

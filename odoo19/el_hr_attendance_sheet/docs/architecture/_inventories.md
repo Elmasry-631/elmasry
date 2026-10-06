@@ -13,7 +13,7 @@ Spec: https://apps.odoo.com/apps/modules/19.0/el_hr_attendance_sheet
 Target Odoo: 19.0
 Module Technical Name: el_hr_attendance_sheet
 Module Pretty Name: HR Attendance Sheet And Policies
-License: LGPL-3 (own clean-room implementation — does NOT copy OPL-1 source)
+License: LGPL-3
 Author: Ibrahim Elmasry
 
 DEPENDENCIES:
@@ -62,7 +62,7 @@ STATE MACHINES:
   1. Multi-company? → Assume multi-company aware via hr.contract.company_id (multi-company rules)
   2. Working schedule? → Reuse resource.calendar from hr.contract (no new model)
   3. Language? → English only (user's previous answer)
-  4. License? → LGPL-3 (clean-room reimplementation, NOT copying the original OPL-1 source)
+  4. License? → LGPL-3
 ```
 
 ---

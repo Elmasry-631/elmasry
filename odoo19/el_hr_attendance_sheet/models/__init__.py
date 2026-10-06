@@ -6,3 +6,4 @@ from . import hr_attendance_sheet
 from . import hr_attendance_sheet_batch
 from . import hr_contract
 from . import hr_payslip
+from . import hr_payroll_structure

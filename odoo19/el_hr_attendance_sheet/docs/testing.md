@@ -60,7 +60,7 @@
 | 1 | Manager CRUD | Manager group | Full create/read/write/delete |
 | 2 | Officer CRUD (no delete) | Officer group | Create/read/write OK, delete denied |
 | 3 | User read-only | User group | Read only, no write/create |
-| 4 | User sees own sheet | Regular employee | Sees only their own sheets |
+| 4 | User sees own sheet | Employee assigned Attendance Sheet User | Sees only their own sheets; ungrouped employees are denied by ACL |
 | 5 | Multi-company isolation | User in Company A | Cannot see Company B sheets |
 
 ## 6. Payslip Integration Test Plan

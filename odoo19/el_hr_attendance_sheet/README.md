@@ -5,8 +5,8 @@
 
 ## Description
 
-`el_hr_attendance_sheet` is a clean-room reimplementation of the popular HR Attendance
-Sheet pattern. It closes the gap between Odoo's `hr_attendance` (which only records
+`el_hr_attendance_sheet` provides an attendance-sheet and policy layer on top of Odoo's
+`hr_attendance`. It closes the gap between Odoo's `hr_attendance` (which only records
 check-in/out) and `hr_payroll` (which needs overtime/lateness/absence inputs to compute
 the payslip).
 
@@ -29,7 +29,7 @@ The module covers the full lifecycle:
 ## Odoo Version
 
 - **Target:** Odoo 19.0
-- **Likely compatible:** Odoo 18.0 (uses Odoo 18+ APIs)
+- **Runtime validation:** Not executed as part of this documentation review.
 
 ## Installation
 
@@ -58,7 +58,7 @@ The module covers the full lifecycle:
 - ✅ PDF report (QWeb)
 - ✅ Pivot + Graph analysis views
 - ✅ 3-tier security (User / Officer / Manager)
-- ✅ Employee-self read-only access to own sheets
+- ✅ Employee-self record rule is defined for users in `base.group_user`; the current ACL matrix still requires the Attendance Sheet User group for model read access (see Security Notes)
 
 ## Models
 
@@ -109,10 +109,6 @@ See [docs/workflows.md](docs/workflows.md) for full diagrams and transition rule
 ## License
 
 GNU Lesser General Public License v3.0 — see [LICENSE](LICENSE) file.
-
-This is a clean-room reimplementation. No source code from the original OPL-1 module
-(`rm_hr_attendance_sheet` by CDS Solutions SRL) was used. The implementation is based
-on the public feature description published on the Odoo Apps Store.
 
 ## Documentation
 

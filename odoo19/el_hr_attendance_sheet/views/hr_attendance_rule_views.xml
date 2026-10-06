@@ -80,29 +80,118 @@
         </field>
     </record>
 
+    <record id="action_hr_attendance_rule_lateness_tier_list" model="ir.actions.act_window">
+        <field name="name">Lateness Tiers</field>
+        <field name="res_model">hr.attendance.rule.lateness.tier</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
     <record id="view_hr_attendance_rule_lateness_form" model="ir.ui.view">
         <field name="name">hr.attendance.rule.lateness.form</field>
         <field name="model">hr.attendance.rule.lateness</field>
         <field name="arch" type="xml">
             <form string="Lateness Rule">
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="%(action_hr_attendance_rule_lateness_tier_list)d"
+                                type="action" class="oe_stat_button"
+                                icon="fa-list-ol" string="Tiers">
+                            <field name="tier_ids" widget="statinfo"
+                                   string="Tiers"/>
+                        </button>
+                    </div>
                     <group>
                         <group>
                             <field name="name"/>
                             <field name="active"/>
+                            <field name="unit"/>
                         </group>
                         <group>
                             <field name="company_id" groups="base.group_multi_company"/>
                         </group>
                     </group>
                     <notebook>
-                        <page string="Steps" name="steps">
+                        <page string="Tiers" name="tiers">
+                            <p class="text-muted">
+                                Each tier holds the steps of one repetition level.
+                                Configure "First Lateness" and "Second Lateness"
+                                separately — open a tier to edit its steps.
+                            </p>
+                            <field name="tier_ids">
+                                <list string="Lateness Tiers" editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="name"/>
+                                    <field name="occurrence_from"/>
+                                    <field name="occurrence_to"/>
+                                    <field name="step_count" optional="hide"/>
+                                    <button name="action_open_tier"
+                                            string="Configure Steps"
+                                            type="object" icon="fa-pencil"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_hr_attendance_rule_lateness_tier_list" model="ir.ui.view">
+        <field name="name">hr.attendance.rule.lateness.tier.list</field>
+        <field name="model">hr.attendance.rule.lateness.tier</field>
+        <field name="arch" type="xml">
+            <list string="Lateness Tiers">
+                <field name="name"/>
+                <field name="lateness_id"/>
+                <field name="occurrence_from"/>
+                <field name="occurrence_to"/>
+                <field name="step_count"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_hr_attendance_rule_lateness_tier_form" model="ir.ui.view">
+        <field name="name">hr.attendance.rule.lateness.tier.form</field>
+        <field name="model">hr.attendance.rule.lateness.tier</field>
+        <field name="arch" type="xml">
+            <form string="Lateness Tier">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_open_rule" type="object"
+                                class="oe_stat_button" icon="fa-arrow-left"
+                                string="Back to Rule">
+                            <field name="lateness_id" widget="statinfo"
+                                   string="Rule"/>
+                        </button>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="sequence"/>
+                            <field name="lateness_id"/>
+                        </group>
+                        <group>
+                            <field name="occurrence_from"/>
+                            <field name="occurrence_to"/>
+                            <field name="unit"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Lateness Steps" name="steps">
                             <field name="step_ids">
-                                <list string="Steps" editable="bottom">
-                                    <field name="from_minutes"/>
-                                    <field name="to_minutes"/>
+                                <list string="Lateness Steps" editable="bottom">
+                                    <field name="from_hours"
+                                           column_invisible="parent.unit != 'hours'"/>
+                                    <field name="to_hours"
+                                           column_invisible="parent.unit != 'hours'"/>
+                                    <field name="from_minutes"
+                                           column_invisible="parent.unit == 'hours'"/>
+                                    <field name="to_minutes"
+                                           column_invisible="parent.unit == 'hours'"/>
                                     <field name="penalty_type"/>
-                                    <field name="rate" invisible="penalty_type != 'rate'"/>
+                                    <field name="penalty_hours" invisible="penalty_type != 'hours'"/>
+                                    <field name="rate" invisible="penalty_type not in ('rate',)"/>
                                     <field name="initial_rate" invisible="penalty_type != 'rate'"/>
                                     <field name="amount" invisible="penalty_type != 'amount'"/>
                                 </list>
@@ -145,12 +234,26 @@
         </field>
     </record>
 
+    <record id="action_hr_attendance_rule_absence_tier_list" model="ir.actions.act_window">
+        <field name="name">Absence Tiers</field>
+        <field name="res_model">hr.attendance.rule.absence.tier</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
     <record id="view_hr_attendance_rule_absence_form" model="ir.ui.view">
         <field name="name">hr.attendance.rule.absence.form</field>
         <field name="model">hr.attendance.rule.absence</field>
         <field name="arch" type="xml">
             <form string="Absence Rule">
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="%(action_hr_attendance_rule_absence_tier_list)d"
+                                type="action" class="oe_stat_button"
+                                icon="fa-list-ol" string="Tiers">
+                            <field name="tier_ids" widget="statinfo"
+                                   string="Tiers"/>
+                        </button>
+                    </div>
                     <group>
                         <group>
                             <field name="name"/>
@@ -161,12 +264,85 @@
                         </group>
                     </group>
                     <notebook>
-                        <page string="Steps" name="steps">
+                        <page string="Tiers" name="tiers">
+                            <p class="text-muted">
+                                Each tier holds the steps of one repetition level.
+                                Configure "First Absence" and "Second Absence"
+                                separately — open a tier to edit its steps.
+                            </p>
+                            <field name="tier_ids">
+                                <list string="Absence Tiers" editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="name"/>
+                                    <field name="occurrence_from"/>
+                                    <field name="occurrence_to"/>
+                                    <field name="step_count" optional="hide"/>
+                                    <button name="action_open_tier"
+                                            string="Configure Steps"
+                                            type="object" icon="fa-pencil"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_hr_attendance_rule_absence_tier_list" model="ir.ui.view">
+        <field name="name">hr.attendance.rule.absence.tier.list</field>
+        <field name="model">hr.attendance.rule.absence.tier</field>
+        <field name="arch" type="xml">
+            <list string="Absence Tiers">
+                <field name="name"/>
+                <field name="absence_id"/>
+                <field name="occurrence_from"/>
+                <field name="occurrence_to"/>
+                <field name="step_count"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_hr_attendance_rule_absence_tier_form" model="ir.ui.view">
+        <field name="name">hr.attendance.rule.absence.tier.form</field>
+        <field name="model">hr.attendance.rule.absence.tier</field>
+        <field name="arch" type="xml">
+            <form string="Absence Tier">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_open_rule" type="object"
+                                class="oe_stat_button" icon="fa-arrow-left"
+                                string="Back to Rule">
+                            <field name="absence_id" widget="statinfo"
+                                   string="Rule"/>
+                        </button>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="sequence"/>
+                            <field name="absence_id"/>
+                        </group>
+                        <group>
+                            <field name="occurrence_from"/>
+                            <field name="occurrence_to"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Absence Steps" name="steps">
+                            <p class="text-muted">
+                                Each tier covers one absence: leave the ranges
+                                as they are and set how many days this absence
+                                is worth.
+                            </p>
                             <field name="step_ids">
-                                <list string="Steps" editable="bottom">
-                                    <field name="from_days"/>
-                                    <field name="to_days"/>
-                                    <field name="rate"/>
+                                <list string="Absence Steps" editable="bottom">
+                                    <field name="from_days" column_invisible="1"/>
+                                    <field name="to_days" column_invisible="1"/>
+                                    <field name="penalty_type"/>
+                                    <field name="rate" invisible="penalty_type != 'rate'"/>
+                                    <field name="deduction_days" invisible="penalty_type != 'days'"/>
                                 </list>
                             </field>
                         </page>

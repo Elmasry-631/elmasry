@@ -2,6 +2,8 @@
 from collections import defaultdict
 from datetime import datetime, time, timedelta
 
+import pytz
+
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError
 
@@ -94,6 +96,18 @@ class HrAttendanceSheet(models.Model):
         store=True,
         help="Count of days where the employee was absent without leave.",
     )
+    total_late_penalty_hours = fields.Float(
+        string='Total Late Penalty (hours)',
+        compute='_compute_totals',
+        store=True,
+        help="Sum of the dynamic lateness penalties after escalation.",
+    )
+    total_absence_penalty_days = fields.Float(
+        string='Total Absence Penalty (days)',
+        compute='_compute_totals',
+        store=True,
+        help="Sum of the dynamic absence deductions after escalation.",
+    )
     total_difference = fields.Float(
         string='Total Difference (hours)',
         compute='_compute_totals',
@@ -150,12 +164,18 @@ class HrAttendanceSheet(models.Model):
         'line_ids.difference_hours',
         'line_ids.planned_hours',
         'line_ids.worked_hours',
+        'line_ids.late_penalty',
+        'line_ids.absence_penalty_days',
     )
     def _compute_totals(self):
         for rec in self:
             rec.total_overtime = sum(rec.line_ids.mapped('overtime_hours'))
             rec.total_late_in = sum(rec.line_ids.mapped('late_in_minutes'))
             rec.total_absence = sum(1 for line in rec.line_ids if line.is_absent)
+            rec.total_late_penalty_hours = sum(
+                rec.line_ids.mapped('late_penalty'))
+            rec.total_absence_penalty_days = sum(
+                rec.line_ids.mapped('absence_penalty_days'))
             rec.total_difference = sum(rec.line_ids.mapped('difference_hours'))
             rec.total_planned = sum(rec.line_ids.mapped('planned_hours'))
             rec.total_worked = sum(rec.line_ids.mapped('worked_hours'))
@@ -288,6 +308,8 @@ class HrAttendanceSheet(models.Model):
         # Iterate each day
         current = self.date_from
         delta = timedelta(days=1)
+        absence_seq = 0
+        late_seq = 0
         while current <= self.date_to:
             day_attendances = attendances_by_day.get(current, [])
             day_leave = leaves_by_day.get(current)
@@ -298,6 +320,13 @@ class HrAttendanceSheet(models.Model):
                 day_leave, is_public_holiday,
             )
             if line_vals:
+                # Track repetition counters used by the escalation rules.
+                if line_vals.get('is_absent'):
+                    absence_seq += 1
+                    line_vals['absence_occurrence'] = absence_seq
+                if line_vals.get('late_in_minutes'):
+                    late_seq += 1
+                    line_vals['late_occurrence'] = late_seq
                 line_vals['sheet_id'] = self.id
                 SheetLine.create(line_vals)
             current += delta
@@ -458,17 +487,37 @@ class HrAttendanceSheet(models.Model):
         return hours
 
     def _shift_start_for_day(self, calendar, day):
-        """Return the earliest expected check-in datetime for the day."""
+        """Return the earliest expected check-in datetime for the day.
+
+        ``resource.calendar.attendance.hour_from`` is a wall-clock time of the
+        calendar's own timezone (see ``resource.calendar`` localize the naive
+        datetime before using it), while ``hr.attendance.check_in`` is stored
+        in UTC. Returning the shift start in UTC makes the comparison in
+        ``_compute_line_for_day`` meaningful — comparing the naive local time
+        against a UTC check-in would always report the employee as early.
+        """
         self.ensure_one()
         intervals = self._work_intervals_for_day(calendar, day)
         if not intervals:
             return None
-        # intervals are (float_hour_start, float_hour_end)
+        # intervals are (float_hour_start, float_hour_end) in the calendar tz
         first_start = intervals[0][0]
-        # Build datetime
         hour = int(first_start)
         minute = int((first_start - hour) * 60)
-        return datetime.combine(day, time(hour=hour, minute=minute))
+        local_start = datetime.combine(day, time(hour=hour, minute=minute))
+        return self._to_utc(local_start, calendar)
+
+    @api.model
+    def _to_utc(self, naive_dt, calendar):
+        """Convert a calendar-local naive datetime to a naive UTC datetime."""
+        tz_name = calendar.tz or self.env.user.tz or 'UTC'
+        try:
+            tz = pytz.timezone(tz_name)
+        except Exception:
+            return naive_dt
+        # pytz needs localize() for correct DST handling.
+        localized = tz.localize(naive_dt, is_dst=None)
+        return localized.astimezone(pytz.utc).replace(tzinfo=None)
 
     def _compute_overtime_hours(self, worked_hours, planned_hours,
                                 day_type, overtime_rule):
@@ -563,17 +612,88 @@ class HrAttendanceSheetLine(models.Model):
         string='Difference (hours)',
         help="Worked - Planned - Overtime. Can be negative.",
     )
+    absence_occurrence = fields.Integer(
+        string='Absence #',
+        copy=False,
+        help="Sequence number of this absence day inside the sheet period.",
+    )
+    late_occurrence = fields.Integer(
+        string='Late #',
+        copy=False,
+        help="Sequence number of this late-in day inside the sheet period.",
+    )
+    late_penalty = fields.Float(
+        string='Late Penalty',
+        compute='_compute_line_penalty',
+        store=True,
+        help="Penalty hours for this day, based on the lateness step that "
+             "matches both the late amount and its repetition number.",
+    )
+    absence_penalty_days = fields.Float(
+        string='Absence Penalty (days)',
+        compute='_compute_line_penalty',
+        store=True,
+        help="Days deducted for this absence, based on the absence step that "
+             "matches both the absence and its repetition number.",
+    )
+    note = fields.Text(string='Note')
     attendance_ids = fields.Many2many(
         'hr.attendance',
         string='Attendances',
     )
-    note = fields.Text(string='Note')
     changed_manually = fields.Boolean(string='Changed Manually', copy=False)
 
     @api.depends('date')
     def _compute_display_name(self):
         for rec in self:
             rec.display_name = _("%s - %s") % (rec.sheet_id.name, rec.date)
+
+    @api.depends('late_in_minutes', 'late_occurrence', 'is_absent',
+                 'absence_occurrence', 'sheet_id.policy_id')
+    def _compute_line_penalty(self):
+        """Resolve the dynamic penalty for this line from the policy rules."""
+        for rec in self:
+            policy = rec.sheet_id.policy_id
+            rec.late_penalty = 0.0
+            rec.absence_penalty_days = 0.0
+            if not policy:
+                continue
+            if rec.late_in_minutes > 0 and policy.lateness_id:
+                rule = policy.lateness_id
+                # late_in_minutes is always stored in minutes, so look the
+                # step up in minutes directly. Going through get_step() would
+                # feed hours into a rule configured with unit='minutes' and
+                # match the wrong step.
+                step = rule.get_step_for_minutes(
+                    rec.late_in_minutes, rec.late_occurrence or 1)
+                if step:
+                    if step.penalty_type == 'amount':
+                        rec.late_penalty = step.amount
+                    elif step.penalty_type == 'hours':
+                        # The step charges a flat number of penalised hours,
+                        # independent of how late the employee actually was.
+                        rec.late_penalty = step.penalty_hours
+                    else:
+                        rec.late_penalty = (
+                            (rec.late_in_minutes / 60.0)
+                            * step.initial_rate * step.rate
+                        )
+            if rec.is_absent and policy.absence_id:
+                # Every absence is charged on its own tier: the 1st absence
+                # uses the 1st tier's step, the 2nd absence the 2nd tier's
+                # step, and so on. The step amount is taken as-is -- the
+                # occurrence number only *selects* the step, it never
+                # multiplies it, so repeating an absence escalates instead of
+                # multiplying every earlier penalty again.
+                absence_count = rec.absence_occurrence or 1
+                step = policy.absence_id.get_step_for_days(
+                    absence_count, absence_count,
+                )
+                if step:
+                    if step.penalty_type == 'days':
+                        rec.absence_penalty_days = step.deduction_days or 1.0
+                    else:
+                        rec.absence_penalty_days = step.rate
 
     def action_open_change_wizard(self):
         """Open the change-data wizard for this line."""

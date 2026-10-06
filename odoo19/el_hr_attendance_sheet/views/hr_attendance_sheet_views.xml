@@ -145,8 +145,12 @@
                                     <field name="worked_hours"/>
                                     <field name="overtime_hours"/>
                                     <field name="late_in_minutes"/>
+                                    <field name="late_occurrence" optional="hide"/>
+                                    <field name="late_penalty" optional="hide"/>
                                     <field name="difference_hours"/>
                                     <field name="is_absent" widget="boolean_toggle"/>
+                                    <field name="absence_occurrence" optional="hide"/>
+                                    <field name="absence_penalty_days" optional="hide"/>
                                     <field name="is_leave" widget="boolean_toggle"/>
                                     <field name="leave_id" optional="hide"/>
                                     <field name="changed_manually" optional="hide"/>
@@ -166,6 +170,10 @@
                                     <field name="total_late_in"/>
                                     <field name="total_absence"/>
                                     <field name="total_difference"/>
+                                </group>
+                                <group string="Escalated Penalties">
+                                    <field name="total_late_penalty_hours"/>
+                                    <field name="total_absence_penalty_days"/>
                                 </group>
                             </group>
                         </page>

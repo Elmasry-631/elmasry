@@ -110,9 +110,9 @@ Assign users to the appropriate group:
 
 | Group | Best for |
 |-------|----------|
-| Attendance Sheet User | Employees who only need to view their own sheets |
-| Attendance Sheet Officer | HR staff who create/approve sheets |
-| Attendance Sheet Manager | HR managers who configure rules/policies |
+| Attendance Sheet User | Employees who need read-only access to attendance sheets; the current ACL requires this group for self-service viewing |
+| Attendance Sheet Officer | HR staff who create/write/approve sheets and batches |
+| Attendance Sheet Manager | HR managers who configure rules/policies and have full CRUD |
 
 The admin user is automatically added to the Manager group on install.
 
@@ -127,7 +127,7 @@ Record rules automatically restrict access to the user's companies.
 
 ## 9. Optional: Cron Job for Monthly Batch
 
-For monthly payroll, you can set up a scheduled action to auto-generate batches:
+For monthly payroll, you can optionally create a custom scheduled action to auto-generate batches:
 
 1. Go to **Settings → Technical → Automation → Scheduled Actions**
 2. Create a new action:
