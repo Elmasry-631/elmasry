@@ -41,6 +41,7 @@
 				<field name="channel" position="after">
 					<group invisible="channel != 'salla'">
 						<field string="Salla Store Name" name="salla_store_name" readonly="1"/>
+						<field name="salla_zero_tax_id" options="{'no_create': True}"/>
 					</group>
 				</field>
 
@@ -60,7 +61,7 @@
 					</page>
 				</xpath>
 
-				<xpath expr="//div[contains(@class, 'o_settings_container')][.//field[@name='import_order_cron']]" position="after">
+				<xpath expr="//div[hasclass('o_settings_container')][.//field[@name='import_order_cron']]" position="after">
 					<div class='row mt16 o_settings_container'
 						invisible="'import_under_review_order_cron' not in channel_configs or channel != 'salla'">
 						<div class="col-xs-12 col-md-4 o_setting_box">
@@ -92,7 +93,7 @@
 					</div>
 				</xpath>
 
-				<xpath expr="//div[contains(@class, 'o_settings_container')][.//field[@name='import_partner_cron']]" position="inside">
+				<xpath expr="//div[hasclass('o_settings_container')][.//field[@name='import_partner_cron']]" position="inside">
 					<div class="col-12" invisible="not is_import_partner_cron_readonly">
 						<div class="alert alert-secondary py-2 mb-2" role="alert">
 							<strong>Not supported on Salla.</strong>

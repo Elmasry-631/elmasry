@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_salla_order_backfill_user,salla.order.backfill user,model_salla_order_backfill,odoo_multi_channel_sale.group_multi_channel_user,1,1,1,0
+access_salla_order_backfill_admin,salla.order.backfill admin,model_salla_order_backfill,odoo_multi_channel_sale.group_multi_channel_admin,1,1,1,1
+access_salla_order_audit_user,salla.order.audit user,model_salla_order_audit,odoo_multi_channel_sale.group_multi_channel_user,1,1,1,0
+access_salla_order_audit_admin,salla.order.audit admin,model_salla_order_audit,odoo_multi_channel_sale.group_multi_channel_admin,1,1,1,1
+access_salla_order_audit_line_user,salla.order.audit.line user,model_salla_order_audit_line,odoo_multi_channel_sale.group_multi_channel_user,1,1,1,0
+access_salla_order_audit_line_admin,salla.order.audit.line admin,model_salla_order_audit_line,odoo_multi_channel_sale.group_multi_channel_admin,1,1,1,1

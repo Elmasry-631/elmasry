@@ -4,7 +4,6 @@
 # See LICENSE file for full copyright and licensing details.
 # License URL : <https://store.webkul.com/license.html/>
 ##############################################################################
-import psycopg2
 from odoo import fields, models, api
 from odoo.exceptions import UserError
 from odoo.http import request
@@ -12,8 +11,8 @@ from datetime import datetime, timedelta, timezone
 import requests
 from urllib.parse import urlencode, urljoin
 import random, string
-from odoo import sql_db
 from .sallaAPI import SallaApi
+import psycopg2
 
 from logging import getLogger
 _logger = getLogger(__name__)
@@ -35,6 +34,17 @@ SALLA_STALLED_ORDER_MIN_AGE_HOURS = 2
 SALLA_STALLED_ORDER_RESYNC_LIMIT = 200
 # Advisory lock class for Salla order import/resync (channel id is the 2nd key).
 SALLA_ORDER_IMPORT_LOCK_CLASS = 714001
+# Webhook fallback sweep: every run re-checks the orders created in the last days (status and
+# total against Odoo). Salla's order list does not follow the update sort: a status change of an
+# order older than the last ~600 created was never seen, and its invoice waited for the daily
+# check. 14 days (the daily check's range) are about 140 pages of the list per run.
+SALLA_SWEEP_DAYS = 14
+SALLA_SWEEP_MAX_PAGES = 300
+# A never imported order is the order import's job: the sweep only retries the recent ones.
+SALLA_SWEEP_NEW_ORDER_DAYS = 2
+SALLA_UPDATED_SWEEP_PER_PAGE = 30
+# Orders re-imported by ID per import.operation call (keeps ApiTransaction paging sane).
+SALLA_ID_IMPORT_CHUNK = 10
 
 
 class MultiChannelSale(models.Model):
@@ -50,6 +60,13 @@ class MultiChannelSale(models.Model):
     salla_verification_key = fields.Char(string="Verification Key", copy=False, default=lambda self: self.get_verification_key())
     salla_store_name = fields.Char('Store Name')
     salla_store_id = fields.Char('Store ID')
+    salla_zero_tax_id = fields.Many2one(
+        'account.tax', string='Tax for Salla lines without tax',
+        domain="[('type_tax_use', '=', 'sale'), ('amount', '=', 0), ('company_id', '=', company_id)]",
+        help='Applied to every Salla order line that arrives without a tax, for example exports '
+             'outside Saudi Arabia. ZATCA e-invoicing refuses invoice lines without any tax, so '
+             'pick the 0%% tax the accountant uses for such sales (e.g. "0%% EX").',
+    )
     import_under_review_order_cron = fields.Boolean(
         string='Resync Stalled Orders',
         help='Fallback cron: every 2 hours, re-import non-invoiced Salla orders whose store '
@@ -208,7 +225,10 @@ class MultiChannelSale(models.Model):
         return self.getAccessToken()
 
     def import_salla(self, object, **kw): # if refresh token expired, channel state will be error
-        self.with_context(operation=True).getAccessToken()
+        if not kw.get('salla_token_checked'):
+            # kw travels from page to page inside ApiTransaction: check once per run.
+            self.with_context(operation=True).getAccessToken()
+            kw['salla_token_checked'] = True
         with SallaApi(self.salla_client_id, self.salla_client_secret, self.access_token, self.refresh_token, channel=self, **kw) as api:
             if object == 'res.partner':
                 data_list, kw = api.get_partners(**kw)
@@ -298,68 +318,19 @@ class MultiChannelSale(models.Model):
         return bool(self.env.cr.fetchone()[0])
 
     def _salla_release_order_import_lock(self):
-        """Release the session advisory lock acquired for this channel."""
+        """Release the session advisory lock acquired for this channel.
+
+        When the job failed, its transaction is aborted and no statement runs before a rollback:
+        without it the unlock fails, the lock stays on the pooled connection and every later order
+        import of the channel (sweep, backfill, audit) is skipped as "busy"."""
         self.ensure_one()
-        self.env.cr.execute(
-            "SELECT pg_advisory_unlock(%s, %s)",
-            (SALLA_ORDER_IMPORT_LOCK_CLASS, self.id),
-        )
+        query, params = "SELECT pg_advisory_unlock(%s, %s)", (SALLA_ORDER_IMPORT_LOCK_CLASS, self.id)
+        try:
+            self.env.cr.execute(query, params)
+        except psycopg2.errors.InFailedSqlTransaction:
+            self.env.cr.rollback()
+            self.env.cr.execute(query, params)
         return bool(self.env.cr.fetchone()[0])
-
-    @staticmethod
-    def _salla_is_connection_loss(exc):
-        """True when the DB connection was dropped mid-operation.
-
-        Long Salla API calls keep the DB connection idle; if PostgreSQL (or a
-        pooler such as PgBouncer) kills it while idle, every later query raises
-        ``cursor already closed`` / ``connection already closed``. Those errors
-        are fatal for the current transaction but safe to retry on a fresh
-        connection.
-        """
-        if isinstance(exc, psycopg2.InterfaceError):
-            return True
-        if isinstance(exc, psycopg2.OperationalError):
-            return True
-        message = str(exc)
-        return any(keyword in message for keyword in (
-            'cursor already closed',
-            'connection already closed',
-            'connection was closed',
-            'server closed the connection',
-            'connection reset',
-            'terminating connection',
-        ))
-
-    def _salla_reconnect(self):
-        """Return the same recordset on a brand-new DB connection.
-
-        Odoo cursors cannot be revived after the physical connection is dropped.
-        This borrows a fresh connection from the pool, swaps it onto the
-        recordset's environment and drops the dead one, so a long import or
-        resync can keep going instead of aborting the whole cron.
-        """
-        cr = self.env.cr
-        try:
-            new_cr = sql_db.db_connect(cr.dbname).cursor()
-        except Exception:
-            _logger.exception('Salla: could not open a fresh DB connection.')
-            raise
-        try:
-            new_env = api.Environment(new_cr, self.env.uid, self.env.context)
-        except Exception:
-            try:
-                new_cr.close()
-            except Exception:
-                pass
-            raise
-        # The old connection is dead (or being discarded); drop it so the pool
-        # can forget it instead of leaking it.
-        try:
-            cr.close()
-        except Exception:
-            _logger.exception('Salla: failed to close the old DB connection.')
-        _logger.warning('Salla: reconnected to the database on a fresh connection.')
-        return self.with_env(new_env)
 
     def export_salla(self, record, **kw): # if token expired, channel will be in error
         self.with_context(operation=True).getAccessToken()
@@ -436,86 +407,155 @@ class MultiChannelSale(models.Model):
 
     def salla_import_order_cron(self):  # Cron implemented
         _logger.info("+++++++++++Import Order Cron Started++++++++++++")
-        current = self
-        if not current._salla_try_acquire_order_import_lock():
+        if not self._salla_try_acquire_order_import_lock():
             _logger.info(
                 'Salla order import cron skipped for channel %s: another order import holds the lock',
                 self.id,
             )
             return True
+        run_started = fields.Datetime.now()
         try:
-            attempts = 0
-            while True:
-                try:
-                    kw = dict(
-                        object="sale.order",
-                        salla_from_date=current.import_order_date,
-                        salla_to_date=datetime.now(timezone.utc),
-                        from_cron=True,
-                    )
-                    if current.import_order_date:
-                        kw.update({'filter_type': 'date'})
-                    current.env["import.operation"].create({
-                        "channel_id": current.id,
-                    }).import_with_filter(**kw)
-                    break
-                except Exception as e:
-                    if current._salla_is_connection_loss(e) and attempts < 3:
-                        attempts += 1
-                        _logger.exception(
-                            'Salla order import cron lost its DB connection for channel %s '
-                            '(attempt %s/3); reconnecting and continuing.',
-                            current.id, attempts,
-                        )
-                        current = current._salla_reconnect()
-                        # The old session (and its advisory lock) is gone.
-                        if not current._salla_try_acquire_order_import_lock():
-                            _logger.warning(
-                                'Salla order import cron could not re-acquire the order '
-                                'import lock for channel %s after reconnecting.',
-                                current.id,
-                            )
-                            return True
-                        continue
-                    raise
-        finally:
-            try:
-                current._salla_release_order_import_lock()
-            except Exception:
-                _logger.exception(
-                    'Salla order import cron: failed to release the order import lock '
-                    'for channel %s.',
-                    self.id,
+            kw = dict(object="sale.order", from_cron=True)
+            if self.import_order_date:
+                kw.update(
+                    filter_type='date',
+                    # Salla filters by creation DATE only (yyyy-mm-dd). Overlap one
+                    # day so a failed page or a boundary order is fetched again.
+                    salla_from_date=(self.import_order_date - timedelta(days=1)).date(),
+                    salla_to_date=(run_started + timedelta(days=1)).date(),
                 )
+            self.env["import.operation"].create({
+                "channel_id": self.id,
+            }).import_with_filter(**kw)
+            if not self.import_order_date:
+                # First full import: start the date window from this run.
+                self.write({'import_order_date': run_started})
+        finally:
+            self._salla_release_order_import_lock()
+        return True
+
+    @api.model
+    def cron_salla_sweep_updated_orders(self):
+        """Global cron entry: re-import recently updated Salla orders (webhook fallback)."""
+        channels = self.search([
+            ('channel', '=', 'salla'),
+            ('state', '=', 'validate'),
+            ('active', '=', True),
+        ])
+        for channel in channels:
+            try:
+                channel.salla_sweep_updated_orders()
+                self.env.cr.commit()
+            except Exception as e:
+                _logger.exception(
+                    'Salla updated-orders sweep failed for channel %s: %s', channel.id, e,
+                )
+                self.env.cr.rollback()
+        return True
+
+    def salla_sweep_updated_orders(self):
+        """Scan the Salla orders created in the last SALLA_SWEEP_DAYS days and re-import the ones
+        whose status differs from the stored mapping, whose total differs from the Odoo order not
+        invoiced yet (a coupon added or removed in Salla after the import), or, when recent, that
+        were never imported."""
+        self.ensure_one()
+        if not self._salla_try_acquire_order_import_lock():
+            _logger.info(
+                'Salla updated-orders sweep skipped for channel %s: another order import holds the lock',
+                self.id,
+            )
+            return True
+        try:
+            self.with_context(operation=True).getAccessToken()
+            api = self.get_sallaApi()
+            Mapping = self.env['channel.order.mappings']
+            store_ids, changed, totals = [], {}, {}
+            today = fields.Date.context_today(self)
+            new_since = str(today - timedelta(days=SALLA_SWEEP_NEW_ORDER_DAYS))
+            for page in range(1, SALLA_SWEEP_MAX_PAGES + 1):
+                res = api.salla_response(api.import_url + 'orders', params={
+                    'from_date': str(today - timedelta(days=SALLA_SWEEP_DAYS)),
+                    'to_date': str(today + timedelta(days=1)),
+                    'sort_by': 'created_at-desc',
+                    'per_page': SALLA_UPDATED_SWEEP_PER_PAGE,
+                    'page': page,
+                })
+                rows = (res or {}).get('data') or []
+                if not rows:
+                    break
+                mappings = {mapping.store_order_id: mapping for mapping in Mapping.search([
+                    ('channel_id', '=', self.id),
+                    ('store_order_id', 'in', [str(row.get('id')) for row in rows]),
+                ])}
+                for row in rows:
+                    store_id = str(row.get('id'))
+                    slug = (row.get('status') or {}).get('slug') or ''
+                    mapping = mappings.get(store_id)
+                    total = row.get('total') or {}
+                    ref = str(row.get('reference_id') or '')
+                    if ref and total.get('amount') is not None:
+                        totals[ref] = (float(total['amount']), total.get('currency') or '')
+                    if not mapping:
+                        created = ((row.get('date') or {}).get('date') or '')[:10]
+                        if not created or created >= new_since:
+                            store_ids.append(store_id)
+                    elif (mapping.store_order_status or '') != slug:
+                        store_ids.append(store_id)
+                    elif self._salla_order_total_changed(mapping.order_name, totals.get(ref)):
+                        store_ids.append(store_id)
+                        changed[store_id] = ref
+                links = ((res or {}).get('pagination') or {}).get('links') or {}
+                if not links.get('next'):
+                    break
+            _logger.info('Salla sweep: channel %s, %s order(s) to (re)import, %s of them for their total',
+                         self.id, len(store_ids), len(changed))
+            # the import invoices an order on Salla's total read here (_salla_order_target)
+            ImportOp = self.env['import.operation'].with_context(salla_order_totals=totals)
+            for start in range(0, len(store_ids), SALLA_ID_IMPORT_CHUNK):
+                ImportOp.create({'channel_id': self.id}).import_with_filter(
+                    object='sale.order',
+                    filter_type='id',
+                    object_id=','.join(store_ids[start:start + SALLA_ID_IMPORT_CHUNK]),
+                    from_cron=True,
+                    force_evaluate_feed=True,
+                )
+                self.env.cr.commit()
+            # a confirmed order is not rewritten by the import: it is brought to Salla's total now,
+            # before its invoice (a draft one was rewritten and already matches)
+            for store_id, ref in changed.items():
+                order = Mapping.search([('channel_id', '=', self.id), ('store_order_id', '=', store_id)], limit=1).order_name
+                if not self._salla_order_total_changed(order, totals.get(ref)):
+                    continue
+                try:
+                    with self.env.cr.savepoint():
+                        self._salla_bring_order_to_total(order, totals[ref][0])
+                except Exception as e:  # the daily check corrects it later
+                    _logger.warning("Salla sweep: order %s not brought to Salla's total: %s", ref, e)
+            if changed:
+                self.env.cr.commit()
+        finally:
+            self._salla_release_order_import_lock()
         return True
 
     @api.model
     def cron_resync_salla_under_review_orders(self):
         """Global cron entry: resync stalled (non-terminal) Salla order mappings."""
-        current = self
-        channel_ids = current.search([
+        channels = self.search([
             ('channel', '=', 'salla'),
             ('state', '=', 'validate'),
             ('active', '=', True),
             ('import_under_review_order_cron', '=', True),
-        ]).ids
-        for channel_id in channel_ids:
+        ])
+        for channel in channels:
             try:
-                channel = current.browse(channel_id)
                 channel.salla_resync_under_review_orders()
-                current.env.cr.commit()
+                self._cr.commit()
             except Exception as e:
                 _logger.exception(
                     'Salla stalled-order resync cron failed for channel %s: %s',
-                    channel_id, e,
+                    channel.id, e,
                 )
-                if current._salla_is_connection_loss(e):
-                    current = current._salla_reconnect()
-                else:
-                    try:
-                        current.env.cr.rollback()
-                    except Exception:
-                        current = current._salla_reconnect()
+                self._cr.rollback()
         return True
 
     def _salla_ensure_in_progress_order_state(self):
@@ -538,6 +578,29 @@ class MultiChannelSale(models.Model):
                 'Salla channel %s: added missing in_progress order state mapping',
                 self.id,
             )
+
+    def _salla_ensure_category_feeds(self, store_categ_id):
+        """Fetch an unknown Salla category (with its tree) and create the missing
+        category feeds, so a product or order is not rejected because a category
+        was created in Salla after the last category import."""
+        self.ensure_one()
+        CategoryFeed = self.env['category.feed']
+        created = CategoryFeed
+        try:
+            api = self.get_sallaApi()
+            categories, _kw = api.get_categories(filter_type='id', object_id=str(store_categ_id))
+        except Exception as e:
+            _logger.warning('Salla: could not fetch category %s on demand: %s', store_categ_id, e)
+            return created
+        for vals in categories or []:
+            store_id = str(vals.get('store_id') or '')
+            if not store_id:
+                continue
+            if not CategoryFeed.search([('channel_id', '=', self.id), ('store_id', '=', store_id)], limit=1):
+                created |= CategoryFeed.create(vals)
+        if created:
+            _logger.info('Salla: category %s fetched on demand, %s feed(s) created', store_categ_id, len(created))
+        return created
 
     def _salla_stalled_order_mappings(self):
         """Non-invoiced, non-cancelled mappings stuck on non-terminal Salla statuses.
@@ -562,30 +625,22 @@ class MultiChannelSale(models.Model):
            limit=SALLA_STALLED_ORDER_RESYNC_LIMIT)
 
     def salla_resync_under_review_orders(self):
-        """Re-import stalled order mappings by store order ID (webhook fallback).
-
-        Resistant to dropped DB connections: every order commits on its own, so
-        if the connection dies mid-run (idle session timeout, PgBouncer, worker
-        recycle) the resync reconnects on a fresh connection and keeps going
-        through the remaining orders instead of aborting the whole cron and
-        forcing a full restart.
-        """
+        """Re-import stalled order mappings by store order ID (webhook fallback)."""
         self.ensure_one()
-        current = self
-        if not current._salla_try_acquire_order_import_lock():
+        if not self._salla_try_acquire_order_import_lock():
             _logger.info(
                 'Salla stalled-order resync skipped for channel %s: another order import holds the lock',
                 self.id,
             )
             return True
         try:
-            current._salla_ensure_in_progress_order_state()
+            self._salla_ensure_in_progress_order_state()
             _logger.info(
                 "+++++++++++Salla Stalled Order Resync Started (channel %s)++++++++++++",
                 self.id,
             )
-            pending_ids = current._salla_stalled_order_mappings().ids
-            if not pending_ids:
+            mappings = self._salla_stalled_order_mappings()
+            if not mappings:
                 _logger.info(
                     'Salla stalled-order resync: nothing to process for channel %s',
                     self.id,
@@ -594,17 +649,16 @@ class MultiChannelSale(models.Model):
 
             _logger.info(
                 'Salla stalled-order resync: channel %s will process %s order(s)',
-                self.id, len(pending_ids),
+                self.id, len(mappings),
             )
-            reconnects = 0
-            while pending_ids:
-                mapping = current.env['channel.order.mappings'].browse(pending_ids.pop(0))
+            ImportOp = self.env['import.operation']
+            for mapping in mappings:
                 store_id = mapping.store_order_id
                 if not store_id:
                     continue
                 try:
-                    current.env['import.operation'].create({
-                        'channel_id': current.id,
+                    ImportOp.create({
+                        'channel_id': self.id,
                     }).import_with_filter(
                         object='sale.order',
                         filter_type='id',
@@ -614,153 +668,175 @@ class MultiChannelSale(models.Model):
                     )
                     # Stamp after attempt so this mapping rotates to the back of the queue.
                     mapping.salla_last_resync_at = fields.Datetime.now()
-                    current._cr.commit()
+                    self._cr.commit()
                 except Exception as e:
-                    if current._salla_is_connection_loss(e):
-                        if reconnects >= 3:
-                            _logger.exception(
-                                'Salla stalled-order resync lost its DB connection %s '
-                                'times for channel %s; giving up this run, the next cron '
-                                'run will resume.',
-                                reconnects, current.id,
-                            )
-                            break
-                        reconnects += 1
-                        _logger.exception(
-                            'Salla stalled-order resync lost its DB connection for channel %s '
-                            'store order %s; reconnecting and continuing.',
-                            current.id, store_id,
-                        )
-                        current = current._salla_reconnect()
-                        if not current._salla_try_acquire_order_import_lock():
-                            _logger.warning(
-                                'Salla stalled-order resync could not re-acquire the order '
-                                'import lock for channel %s after reconnecting.',
-                                current.id,
-                            )
-                            break
-                        # Retry the same order on the fresh connection.
-                        pending_ids.insert(0, mapping.id)
-                        continue
                     _logger.exception(
                         'Salla stalled-order resync failed for channel %s '
                         'store order %s: %s',
-                        current.id, store_id, e,
+                        self.id, store_id, e,
                     )
-                    try:
-                        current._cr.rollback()
-                    except Exception:
-                        _logger.exception(
-                            'Salla stalled-order resync: rollback failed for channel %s '
-                            'store order %s; reconnecting.',
-                            current.id, store_id,
-                        )
-                        current = current._salla_reconnect()
-                        continue
+                    self._cr.rollback()
                     try:
                         # Still rotate failed rows so they do not block the backlog.
-                        mapping.salla_last_resync_at = fields.Datetime.now()
-                        current._cr.commit()
+                        mapping.invalidate_recordset()
+                        if mapping.exists():
+                            mapping.salla_last_resync_at = fields.Datetime.now()
+                            self._cr.commit()
                     except Exception:
-                        _logger.exception(
-                            'Salla stalled-order resync: failed to rotate mapping for '
-                            'channel %s store order %s.',
-                            current.id, store_id,
-                        )
+                        self._cr.rollback()
             return True
         finally:
-            try:
-                current._salla_release_order_import_lock()
-            except Exception:
-                _logger.exception(
-                    'Salla stalled-order resync: failed to release the order import '
-                    'lock for channel %s.',
-                    self.id,
-                )
-
-    def _salla_run_import_with_reconnect(self, **kw):
-        """Run one import job, reconnecting once if the DB connection is dropped."""
-        current = self
-        for attempt in range(1, 4):
-            try:
-                current.env["import.operation"].create({
-                    "channel_id": current.id,
-                }).import_with_filter(**kw)
-                return
-            except Exception as e:
-                if not current._salla_is_connection_loss(e):
-                    raise
-                _logger.exception(
-                    'Salla import lost its DB connection for channel %s (attempt %s/3); '
-                    'reconnecting and continuing.',
-                    current.id, attempt,
-                )
-                current = current._salla_reconnect()
-        return
+            self._salla_release_order_import_lock()
 
     def salla_import_category_cron(self):  # Cron implemented
         _logger.info("+++++++++++Import Category Cron Started++++++++++++")
-        self._salla_run_import_with_reconnect(
+        kw = dict(
             object="product.category",
             from_cron=True,
         )
+        self.env["import.operation"].create({
+            "channel_id": self.id,
+        }).import_with_filter(**kw)
 
     def salla_import_product_cron(self):
         _logger.info("+++++++++++Import Product Cron Started++++++++++++")
-        self._salla_run_import_with_reconnect(
+        kw = dict(
             object="product.template",
             from_cron=True,
         )
+        self.env["import.operation"].create({
+            "channel_id": self.id,
+        }).import_with_filter(**kw)
 
     def salla_import_partner_cron(self):
         _logger.info(
             "+++++ Import Partner Cron is not supported in Salla Connector ++++++")
         
+    def _log_salla_proxy_call(self, action, url, params, response=None, error=None):
+        """Log Webkul proxy handshake without raising."""
+        self.ensure_one()
+        safe_params = dict(params or {})
+        _logger.info(
+            "Salla %s: channel_id=%s state=%s store_id=%r verification_key=%r "
+            "base_url=%r proxy=%s params=%s",
+            action,
+            self.id,
+            self.state,
+            self.salla_store_id,
+            self.salla_verification_key,
+            self.get_base_url(),
+            url,
+            safe_params,
+        )
+        if error is not None:
+            _logger.exception("Salla %s: request failed: %s", action, error)
+            return
+        if response is None:
+            return
+        body = response.text or ''
+        if len(body) > 2000:
+            body = body[:2000] + '...<truncated>'
+        _logger.info(
+            "Salla %s: status=%s reason=%s content_type=%s body=%s",
+            action,
+            response.status_code,
+            response.reason,
+            response.headers.get('Content-Type'),
+            body,
+        )
+        try:
+            payload = response.json()
+        except ValueError:
+            _logger.warning("Salla %s: response is not JSON", action)
+            return
+        _logger.info(
+            "Salla %s: json_keys=%s status_code=%s message=%s message_text=%s "
+            "has_url=%s has_access_token=%s",
+            action,
+            list(payload.keys()) if isinstance(payload, dict) else type(payload),
+            payload.get('status_code') if isinstance(payload, dict) else None,
+            payload.get('message') if isinstance(payload, dict) else None,
+            payload.get('message_text') if isinstance(payload, dict) else None,
+            bool(isinstance(payload, dict) and (payload.get('data') or {}).get('url')),
+            bool(isinstance(payload, dict) and (payload.get('data') or {}).get('access_token')),
+        )
+
     def connect_to_salla(self):
-        base_url = self.get_base_url()
-        data = { 
-            'base_url': base_url,
-            'salla_verification_key':self.salla_verification_key,
-            'salla_store_id':self.salla_store_id,
-            'instance_id':self.id,
-        }
-        res = requests.get(webkul_callback_url, params=data)
-        if res.status_code == 200:
-            data = res.json().get('data')
-            return {
-                    'type': 'ir.actions.act_url',
-                    'target': 'self',
-                    'url': data.get('url')
-                    }
-        return self.display_message("<span class='text-danger'>Authentication failed, Please verify the added Client Keys and Redirect URI</p>")
-    
-    def getAccessToken(self):
-        status, message = True, ""
-        data = { 
-            'salla_verification_key':self.salla_verification_key,
-            'salla_store_id':self.salla_store_id,
-            'base_url':self.get_base_url(),
-            'for_refresh_token':True,
+        self.ensure_one()
+        data = {
+            'base_url': self.get_base_url(),
+            'salla_verification_key': self.salla_verification_key,
+            'salla_store_id': self.salla_store_id or '',
+            'instance_id': self.id,
         }
         try:
-            response = requests.get(webkul_callback_url, params=data)
+            res = requests.get(webkul_callback_url, params=data, timeout=30)
+        except Exception as e:
+            self._log_salla_proxy_call('connect_to_salla', webkul_callback_url, data, error=e)
+            return self.display_message(
+                "<span class='text-danger'>Authentication failed: "
+                f"could not reach Webkul proxy ({e})</span>"
+            )
+        self._log_salla_proxy_call('connect_to_salla', res.url, data, response=res)
+        if res.status_code == 200:
+            payload = res.json() if res.content else {}
+            oauth_url = (payload.get('data') or {}).get('url')
+            if oauth_url:
+                return {
+                    'type': 'ir.actions.act_url',
+                    'target': 'self',
+                    'url': oauth_url,
+                }
+            _logger.error("Salla connect_to_salla: HTTP 200 but no data.url in payload")
+        return self.display_message(
+            "<span class='text-danger'>Authentication failed, Please verify the added "
+            f"Client Keys and Redirect URI "
+            f"(proxy HTTP {res.status_code}; see Odoo log for body)</span>"
+        )
+
+    def getAccessToken(self):
+        self.ensure_one()
+        status, message = True, ""
+        data = {
+            'salla_verification_key': self.salla_verification_key,
+            'salla_store_id': self.salla_store_id or '',
+            'base_url': self.get_base_url(),
+            'for_refresh_token': True,
+        }
+        try:
+            response = requests.get(webkul_callback_url, params=data, timeout=30)
+            self._log_salla_proxy_call('getAccessToken', response.url, data, response=response)
             response.raise_for_status()
             result = response.json()
             if result.get('status_code') == 200:
-                data = result.get('data')
-                access_token = data.get('access_token', '')
-                store_name = data.get('store_name', '')
-                message = f"<p class='text-success'>Connection refreshed successfully with {store_name}</p>"
-                self.write({
-                    'state': 'validate',
-                    'refresh_token': data.get('refresh_token', ''),
-                    'access_token': access_token,
-                    # 'salla_token_expiry': datetime.now(),
-                })
+                token_data = result.get('data') or {}
+                access_token = token_data.get('access_token', '')
+                store_name = token_data.get('store_name', '')
+                message = (
+                    f"<p class='text-success'>Connection refreshed successfully "
+                    f"with {store_name}</p>"
+                )
+                # Write the channel row only when something changed: every write
+                # locks the row and makes concurrent imports fail with
+                # "could not serialize access due to concurrent update".
+                vals = {}
+                if self.state != 'validate':
+                    vals['state'] = 'validate'
+                if (token_data.get('refresh_token') or '') != (self.refresh_token or ''):
+                    vals['refresh_token'] = token_data.get('refresh_token', '')
+                if (access_token or '') != (self.access_token or ''):
+                    vals['access_token'] = access_token
+                if vals:
+                    self.write(vals)
             else:
                 status = False
-                message += result.get('message_text', "")
+                message += result.get('message_text', "") or (
+                    f"Proxy rejected refresh (status_code={result.get('status_code')})"
+                )
         except Exception as e:
+            self._log_salla_proxy_call(
+                'getAccessToken', webkul_callback_url, data, error=e,
+            )
             return False, f"Error : {e}"
         return status, message
     

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<record id="server_action_salla_repair_zero_tax" model="ir.actions.server">
+		<field name="name">Salla: Repair invoices without tax</field>
+		<field name="model_id" ref="odoo_multi_channel_sale.model_multi_channel_sale"/>
+		<field name="binding_model_id" ref="odoo_multi_channel_sale.model_multi_channel_sale"/>
+		<field name="binding_view_types">list,form</field>
+		<field name="state">code</field>
+		<field name="code">action = model.salla_repair_zero_tax_invoices()</field>
+	</record>
+	<record id="server_action_salla_fix_dates" model="ir.actions.server">
+		<field name="name">Salla: Fix order and payment dates</field>
+		<field name="model_id" ref="odoo_multi_channel_sale.model_multi_channel_sale"/>
+		<field name="binding_model_id" ref="odoo_multi_channel_sale.model_multi_channel_sale"/>
+		<field name="binding_view_types">list,form</field>
+		<field name="state">code</field>
+		<field name="code">action = model.salla_fix_dates()</field>
+	</record>
+	<record id="server_action_salla_cancel_unlinked_payments" model="ir.actions.server">
+		<field name="name">Salla: Cancel unlinked payments</field>
+		<field name="model_id" ref="odoo_multi_channel_sale.model_multi_channel_sale"/>
+		<field name="binding_model_id" ref="odoo_multi_channel_sale.model_multi_channel_sale"/>
+		<field name="binding_view_types">list,form</field>
+		<field name="state">code</field>
+		<field name="code">action = model.salla_cancel_unlinked_payments()</field>
+	</record>
+	<record id="server_action_salla_refund_restored" model="ir.actions.server">
+		<field name="name">Salla: Refund restored orders</field>
+		<field name="model_id" ref="odoo_multi_channel_sale.model_multi_channel_sale"/>
+		<field name="binding_model_id" ref="odoo_multi_channel_sale.model_multi_channel_sale"/>
+		<field name="binding_view_types">list,form</field>
+		<field name="state">code</field>
+		<field name="code">action = model.salla_refund_restored_orders()</field>
+	</record>
+	<record id="server_action_salla_cancel_duplicate_orders" model="ir.actions.server">
+		<field name="name">Salla: Cancel duplicate orders</field>
+		<field name="model_id" ref="odoo_multi_channel_sale.model_multi_channel_sale"/>
+		<field name="binding_model_id" ref="odoo_multi_channel_sale.model_multi_channel_sale"/>
+		<field name="binding_view_types">list,form</field>
+		<field name="state">code</field>
+		<field name="code">action = model.salla_cancel_duplicate_orders()</field>
+	</record>
+</odoo>

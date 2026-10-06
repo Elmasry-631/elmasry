@@ -39,6 +39,23 @@ class ImportOperation(models.TransientModel):
         ('525144736','Canceled'),
     ])
 
+    def import_with_filter(self, **kw):
+        channel = self.channel_id
+        if channel.channel == 'salla' and kw.get('object') == 'sale.order' and not kw.get('from_cron'):
+            # Same per-channel lock as the order crons: a manual import running at
+            # the same time as the sweep/resync cron used to end in
+            # "could not serialize access due to concurrent update".
+            if not channel._salla_try_acquire_order_import_lock():
+                return channel.display_message(
+                    "<p class='text-warning'>A Salla order import is already running for this "
+                    "channel (scheduled action or another user). Please try again in a few minutes.</p>"
+                )
+            try:
+                return super().import_with_filter(**kw)
+            finally:
+                channel._salla_release_order_import_lock()
+        return super().import_with_filter(**kw)
+
     def salla_get_filter(self):
         kw = {
                 'filter_type': self.salla_filter_type,

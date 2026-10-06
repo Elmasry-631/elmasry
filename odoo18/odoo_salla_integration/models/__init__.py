@@ -9,4 +9,11 @@ from . import connector_status
 from . import inherit_product
 from . import inherit_order_mapping
 from . import multi_channel_webhook
-from . import order_feed
+from . import inherit_feed
+from . import inherit_order_feed
+from . import salla_backfill
+from . import salla_repair
+from . import salla_refunds
+from . import salla_audit
+from . import salla_adjust
+from . import zatca_xml

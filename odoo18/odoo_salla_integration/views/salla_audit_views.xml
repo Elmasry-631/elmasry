@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<record id="salla_order_audit_view_list" model="ir.ui.view">
+		<field name="name">salla.order.audit.list</field>
+		<field name="model">salla.order.audit</field>
+		<field name="arch" type="xml">
+			<list string="Salla Order Audits">
+				<field name="name"/>
+				<field name="channel_id"/>
+				<field name="date_from"/>
+				<field name="date_to"/>
+				<field name="line_count"/>
+				<field name="compared_count"/>
+				<field name="problem_count"/>
+				<field name="last_run"/>
+				<field name="state" widget="badge" decoration-info="state in ('collecting', 'comparing')" decoration-success="state == 'done'"/>
+			</list>
+		</field>
+	</record>
+
+	<record id="salla_order_audit_view_form" model="ir.ui.view">
+		<field name="name">salla.order.audit.form</field>
+		<field name="model">salla.order.audit</field>
+		<field name="arch" type="xml">
+			<form string="Salla Order Audit">
+				<header>
+					<button name="action_start" type="object" string="Start" class="btn-primary" invisible="state in ('collecting', 'comparing', 'fixing')"
+							confirm="List every Salla order of the range again and compare it with Odoo?"/>
+					<button name="action_run_now" type="object" string="Run Now" invisible="state not in ('collecting', 'comparing', 'fixing')"/>
+					<button name="action_fix_invoices" type="object" string="Invoice and Pay" invisible="state != 'done' or problem_count == 0"
+							confirm="Invoice and pay the orders whose Salla status needs a paid invoice (invoice on the order date, payment in the journal of the Salla payment method)?"/>
+					<button name="action_compare_again" type="object" string="Compare Again" invisible="state != 'done'"/>
+					<button name="action_import_problems" type="object" string="Import Problem Orders" invisible="state != 'done' or problem_count == 0"
+							confirm="Create a backfill that imports the missing orders and re-imports the ones with a status, invoice or payment problem?"/>
+					<field name="state" widget="statusbar"/>
+				</header>
+				<sheet>
+					<div class="oe_button_box" name="button_box">
+						<button name="action_open_lines" type="object" class="oe_stat_button" icon="fa-list">
+							<field name="line_count" widget="statinfo" string="Salla orders"/>
+						</button>
+					</div>
+					<div class="oe_title">
+						<h1><field name="name" readonly="1"/></h1>
+					</div>
+					<group>
+						<group>
+							<field name="channel_id" readonly="state != 'draft'"/>
+							<field name="date_from" readonly="state not in ('draft', 'done')"/>
+							<field name="date_to" readonly="state not in ('draft', 'done')"/>
+						</group>
+						<group>
+							<field name="compared_count"/>
+							<field name="problem_count"/>
+							<field name="window_start"/>
+							<field name="next_page"/>
+							<field name="last_run"/>
+							<field name="backfill_id"/>
+						</group>
+					</group>
+					<group string="Summary" invisible="not summary">
+						<field name="summary" nolabel="1"/>
+					</group>
+					<group string="Last error" invisible="not last_error">
+						<field name="last_error" nolabel="1" readonly="1"/>
+					</group>
+					<div class="text-muted">
+						The scheduled action "Salla - Order Audit" lists the Salla orders of the range (read only) and
+						then compares them with Odoo, a few minutes of work per run, and resumes where it stopped.
+					</div>
+				</sheet>
+			</form>
+		</field>
+	</record>
+
+	<record id="salla_order_audit_line_view_list" model="ir.ui.view">
+		<field name="name">salla.order.audit.line.list</field>
+		<field name="model">salla.order.audit.line</field>
+		<field name="arch" type="xml">
+			<list string="Salla Orders" create="0" edit="0">
+				<field name="reference"/>
+				<field name="store_id" optional="hide"/>
+				<field name="order_datetime"/>
+				<field name="status_name"/>
+				<field name="payment_method"/>
+				<field name="currency"/>
+				<field name="total" sum="Salla"/>
+				<field name="order_id"/>
+				<field name="odoo_total" sum="Odoo"/>
+				<field name="total_diff" sum="Diff" optional="show"/>
+				<field name="invoice_state"/>
+				<field name="category" widget="badge" decoration-success="category == 'ok'" decoration-danger="category in ('missing', 'duplicate', 'should_refund')" decoration-warning="category not in ('ok', 'missing', 'duplicate', 'should_refund')"/>
+				<field name="issues"/>
+				<field name="fix_error" optional="show"/>
+			</list>
+		</field>
+	</record>
+
+	<record id="salla_order_audit_line_view_pivot" model="ir.ui.view">
+		<field name="name">salla.order.audit.line.pivot</field>
+		<field name="model">salla.order.audit.line</field>
+		<field name="arch" type="xml">
+			<pivot string="Salla vs Odoo">
+				<field name="order_date" interval="month" type="row"/>
+				<field name="category" type="col"/>
+				<field name="total" type="measure"/>
+				<field name="odoo_total" type="measure"/>
+			</pivot>
+		</field>
+	</record>
+
+	<record id="salla_order_audit_line_view_search" model="ir.ui.view">
+		<field name="name">salla.order.audit.line.search</field>
+		<field name="model">salla.order.audit.line</field>
+		<field name="arch" type="xml">
+			<search>
+				<field name="reference"/>
+				<field name="store_id"/>
+				<field name="order_id"/>
+				<field name="status"/>
+				<filter name="problems" string="Problems" domain="[('category', '!=', 'ok')]"/>
+				<filter name="ok" string="OK" domain="[('category', '=', 'ok')]"/>
+				<filter name="fix_failed" string="Invoice/pay failed" domain="[('fix_error', '!=', False)]"/>
+				<separator/>
+				<filter name="group_category" string="Category" context="{'group_by': 'category'}"/>
+				<filter name="group_month" string="Month" context="{'group_by': 'order_date:month'}"/>
+				<filter name="group_status" string="Salla status" context="{'group_by': 'status_name'}"/>
+				<filter name="group_payment" string="Payment method" context="{'group_by': 'payment_method'}"/>
+			</search>
+		</field>
+	</record>
+
+	<record id="action_salla_order_audit" model="ir.actions.act_window">
+		<field name="name">Salla Order Audit</field>
+		<field name="res_model">salla.order.audit</field>
+		<field name="view_mode">list,form</field>
+	</record>
+
+	<menuitem id="menu_salla_order_audit"
+			  name="Salla Order Audit"
+			  parent="odoo_multi_channel_sale.menu_miscellaneous"
+			  action="action_salla_order_audit"
+			  sequence="4"/>
+</odoo>

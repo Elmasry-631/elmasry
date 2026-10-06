@@ -3,7 +3,7 @@
 <!-- See LICENSE file for full copyright and licensing details. -->
 <!--"License URL :<https://store.webkul.com/license.html/>" -->
 <templates xml:space="preserve">
-	<t t-inherit="instance_dashboard_template" t-inherit-mode="extension">
+	<t t-inherit="odoo_multi_channel_sale.instance_dashboard_template" t-inherit-mode="extension">
         <xpath expr="//div[@id='dashboard_image_container']" position="inside">
             <img src="/odoo_salla_integration/static/src/img/salla_dashboard.png" alt="Not Found!" class="img-fluid" t-if="data.channel === 'salla'"/>
         </xpath>

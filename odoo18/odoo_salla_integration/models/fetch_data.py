@@ -70,42 +70,60 @@ class FetchData:
         customer_data['contacts'] = address_data_list
         return customer_data
 
+    @staticmethod
+    def _salla_full_name(customer):
+        """Salla customers may have no last_name (or no first_name): never crash."""
+        customer = customer or {}
+        parts = [str(customer.get(key) or '').strip() for key in ('first_name', 'last_name')]
+        name = ' '.join(part for part in parts if part)
+        return name or str(customer.get('full_name') or '').strip() or 'Salla Customer'
+
     def process_address(self, order, store_partner_id, type=False):
         contacts = {}
-        billing_address = []
-        email = order.get('customer').get('email')
-        name = order.get('customer').get('first_name')+ " "+ order.get('customer').get('last_name')
-        phone = order.get('customer').get('mobile')
+        customer = order.get('customer') or {}
+        email = customer.get('email')
+        name = self._salla_full_name(customer)
+        phone = customer.get('mobile')
+        billing_address = {}
 
-        address = order.get('shipments', {})
-        if isinstance(address, list):
-            address = address[0]
-            if isinstance(address, list):
-                address = address[0]
-            billing_address = address.get('ship_to', {})
-            if billing_address:
-                name = billing_address.get('name')
-                phone = billing_address.get('phone')
-        if not billing_address and order.get('shipping'):
-            billing_address = order.get('shipping').get('address')
-            receiver_data = order.get('shipping').get('receiver', {})
-            if receiver_data and isinstance(receiver_data, dict):   
-                name = receiver_data.get('name') if receiver_data.get('name') else name
-                email = receiver_data.get('email') if receiver_data.get('email') else email
-                phone = receiver_data.get('phone') if receiver_data.get('phone') else phone
-        if billing_address:
-            contacts.update({
-                'invoice_partner_id': f'billing_{store_partner_id}' if store_partner_id else email,
-                'invoice_name': name,
-                'invoice_email':  email,
-                'invoice_phone': phone,
-                'invoice_street': billing_address.get('street_number'),
-                'invoice_street2': billing_address.get('shipping_address') or billing_address.get('address_line'),
-                'invoice_zip': billing_address.get('postal_code'),
-                'invoice_city': billing_address.get('city'),
-                'invoice_country_code': billing_address.get('country_code') or False,
-                'same_shipping_billing': True
-            })
+        shipments = order.get('shipments') or []
+        if isinstance(shipments, list) and shipments:
+            first = shipments[0]
+            if isinstance(first, list) and first:
+                first = first[0]
+            if isinstance(first, dict):
+                billing_address = first.get('ship_to') or {}
+                if billing_address:
+                    name = billing_address.get('name') or name
+                    phone = billing_address.get('phone') or phone
+                    email = billing_address.get('email') or email
+        if not billing_address and isinstance(order.get('shipping'), dict):
+            billing_address = order['shipping'].get('address') or {}
+            receiver = order['shipping'].get('receiver') or {}
+            if isinstance(receiver, dict):
+                name = receiver.get('name') or name
+                email = receiver.get('email') or email
+                phone = receiver.get('phone') or phone
+        if not billing_address:
+            # Pickup / digital orders carry no shipping address: bill the customer
+            # at his own address so the feed always has an invoice partner.
+            billing_address = {
+                'street_number': customer.get('location'),
+                'city': customer.get('city'),
+                'country_code': customer.get('country_code'),
+            }
+        contacts.update({
+            'invoice_partner_id': f'billing_{store_partner_id}' if store_partner_id else (email or phone),
+            'invoice_name': name,
+            'invoice_email': email,
+            'invoice_phone': phone,
+            'invoice_street': billing_address.get('street_number'),
+            'invoice_street2': billing_address.get('shipping_address') or billing_address.get('address_line'),
+            'invoice_zip': billing_address.get('postal_code'),
+            'invoice_city': billing_address.get('city'),
+            'invoice_country_code': billing_address.get('country_code') or False,
+            'same_shipping_billing': True,
+        })
         return contacts
 
     def import_product_vals(self, product):
@@ -246,7 +264,7 @@ class FetchData:
             order_data.update(
                 {
                     'partner_id': customer.get('id'),
-                    'customer_name': customer.get('first_name')+' '+customer.get('last_name'),
+                    'customer_name': self._salla_full_name(customer),
                     'customer_email': customer.get('email'),
                     'customer_mobile': customer.get('mobile'),
                     'customer_phone': customer.get('mobile'),
@@ -515,10 +533,11 @@ class FetchData:
 
     @staticmethod
     def _tax_dict(rate):
+        # No name on purpose: the core lookup then matches the company's own sale
+        # tax by rate instead of creating a "Salla Tax" without ZATCA tax grids.
         return [
             {
                 'included_in_price': False,
-                'name': f"Salla Tax {rate}%",
                 'rate': rate,
                 'tax_type': 'percent',
             }

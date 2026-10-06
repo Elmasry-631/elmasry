@@ -7,6 +7,7 @@
 import requests
 import json
 import re
+from time import sleep
 from datetime import date, datetime, timedelta
 from .fetch_data import FetchData
 from urllib.parse import urlparse, parse_qs
@@ -68,23 +69,34 @@ class SallaApi:
 
     # +++++++++++++++++++Response+++++++++++
     def salla_response(self, endpoint, method="GET", data={}, params={}, headers={}):
-        try:
-            if not headers:
-                headers = self.get_headers()
-            if data:
-                data = json.dumps(data)
-            #if not 'query' in endpoint:
-            #    endpoint += '?query=*'
-            response = requests.request(
-                method, endpoint, headers=headers, data=data, params=params)
-            if response.status_code in [200, 201]:
-                return response.json()
+        headers = headers or self.get_headers()
+        payload = json.dumps(data) if data else data
+        for attempt in range(4):
             try:
-                _logger.info('Error: %r', response.json())
-            except:
-                _logger.info('Error: %r', response)
-        except Exception as e:
-            _logger.error('Error occurred : %r', e, exc_info=True)
+                response = requests.request(
+                    method, endpoint, headers=headers, data=payload, params=params, timeout=60)
+            except requests.RequestException as e:
+                _logger.error('Salla API network error on %s: %r', endpoint, e)
+                raise UserError(f'Salla API unreachable: {e}') from e
+            if response.status_code in (200, 201):
+                return response.json()
+            if response.status_code == 429 and attempt < 3:
+                try:
+                    wait = int(response.headers.get('Retry-After') or 5)
+                except ValueError:
+                    wait = 5
+                wait = min(max(wait, 1), 60)
+                _logger.warning('Salla rate limit hit on %s, sleeping %ss', endpoint, wait)
+                sleep(wait)
+                continue
+            body = response.text[:500]
+            # 404/422 are expected for some records (deleted order, non-shippable order).
+            log = _logger.info if response.status_code in (404, 422) else _logger.error
+            log('Salla API %s %s -> HTTP %s: %s', method, endpoint, response.status_code, body)
+            if response.status_code in (401, 403, 429) or response.status_code >= 500:
+                # Abort the run instead of pretending the store has no data.
+                raise UserError(f'Salla API error {response.status_code} on {endpoint}: {body}')
+            return []
         return []
 
     # ++++++++++++++++++++++Import++++++++++++++++++++++++++++++++++
@@ -335,12 +347,12 @@ class SallaApi:
         return status_list
         
     def _format_salla_date_param(self, value):
-        """Serialize datetimes for Salla query params (YYYY-MM-DD HH:MM:SS)."""
+        """Salla filters orders by creation DATE only (yyyy-mm-dd)."""
         if not value:
             return value
         if hasattr(value, 'strftime'):
-            return value.strftime('%Y-%m-%d %H:%M:%S')
-        return value
+            return value.strftime('%Y-%m-%d')
+        return str(value)[:10]
 
     def _enrich_order_with_items_and_shipments(self, data):
         """Fill missing items/shipments if order detail payload is incomplete."""
@@ -350,7 +362,9 @@ class SallaApi:
         if not order_id:
             return data
         order_id = str(order_id)
-        if not data.get('shipments'):
+        # Pickup / digital orders answer 422 on the shipments endpoint: skip them.
+        shippable = (data.get('features') or {}).get('shippable', True)
+        if not data.get('shipments') and shippable:
             shipments_resp = self.salla_response(
                 self.import_url + "shipments?order_id=" + order_id,
                 params={},
@@ -390,21 +404,8 @@ class SallaApi:
             for order_store_id in order_store_ids:
                 if order_store_id:
                     data = self._fetch_order_detail(order_store_id)
-                    if not data:
-                        _logger.error(
-                            'Salla order %s: could not fetch order detail; skipping it '
-                            'and continuing with the rest of the import.',
-                            order_store_id,
-                        )
-                        continue
-                    try:
+                    if data:
                         order_data_list.append(self.fetch_data().process_order(data))
-                    except Exception as e:
-                        _logger.exception(
-                            'Salla order %s: failed to transform order data; skipping it '
-                            'and continuing with the rest of the import.',
-                            order_store_id,
-                        )
         else:
             if kw.get('next_url'):
                 endpoint = kw.get('next_url')
@@ -437,14 +438,7 @@ class SallaApi:
                         # Prefer full order detail so line amounts/tax match expanded shape.
                         data = self._fetch_order_detail(summary.get('id')) or summary
                         data = self._enrich_order_with_items_and_shipments(data)
-                        try:
-                            order_data_list.append(self.fetch_data().process_order(data))
-                        except Exception as e:
-                            _logger.exception(
-                                'Salla order %s: failed to transform order data; skipping it '
-                                'and continuing with the rest of the import.',
-                                summary.get('id'),
-                            )
+                        order_data_list.append(self.fetch_data().process_order(data))
                     if response.get("pagination"):
                         kw = self.salla_pagination(response.get('pagination'), kw)
         return order_data_list, kw

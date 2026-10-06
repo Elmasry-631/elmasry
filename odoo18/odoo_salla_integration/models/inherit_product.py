@@ -124,15 +124,14 @@ class MultiChannelSale(models.Model):
     _inherit = "multi.channel.sale"
 
     def _salla_preferred_record(self, records):
+        """Select a match without changing its archived state.
+
+        Matching is called before feed evaluation opens its savepoint.  Any
+        write here can therefore fail during the savepoint's initial flush and
+        abort the whole request instead of only the current feed.
+        """
         active = records.filtered(lambda rec: 'active' not in rec._fields or rec.active)
-        record = (active or records)[:1]
-        if not record:
-            return record
-        if record._name == 'product.product':
-            self._salla_unarchive_product(record)
-        elif 'active' in record._fields and not record.active:
-            record.write({'active': True})
-        return record
+        return (active or records)[:1]
 
     def _salla_unarchive_product(self, product):
         if not product:
