@@ -338,3 +338,29 @@ class TestSallaAudit(TestMultiChannelCommon):
         self._invoice(free, pay=False)
         audit, _api = self._run([[row('SF-1', 'F-1', 'delivered', 0)]])
         self.assertEqual(audit.line_ids.category, 'ok', audit.line_ids.issues)
+
+    def test_daily_check_lists_then_finishes(self):
+        from odoo import fields
+        ok = self._order('DC-1', 'SDC-1')
+        self._invoice(ok, pay=True)
+        ICP = self.env['ir.config_parameter'].sudo()
+        ICP.set_param('odoo_salla_integration.daily_check_days', '7')
+        # the check runs on the connected Salla channel: only this one in the test
+        self.env['multi.channel.sale'].search([('channel', '=', 'salla'), ('id', '!=', self.channel.id)]).write({'state': 'draft'})
+        today = fields.Date.context_today(self.env['salla.order.audit'])
+        api = FakeSallaApi([[row('SDC-1', 'DC-1', 'delivered', 100, date='%s 10:00:00' % today)]])
+        Audit = self.env['salla.order.audit']
+        with patch.object(type(self.channel), 'getAccessToken', lambda *a, **k: True), \
+                patch.object(type(self.channel), 'get_sallaApi', lambda *a, **k: api):
+            for _run in range(6):
+                Audit.cron_process()
+        import json
+        state = json.loads(ICP.get_param('odoo_salla_integration.daily_check_state'))
+        audit = Audit.browse(state['audit'])
+        self.assertEqual(state['stage'], 'finished')
+        self.assertEqual(audit.state, 'done')
+        self.assertEqual(audit.line_ids.category, 'ok')
+        # the same day: nothing new is started
+        count = Audit.search_count([])
+        Audit.cron_process()
+        self.assertEqual(Audit.search_count([]), count)

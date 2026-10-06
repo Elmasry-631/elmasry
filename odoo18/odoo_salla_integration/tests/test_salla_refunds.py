@@ -338,3 +338,45 @@ class TestSallaRefunds(TestMultiChannelCommon):
         # a credited free order has nothing standing
         self.channel._salla_refund_order(order)
         self.assertFalse(self.channel._salla_standing_invoices(order))
+
+    def test_order_with_no_sale_in_salla_is_credited_and_cancelled(self):
+        order = self._order('NS1')
+        invoice = self._invoice(order)
+        self.channel.salla_credit_orders([order.client_order_ref], cancel=True)
+        note = order.invoice_ids.filtered(lambda m: m.move_type == 'out_refund')
+        self.assertEqual(note.state, 'posted')
+        self.assertEqual(note.reversed_entry_id, invoice)
+        self.assertEqual(invoice.payment_state, 'reversed')
+        self.assertEqual(order.state, 'cancel')
+        self.assertEqual(self.channel._salla_order_net(order), 0)
+        # nothing left to do the second time
+        self.channel.salla_credit_orders([order.client_order_ref], cancel=True)
+        self.assertEqual(len(order.invoice_ids.filtered(lambda m: m.move_type == 'out_refund')), 1)
+
+    def test_manual_copy_of_an_invoice_is_credited(self):
+        order = self._order('MC1')
+        self._invoice(order, pay=True)
+        copy = self.env['account.move'].create({
+            'move_type': 'out_invoice', 'partner_id': self.partner.id, 'journal_id': self.sale_journal.id,
+            'invoice_line_ids': [(0, 0, {'name': 'manual copy', 'quantity': 1, 'price_unit': 100})],
+        })
+        copy.action_post()
+        self.channel.salla_credit_invoices([copy.name])
+        self.assertEqual(copy.payment_state, 'reversed')
+        note = self.env['account.move'].search([('reversed_entry_id', '=', copy.id)])
+        self.assertEqual(note.state, 'posted')
+        self.assertEqual(note.amount_total, copy.amount_total)
+        # the order keeps its own paid invoice, a second call does nothing
+        self.assertEqual(self.channel._salla_order_net(order), order.amount_total)
+        self.channel.salla_credit_invoices([copy.name])
+        self.assertEqual(self.env['account.move'].search_count([('reversed_entry_id', '=', copy.id)]), 1)
+
+    def test_return_credit_note_dated_like_salla(self):
+        order = self._order('LS1')
+        invoice = self._invoice(order, pay=True)
+        invoice_date = invoice.invoice_date
+        self.env['ir.config_parameter'].sudo().set_param('odoo_salla_integration.returns_on_invoice_date', '1')
+        note = self.channel._salla_refund_order(order, refund_date=invoice_date.replace(year=invoice_date.year + 1))
+        self.assertEqual(note.invoice_date, invoice_date)
+        refund = note._get_reconciled_payments()
+        self.assertEqual(refund.date, invoice_date.replace(year=invoice_date.year + 1))

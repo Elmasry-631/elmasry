@@ -287,3 +287,19 @@ class TestSallaAdjust(TestMultiChannelCommon):
             ('payment_type', '=', 'outbound'), ('partner_id', '=', self.partner.id), ('memo', 'like', 'ADJ-X1')])
         self.assertAlmostEqual(refund.amount, 45)
         self.assertEqual(refund.journal_id, self.bank_journal)
+
+    def test_connector_tax_takes_the_tax_account_and_grids(self):
+        account = self.env['account.account'].create({
+            'name': 'Salla test VAT output', 'code': 'SLVAT1', 'account_type': 'liability_current'})
+        tag = self.env['account.account.tag'].create({'name': 'Salla test grid', 'applicability': 'taxes'})
+        self.vat.invoice_repartition_line_ids.filtered(lambda l: l.repartition_type == 'tax').write(
+            {'account_id': account.id, 'tag_ids': [(6, 0, tag.ids)]})
+        self.vat.refund_repartition_line_ids.filtered(lambda l: l.repartition_type == 'tax').write({'account_id': account.id})
+        self.vat.invoice_repartition_line_ids.filtered(lambda l: l.repartition_type == 'base').write({'tag_ids': [(6, 0, tag.ids)]})
+        bare = self.env['account.tax'].create({
+            'name': 'Salla Tax 15.0%', 'amount': 15, 'amount_type': 'percent', 'type_tax_use': 'sale',
+            'company_id': self.company.id})
+        self.channel._salla_complete_taxes(bare)
+        lines = (bare.invoice_repartition_line_ids | bare.refund_repartition_line_ids).filtered(lambda l: l.repartition_type == 'tax')
+        self.assertTrue(all(line.account_id for line in lines))
+        self.assertTrue(bare.invoice_repartition_line_ids.tag_ids)

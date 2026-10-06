@@ -21,6 +21,9 @@ from odoo import Command, api, fields, models
 _logger = logging.getLogger(__name__)
 SALLA_REFUND_STATES = ('restored', 'refunded', 'canceled', 'cancelled')
 SALLA_POST_LOCK_CLASS = 714002
+# Salla reports a returned order as no sale in the period of the order: with this parameter set, the
+# credit note of a return is dated on the invoice it credits, so Odoo's periods match Salla's
+RETURNS_PARAM = 'odoo_salla_integration.returns_on_invoice_date'
 
 
 class MultiChannelSale(models.Model):
@@ -79,6 +82,10 @@ class MultiChannelSale(models.Model):
                 standing |= invoice
         return standing
 
+    def _salla_returns_on_invoice_date(self):
+        value = self.env['ir.config_parameter'].sudo().get_param(RETURNS_PARAM) or ''
+        return value.strip().lower() in ('1', 'true', 'yes')
+
     def _salla_refund_order(self, order, refund_date=None, reason=None, include_blocked=False):
         """Credit note for every standing invoice of the order; the money of a paid invoice is
         refunded from the journal that received it. Returns the credit notes (empty when there
@@ -93,22 +100,26 @@ class MultiChannelSale(models.Model):
         skipped = standing.filtered(lambda m: m.journal_id in blocked) if not include_blocked else notes
         for invoice in skipped:
             _logger.info('Salla refund: %s skipped, journal %s is not onboarded', invoice.name, invoice.journal_id.name)
+        like_salla = self._salla_returns_on_invoice_date()
         if standing and self._salla_order_adjusted(order):
             if skipped:
                 return notes
+            # dated on the invoice it brings back to zero when the returns follow Salla's periods
             return self._salla_adjust_order_total(
-                order, 0.0, date=refund_date,
+                order, 0.0, date=None if like_salla else refund_date,
                 reason=reason or 'Salla order %s returned' % (order.client_order_ref or order.name))
         for invoice in standing - skipped:
             notes |= self._salla_refund_invoice_part(
-                invoice, order, refund_date,
-                reason or 'Salla order %s returned: %s' % (order.client_order_ref or order.name, invoice.name))
+                invoice, order, invoice.invoice_date if like_salla else refund_date,
+                reason or 'Salla order %s returned: %s' % (order.client_order_ref or order.name, invoice.name),
+                payment_date=refund_date)
         return notes
 
-    def _salla_refund_invoice_part(self, invoice, order, date, ref):
+    def _salla_refund_invoice_part(self, invoice, order, date, ref, payment_date=None):
         """Credit note of what `invoice` bills for `order` (all of it, unless the invoice groups
         several orders: then only the lines of `order`), matched with the invoice while it is open;
-        the money of a paid invoice is refunded from the journal that received it."""
+        the money of a paid invoice is refunded from the journal that received it, on
+        `payment_date` (the day of the return) when given."""
         payments = invoice._get_reconciled_payments().filtered(lambda p: p.state not in ('cancel', 'canceled', 'rejected'))
         note = invoice._reverse_moves(default_values_list=[{
             'invoice_date': date,
@@ -129,7 +140,7 @@ class MultiChannelSale(models.Model):
             self._salla_lock_journal_posting(payments[0].journal_id)
             wizard = self.env['account.payment.register'].with_context(
                 active_model='account.move', active_ids=note.ids,
-            ).create({'journal_id': payments[0].journal_id.id, 'payment_date': date})
+            ).create({'journal_id': payments[0].journal_id.id, 'payment_date': payment_date or date})
             wizard.action_create_payments()
         return note
 
@@ -148,6 +159,62 @@ class MultiChannelSale(models.Model):
             if twin.state != 'cancel':
                 twin.write({'state': 'cancel'})
         return notes
+
+    @api.model
+    def salla_credit_orders(self, refs, cancel=False):
+        """Orders that are no sale in Salla (deleted, never paid, test orders) but carry an
+        invoice in Odoo: credit note for every standing invoice, posted like every Salla correction
+        (kept out of ZATCA while corrections are on hold), money refunded when it was paid; the
+        order is cancelled too when `cancel` is set. Safe to repeat."""
+        done, failed = [], []
+        today = fields.Date.context_today(self)
+        for ref in refs or []:
+            for order in self.env['sale.order'].search([('client_order_ref', '=', ref), ('state', '!=', 'cancel')]):
+                try:
+                    with self.env.cr.savepoint():
+                        notes = self._salla_refund_order(
+                            order, refund_date=today, include_blocked=True,
+                            reason='Salla order %s: no sale in Salla' % ref)
+                        if cancel:
+                            order.invoice_ids.filtered(lambda m: m.state == 'draft').button_cancel()
+                            # from_webhook: the connector must not push this cancellation to the Salla store
+                            order.with_context(disable_cancel_warning=True, from_webhook=True).action_cancel()
+                            if order.state != 'cancel':
+                                order.write({'state': 'cancel'})
+                    done.append('%s: %s' % (order.name, ', '.join(notes.mapped('name')) or 'nothing to credit'))
+                except Exception as e:  # keep going, report at the end
+                    failed.append('%s: %s' % (ref, str(e)[:150]))
+        lines = ['Orders credited: %d' % len(done)] + done[:20]
+        if failed:
+            lines += ['Failed: %d' % len(failed)] + failed[:20]
+        return self._salla_repair_notify('Salla: credit orders', lines)
+
+    @api.model
+    def salla_credit_invoices(self, names):
+        """Customer invoices that bill nothing real (a manual copy of an invoice the Salla order
+        already has): credit note for each, posted like every Salla correction (kept out of ZATCA
+        while corrections are on hold), matched with the invoice while it is open, refunded when it
+        was paid. Safe to repeat."""
+        done, failed = [], []
+        today = fields.Date.context_today(self)
+        Move = self.env['account.move']
+        for invoice in Move.search([('name', 'in', list(names or [])), ('move_type', '=', 'out_invoice'), ('state', '=', 'posted')]):
+            if invoice.payment_state == 'reversed' or Move.search_count([('reversed_entry_id', '=', invoice.id), ('state', '=', 'posted')]):
+                done.append('%s: already credited' % invoice.name)
+                continue
+            try:
+                with self.env.cr.savepoint():
+                    note = self._salla_refund_invoice_part(
+                        invoice, self.env['sale.order'],
+                        invoice.invoice_date if self._salla_returns_on_invoice_date() else today,
+                        'Copy of a Salla order invoice: %s' % invoice.name, payment_date=today)
+                done.append('%s -> %s' % (invoice.name, note.name))
+            except Exception as e:  # keep going, report at the end
+                failed.append('%s: %s' % (invoice.name, str(e)[:150]))
+        lines = ['Invoices credited: %d' % len(done)] + done[:20]
+        if failed:
+            lines += ['Failed: %d' % len(failed)] + failed[:20]
+        return self._salla_repair_notify('Salla: credit invoices', lines)
 
     @api.model
     def salla_refund_restored_orders(self, limit=300, store_ids=None, include_blocked=False):

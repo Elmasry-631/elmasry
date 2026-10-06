@@ -9,6 +9,7 @@ for returned orders, total. Only the orders that need it are then sent to a back
 Both phases run from the cron "Salla - Order Audit" with a time budget and resume by
 themselves, so a range of months never depends on one HTTP request.
 """
+import json
 import logging
 import time
 from datetime import timedelta
@@ -26,6 +27,9 @@ AUDIT_COMPARE_BATCH = 500
 AUDIT_FIX_BATCH = 20
 AUDIT_WINDOW_DAYS = 7
 AUDIT_MAX_PAGES = 500      # Salla stops paging after 500 pages
+# daily automatic check: number of days listed (0 = off) and the progress of today's check
+DAILY_DAYS_PARAM = 'odoo_salla_integration.daily_check_days'
+DAILY_STATE_PARAM = 'odoo_salla_integration.daily_check_state'
 AMOUNT_TOLERANCE = 0.05
 # Salla converts every line to the customer's currency and rounds it there
 AMOUNT_TOLERANCE_FOREIGN = 0.5
@@ -159,6 +163,11 @@ class SallaOrderAudit(models.Model):
     # ------------------------------------------------------------------ cron
     @api.model
     def cron_process(self):
+        try:
+            self._daily_check()
+        except Exception as e:  # never block the audits in progress
+            _logger.exception('Salla daily check failed: %s', e)
+            self.env.cr.rollback()
         for audit in self.search([('state', 'in', ('collecting', 'comparing', 'fixing', 'adjusting'))], order='id'):
             try:
                 audit._process(AUDIT_TIME_BUDGET)
@@ -168,6 +177,53 @@ class SallaOrderAudit(models.Model):
                 audit.write({'last_error': str(e)[:1000]})
                 self._audit_commit()
         return True
+
+    @api.model
+    def _daily_check(self):
+        """Once a day, list the orders of the last days and bring Odoo to Salla, step by step
+        (each step waits for the cron to finish the previous one): import the orders whose status or
+        presence differs, compare again, invoice and pay, bring the totals to Salla. Everything it
+        posts goes through the Salla corrections (kept out of ZATCA while they are on hold)."""
+        ICP = self.env['ir.config_parameter'].sudo()
+        days = int(ICP.get_param(DAILY_DAYS_PARAM) or 0)
+        if days <= 0:
+            return
+        state = json.loads(ICP.get_param(DAILY_STATE_PARAM) or '{}')
+        today = fields.Date.context_today(self)
+        audit = self.browse(state.get('audit') or []).exists()
+        stage = state.get('stage')
+        if not audit or (stage == 'finished' and state.get('date') != str(today)):
+            if state.get('date') == str(today):
+                return
+            channel = self.env['multi.channel.sale'].search([('channel', '=', 'salla'), ('state', '=', 'validate')], limit=1)
+            if not channel:
+                return
+            audit = self.create({'channel_id': channel.id, 'date_from': today - timedelta(days=days), 'date_to': today})
+            audit.action_start()
+            state = {'date': str(today), 'audit': audit.id, 'stage': 'listing'}
+        elif audit.state != 'done' or stage == 'finished':
+            return
+        elif stage == 'listing':
+            if audit.line_ids.filtered(lambda l: l.category in IMPORT_CATEGORIES or 'Odoo status' in (l.issues or '')):
+                audit.action_import_problems()
+                state['stage'] = 'importing'
+            else:
+                state['stage'] = 'imported'
+        elif stage == 'importing':
+            if audit.backfill_id and audit.backfill_id.state != 'done':
+                return
+            audit.action_compare_again()
+            state['stage'] = 'imported'
+        elif stage == 'imported':
+            if audit.line_ids.filtered(lambda l: l.category in FIX_CATEGORIES):
+                audit.action_fix_invoices()
+            state['stage'] = 'fixed'
+        elif stage == 'fixed':
+            if audit.line_ids.filtered(lambda l: l.category == 'amount_diff'):
+                audit.action_adjust_totals()
+            state['stage'] = 'finished'
+        ICP.set_param(DAILY_STATE_PARAM, json.dumps(state))
+        self._audit_commit()
 
     def _audit_commit(self):
         # same test-run detection as the repair actions (Odoo 18 does not flag the registry)
