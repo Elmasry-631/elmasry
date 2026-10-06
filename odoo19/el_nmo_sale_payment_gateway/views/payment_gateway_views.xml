@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_payment_gateway_tree" model="ir.ui.view">
+        <field name="name">payment.gateway.tree</field>
+        <field name="model">sale.payment.gateway</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_payment_gateway_form" model="ir.ui.view">
+        <field name="name">payment.gateway.form</field>
+        <field name="model">sale.payment.gateway</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group string="General">
+                            <field name="name"/>
+                            <field name="active"/>
+                        </group>
+                        <group string="Accounting">
+                            <field name="property_account_receivable_id"/>
+                            <field name="property_account_payable_id"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_payment_gateway" model="ir.actions.act_window">
+        <field name="name">Payment Gateways</field>
+        <field name="res_model">sale.payment.gateway</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem
+        id="menu_payment_gateway"
+        name="Payment Gateways"
+        parent="sale.menu_sales_config"
+        action="action_payment_gateway"
+        sequence="50"/>
+
+</odoo>

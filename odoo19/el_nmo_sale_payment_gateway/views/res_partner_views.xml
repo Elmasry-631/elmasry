@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ================================================================== -->
+    <!-- Add a Payment Gateway field on the partner form.                    -->
+    <!-- When the user selects a gateway, the Receivable and Payable         -->
+    <!-- account fields below are auto-filled from the gateway defaults      -->
+    <!-- (via @api.onchange + create/write overrides in res_partner.py).     -->
+    <!--                                                                    -->
+    <!-- The two account fields are kept READ-ONLY so the user cannot        -->
+    <!-- desync them from the gateway. The canonical configuration lives    -->
+    <!-- on sale.payment.gateway.                                           -->
+    <!-- ================================================================== -->
+
+    <!-- The standard partner form (base.view_partner_form) shows the
+         accounting fields inside the "Accounting" group when the
+         `account` module is installed. We:
+         1. Add a new `payment_gateway_id` field right before the
+            Receivable account (so the user sees the cause-and-effect).
+         2. Mark `property_account_receivable_id` as readonly.
+         3. Mark `property_account_payable_id` as readonly. -->
+    <record id="view_partner_payment_gateway" model="ir.ui.view">
+        <field name="name">res.partner.payment.gateway</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <!-- Insert payment_gateway_id BEFORE the receivable account.
+                 Use position="before" so the field appears in a logical
+                 cause-and-effect order on the form. -->
+            <xpath expr="//field[@name='property_account_receivable_id']" position="before">
+                <field name="payment_gateway_id"
+                       options="{'no_create': True}"/>
+            </xpath>
+            <xpath expr="//field[@name='property_account_receivable_id']" position="attributes">
+                <attribute name="readonly">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='property_account_payable_id']" position="attributes">
+                <attribute name="readonly">1</attribute>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
