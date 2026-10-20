@@ -33,7 +33,14 @@ class HrAttendanceSheet(models.Model):
         index=True,
     )
     date_from = fields.Date(string='Date From', required=True, tracking=True)
-    date_to = fields.Date(string='Date To', required=True, tracking=True)
+    date_to = fields.Date(
+        string='Date To',
+        compute='_compute_date_to',
+        store=True,
+        readonly=False,
+        tracking=True,
+        help="Last day of the month of 'Date From'. Filled automatically.",
+    )
     contract_id = fields.Many2one(
         'hr.version',
         string='Contract',
@@ -83,6 +90,15 @@ class HrAttendanceSheet(models.Model):
         compute='_compute_totals',
         store=True,
         help="Sum of overtime hours across all days in the period.",
+    )
+    total_overtime_working = fields.Float(
+        string='Working-day Overtime (hours)', compute='_compute_totals', store=True,
+    )
+    total_overtime_weekend = fields.Float(
+        string='Weekend Overtime (hours)', compute='_compute_totals', store=True,
+    )
+    total_overtime_holiday = fields.Float(
+        string='Public-holiday Overtime (hours)', compute='_compute_totals', store=True,
     )
     total_late_in = fields.Float(
         string='Total Late In (minutes)',
@@ -142,6 +158,11 @@ class HrAttendanceSheet(models.Model):
     # ------------------------------------------------------------
     # COMPUTES
     # ------------------------------------------------------------
+    @api.depends('date_from')
+    def _compute_date_to(self):
+        for rec in self:
+            rec.date_to = fields.Date.end_of(rec.date_from, 'month') if rec.date_from else False
+
     @api.depends('employee_id', 'date_from')
     def _compute_contract(self):
         for rec in self:
@@ -159,6 +180,7 @@ class HrAttendanceSheet(models.Model):
 
     @api.depends(
         'line_ids.overtime_hours',
+        'line_ids.day_type',
         'line_ids.late_in_minutes',
         'line_ids.is_absent',
         'line_ids.difference_hours',
@@ -170,6 +192,12 @@ class HrAttendanceSheet(models.Model):
     def _compute_totals(self):
         for rec in self:
             rec.total_overtime = sum(rec.line_ids.mapped('overtime_hours'))
+            rec.total_overtime_working = sum(
+                rec.line_ids.filtered(lambda line: line.day_type == 'working_day').mapped('overtime_hours'))
+            rec.total_overtime_weekend = sum(
+                rec.line_ids.filtered(lambda line: line.day_type == 'weekend').mapped('overtime_hours'))
+            rec.total_overtime_holiday = sum(
+                rec.line_ids.filtered(lambda line: line.day_type == 'public_holiday').mapped('overtime_hours'))
             rec.total_late_in = sum(rec.line_ids.mapped('late_in_minutes'))
             rec.total_absence = sum(1 for line in rec.line_ids if line.is_absent)
             rec.total_late_penalty_hours = sum(
@@ -192,13 +220,55 @@ class HrAttendanceSheet(models.Model):
                 ) or _('New')
         return super().create(vals_list)
 
-    @api.constrains('date_from', 'date_to', 'employee_id')
+    def write(self, vals):
+        # Enforce the state machine through ORM/RPC, not only through buttons.
+        if 'state' in vals:
+            if not self.env.context.get('_attendance_sheet_state_transition'):
+                raise UserError(_(
+                    "Use the attendance-sheet workflow actions to change status."
+                ))
+            allowed = {
+                'draft': {'computed', 'cancelled'},
+                'computed': {'computed', 'approved', 'cancelled'},
+                'approved': {'done', 'cancelled'},
+                'done': set(),
+                'cancelled': {'draft'},
+            }
+            target = vals['state']
+            for rec in self:
+                if target != rec.state and target not in allowed.get(rec.state, set()):
+                    raise UserError(_(
+                        "Sheet %s: transition from %s to %s is not allowed."
+                    ) % (rec.name, rec.state, target))
+        locked_fields = {'employee_id', 'date_from', 'date_to', 'contract_id', 'company_id', 'line_ids'}
+        if locked_fields.intersection(vals):
+            locked = self.filtered(lambda rec: rec.state in ('approved', 'done', 'cancelled'))
+            if locked:
+                raise UserError(_(
+                    "Attendance data cannot be changed while sheet %s is %s."
+                ) % (locked[0].name, locked[0].state))
+        return super().write(vals)
+
+    @api.constrains('date_from', 'date_to', 'employee_id', 'company_id', 'contract_id')
     def _check_period(self):
         for rec in self:
             if rec.date_to < rec.date_from:
                 raise UserError(_(
                     "End date (%s) cannot be before start date (%s)."
                 ) % (rec.date_to, rec.date_from))
+            if rec.employee_id.company_id and rec.employee_id.company_id != rec.company_id:
+                raise UserError(_(
+                    "Sheet company must match employee %s's company."
+                ) % rec.employee_id.name)
+            if rec.contract_id and rec.contract_id.company_id and rec.contract_id.company_id != rec.company_id:
+                raise UserError(_(
+                    "Sheet company must match contract %s's company."
+                ) % rec.contract_id.display_name)
+            policy = rec.contract_id.attendance_policy_id if rec.contract_id else False
+            if policy and policy.company_id and policy.company_id != rec.company_id:
+                raise UserError(_(
+                    "Sheet company must match attendance policy %s's company."
+                ) % policy.display_name)
             # Check overlapping sheets for the same employee
             overlapping = self.search([
                 ('id', '!=', rec.id),
@@ -231,7 +301,7 @@ class HrAttendanceSheet(models.Model):
                     "Sheet %s: contract %s has no attendance policy assigned."
                 ) % (rec.name, rec.contract_id.name))
             rec._run_computation()
-            rec.write({'state': 'computed'})
+            rec.with_context(_attendance_sheet_state_transition=True).write({'state': 'computed'})
             rec.message_post(
                 body=_("Attendance sheet computed by %s") % self.env.user.name
             )
@@ -246,7 +316,7 @@ class HrAttendanceSheet(models.Model):
                 raise UserError(_(
                     "Sheet %s: cannot approve a sheet without lines."
                 ) % rec.name)
-        self.write({'state': 'approved'})
+        self.with_context(_attendance_sheet_state_transition=True).write({'state': 'approved'})
         for rec in self:
             rec.message_post(
                 body=_("Attendance sheet approved by %s") % self.env.user.name
@@ -262,7 +332,7 @@ class HrAttendanceSheet(models.Model):
                 raise UserError(_(
                     "Sheet %s: a payslip must be created before setting Done."
                 ) % rec.name)
-        self.write({'state': 'done'})
+        self.with_context(_attendance_sheet_state_transition=True).write({'state': 'done'})
 
     def action_cancel(self):
         for rec in self:
@@ -274,7 +344,7 @@ class HrAttendanceSheet(models.Model):
                 raise UserError(_(
                     "Sheet %s: cannot cancel — payslip %s is already done."
                 ) % (rec.name, rec.payslip_id.name))
-        self.write({'state': 'cancelled'})
+        self.with_context(_attendance_sheet_state_transition=True).write({'state': 'cancelled'})
 
     def action_draft(self):
         for rec in self:
@@ -282,7 +352,7 @@ class HrAttendanceSheet(models.Model):
                 raise UserError(_(
                     "Sheet %s: only cancelled sheets can be reset to draft."
                 ) % rec.name)
-        self.write({'state': 'draft'})
+        self.with_context(_attendance_sheet_state_transition=True).write({'state': 'draft'})
 
     # ------------------------------------------------------------
     # COMPUTATION ENGINE
@@ -334,36 +404,71 @@ class HrAttendanceSheet(models.Model):
     def _fetch_attendances_by_day(self):
         """Return dict {date: [hr.attendance, ...]} for the sheet period."""
         self.ensure_one()
+        calendar = self.contract_id.resource_calendar_id
+        tz_name = (calendar.tz if calendar else False) or self.env.user.tz or 'UTC'
+        try:
+            tz = pytz.timezone(tz_name)
+        except pytz.UnknownTimeZoneError:
+            tz = pytz.utc
+        start_utc = self._local_midnight_to_utc(self.date_from, tz)
+        end_utc = self._local_midnight_to_utc(self.date_to + timedelta(days=1), tz)
         attendances = self.env['hr.attendance'].search([
             ('employee_id', '=', self.employee_id.id),
-            ('check_in', '>=', datetime.combine(self.date_from, time.min)),
-            ('check_in', '<=', datetime.combine(
-                self.date_to, time.max)),
+            ('check_in', '>=', start_utc),
+            ('check_in', '<', end_utc),
         ])
         result = defaultdict(list)
         for att in attendances:
-            day = att.check_in.date()
-            result[day].append(att)
+            day = self._datetime_to_local_date(att.check_in, tz)
+            if self.date_from <= day <= self.date_to:
+                result[day].append(att)
         return result
+
+    @staticmethod
+    def _local_midnight_to_utc(day, tz):
+        local_dt = datetime.combine(day, time.min)
+        try:
+            localized = tz.localize(local_dt, is_dst=None)
+        except (pytz.AmbiguousTimeError, pytz.NonExistentTimeError):
+            # Midnight transitions are rare; choose standard time consistently.
+            localized = tz.localize(local_dt, is_dst=False)
+        return localized.astimezone(pytz.utc).replace(tzinfo=None)
+
+    @staticmethod
+    def _datetime_to_local_date(value, tz):
+        if not value:
+            return False
+        # Odoo stores Datetime fields as naive UTC values.
+        utc_value = pytz.utc.localize(value) if value.tzinfo is None else value.astimezone(pytz.utc)
+        return utc_value.astimezone(tz).date()
 
     def _fetch_leaves_by_day(self):
         """Return dict {date: hr.leave} for approved leaves."""
         self.ensure_one()
+        calendar = self.contract_id.resource_calendar_id
+        tz_name = (calendar.tz if calendar else False) or self.env.user.tz or 'UTC'
+        try:
+            tz = pytz.timezone(tz_name)
+        except pytz.UnknownTimeZoneError:
+            tz = pytz.utc
+        start_utc = self._local_midnight_to_utc(self.date_from, tz)
+        end_utc = self._local_midnight_to_utc(self.date_to + timedelta(days=1), tz)
         leaves = self.env['hr.leave'].search([
             ('employee_id', '=', self.employee_id.id),
             ('state', '=', 'validate'),
-            ('date_from', '<=', datetime.combine(self.date_to, time.max)),
-            ('date_to', '>=', datetime.combine(self.date_from, time.min)),
+            ('date_from', '<', end_utc),
+            ('date_to', '>=', start_utc),
         ])
         result = {}
         for leave in leaves:
-            current = leave.date_from.date()
-            end = leave.date_to.date()
-            delta = timedelta(days=1)
-            while current <= end:
+            current = self._datetime_to_local_date(leave.date_from, tz)
+            end = self._datetime_to_local_date(leave.date_to, tz)
+            while current and end and current <= end:
                 if self.date_from <= current <= self.date_to:
-                    result[current] = leave
-                current += delta
+                    # Keep the first matching leave; overlapping leaves should not
+                    # change the daily result unpredictably based on search order.
+                    result.setdefault(current, leave)
+                current += timedelta(days=1)
         return result
 
     def _fetch_public_holidays_by_day(self):
@@ -516,7 +621,10 @@ class HrAttendanceSheet(models.Model):
         except Exception:
             return naive_dt
         # pytz needs localize() for correct DST handling.
-        localized = tz.localize(naive_dt, is_dst=None)
+        try:
+            localized = tz.localize(naive_dt, is_dst=None)
+        except (pytz.AmbiguousTimeError, pytz.NonExistentTimeError):
+            localized = tz.localize(naive_dt, is_dst=False)
         return localized.astimezone(pytz.utc).replace(tzinfo=None)
 
     def _compute_overtime_hours(self, worked_hours, planned_hours,
@@ -642,6 +750,42 @@ class HrAttendanceSheetLine(models.Model):
         string='Attendances',
     )
     changed_manually = fields.Boolean(string='Changed Manually', copy=False)
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        sheet_ids = {vals.get('sheet_id') for vals in vals_list if vals.get('sheet_id')}
+        sheets = self.env['hr.attendance.sheet'].browse(list(sheet_ids))
+        locked = sheets.filtered(lambda sheet: sheet.state not in ('draft', 'computed'))
+        if locked:
+            raise UserError(_(
+                "Attendance lines cannot be created for sheet %s in state %s."
+            ) % (locked[0].name, locked[0].state))
+        return super().create(vals_list)
+
+    def write(self, vals):
+        if {'sheet_id', 'date', 'day_type', 'planned_hours', 'worked_hours',
+                'overtime_hours', 'late_in_minutes', 'is_absent', 'is_leave',
+                'leave_id', 'difference_hours', 'absence_occurrence',
+                'late_occurrence', 'attendance_ids', 'changed_manually'}.intersection(vals):
+            sheets = self.mapped('sheet_id')
+            if vals.get('sheet_id'):
+                sheets |= self.env['hr.attendance.sheet'].browse(vals['sheet_id'])
+            locked = sheets.filtered(
+                lambda sheet: sheet.state not in ('draft', 'computed'))
+            if locked:
+                raise UserError(_(
+                    "Attendance lines cannot be changed while sheet %s is %s."
+                ) % (locked[0].name, locked[0].state))
+        return super().write(vals)
+
+    def unlink(self):
+        locked = self.mapped('sheet_id').filtered(
+            lambda sheet: sheet.state not in ('draft', 'computed', 'cancelled'))
+        if locked:
+            raise UserError(_(
+                "Attendance lines cannot be deleted while sheet %s is %s."
+            ) % (locked[0].name, locked[0].state))
+        return super().unlink()
 
     @api.depends('date')
     def _compute_display_name(self):

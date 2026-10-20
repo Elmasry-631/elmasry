@@ -55,4 +55,86 @@
         <field name="perm_create" eval="False"/>
         <field name="perm_unlink" eval="False"/>
     </record>
+
+    <record id="rule_hr_attendance_sheet_line_company" model="ir.rule">
+        <field name="name">Attendance Sheet Line: multi-company</field>
+        <field name="model_id" ref="model_hr_attendance_sheet_line"/>
+        <field name="domain_force">[('sheet_id.company_id', 'in', company_ids)]</field>
+    </record>
+
+    <record id="rule_hr_attendance_sheet_batch_line_company" model="ir.rule">
+        <field name="name">Attendance Sheet Batch Line: multi-company</field>
+        <field name="model_id" ref="model_hr_attendance_sheet_batch_line"/>
+        <field name="domain_force">[('batch_id.company_id', 'in', company_ids)]</field>
+    </record>
+
+    <record id="rule_hr_attendance_sheet_line_personal" model="ir.rule">
+        <field name="name">Attendance Sheet Line: see own</field>
+        <field name="model_id" ref="model_hr_attendance_sheet_line"/>
+        <field name="domain_force">[('sheet_id.employee_id.user_id', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <!-- Group rules OR together: officers/managers may access all records allowed
+         by the global company rules, while regular employees remain self-scoped. -->
+    <record id="rule_hr_attendance_sheet_officer_all" model="ir.rule">
+        <field name="name">Attendance Sheet: officer access within company</field>
+        <field name="model_id" ref="model_hr_attendance_sheet"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('group_hr_attendance_sheet_officer'))]"/>
+    </record>
+    <record id="rule_hr_attendance_sheet_line_officer_all" model="ir.rule">
+        <field name="name">Attendance Sheet Line: officer access within company</field>
+        <field name="model_id" ref="model_hr_attendance_sheet_line"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('group_hr_attendance_sheet_officer'))]"/>
+    </record>
+    <record id="rule_hr_attendance_sheet_batch_line_officer_all" model="ir.rule">
+        <field name="name">Attendance Sheet Batch Line: officer access within company</field>
+        <field name="model_id" ref="model_hr_attendance_sheet_batch_line"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('group_hr_attendance_sheet_officer'))]"/>
+    </record>
+
+
+    <record id="rule_hr_attendance_public_holiday_line_company" model="ir.rule">
+        <field name="name">Public Holiday Line: multi-company</field>
+        <field name="model_id" ref="model_hr_attendance_public_holiday_line"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="rule_hr_attendance_rule_lateness_company" model="ir.rule">
+        <field name="name">Lateness Rule: multi-company</field>
+        <field name="model_id" ref="model_hr_attendance_rule_lateness"/>
+        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="rule_hr_attendance_rule_lateness_tier_company" model="ir.rule">
+        <field name="name">Lateness Tier: multi-company</field>
+        <field name="model_id" ref="model_hr_attendance_rule_lateness_tier"/>
+        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="rule_hr_attendance_rule_lateness_step_company" model="ir.rule">
+        <field name="name">Lateness Step: multi-company</field>
+        <field name="model_id" ref="model_hr_attendance_rule_lateness_step"/>
+        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="rule_hr_attendance_rule_absence_company" model="ir.rule">
+        <field name="name">Absence Rule: multi-company</field>
+        <field name="model_id" ref="model_hr_attendance_rule_absence"/>
+        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="rule_hr_attendance_rule_absence_tier_company" model="ir.rule">
+        <field name="name">Absence Tier: multi-company</field>
+        <field name="model_id" ref="model_hr_attendance_rule_absence_tier"/>
+        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="rule_hr_attendance_rule_absence_step_company" model="ir.rule">
+        <field name="name">Absence Step: multi-company</field>
+        <field name="model_id" ref="model_hr_attendance_rule_absence_step"/>
+        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+    </record>
+
 </odoo>

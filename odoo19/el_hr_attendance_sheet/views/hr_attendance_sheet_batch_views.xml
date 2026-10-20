@@ -61,7 +61,7 @@
                             <field name="line_ids" readonly="state != 'draft'">
                                 <list string="Lines">
                                     <field name="employee_id"/>
-                                    <field name="sheet_id"/>
+                                    <field name="sheet_id"/><field name="error_message" optional="show"/>
                                 </list>
                             </field>
                         </page>

@@ -31,6 +31,25 @@ class HrAttendancePublicHoliday(models.Model):
         tracking=True,
     )
 
+    def write(self, vals):
+        if 'state' in vals:
+            if not self.env.context.get('_attendance_holiday_state_transition'):
+                raise UserError(_(
+                    "Use the public-holiday workflow actions to change status."
+                ))
+            allowed = {
+                'draft': {'active'},
+                'active': {'cancelled'},
+                'cancelled': {'draft'},
+            }
+            target = vals['state']
+            for rec in self:
+                if target != rec.state and target not in allowed.get(rec.state, set()):
+                    raise UserError(_(
+                        "Public holiday %s: transition from %s to %s is not allowed."
+                    ) % (rec.name, rec.state, target))
+        return super().write(vals)
+
     @api.constrains('date_from', 'date_to')
     def _check_dates(self):
         for rec in self:
@@ -50,7 +69,7 @@ class HrAttendancePublicHoliday(models.Model):
                     "Cannot activate a public holiday without any employee/"
                     "department/tag lines."
                 ))
-        self.write({'state': 'active', 'active': True})
+        self.with_context(_attendance_holiday_state_transition=True).write({'state': 'active', 'active': True})
 
     def action_cancel(self):
         for rec in self:
@@ -58,7 +77,7 @@ class HrAttendancePublicHoliday(models.Model):
                 raise UserError(_(
                     "Only draft or active public holidays can be cancelled."
                 ))
-        self.write({'state': 'cancelled', 'active': False})
+        self.with_context(_attendance_holiday_state_transition=True).write({'state': 'cancelled', 'active': False})
 
     def action_draft(self):
         for rec in self:
@@ -66,7 +85,7 @@ class HrAttendancePublicHoliday(models.Model):
                 raise UserError(_(
                     "Only cancelled public holidays can be reset to draft."
                 ))
-        self.write({'state': 'draft', 'active': True})
+        self.with_context(_attendance_holiday_state_transition=True).write({'state': 'draft', 'active': True})
 
     def is_employee_on_holiday(self, employee, date):
         """Check if employee is on public holiday on the given date."""

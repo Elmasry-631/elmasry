@@ -81,7 +81,7 @@ class HrPayrollStructure(models.Model):
         )
         if not source:
             return self.browse()
-        codes = ['OVERT', 'LATE', 'ABS']
+        codes = list(ATTENDANCE_RULE_CODES)
         targets = self.search([('id', '!=', source.id)])
         added = self.env['hr.salary.rule'].browse()
         for structure in targets:

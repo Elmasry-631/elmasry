@@ -62,12 +62,6 @@
                         </tr>
                     </tfoot>
                 </table>
-                <div class="row mt-4" t-if="doc.note">
-                    <div class="col-12">
-                        <strong>Notes:</strong>
-                        <p t-field="doc.note"/>
-                    </div>
-                </div>
             </div>
         </t>
     </template>

@@ -13,7 +13,16 @@ class HrAttendanceSheetBatchWizard(models.TransientModel):
         required=True,
     )
     date_from = fields.Date(string='Date From', required=True)
-    date_to = fields.Date(string='Date To', required=True)
+    date_to = fields.Date(
+        string='Date To',
+        compute='_compute_date_to',
+        help="Last day of the month of 'Date From'. Filled automatically.",
+    )
+
+    @api.depends('date_from')
+    def _compute_date_to(self):
+        for rec in self:
+            rec.date_to = fields.Date.end_of(rec.date_from, 'month') if rec.date_from else False
     employee_ids = fields.Many2many(
         'hr.employee',
         string='Employees (optional override)',
@@ -44,16 +53,11 @@ class HrAttendanceSheetBatchWizard(models.TransientModel):
             'date_to': self.date_to,
             'company_id': self.company_id.id,
         })
-        # Generate sheets immediately
-        batch.action_generate_sheets()
-        # If employee_ids were specified, filter batch lines
-        if self.employee_ids:
-            batch.line_ids.filtered(
-                lambda l: l.employee_id not in self.employee_ids
-            ).sheet_id.unlink()
-            batch.line_ids.filtered(
-                lambda l: l.employee_id not in self.employee_ids
-            ).unlink()
+        # Generate only the requested employees; never create and then delete
+        # unrelated attendance sheets (which also requires broader ACLs).
+        batch.action_generate_sheets(
+            employee_ids=self.employee_ids.ids if self.employee_ids else None
+        )
         return {
             'type': 'ir.actions.act_window',
             'name': _('Attendance Sheet Batch'),

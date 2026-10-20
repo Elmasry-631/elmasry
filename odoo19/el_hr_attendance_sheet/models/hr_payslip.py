@@ -26,6 +26,15 @@ class HrPayslip(models.Model):
         store=True,
         help="Total overtime hours from the linked attendance sheet.",
     )
+    overtime_working_hours = fields.Float(
+        string='Working-day Overtime Hours', compute='_compute_attendance_data', store=True,
+    )
+    overtime_weekend_hours = fields.Float(
+        string='Weekend Overtime Hours', compute='_compute_attendance_data', store=True,
+    )
+    overtime_holiday_hours = fields.Float(
+        string='Public-holiday Overtime Hours', compute='_compute_attendance_data', store=True,
+    )
     late_in_hours = fields.Float(
         string='Late In Hours',
         compute='_compute_attendance_data',
@@ -72,12 +81,29 @@ class HrPayslip(models.Model):
         help="Number of absence days in the sheet period.",
     )
 
-    @api.depends('attendance_sheet_id', 'attendance_sheet_id.total_overtime')
+    @api.depends(
+        'attendance_sheet_id',
+        'attendance_sheet_id.total_overtime',
+        'attendance_sheet_id.total_overtime_working',
+        'attendance_sheet_id.total_overtime_weekend',
+        'attendance_sheet_id.total_overtime_holiday',
+        'attendance_sheet_id.total_late_in',
+        'attendance_sheet_id.total_absence',
+        'attendance_sheet_id.total_difference',
+        'attendance_sheet_id.total_late_penalty_hours',
+        'attendance_sheet_id.total_absence_penalty_days',
+        'attendance_sheet_id.line_ids.late_in_minutes',
+        'attendance_sheet_id.line_ids.is_absent',
+        'attendance_sheet_id.line_ids.late_occurrence',
+    )
     def _compute_attendance_data(self):
         for rec in self:
             sheet = rec.attendance_sheet_id
             if sheet:
                 rec.overtime_hours = sheet.total_overtime
+                rec.overtime_working_hours = sheet.total_overtime_working
+                rec.overtime_weekend_hours = sheet.total_overtime_weekend
+                rec.overtime_holiday_hours = sheet.total_overtime_holiday
                 rec.late_in_hours = sheet.total_late_in / 60.0
                 rec.absence_days = sheet.total_absence
                 rec.difference_hours = sheet.total_difference
@@ -90,6 +116,9 @@ class HrPayslip(models.Model):
                     sheet.line_ids.filtered(lambda l: l.is_absent))
             else:
                 rec.overtime_hours = 0.0
+                rec.overtime_working_hours = 0.0
+                rec.overtime_weekend_hours = 0.0
+                rec.overtime_holiday_hours = 0.0
                 rec.late_in_hours = 0.0
                 rec.absence_days = 0.0
                 rec.difference_hours = 0.0

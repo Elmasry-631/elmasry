@@ -31,14 +31,18 @@
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
 result = 0.0
-if payslip.attendance_sheet_id and payslip.overtime_hours:
+if payslip.attendance_sheet_id:
     version = payslip.version_id
     hourly_rate = version.wage / 240.0 if version.wage else 0.0
     policy = version.attendance_policy_id
-    rate = 1.5
-    if policy and policy.overtime_working_id:
-        rate = policy.overtime_working_id.rate
-    result = payslip.overtime_hours * hourly_rate * rate
+    working_rate = policy.overtime_working_id.rate if policy and policy.overtime_working_id else 1.5
+    weekend_rate = policy.overtime_weekend_id.rate if policy and policy.overtime_weekend_id else 1.5
+    holiday_rate = policy.overtime_holiday_id.rate if policy and policy.overtime_holiday_id else 1.5
+    result = hourly_rate * (
+        payslip.overtime_working_hours * working_rate
+        + payslip.overtime_weekend_hours * weekend_rate
+        + payslip.overtime_holiday_hours * holiday_rate
+    )
         </field>
         <field name="appears_on_payslip" eval="True"/>
     </record>
@@ -112,11 +116,10 @@ if payslip.attendance_sheet_id and payslip.absence_days:
         <field name="struct_id" ref="structure_attendance"/>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
+# Deliberately neutral until the company defines whether hour shortfalls
+# are independently deductible. Difference overlaps with lateness/absence,
+# so monetizing it here can double-deduct the same time.
 result = 0.0
-if payslip.attendance_sheet_id and payslip.difference_hours:
-    version = payslip.version_id
-    hourly_rate = version.wage / 240.0 if version.wage else 0.0
-    result = -(payslip.difference_hours * hourly_rate)
         </field>
         <field name="appears_on_payslip" eval="True"/>
     </record>
