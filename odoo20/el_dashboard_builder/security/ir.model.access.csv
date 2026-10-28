@@ -1,0 +1,11 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_dashboard_builder_user,dashboard.builder.user,model_dashboard_builder,base.group_user,1,1,1,1
+access_dashboard_builder_manager,dashboard.builder.manager,model_dashboard_builder,dashboard_builder.group_dashboard_manager,1,1,1,1
+access_dashboard_item_user,dashboard.builder.item.user,model_dashboard_builder_item,base.group_user,1,1,1,1
+access_dashboard_item_manager,dashboard.builder.item.manager,model_dashboard_builder_item,dashboard_builder.group_dashboard_manager,1,1,1,1
+access_dashboard_widget_user,dashboard.builder.widget.user,model_dashboard_builder_widget,base.group_user,1,0,0,0
+access_dashboard_widget_manager,dashboard.builder.widget.manager,model_dashboard_builder_widget,dashboard_builder.group_dashboard_manager,1,1,1,1
+access_dashboard_share_user,dashboard.builder.share.user,model_dashboard_builder_share,base.group_user,1,1,1,1
+access_dashboard_share_manager,dashboard.builder.share.manager,model_dashboard_builder_share,dashboard_builder.group_dashboard_manager,1,1,1,1
+access_dashboard_tag_user,dashboard.builder.tag.user,model_dashboard_builder_tag,base.group_user,1,0,0,0
+access_dashboard_tag_manager,dashboard.builder.tag.manager,model_dashboard_builder_tag,dashboard_builder.group_dashboard_manager,1,1,1,1

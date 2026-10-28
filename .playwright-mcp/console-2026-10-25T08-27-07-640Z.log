@@ -1,0 +1,27 @@
+[    3844ms] Error: Error while loading "@el_dashboard_builder/js/compat/web_core":
+Error: Module dependencies should be a list of strings, got: function(require){"use strict";var core={_t:function(text){return text;},qweb:{render:function(template,values){console.warn('qweb.render called in compat shim, template:',template);return'';},add_template:function(templates){}},bus:{on:function(){},off:function(){},trigger:function(){},},Class:function(){return function(){};},_Component:null,get Component(){if(!this._Component){if(typeof owl!=='undefined'&&owl.Component){this._Component=owl.Component;}else if(typeof Component!=='undefined'){this._Component=Component;}}
+return this._Component;},};return core;}
+    at ModuleLoader.startModule (http://localhost:8071/web/assets/c6aab1b/web.assets_web.min.js:42:186)
+    at ModuleLoader.startModules (http://localhost:8071/web/assets/c6aab1b/web.assets_web.min.js:41:57)
+    at ModuleLoader.addJob (http://localhost:8071/web/assets/c6aab1b/web.assets_web.min.js:5:39)
+    at ModuleLoader.define (http://localhost:8071/web/assets/c6aab1b/web.assets_web.min.js:10:121)
+    at http://localhost:8071/web/assets/c6aab1b/web.assets_web.min.js:26154:6
+[    3843ms] [ERROR] The following modules failed to load because of an error: [@el_dashboard_builder/js/compat/web_core] @ http://localhost:8071/web/assets/c6aab1b/web.assets_web.min.js:22
+[    4350ms] Error: Error while loading "@el_dashboard_builder/js/compat/web_core":
+Error: Module dependencies should be a list of strings, got: function(require){"use strict";var core={_t:function(text){return text;},qweb:{render:function(template,values){console.warn('qweb.render called in compat shim, template:',template);return'';},add_template:function(templates){}},bus:{on:function(){},off:function(){},trigger:function(){},},Class:function(){return function(){};},_Component:null,get Component(){if(!this._Component){if(typeof owl!=='undefined'&&owl.Component){this._Component=owl.Component;}else if(typeof Component!=='undefined'){this._Component=Component;}}
+return this._Component;},};return core;}
+    at ModuleLoader.startModule (http://localhost:8071/web/assets/c6aab1b/web.assets_web.min.js:42:186)
+    at ModuleLoader.startModules (http://localhost:8071/web/assets/c6aab1b/web.assets_web.min.js:41:57)
+    at ModuleLoader.addJob (http://localhost:8071/web/assets/c6aab1b/web.assets_web.min.js:5:39)
+    at ModuleLoader.define (http://localhost:8071/web/assets/c6aab1b/web.assets_web.min.js:10:121)
+    at http://localhost:8071/web/assets/c6aab1b/web.assets_web.min.js:26154:6
+[    4349ms] [ERROR] The following modules failed to load because of an error: [@el_dashboard_builder/js/compat/web_core] @ http://localhost:8071/web/assets/c6aab1b/web.assets_web.min.js:22
+[ 1564938ms] Error: Error while loading "@el_dashboard_builder/js/compat/web_core":
+Error: Module dependencies should be a list of strings, got: function(require){"use strict";var core={_t:function(text){return text;},qweb:{render:function(template,values){console.warn('qweb.render called in compat shim, template:',template);return'';},add_template:function(templates){}},bus:{on:function(){},off:function(){},trigger:function(){},},Class:function(){return function(){};},_Component:null,get Component(){if(!this._Component){if(typeof owl!=='undefined'&&owl.Component){this._Component=owl.Component;}else if(typeof Component!=='undefined'){this._Component=Component;}}
+return this._Component;},};return core;}
+    at ModuleLoader.startModule (http://localhost:8071/web/assets/c6aab1b/web.assets_web.min.js:42:186)
+    at ModuleLoader.startModules (http://localhost:8071/web/assets/c6aab1b/web.assets_web.min.js:41:57)
+    at ModuleLoader.addJob (http://localhost:8071/web/assets/c6aab1b/web.assets_web.min.js:5:39)
+    at ModuleLoader.define (http://localhost:8071/web/assets/c6aab1b/web.assets_web.min.js:10:121)
+    at http://localhost:8071/web/assets/c6aab1b/web.assets_web.min.js:26154:6
+[ 1564937ms] [ERROR] The following modules failed to load because of an error: [@el_dashboard_builder/js/compat/web_core] @ http://localhost:8071/web/assets/c6aab1b/web.assets_web.min.js:22

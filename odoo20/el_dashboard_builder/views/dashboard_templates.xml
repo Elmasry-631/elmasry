@@ -1,0 +1,444 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- =====================================================================
+             Shared page skeleton: every standalone dashboard page loads the
+             dedicated dashboard bundle so nothing is pulled into webclient.
+             ===================================================================== -->
+
+        <template id="DashboardBuilderView" name="Dashboard Builder View">
+            <t t-set="head">
+                <t t-call-assets="el_dashboard_builder.dashboard_assets"/>
+            </t>
+            <t t-call="web.frontend_layout" head="head" no_header="True" no_footer="True">
+                <div class="o_dashboard_builder_view" id="o_dashboard_root"
+                     t-att-data-dashboard-id="dashboard.id"
+                     t-att-data-editable="1 if editable else 0"
+                     t-att-data-refresh-interval="dashboard.refresh_interval or 0"
+                     t-attf-style="background-color: {{ dashboard.background_color or '#f5f6f8' }};">
+
+                    <header class="o_dashboard_header">
+                        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                            <div>
+                                <h1 class="o_dashboard_title"><t t-out="dashboard.name"/></h1>
+                                <p class="text-muted mb-0" t-if="dashboard.description"><t t-out="dashboard.description"/></p>
+                            </div>
+                            <div class="o_dashboard_actions d-flex flex-wrap gap-2">
+                                <button class="btn btn-sm btn-outline-primary" t-if="editable" data-action="edit">
+                                    <i class="fa fa-edit me-1"/> Edit
+                                </button>
+                                <button class="btn btn-sm btn-outline-secondary" data-action="refresh" title="Refresh all widgets">
+                                    <i class="fa fa-refresh me-1"/> Refresh
+                                </button>
+                                <button class="btn btn-sm btn-outline-secondary" data-action="fullscreen">
+                                    <i class="fa fa-expand"/> Fullscreen
+                                </button>
+                                <button class="btn btn-sm btn-outline-secondary" data-action="toggle-theme">
+                                    <t t-if="is_dark_mode">🌙 Light</t>
+                                    <t t-if="not is_dark_mode">🌙 Dark</t>
+                                </button>
+                                <div class="dropdown">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle" data-dashboard-dropdown="1">
+                                        <i class="fa fa-cog"/> Options
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end">
+                                        <li><a class="dropdown-item" href="#" data-action="export-json"><i class="fa fa-download"/> Export JSON</a></li>
+                                        <li><a class="dropdown-item" href="#" data-action="export-pdf"><i class="fa fa-file-pdf-o"/> Export PDF</a></li>
+                                        <li><a class="dropdown-item" href="#" data-action="export-excel"><i class="fa fa-file-excel-o"/> Export Excel</a></li>
+                                        <li t-if="editable"><a class="dropdown-item" href="#" data-action="duplicate"><i class="fa fa-copy"/> Duplicate</a></li>
+                                        <li t-if="editable"><hr class="dropdown-divider"/></li>
+                                        <li t-if="editable"><a class="dropdown-item text-danger" href="#" data-action="delete"><i class="fa fa-trash"/> Delete</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Global Filters -->
+                        <div class="o_dashboard_filters mt-2" t-if="filters and filters.length > 0">
+                            <div class="row g-2">
+                                <t t-foreach="filters" t-as="filter">
+                                    <div class="col-auto">
+                                        <select class="form-select form-select-sm" t-att-data-filter-id="filter['id']" t-att-data-widget-id="filter['widget_id']">
+                                            <option value="">All <t t-out="filter['field_label']"/></option>
+                                            <t t-foreach="filter['options']" t-as="opt">
+                                                <option t-att-value="opt['value']"><t t-out="opt['label']"/></option>
+                                            </t>
+                                        </select>
+                                    </div>
+                                </t>
+                                <div class="col-auto">
+                                    <button class="btn btn-sm btn-primary" data-action="apply-filters">
+                                        <i class="fa fa-filter"/> Apply
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-secondary" data-action="clear-filters">
+                                        <i class="fa fa-times"/> Clear
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </header>
+
+                    <main class="o_dashboard_grid_container">
+                        <div class="o_dashboard_grid" id="dashboard-grid"
+                             t-attf-style="grid-template-columns: repeat({{ dashboard.layout_config.get('columns', 12) }}, minmax(0, 1fr)); grid-auto-rows: {{ dashboard.layout_config.get('rowHeight', 100) }}px;">
+                            <t t-foreach="items" t-as="item">
+                                <div class="o_dashboard_item_wrapper"
+                                     t-att-data-item-id="item['id']"
+                                     t-attf-data-x="{{ item['pos_x'] }}"
+                                     t-attf-data-y="{{ item['pos_y'] }}"
+                                     t-att-data-w="item['width']"
+                                     t-att-data-h="item['height']"
+                                     t-att-data-locked="item['is_locked']"
+                                     t-att-data-component="item['component_name']"
+                                     t-att-data-widget-id="item['widget_id']"
+                                     t-att-data-config="json.dumps(item['config'] or {})"
+                                     t-attf-style="grid-column: {{ item['pos_x'] + 1 }} / span {{ item['width'] }}; grid-row: {{ item['pos_y'] + 1 }} / span {{ item['height'] }}; {{ '' if item['is_visible'] else 'display: none;' }}">
+                                    <div class="o_dashboard_item_card h-100">
+                                        <div class="o_dashboard_item_header d-flex justify-content-between align-items-center p-2 border-bottom">
+                                            <span class="o_dashboard_item_title text-muted small"><t t-out="item['widget_name']"/></span>
+                                            <div class="o_dashboard_item_controls" t-if="editable">
+                                                <button class="btn btn-sm btn-outline-secondary p-1" data-action="configure" title="Configure">
+                                                    <i class="fa fa-cog"/>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-secondary p-1" data-action="duplicate" title="Duplicate">
+                                                    <i class="fa fa-copy"/>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-danger p-1" data-action="remove" title="Remove">
+                                                    <i class="fa fa-trash"/>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="o_dashboard_item_content p-2" t-att-data-widget-component="item['component_name']">
+                                            <div class="o_widget_placeholder text-center text-muted py-4">
+                                                <i class="fa fa-spinner fa-spin fa-2x"/> Loading widget...
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </t>
+                            <div class="o_dashboard_empty_state text-center text-muted py-5" t-if="not items">
+                                <i class="fa fa-dashboard fa-3x mb-3"/>
+                                <h4>Empty Dashboard</h4>
+                                <p>Add widgets to start building your dashboard</p>
+                                <a class="btn btn-primary mt-2" t-if="editable" t-attf-href="/dashboard/builder/{{ dashboard.id }}/edit">
+                                    <i class="fa fa-plus"/> Add Widget
+                                </a>
+                            </div>
+                        </div>
+                    </main>
+
+                    <footer class="o_dashboard_footer mt-3 text-muted small text-center">
+                        <span>Last updated: <t t-out="dashboard.last_viewed or 'Never'"/></span>
+                        <span class="ms-3">Views: <t t-out="dashboard.view_count"/></span>
+                        <span class="ms-3" t-if="dashboard.company_id">Company: <t t-out="dashboard.company_id.name"/></span>
+                    </footer>
+                </div>
+            </t>
+        </template>
+
+        <!-- Dashboard Editor Template -->
+        <template id="DashboardBuilderEditor" name="Dashboard Builder Editor">
+            <t t-set="head">
+                <t t-call-assets="el_dashboard_builder.dashboard_assets"/>
+            </t>
+            <t t-call="web.frontend_layout" head="head" no_header="True" no_footer="True">
+                <div class="o_dashboard_builder_editor" id="o_dashboard_editor_root"
+                     t-att-data-dashboard-id="dashboard.id"
+                     t-attf-style="background-color: {{ dashboard.background_color or '#f5f6f8' }};">
+
+                    <header class="o_dashboard_editor_header bg-light border-bottom">
+                        <div class="container-fluid p-3">
+                            <div class="row align-items-center">
+                                <div class="col-md-6">
+                                    <h2 class="mb-0">Dashboard Editor</h2>
+                                    <small class="text-muted">Drag and drop widgets to build your dashboard</small>
+                                </div>
+                                <div class="col-md-6 text-md-end mt-2 mt-md-0">
+                                    <a class="btn btn-secondary me-2" t-attf-href="/dashboard/builder/{{ dashboard.id }}">
+                                        <i class="fa fa-eye"/> Preview
+                                    </a>
+                                    <button class="btn btn-primary me-2" data-action="save">
+                                        <i class="fa fa-save"/> Save
+                                    </button>
+                                    <a class="btn btn-outline-danger" t-attf-href="/web#action=el_dashboard_builder.action_dashboard_builder_list">
+                                        <i class="fa fa-times"/> Exit
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </header>
+
+                    <div class="o_dashboard_editor_body container-fluid">
+                        <div class="row g-0">
+                            <!-- Widget Palette Sidebar -->
+                            <aside class="col-md-3 col-lg-2 p-0 border-end o_widget_palette" id="widget-palette">
+                                <div class="p-3">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <h5 class="mb-0">Widgets</h5>
+                                    </div>
+                                    <input type="text" class="form-control form-control-sm mb-3" placeholder="Search widgets..." id="widget-search"/>
+                                    <div class="o_widget_categories" id="widget-categories">
+                                        <t t-foreach="widget_categories" t-as="category">
+                                            <div class="o_widget_category mb-3" t-att-data-category="category['key']">
+                                                <h6 class="text-uppercase text-muted small mb-2"><t t-out="category['label']"/></h6>
+                                                <div class="o_widget_list" t-att-data-category="category['key']">
+                                                    <t t-foreach="widgets_by_category[category['key']]" t-as="widget">
+                                                        <div class="o_widget_palette_item p-2 mb-2 border rounded bg-white cursor-grab shadow-sm"
+                                                             t-att-data-widget-id="widget.id"
+                                                             t-att-data-component="widget.component_name"
+                                                             t-att-data-default-width="widget.default_width"
+                                                             t-att-data-default-height="widget.default_height"
+                                                             draggable="true">
+                                                            <div class="d-flex align-items-center">
+                                                                <i class="fa fa-grip-lines me-2 text-muted"/>
+                                                                <i t-attf-class="me-2 {{ widget.icon }}" t-attf-style="color: {{ widget.color }}"/>
+                                                                <span class="flex-grow-1 text-truncate"><t t-out="widget.name"/></span>
+                                                            </div>
+                                                            <small class="text-muted d-block mt-1"><t t-out="widget.description or ''"/></small>
+                                                        </div>
+                                                    </t>
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </div>
+                                </div>
+                            </aside>
+
+                            <!-- Dashboard Canvas -->
+                            <main class="col-md-9 col-lg-10 p-0 o_dashboard_canvas_container">
+                                <div class="o_dashboard_canvas" id="dashboard-canvas"
+                                     t-att-data-columns="dashboard.layout_config.get('columns', 12)"
+                                     t-att-data-row-height="dashboard.layout_config.get('rowHeight', 100)">
+                                    <div class="o_dashboard_grid" id="editor-grid"
+                                         t-attf-style="grid-template-columns: repeat({{ dashboard.layout_config.get('columns', 12) }}, minmax(0, 1fr)); grid-auto-rows: {{ dashboard.layout_config.get('rowHeight', 100) }}px;">
+                                        <t t-foreach="items" t-as="item">
+                                            <div class="o_dashboard_item_wrapper o_editor_item"
+                                                 t-att-data-item-id="item['id']"
+                                                 t-attf-data-x="{{ item['pos_x'] }}"
+                                                 t-attf-data-y="{{ item['pos_y'] }}"
+                                                 t-att-data-w="item['width']"
+                                                 t-att-data-h="item['height']"
+                                                 t-att-data-locked="item['is_locked']"
+                                                 t-att-data-component="item['component_name']"
+                                                 t-att-data-widget-id="item['widget_id']"
+                                                 t-att-data-config="json.dumps(item['config'] or {})"
+                                                 t-attf-style="grid-column: {{ item['pos_x'] + 1 }} / span {{ item['width'] }}; grid-row: {{ item['pos_y'] + 1 }} / span {{ item['height'] }}; {{ '' if item['is_visible'] else 'display: none;' }}">
+                                                <div class="o_dashboard_item_card h-100 border">
+                                                    <div class="o_dashboard_item_header d-flex justify-content-between align-items-center p-2 bg-light border-bottom">
+                                                        <span class="o_dashboard_item_title fw-bold small"><t t-out="item['widget_name']"/></span>
+                                                        <div class="o_dashboard_item_controls">
+                                                            <button class="btn btn-sm btn-outline-secondary p-1" data-action="configure" title="Configure">
+                                                                <i class="fa fa-cog"/>
+                                                            </button>
+                                                            <button class="btn btn-sm btn-outline-secondary p-1" data-action="lock" title="Lock Position">
+                                                                <i class="fa fa-lock"/>
+                                                            </button>
+                                                            <button class="btn btn-sm btn-outline-secondary p-1" data-action="visibility" title="Toggle Visibility">
+                                                                <i class="fa fa-eye"/>
+                                                            </button>
+                                                            <button class="btn btn-sm btn-outline-danger p-1" data-action="remove" title="Remove">
+                                                                <i class="fa fa-trash"/>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="o_dashboard_item_content p-2" t-att-data-widget-component="item['component_name']">
+                                                        <div class="o_dashboard_item_preview" t-att-data-item-id="item['id']">
+                                                            <div class="o_widget_placeholder text-center text-muted py-4">
+                                                                <i t-attf-class="fa {{ item['widget_icon'] }} fa-2x mb-2" t-attf-style="color: {{ item['widget_color'] }}"/>
+                                                                <div><t t-out="item['widget_name']"/></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="o_dashboard_item_resize_handles">
+                                                        <div class="resize-handle nw" data-dir="nw"></div>
+                                                        <div class="resize-handle ne" data-dir="ne"></div>
+                                                        <div class="resize-handle sw" data-dir="sw"></div>
+                                                        <div class="resize-handle se" data-dir="se"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </t>
+                                        <div class="o_dashboard_drop_zone text-center text-muted py-5 border dashed" id="drop-zone">
+                                            <i class="fa fa-plus-circle fa-3x mb-2"/>
+                                            <h5>Drop widgets here</h5>
+                                            <p>Drag widgets from the sidebar to start building</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </main>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+        <!-- Shared Dashboard View Template -->
+        <template id="DashboardSharedView" name="Shared Dashboard View">
+            <t t-set="head">
+                <t t-call-assets="el_dashboard_builder.dashboard_assets"/>
+            </t>
+            <t t-call="web.frontend_layout" head="head" no_header="True" no_footer="True">
+                <div class="o_dashboard_shared_view" id="o_dashboard_root"
+                     t-att-data-dashboard-id="dashboard.id"
+                     t-att-data-editable="0"
+                     t-att-data-share-token="share.access_token"
+                     t-attf-style="background-color: {{ dashboard.background_color or '#f5f6f8' }};">
+                    <header class="o_dashboard_shared_header bg-light border-bottom">
+                        <div class="container py-3">
+                            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                                <div>
+                                    <h1 class="mb-0"><t t-out="dashboard.name"/></h1>
+                                    <p class="text-muted mb-0" t-if="dashboard.description"><t t-out="dashboard.description"/></p>
+                                </div>
+                                <div class="o_dashboard_shared_actions d-flex gap-2">
+                                    <button class="btn btn-sm btn-outline-primary" data-action="refresh">
+                                        <i class="fa fa-refresh"/> Refresh
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-primary" data-action="fullscreen">
+                                        <i class="fa fa-expand"/> Fullscreen
+                                    </button>
+                                    <button class="btn btn-sm btn-secondary" data-action="embed" t-att-data-embed="embed_url">
+                                        <i class="fa fa-code"/> Embed Code
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </header>
+                    <main class="o_dashboard_grid_container">
+                        <div class="o_dashboard_grid" id="dashboard-grid"
+                             t-attf-style="grid-template-columns: repeat({{ dashboard.layout_config.get('columns', 12) }}, minmax(0, 1fr)); grid-auto-rows: {{ dashboard.layout_config.get('rowHeight', 100) }}px;">
+                            <t t-foreach="items" t-as="item">
+                                <div class="o_dashboard_item_wrapper"
+                                     t-att-data-item-id="item['id']"
+                                     t-attf-data-x="{{ item['pos_x'] }}"
+                                     t-attf-data-y="{{ item['pos_y'] }}"
+                                     t-att-data-w="item['width']"
+                                     t-att-data-h="item['height']"
+                                     t-att-data-component="item['component_name']"
+                                     t-attf-style="grid-column: {{ item['pos_x'] + 1 }} / span {{ item['width'] }}; grid-row: {{ item['pos_y'] + 1 }} / span {{ item['height'] }};">
+                                    <div class="o_dashboard_item_card h-100">
+                                        <div class="o_dashboard_item_header d-flex justify-content-between align-items-center p-2 border-bottom">
+                                            <span class="o_dashboard_item_title text-muted small"><t t-out="item['widget_name']"/></span>
+                                        </div>
+                                        <div class="o_dashboard_item_content p-2" t-att-data-widget-component="item['component_name']">
+                                            <div class="o_widget_placeholder text-center text-muted py-4">
+                                                <i class="fa fa-spinner fa-spin fa-2x"/> Loading...
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </t>
+                        </div>
+                    </main>
+                </div>
+            </t>
+        </template>
+
+        <!-- Shared Dashboard Password Prompt -->
+        <template id="DashboardSharedPassword" name="Dashboard Shared Password">
+            <t t-set="head">
+                <t t-call-assets="el_dashboard_builder.dashboard_assets"/>
+            </t>
+            <t t-call="web.frontend_layout" head="head" no_header="True" no_footer="True">
+                <div class="container o_dashboard_password_page py-5">
+                    <div class="row justify-content-center">
+                        <div class="col-md-5">
+                            <div class="card shadow-sm">
+                                <div class="card-body p-4">
+                                    <h3 class="card-title mb-3"><i class="fa fa-lock me-2"/> Protected Dashboard</h3>
+                                    <p class="text-muted">Enter the password to view this dashboard.</p>
+                                    <form method="post" t-attf-action="/dashboard/builder/shared/{{ share.access_token }}">
+                                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                        <div class="mb-3">
+                                            <input type="password" name="password" class="form-control" placeholder="Password" required="required" autofocus="autofocus"/>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary w-100">Open Dashboard</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+        <!-- Shared Dashboard Expired -->
+        <template id="DashboardSharedExpired" name="Dashboard Shared Expired">
+            <t t-set="head">
+                <t t-call-assets="el_dashboard_builder.dashboard_assets"/>
+            </t>
+            <t t-call="web.frontend_layout" head="head" no_header="True" no_footer="True">
+                <div class="container o_dashboard_password_page py-5">
+                    <div class="row justify-content-center">
+                        <div class="col-md-6 text-center">
+                            <i class="fa fa-clock-o fa-4x text-muted mb-3"/>
+                            <h3>This shared dashboard has expired</h3>
+                            <p class="text-muted">Ask the dashboard owner to generate a new share link.</p>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+        <!-- Widget Test / Preview -->
+        <template id="WidgetTestView" name="Widget Test View">
+            <t t-set="head">
+                <t t-call-assets="el_dashboard_builder.dashboard_assets"/>
+            </t>
+            <t t-call="web.frontend_layout" head="head" no_header="True" no_footer="True">
+                <div class="container py-4">
+                    <h2><i t-attf-class="me-2 {{ widget.icon }}"/> <t t-out="widget.name"/></h2>
+                    <p class="text-muted">Preview using the widget default configuration.</p>
+                    <div class="o_dashboard_grid" id="dashboard-grid"
+                         t-att-data-widget-test-id="widget.id"
+                         style="grid-template-columns: repeat(12, minmax(0, 1fr)); grid-auto-rows: 60px;">
+                        <div class="o_dashboard_item_wrapper" style="grid-column: 1 / span 12; grid-row: 1 / span 6;">
+                            <div class="o_dashboard_item_card h-100">
+                                <div class="o_dashboard_item_content p-3" t-att-data-widget-component="widget.component_name">
+                                    <div class="o_widget_placeholder text-center text-muted py-4">
+                                        <i class="fa fa-spinner fa-spin fa-2x"/> Loading widget...
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+        <!-- Widget Preview Template (for widget library) -->
+        <template id="WidgetPreview" name="Widget Preview">
+            <div class="o_widget_preview_card h-100 border rounded p-3" t-att-data-widget-id="widget.id">
+                <div class="text-center mb-3">
+                    <i t-attf-class="fa {{ widget.icon }} fa-3x" t-attf-style="color: {{ widget.color }}"/>
+                </div>
+                <h6 class="text-center mb-2"><t t-out="widget.name"/></h6>
+                <p class="small text-muted text-center"><t t-out="widget.description or ''"/></p>
+                <div class="text-center mt-3">
+                    <span class="badge bg-secondary"><t t-out="widget.category"/></span>
+                </div>
+            </div>
+        </template>
+
+        <template id="WidgetLoading" name="Widget Loading State">
+            <div class="o_widget_loading d-flex flex-column align-items-center justify-content-center h-100 p-4">
+                <div class="spinner-border text-primary mb-2" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <span class="text-muted">Loading widget...</span>
+            </div>
+        </template>
+
+        <template id="WidgetError" name="Widget Error State">
+            <div class="o_widget_error d-flex flex-column align-items-center justify-content-center h-100 p-4 text-danger">
+                <i class="fa fa-exclamation-triangle fa-3x mb-2"/>
+                <h6>Widget Error</h6>
+                <p class="small text-muted text-center"><t t-out="error_message"/></p>
+                <button class="btn btn-sm btn-outline-primary mt-2" data-action="retry">Retry</button>
+            </div>
+        </template>
+
+    </data>
+</odoo>

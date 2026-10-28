@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Dashboard Builder List View -->
+        <record id="view_dashboard_builder_list" model="ir.ui.view">
+            <field name="name">dashboard.builder.list</field>
+            <field name="model">dashboard.builder</field>
+            <field name="arch" type="xml">
+                <list string="Dashboards" sample="1" decoration-info="not active" decoration-muted="is_public">
+                    <field name="name"/>
+                    <field name="user_id" optional="hide"/>
+                    <field name="company_id" groups="base.group_multi_company" optional="hide"/>
+                    <field name="item_count" string="Widgets"/>
+                    <field name="is_public" string="Public"/>
+                    <field name="is_favorite" string="★" widget="boolean_favorite"/>
+                    <field name="last_viewed" optional="hide"/>
+                    <field name="view_count" optional="hide"/>
+                    <field name="active" optional="hide"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Dashboard Builder Kanban View -->
+        <record id="view_dashboard_builder_kanban" model="ir.ui.view">
+            <field name="name">dashboard.builder.kanban</field>
+            <field name="model">dashboard.builder</field>
+            <field name="arch" type="xml">
+                <kanban class="o_dashboard_kanban" sample="1">
+                    <field name="name"/>
+                    <field name="description"/>
+                    <field name="user_id"/>
+                    <field name="is_public"/>
+                    <field name="is_favorite"/>
+                    <field name="background_color"/>
+                    <field name="background_image"/>
+                    <field name="item_count"/>
+                    <field name="tag_ids"/>
+                    <templates>
+                        <t t-name="card">
+                            <div t-attf-class="oe_kanban_global_click o_dashboard_kanban_card" t-att-style="background_color and 'background-color: %s;' % background_color or ''">
+                                <div class="o_dashboard_kanban_header">
+                                    <strong class="o_dashboard_kanban_title"><field name="name"/></strong>
+                                    <div class="o_dashboard_kanban_badges">
+                                        <span t-if="is_public" class="badge bg-info text-dark ms-1" title="Public">🌐</span>
+                                        <span t-if="is_favorite" class="badge bg-warning text-dark ms-1" title="Favorite">★</span>
+                                    </div>
+                                </div>
+                                <div class="o_dashboard_kanban_body">
+                                    <field name="description" widget="html" options="{'sanitize': true}"/>
+                                </div>
+                                <div class="o_dashboard_kanban_footer">
+                                    <small class="text-muted">
+                                        <field name="user_id" widget="many2one" options="{'no_open': True, 'no_create': True}"/>
+                                        <span class="ms-2">|</span>
+                                        <span class="ms-1"><i class="fa fa-cubes"/> <field name="item_count"/></span>
+                                    </small>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <!-- Dashboard Builder Form View -->
+        <record id="view_dashboard_builder_form" model="ir.ui.view">
+            <field name="name">dashboard.builder.form</field>
+            <field name="model">dashboard.builder</field>
+            <field name="arch" type="xml">
+                <form string="Dashboard">
+                    <header>
+                        <button name="action_open_dashboard" string="View Dashboard" type="object" class="btn-primary"/>
+                        <button name="action_edit_dashboard" string="Edit Layout" type="object" class="btn-secondary"/>
+                        <button name="action_duplicate" string="Duplicate" type="object" class="btn-secondary" groups="el_dashboard_builder.group_dashboard_manager"/>
+                        <button name="action_toggle_favorite" string="Favorite" type="object" class="btn-link" widget="boolean_favorite" icon="fa-star"/>
+                        <button name="action_export_config" string="Export Config" type="object" class="btn-link" groups="el_dashboard_builder.group_dashboard_manager"/>
+                        <field name="active" widget="boolean_toggle"/>
+                    </header>
+                    <sheet>
+                        <div class="row mb-3">
+                            <div class="col-12 col-md-8">
+                                <field name="name" placeholder="Dashboard Name" class="o_form_field_name"/>
+                            </div>
+                            <div class="col-12 col-md-4">
+                                <field name="is_favorite" widget="boolean_favorite" invisible="1"/>
+                                <div class="float-end">
+                                    <field name="is_public" widget="boolean_toggle"/>
+                                </div>
+                            </div>
+                        </div>
+                        <notebook>
+                            <page string="Layout" name="layout" autofocus="autofocus">
+                                <group string="Grid Settings" col="2">
+                                    <field name="layout_config" widget="json"/>
+                                </group>
+                                <group string="Appearance" col="2">
+                                    <field name="background_color" widget="color"/>
+                                    <field name="background_image" widget="image" class="oe_avatar"/>
+                                    <field name="custom_css" widget="code" options="{'mode': 'code'}"/>
+                                </group>
+                                <group string="Behavior" col="2">
+                                    <field name="refresh_interval" widget="integer" options="{'min': 0}"/>
+                                    <field name="filter_domain" widget="code" options="{'mode': 'python'}"/>
+                                    <field name="filter_context" widget="json" options="{'mode': 'code'}"/>
+                                </group>
+                            </page>
+                            <page string="Widgets" name="widgets">
+                                <field name="item_ids" mode="list,kanban">
+                                    <list string="Dashboard Items" editable="bottom">
+                                        <field name="sequence" widget="handle"/>
+                                        <field name="widget_id" string="Widget" options="{'no_create': True, 'no_open': True}"/>
+                                        <field name="custom_widget_name" string="Custom Name" invisible="widget_id"/>
+                                        <field name="pos_x" string="X"/>
+                                        <field name="pos_y" string="Y"/>
+                                        <field name="width" string="W"/>
+                                        <field name="height" string="H"/>
+                                        <field name="is_locked" string="🔒"/>
+                                        <field name="is_visible" string="👁"/>
+                                        <button name="action_configure" string="Configure" type="object" icon="fa-cog" class="btn-link p-0"/>
+                                        <button name="action_duplicate" string="" type="object" icon="fa-copy" class="btn-link p-0"/>
+                                        <button name="action_remove" string="" type="object" icon="fa-trash" class="btn-link p-0 text-danger" confirm="Remove this widget?"/>
+                                    </list>
+                                    <kanban>
+                                        <field name="widget_id"/>
+                                        <field name="config"/>
+                                        <templates>
+                                            <t t-name="card">
+                                                <div class="o_dashboard_item_kanban" t-att-data-id="record.id.value">
+                                                    <div class="o_dashboard_item_header">
+                                                        <field name="widget_id" widget="many2one" options="{'no_create': True, 'no_open': True}"/>
+                                                        <span class="float-end">
+                                                            <field name="is_locked" widget="boolean_toggle"/>
+                                                        </span>
+                                                    </div>
+                                                    <div class="o_dashboard_item_preview">
+                                                        <span class="text-muted small">Preview placeholder</span>
+                                                    </div>
+                                                </div>
+                                            </t>
+                                        </templates>
+                                    </kanban>
+                                </field>
+                            </page>
+                            <page string="Sharing" name="sharing" groups="el_dashboard_builder.group_dashboard_manager">
+                                <field name="group_ids" widget="many2many_tags" string="Allowed Groups"/>
+                                <field name="share_ids" mode="list">
+                                    <list string="Shares" editable="bottom">
+                                        <field name="name"/>
+                                        <field name="share_type"/>
+                                        <field name="access_token" readonly="1"/>
+                                        <field name="expiry_date"/>
+                                        <field name="is_active"/>
+                                        <field name="view_count" readonly="1"/>
+                                    </list>
+                                </field>
+                            </page>
+                            <page string="Description" name="description">
+                                <field name="description" widget="html"/>
+                            </page>
+                            <page string="Tags" name="tags">
+                                <field name="tag_ids" widget="many2many_tags"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <chatter/>
+                </form>
+            </field>
+        </record>
+
+        <!-- Dashboard Builder Search View -->
+        <record id="view_dashboard_builder_search" model="ir.ui.view">
+            <field name="name">dashboard.builder.search</field>
+            <field name="model">dashboard.builder</field>
+            <field name="arch" type="xml">
+                <search string="Search Dashboards">
+                    <field name="name" string="Name"/>
+                    <field name="user_id" string="Owner"/>
+                    <filter string="My Dashboards" name="my_dashboards" domain="[('user_id', '=', uid)]"/>
+                    <filter string="Public" name="public_dashboards" domain="[('is_public', '=', True)]"/>
+                </search>
+            </field>
+        </record>
+
+        <!-- Dashboard Builder Action -->
+        <record id="action_dashboard_builder_list" model="ir.actions.act_window">
+            <field name="name">Dashboards</field>
+            <field name="res_model">dashboard.builder</field>
+            <field name="view_mode">kanban,list,form</field>
+            <field name="search_view_id" ref="view_dashboard_builder_search"/>
+            <field name="context">{'search_default_my_dashboards': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">Create your first dashboard</p>
+                <p>Build custom dashboards with drag-and-drop widgets.</p>
+            </field>
+        </record>
+
+        <!-- Dashboard Widget List View -->
+        <record id="view_dashboard_widget_list" model="ir.ui.view">
+            <field name="name">dashboard.builder.widget.list</field>
+            <field name="model">dashboard.builder.widget</field>
+            <field name="arch" type="xml">
+                <list string="Widgets" sample="1" decoration-muted="not is_active">
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                    <field name="category"/>
+                    <field name="icon"/>
+                    <field name="component_name"/>
+                    <field name="default_width"/>
+                    <field name="default_height"/>
+                    <field name="is_active" string="Active"/>
+                    <field name="is_system" string="System"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Dashboard Widget Form View -->
+        <record id="view_dashboard_widget_form" model="ir.ui.view">
+            <field name="name">dashboard.builder.widget.form</field>
+            <field name="model">dashboard.builder.widget</field>
+            <field name="arch" type="xml">
+                <form string="Widget">
+                    <header>
+                        <button name="action_test_widget" string="Test Widget" type="object" class="btn-primary" groups="el_dashboard_builder.group_dashboard_manager"/>
+                        <field name="is_active" widget="boolean_toggle"/>
+                    </header>
+                    <sheet>
+                        <div class="row mb-3">
+                            <div class="col-12 col-md-8">
+                                <field name="name" placeholder="Widget Name" class="o_form_field_name"/>
+                            </div>
+                            <div class="col-12 col-md-4">
+                                <field name="category" widget="radio" options="{'horizontal': True}"/>
+                            </div>
+                        </div>
+                        <group col="4">
+                            <field name="xml_id"/>
+                            <field name="icon"/>
+                            <field name="color" widget="color"/>
+                            <field name="component_name"/>
+                            <field name="sequence"/>
+                            <field name="default_width"/>
+                            <field name="default_height"/>
+                            <field name="min_width"/>
+                            <field name="min_height"/>
+                            <field name="max_width"/>
+                            <field name="max_height"/>
+                        </group>
+                        <notebook>
+                            <page string="Configuration" name="config">
+                                <group string="JSON Schema" col="1">
+                                    <field name="config_schema" widget="json" options="{'mode': 'code'}"/>
+                                </group>
+                                <group string="Default Config" col="1">
+                                    <field name="default_config" widget="json" options="{'mode': 'code'}"/>
+                                </group>
+                            </page>
+                            <page string="Assets" name="assets">
+                                <group col="2">
+                                    <field name="js_module"/>
+                                    <field name="css_module"/>
+                                    <field name="preview_image" widget="image" class="oe_avatar"/>
+                                </group>
+                            </page>
+                            <page string="Capabilities" name="capabilities">
+                                <group col="4">
+                                    <field name="supports_filters"/>
+                                    <field name="supports_drill_down"/>
+                                    <field name="supports_real_time"/>
+                                    <field name="is_system"/>
+                                </group>
+                            </page>
+                            <page string="Description" name="description">
+                                <field name="description" widget="html"/>
+                            </page>
+                            <page string="Help" name="help">
+                                <field name="help_text" widget="html"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <chatter/>
+                </form>
+            </field>
+        </record>
+
+        <!-- Dashboard Widget Search View -->
+        <record id="view_dashboard_widget_search" model="ir.ui.view">
+            <field name="name">dashboard.builder.widget.search</field>
+            <field name="model">dashboard.builder.widget</field>
+            <field name="arch" type="xml">
+                <search string="Search Widgets">
+                    <field name="name" string="Name"/>
+                    <field name="category" string="Category"/>
+                </search>
+            </field>
+        </record>
+
+        <!-- Dashboard Widget Action -->
+        <record id="action_dashboard_widget_list" model="ir.actions.act_window">
+            <field name="name">Widget Library</field>
+            <field name="res_model">dashboard.builder.widget</field>
+            <field name="view_mode">list,form</field>
+            <field name="search_view_id" ref="view_dashboard_widget_search"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">Add a new widget</p>
+                <p>Define reusable widgets for dashboards.</p>
+            </field>
+        </record>
+
+        <!-- Dashboard Tag Views -->
+        <record id="view_dashboard_tag_list" model="ir.ui.view">
+            <field name="name">dashboard.builder.tag.list</field>
+            <field name="model">dashboard.builder.tag</field>
+            <field name="arch" type="xml">
+                <list string="Tags" sample="1">
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                    <field name="color"/>
+                    <field name="dashboard_count"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_dashboard_tag_form" model="ir.ui.view">
+            <field name="name">dashboard.builder.tag.form</field>
+            <field name="model">dashboard.builder.tag</field>
+            <field name="arch" type="xml">
+                <form string="Tag">
+                    <sheet>
+                        <group col="4">
+                            <field name="name"/>
+                            <field name="color"/>
+                            <field name="dashboard_count" readonly="1"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_dashboard_tag_list" model="ir.actions.act_window">
+            <field name="name">Tags</field>
+            <field name="res_model">dashboard.builder.tag</field>
+            <field name="view_mode">list,form</field>
+        </record>
+
+        <!-- Dashboard Share Views -->
+        <record id="view_dashboard_share_list" model="ir.ui.view">
+            <field name="name">dashboard.builder.share.list</field>
+            <field name="model">dashboard.builder.share</field>
+            <field name="arch" type="xml">
+                <list string="Dashboard Shares" sample="1">
+                    <field name="dashboard_id"/>
+                    <field name="name"/>
+                    <field name="share_type"/>
+                    <field name="access_token" readonly="1"/>
+                    <field name="expiry_date"/>
+                    <field name="is_active"/>
+                    <field name="view_count" readonly="1"/>
+                    <field name="last_accessed" readonly="1"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_dashboard_share_form" model="ir.ui.view">
+            <field name="name">dashboard.builder.share.form</field>
+            <field name="model">dashboard.builder.share</field>
+            <field name="arch" type="xml">
+                <form string="Dashboard Share">
+                    <header>
+                        <button name="action_regenerate_token" string="Regenerate Token" type="object" class="btn-secondary"/>
+                        <field name="is_active" widget="boolean_toggle"/>
+                    </header>
+                    <sheet>
+                        <group col="4">
+                            <field name="dashboard_id" required="1"/>
+                            <field name="name"/>
+                            <field name="share_type"/>
+                            <field name="access_token" readonly="1"/>
+                            <field name="password" password="True"/>
+                            <field name="expiry_date"/>
+                            <field name="allow_export"/>
+                            <field name="embed_width"/>
+                            <field name="embed_height"/>
+                        </group>
+                        <notebook>
+                            <page string="Dashboard" name="access">
+                                <group string="Users" col="1">
+                                    <field name="user_ids" widget="many2many_tags"/>
+                                </group>
+                                <group string="Groups" col="1">
+                                    <field name="group_ids" widget="many2many_tags"/>
+                                </group>
+                            </page>
+                            <page string="Embed Code" name="embed">
+                                <group string="Embed" col="1">
+                                    <field name="embed_width"/>
+                                    <field name="embed_height"/>
+                                    <field name="access_token" readonly="1" widget="readonly" string="Share URL" help="Use this URL for sharing or embedding"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <chatter/>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_dashboard_builder_shared" model="ir.actions.act_window" view_mode="list,form">
+            <field name="name">Shared Dashboards</field>
+            <field name="res_model">dashboard.builder.share</field>
+        </record>
+    </data>
+</odoo>

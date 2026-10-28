@@ -1,0 +1,2 @@
+[      31ms] [ERROR] Failed to load resource: the server responded with a status of 500 (INTERNAL SERVER ERROR) @ http://elmasry:8069/?db=odoo18_1:0
+[     219ms] [ERROR] Failed to load resource: the server responded with a status of 500 (INTERNAL SERVER ERROR) @ http://elmasry:8069/favicon.ico:0

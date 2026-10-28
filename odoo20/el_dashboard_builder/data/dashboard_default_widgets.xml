@@ -1,0 +1,247 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+    <data noupdate="1">
+
+        <record id="widget_kpi_card" model="dashboard.builder.widget">
+            <field name="name">KPI Card</field>
+            <field name="xml_id">dashboard_builder.widget_kpi_card</field>
+            <field name="description" type="html"><p>Display a single key metric with optional trend indicator and target comparison.</p></field>
+            <field name="category">kpi</field>
+            <field name="sequence">10</field>
+            <field name="icon">fa fa-tachometer</field>
+            <field name="color">#3498db</field>
+            <field name="component_name">DashboardKpiCard</field>
+            <field name="default_width">3</field>
+            <field name="default_height">3</field>
+            <field name="min_width">2</field>
+            <field name="min_height">2</field>
+            <field name="max_width">6</field>
+            <field name="max_height">8</field>
+            <field name="config_schema" eval="{'type': 'object', 'properties': {'model': {'type': 'string', 'title': 'Model', 'description': 'Odoo model to query'}, 'field': {'type': 'string', 'title': 'Field', 'description': 'Numeric field to aggregate'}, 'aggregation': {'type': 'string', 'title': 'Aggregation', 'enum': ['sum', 'avg', 'count', 'min', 'max'], 'default': 'sum'}, 'domain': {'type': 'array', 'title': 'Domain Filter', 'items': {'type': 'array'}}, 'label': {'type': 'string', 'title': 'Label', 'default': 'Value'}, 'prefix': {'type': 'string', 'title': 'Prefix', 'default': ''}, 'suffix': {'type': 'string', 'title': 'Suffix', 'default': ''}, 'precision': {'type': 'integer', 'title': 'Decimal Places', 'default': 0}, 'trend_field': {'type': 'string', 'title': 'Trend Field'}, 'trend_type': {'type': 'string', 'title': 'Trend Type', 'enum': ['percentage', 'absolute'], 'default': 'percentage'}, 'target_value': {'type': 'number', 'title': 'Target Value'}, 'target_label': {'type': 'string', 'title': 'Target Label', 'default': 'Target'}, 'color_thresholds': {'type': 'array', 'title': 'Color Thresholds', 'items': {'type': 'object', 'properties': {'value': {'type': 'number'}, 'color': {'type': 'string'}}}}}, 'required': ['model', 'field']}"/>
+            <field name="default_config" eval="{'model': 'res.partner', 'field': 'id', 'aggregation': 'count', 'label': 'Partners', 'precision': 0, 'trend_type': 'percentage'}"/>
+            <field name="supports_filters">True</field>
+            <field name="supports_drill_down">True</field>
+            <field name="supports_real_time">True</field>
+            <field name="is_system">True</field>
+            <field name="help_text" type="html"><p>The KPI Card widget displays a single aggregated value from any model. Configure the model, field, and aggregation type. Add a target value to show goal progress.</p></field>
+        </record>
+
+        <record id="widget_bar_chart" model="dashboard.builder.widget">
+            <field name="name">Bar Chart</field>
+            <field name="xml_id">dashboard_builder.widget_bar_chart</field>
+            <field name="description" type="html"><p>Compare values across categories with horizontal or vertical bars.</p></field>
+            <field name="category">chart</field>
+            <field name="sequence">20</field>
+            <field name="icon">fa fa-bar-chart</field>
+            <field name="color">#2ecc71</field>
+            <field name="component_name">DashboardBarChart</field>
+            <field name="default_width">6</field>
+            <field name="default_height">5</field>
+            <field name="min_width">3</field>
+            <field name="min_height">3</field>
+            <field name="max_width">12</field>
+            <field name="max_height">12</field>
+            <field name="config_schema" eval="{'type': 'object', 'properties': {'model': {'type': 'string', 'title': 'Model'}, 'x_field': {'type': 'string', 'title': 'Category Field'}, 'y_field': {'type': 'string', 'title': 'Value Field'}, 'aggregation': {'type': 'string', 'title': 'Aggregation', 'enum': ['sum', 'avg', 'count', 'min', 'max'], 'default': 'sum'}, 'domain': {'type': 'array', 'title': 'Domain'}, 'limit': {'type': 'integer', 'title': 'Max Categories', 'default': 10}, 'orientation': {'type': 'string', 'title': 'Orientation', 'enum': ['vertical', 'horizontal'], 'default': 'vertical'}, 'y_axis_label': {'type': 'string', 'title': 'Y Axis Label'}, 'show_legend': {'type': 'boolean', 'title': 'Show Legend', 'default': True}}}"/>
+            <field name="default_config" eval="{'model': 'res.partner', 'x_field': 'country_id', 'y_field': 'id', 'aggregation': 'count', 'limit': 10, 'orientation': 'vertical', 'show_legend': True}"/>
+            <field name="supports_filters">True</field>
+            <field name="supports_real_time">True</field>
+            <field name="is_system">True</field>
+        </record>
+
+        <record id="widget_line_chart" model="dashboard.builder.widget">
+            <field name="name">Line Chart</field>
+            <field name="xml_id">dashboard_builder.widget_line_chart</field>
+            <field name="description" type="html"><p>Track a metric over time with one or more series.</p></field>
+            <field name="category">chart</field>
+            <field name="sequence">21</field>
+            <field name="icon">fa fa-line-chart</field>
+            <field name="color">#3498db</field>
+            <field name="component_name">DashboardLineChart</field>
+            <field name="default_width">8</field>
+            <field name="default_height">5</field>
+            <field name="min_width">3</field>
+            <field name="min_height">3</field>
+            <field name="max_width">12</field>
+            <field name="max_height">12</field>
+            <field name="config_schema" eval="{'type': 'object', 'properties': {'model': {'type': 'string', 'title': 'Model'}, 'x_field': {'type': 'string', 'title': 'Date Field'}, 'y_field': {'type': 'string', 'title': 'Value Field'}, 'aggregation': {'type': 'string', 'title': 'Aggregation', 'enum': ['sum', 'avg', 'count', 'min', 'max'], 'default': 'sum'}, 'domain': {'type': 'array', 'title': 'Domain'}, 'time_granularity': {'type': 'string', 'title': 'Granularity', 'enum': ['day', 'week', 'month', 'quarter', 'year'], 'default': 'month'}, 'group_by': {'type': 'string', 'title': 'Group By (series)'}, 'fill_area': {'type': 'boolean', 'title': 'Fill Area', 'default': False}, 'y_axis_label': {'type': 'string', 'title': 'Y Axis Label'}}}"/>
+            <field name="default_config" eval="{'model': 'res.partner', 'x_field': 'create_date', 'y_field': 'id', 'aggregation': 'count', 'time_granularity': 'month', 'fill_area': True}"/>
+            <field name="supports_filters">True</field>
+            <field name="supports_real_time">True</field>
+            <field name="is_system">True</field>
+        </record>
+
+        <record id="widget_pie_chart" model="dashboard.builder.widget">
+            <field name="name">Pie / Doughnut Chart</field>
+            <field name="xml_id">dashboard_builder.widget_pie_chart</field>
+            <field name="description" type="html"><p>Show the share of each category in a whole.</p></field>
+            <field name="category">chart</field>
+            <field name="sequence">22</field>
+            <field name="icon">fa fa-pie-chart</field>
+            <field name="color">#e74c3c</field>
+            <field name="component_name">DashboardPieChart</field>
+            <field name="default_width">5</field>
+            <field name="default_height">5</field>
+            <field name="min_width">3</field>
+            <field name="min_height">3</field>
+            <field name="max_width">12</field>
+            <field name="max_height">12</field>
+            <field name="config_schema" eval="{'type': 'object', 'properties': {'model': {'type': 'string', 'title': 'Model'}, 'label_field': {'type': 'string', 'title': 'Category Field'}, 'value_field': {'type': 'string', 'title': 'Value Field'}, 'aggregation': {'type': 'string', 'title': 'Aggregation', 'enum': ['sum', 'avg', 'count', 'min', 'max'], 'default': 'sum'}, 'domain': {'type': 'array', 'title': 'Domain'}, 'chart_type': {'type': 'string', 'title': 'Chart Type', 'enum': ['pie', 'doughnut'], 'default': 'doughnut'}, 'limit': {'type': 'integer', 'title': 'Max Categories', 'default': 8}, 'group_others': {'type': 'boolean', 'title': 'Group Others', 'default': True}, 'label_format': {'type': 'string', 'title': 'Label Format', 'enum': ['value', 'percentage', 'both'], 'default': 'both'}}}"/>
+            <field name="default_config" eval="{'model': 'res.partner', 'label_field': 'country_id', 'value_field': 'id', 'aggregation': 'count', 'chart_type': 'doughnut', 'limit': 8, 'group_others': True, 'label_format': 'both'}"/>
+            <field name="supports_filters">True</field>
+            <field name="supports_real_time">True</field>
+            <field name="is_system">True</field>
+        </record>
+
+        <record id="widget_table" model="dashboard.builder.widget">
+            <field name="name">Data Table</field>
+            <field name="xml_id">dashboard_builder.widget_table</field>
+            <field name="description" type="html"><p>List records in a sortable, paginated table.</p></field>
+            <field name="category">table</field>
+            <field name="sequence">30</field>
+            <field name="icon">fa fa-table</field>
+            <field name="color">#9b59b6</field>
+            <field name="component_name">DashboardTable</field>
+            <field name="default_width">8</field>
+            <field name="default_height">6</field>
+            <field name="min_width">4</field>
+            <field name="min_height">3</field>
+            <field name="max_width">12</field>
+            <field name="max_height">16</field>
+            <field name="config_schema" eval="{'type': 'object', 'properties': {'model': {'type': 'string', 'title': 'Model'}, 'fields': {'type': 'array', 'title': 'Fields', 'items': {'type': 'object', 'properties': {'name': {'type': 'string'}, 'label': {'type': 'string'}, 'format': {'type': 'string', 'enum': ['text', 'number', 'currency', 'percentage', 'date', 'datetime', 'boolean', 'many2one']}}}}, 'domain': {'type': 'array', 'title': 'Domain'}, 'limit': {'type': 'integer', 'title': 'Rows per Page', 'default': 10}, 'order': {'type': 'string', 'title': 'Order'}, 'show_pager': {'type': 'boolean', 'title': 'Show Pager', 'default': True}}}"/>
+            <field name="default_config" eval="{'model': 'res.partner', 'fields': [{'name': 'display_name', 'label': 'Name', 'format': 'text'}, {'name': 'email', 'label': 'Email', 'format': 'text'}, {'name': 'create_date', 'label': 'Created', 'format': 'date'}], 'limit': 10, 'order': 'create_date desc', 'show_pager': True}"/>
+            <field name="supports_filters">True</field>
+            <field name="supports_real_time">True</field>
+            <field name="is_system">True</field>
+        </record>
+
+        <record id="widget_pivot_table" model="dashboard.builder.widget">
+            <field name="name">Pivot Table</field>
+            <field name="xml_id">dashboard_builder.widget_pivot_table</field>
+            <field name="description" type="html"><p>Cross-tabulate values by one or two dimensions.</p></field>
+            <field name="category">pivot</field>
+            <field name="sequence">40</field>
+            <field name="icon">fa fa-th</field>
+            <field name="color">#16a085</field>
+            <field name="component_name">DashboardPivotTable</field>
+            <field name="default_width">8</field>
+            <field name="default_height">6</field>
+            <field name="min_width">4</field>
+            <field name="min_height">3</field>
+            <field name="max_width">12</field>
+            <field name="max_height">16</field>
+            <field name="config_schema" eval="{'type': 'object', 'properties': {'model': {'type': 'string', 'title': 'Model'}, 'row_field': {'type': 'string', 'title': 'Row Field'}, 'col_field': {'type': 'string', 'title': 'Column Field'}, 'value_field': {'type': 'string', 'title': 'Value Field'}, 'aggregation': {'type': 'string', 'title': 'Aggregation', 'enum': ['sum', 'avg', 'count', 'min', 'max'], 'default': 'sum'}, 'domain': {'type': 'array', 'title': 'Domain'}}}"/>
+            <field name="default_config" eval="{'model': 'res.partner', 'row_field': 'country_id', 'col_field': 'company_id', 'value_field': 'id', 'aggregation': 'count'}"/>
+            <field name="supports_filters">True</field>
+            <field name="supports_real_time">True</field>
+            <field name="is_system">True</field>
+        </record>
+
+        <record id="widget_gauge" model="dashboard.builder.widget">
+            <field name="name">Gauge</field>
+            <field name="xml_id">dashboard_builder.widget_gauge</field>
+            <field name="description" type="html"><p>Display a value on a semicircular gauge with colored zones.</p></field>
+            <field name="category">gauge</field>
+            <field name="sequence">50</field>
+            <field name="icon">fa fa-dashboard</field>
+            <field name="color">#f39c12</field>
+            <field name="component_name">DashboardGauge</field>
+            <field name="default_width">4</field>
+            <field name="default_height">5</field>
+            <field name="min_width">3</field>
+            <field name="min_height">3</field>
+            <field name="max_width">8</field>
+            <field name="max_height">10</field>
+            <field name="config_schema" eval="{'type': 'object', 'properties': {'model': {'type': 'string', 'title': 'Model'}, 'field': {'type': 'string', 'title': 'Value Field'}, 'aggregation': {'type': 'string', 'title': 'Aggregation', 'enum': ['sum', 'avg', 'count', 'min', 'max'], 'default': 'sum'}, 'domain': {'type': 'array', 'title': 'Domain'}, 'min_value': {'type': 'number', 'title': 'Minimum', 'default': 0}, 'max_value': {'type': 'number', 'title': 'Maximum', 'default': 100}, 'label': {'type': 'string', 'title': 'Label'}, 'suffix': {'type': 'string', 'title': 'Suffix'}, 'precision': {'type': 'integer', 'title': 'Decimal Places', 'default': 0}}}"/>
+            <field name="default_config" eval="{'model': 'res.partner', 'field': 'id', 'aggregation': 'count', 'min_value': 0, 'max_value': 1000, 'label': 'Partners', 'precision': 0}"/>
+            <field name="supports_filters">True</field>
+            <field name="supports_real_time">True</field>
+            <field name="is_system">True</field>
+        </record>
+
+        <record id="widget_progress_bar" model="dashboard.builder.widget">
+            <field name="name">Progress Bar</field>
+            <field name="xml_id">dashboard_builder.widget_progress_bar</field>
+            <field name="description" type="html"><p>Track progress of a value against a target.</p></field>
+            <field name="category">gauge</field>
+            <field name="sequence">51</field>
+            <field name="icon">fa fa-tasks</field>
+            <field name="color">#2ecc71</field>
+            <field name="component_name">DashboardProgressBar</field>
+            <field name="default_width">5</field>
+            <field name="default_height">3</field>
+            <field name="min_width">3</field>
+            <field name="min_height">2</field>
+            <field name="max_width">12</field>
+            <field name="max_height">6</field>
+            <field name="config_schema" eval="{'type': 'object', 'properties': {'model': {'type': 'string', 'title': 'Model'}, 'value_field': {'type': 'string', 'title': 'Value Field'}, 'target_field': {'type': 'string', 'title': 'Target Field'}, 'aggregation': {'type': 'string', 'title': 'Aggregation', 'enum': ['sum', 'avg', 'count', 'min', 'max'], 'default': 'sum'}, 'domain': {'type': 'array', 'title': 'Domain'}, 'label': {'type': 'string', 'title': 'Label'}, 'color': {'type': 'string', 'title': 'Color', 'default': '#2ecc71'}}}"/>
+            <field name="default_config" eval="{'model': 'res.partner', 'value_field': 'id', 'target_field': 'id', 'aggregation': 'count', 'label': 'Progress', 'color': '#2ecc71'}"/>
+            <field name="supports_filters">True</field>
+            <field name="supports_real_time">True</field>
+            <field name="is_system">True</field>
+        </record>
+
+        <record id="widget_html" model="dashboard.builder.widget">
+            <field name="name">HTML / Text</field>
+            <field name="xml_id">dashboard_builder.widget_html</field>
+            <field name="description" type="html"><p>Display custom HTML, text, or Markdown content.</p></field>
+            <field name="category">custom</field>
+            <field name="sequence">60</field>
+            <field name="icon">fa fa-code</field>
+            <field name="color">#34495e</field>
+            <field name="component_name">DashboardHtml</field>
+            <field name="default_width">6</field>
+            <field name="default_height">4</field>
+            <field name="min_width">2</field>
+            <field name="min_height">2</field>
+            <field name="max_width">12</field>
+            <field name="max_height">20</field>
+            <field name="config_schema" eval="{'type': 'object', 'properties': {'content': {'type': 'string', 'title': 'HTML Content'}, 'format': {'type': 'string', 'title': 'Format', 'enum': ['html', 'text'], 'default': 'html'}}}"/>
+            <field name="default_config" eval="{'content': '&lt;h3&gt;Welcome&lt;/h3&gt;&lt;p&gt;Use the editor to replace this content.&lt;/p&gt;', 'format': 'html'}"/>
+            <field name="supports_filters">False</field>
+            <field name="is_system">True</field>
+        </record>
+
+        <record id="widget_action_buttons" model="dashboard.builder.widget">
+            <field name="name">Action Buttons</field>
+            <field name="xml_id">dashboard_builder.widget_action_buttons</field>
+            <field name="description" type="html"><p>Quick links to actions, menus, or URLs.</p></field>
+            <field name="category">action</field>
+            <field name="sequence">70</field>
+            <field name="icon">fa fa-hand-pointer-o</field>
+            <field name="color">#e67e22</field>
+            <field name="component_name">DashboardActionButtons</field>
+            <field name="default_width">6</field>
+            <field name="default_height">3</field>
+            <field name="min_width">3</field>
+            <field name="min_height">2</field>
+            <field name="max_width">12</field>
+            <field name="max_height">6</field>
+            <field name="config_schema" eval="{'type': 'object', 'properties': {'buttons': {'type': 'array', 'title': 'Buttons', 'items': {'type': 'object', 'properties': {'label': {'type': 'string'}, 'icon': {'type': 'string'}, 'action_type': {'type': 'string', 'enum': ['url', 'open_view', 'create', 'server_action']}, 'model': {'type': 'string'}, 'url': {'type': 'string'}, 'action_id': {'type': 'integer'}, 'view_mode': {'type': 'string'}, 'domain': {'type': 'array'}, 'style': {'type': 'string', 'enum': ['primary', 'secondary', 'success', 'warning', 'danger', 'info']}}}}}}"/>
+            <field name="default_config" eval="{'buttons': [{'label': 'Partners', 'icon': 'fa fa-users', 'action_type': 'open_view', 'model': 'res.partner', 'view_mode': 'list,form', 'style': 'primary'}]}"/>
+            <field name="supports_filters">False</field>
+            <field name="is_system">True</field>
+        </record>
+
+        <record id="widget_calendar" model="dashboard.builder.widget">
+            <field name="name">Calendar</field>
+            <field name="xml_id">dashboard_builder.widget_calendar</field>
+            <field name="description" type="html"><p>Show upcoming records grouped by day.</p></field>
+            <field name="category">calendar</field>
+            <field name="sequence">80</field>
+            <field name="icon">fa fa-calendar</field>
+            <field name="color">#c0392b</field>
+            <field name="component_name">DashboardCalendar</field>
+            <field name="default_width">6</field>
+            <field name="default_height">6</field>
+            <field name="min_width">3</field>
+            <field name="min_height">3</field>
+            <field name="max_width">12</field>
+            <field name="max_height">16</field>
+            <field name="config_schema" eval="{'type': 'object', 'properties': {'model': {'type': 'string', 'title': 'Model'}, 'date_field': {'type': 'string', 'title': 'Date Field'}, 'title_field': {'type': 'string', 'title': 'Title Field'}, 'domain': {'type': 'array', 'title': 'Domain'}, 'limit': {'type': 'integer', 'title': 'Max Records', 'default': 20}}}"/>
+            <field name="default_config" eval="{'model': 'res.partner', 'date_field': 'create_date', 'title_field': 'display_name', 'limit': 20}"/>
+            <field name="supports_filters">True</field>
+            <field name="is_system">True</field>
+        </record>
+
+    </data>
+</odoo>

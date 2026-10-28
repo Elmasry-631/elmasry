@@ -1,0 +1,1 @@
+[    3452ms] [ERROR] Permissions policy violation: unload is not allowed in this document. @ https://www.odoo.sh/paas_master/static/src/legacy/web.assets_frontend_lazy.min.js:1634

@@ -1,0 +1,684 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Dashboard Builder View Template -->
+        <template id="DashboardBuilderView" name="Dashboard Builder View">
+            <div class="o_dashboard_builder_view" t-att-data-dashboard-id="dashboard.id">
+                <header class="o_dashboard_header">
+                    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                        <div>
+                            <h1 class="o_dashboard_title mb-1"><t t-out="dashboard.name"/></h1>
+                            <p class="text-muted mb-0" t-if="dashboard.description"><t t-out="dashboard.description"/></p>
+                        </div>
+                        <div class="o_dashboard_actions d-flex gap-2 flex-wrap">
+                            <button class="btn btn-sm btn-outline-primary" t-if="editable" data-action="edit">
+                                <i class="fa fa-edit me-1"/> Edit
+                            </button>
+                            <button class="btn btn-sm btn-outline-secondary" data-action="refresh" title="Refresh all widgets">
+                                <i class="fa fa-refresh me-1"/> Refresh
+                            </button>
+                            <button class="btn btn-sm btn-outline-secondary" data-action="fullscreen" title="Fullscreen">
+                                <i class="fa fa-expand me-1"/> Fullscreen
+                            </button>
+                            <div class="btn-group ms-2" role="group">
+                                <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fa fa-cog me-1"/> Options
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li><a class="dropdown-item" data-action="export-pdf" href="#"><i class="fa fa-file-pdf-o me-2"/> Export PDF</a></li>
+                                    <li><a class="dropdown-item" data-action="export-excel" href="#"><i class="fa fa-file-excel-o me-2"/> Export Excel</a></li>
+                                    <li><a class="dropdown-item" data-action="duplicate" href="#"><i class="fa fa-copy me-2"/> Duplicate</a></li>
+                                    <li><hr class="dropdown-divider"/></li>
+                                    <li><a class="dropdown-item text-danger" data-action="delete" href="#"><i class="fa fa-trash me-2"/> Delete</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="o_dashboard_filters mt-3" t-if="filters">
+                        <div class="row g-2">
+                            <t t-foreach="filters" t-as="filter">
+                                <div class="col-auto">
+                                    <label class="form-label visually-hidden"><t t-out="filter.field_label"/></label>
+                                    <select class="form-select form-select-sm" t-att-data-filter-id="filter.id" t-att-data-widget-id="filter.widget_id">
+                                        <option value="">All <t t-out="filter.field_label"/></option>
+                                        <t t-foreach="filter.options" t-as="opt">
+                                            <option t-att-value="opt.value"><t t-out="opt.label"/></option>
+                                        </t>
+                                    </select>
+                                </div>
+                            </t>
+                            <div class="col-auto d-flex align-items-end gap-1">
+                                <button class="btn btn-sm btn-primary" data-action="apply-filters">
+                                    <i class="fa fa-filter me-1"/> Apply
+                                </button>
+                                <button class="btn btn-sm btn-outline-secondary" data-action="clear-filters">
+                                    <i class="fa fa-times me-1"/> Clear
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+                
+                <main class="o_dashboard_grid_container">
+                    <div class="o_dashboard_grid" id="dashboard-grid"
+                         t-att-style="'grid-template-columns: repeat(' + (dashboard.layout_config.columns or 12) + ', 1fr);'">
+                        <t t-foreach="items" t-as="item">
+                            <div class="o_dashboard_item_wrapper"
+                                 t-att-data-item-id="item.id"
+                                 t-att-data-x="item.pos_x"
+                                 t-att-data-y="item.pos_y"
+                                 t-att-data-w="item.width"
+                                 t-att-data-h="item.height"
+                                 t-att-data-locked="item.is_locked"
+                                 t-att-data-widget="item.widget_xml_id"
+                                 t-att-style="item.is_visible ? '' : 'display:none;'"
+                                 style="grid-column: span var(--w, 6); grid-row: span var(--h, 4);">
+                                <div class="o_dashboard_item_card h-100">
+                                    <div class="o_dashboard_item_header d-flex justify-content-between align-items-center p-2 border-bottom" t-if="editable">
+                                        <span class="o_dashboard_item_title text-muted small"><t t-out="item.widget_name"/></span>
+                                        <div class="o_dashboard_item_controls">
+                                            <button class="btn btn-sm btn-outline-secondary p-1" data-action="configure" title="Configure" aria-label="Configure widget">
+                                                <i class="fa fa-cog"/>
+                                            </button>
+                                            <button class="btn btn-sm btn-outline-secondary p-1" data-action="duplicate" title="Duplicate" aria-label="Duplicate widget">
+                                                <i class="fa fa-copy"/>
+                                            </button>
+                                            <button class="btn btn-sm btn-outline-danger p-1" data-action="remove" title="Remove" aria-label="Remove widget">
+                                                <i class="fa fa-trash"/>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="o_dashboard_item_content p-2" t-att-data-widget-component="item.component_name">
+                                        <div class="o_widget_placeholder text-center text-muted py-4" t-if="not editable">
+                                            <i class="fa fa-spinner fa-spin fa-2x"/> Loading widget...
+                                        </div>
+                                    </div>
+                                    <div class="o_dashboard_item_resize_handle" t-if="editable"></div>
+                                </div>
+                            </div>
+                        </t>
+                        <div class="o_dashboard_empty_state text-center text-muted py-5" t-if="not items" style="grid-column: 1 / -1;">
+                            <i class="fa fa-dashboard fa-3x mb-3" style="color: #ccc;"/>
+                            <h4>Empty Dashboard</h4>
+                            <p>Add widgets to start building your dashboard</p>
+                            <button class="btn btn-primary mt-2" data-action="add-widget" t-if="editable">
+                                <i class="fa fa-plus me-1"/> Add Widget
+                            </button>
+                        </div>
+                    </div>
+                </main>
+                
+                <footer class="o_dashboard_footer mt-3 text-muted small text-center">
+                    <span>Last updated: <t t-out="dashboard.last_viewed or 'Never'"/></span>
+                    <span class="ms-3">Views: <t t-out="dashboard.view_count"/></span>
+                    <span class="ms-3" t-if="dashboard.company_id">Company: <t t-out="dashboard.company_id.name"/></span>
+                </footer>
+            </div>
+        </template>
+
+        <!-- Dashboard Editor Template -->
+        <template id="DashboardBuilderEditor" name="Dashboard Builder Editor">
+            <div class="o_dashboard_builder_editor" t-att-data-dashboard-id="dashboard.id">
+                <header class="o_dashboard_editor_header bg-light border-bottom">
+                    <div class="container-fluid p-3">
+                        <div class="row align-items-center">
+                            <div class="col-md-6">
+                                <h2 class="mb-0">Dashboard Editor</h2>
+                                <small class="text-muted">Drag and drop widgets to build your dashboard</small>
+                            </div>
+                            <div class="col-md-6 text-md-end mt-2 mt-md-0">
+                                <button class="btn btn-secondary me-2" data-action="preview" title="Preview Dashboard">
+                                    <i class="fa fa-eye me-1"/> Preview
+                                </button>
+                                <button class="btn btn-primary me-2" data-action="save" title="Save Layout">
+                                    <i class="fa fa-save me-1"/> Save
+                                </button>
+                                <button class="btn btn-outline-danger" data-action="exit" title="Exit Editor">
+                                    <i class="fa fa-times me-1"/> Exit
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+                
+                <div class="o_dashboard_editor_body container-fluid flex-grow-1">
+                    <div class="row g-0 h-100">
+                        <!-- Widget Palette Sidebar -->
+                        <aside class="col-md-3 col-lg-2 p-0 border-end o_widget_palette" id="widget-palette" role="complementary" aria-label="Widget Palette">
+                            <div class="p-3 h-100 overflow-auto">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h5 class="mb-0">Widgets</h5>
+                                    <input type="text" class="form-control form-control-sm" placeholder="Search widgets..." id="widget-search" aria-label="Search widgets"/>
+                                </div>
+                                <div class="o_widget_categories" id="widget-categories">
+                                    <t t-foreach="widget_categories" t-as="category">
+                                        <div class="o_widget_category mb-3" t-att-data-category="category.key">
+                                            <h6 class="text-uppercase text-muted small mb-2"><t t-out="category.label"/></h6>
+                                            <div class="o_widget_list" t-att-data-category="category.key">
+                                                <t t-foreach="widgets_by_category[category.key]" t-as="widget">
+                                                    <div class="o_widget_palette_item p-2 mb-2 border rounded bg-white cursor-grab shadow-sm"
+                                                         t-att-data-widget-id="widget.id"
+                                                         t-att-data-widget-xml-id="widget.xml_id"
+                                                         t-att-data-component="widget.component_name"
+                                                         draggable="true"
+                                                         role="button"
+                                                         tabindex="0"
+                                                         aria-label="Add <t t-out="widget.name"/> widget">
+                                                        <div class="d-flex align-items-center">
+                                                            <i class="fa fa-grip-lines me-2 text-muted" title="Drag to dashboard" aria-hidden="true"/>
+                                                            <i t-attf-class="me-2 {{ widget.icon }}" t-att-style="color: {{ widget.color }};" aria-hidden="true"/>
+                                                            <span class="flex-grow-1 text-truncate"><t t-out="widget.name"/></span>
+                                                        </div>
+                                                        <small class="text-muted d-block mt-1"><t t-out="widget.description or ''"/></small>
+                                                    </div>
+                                                </t>
+                                            </div>
+                                        </div>
+                                    </t>
+                                </div>
+                            </div>
+                        </aside>
+                        
+                        <!-- Dashboard Canvas -->
+                        <main class="col-md-9 col-lg-10 p-0 o_dashboard_canvas_container" role="main">
+                            <div class="o_dashboard_canvas" id="dashboard-canvas"
+                                 t-att-data-columns="dashboard.layout_config.columns"
+                                 t-att-data-row-height="dashboard.layout_config.rowHeight">
+                                <div class="o_dashboard_grid" id="editor-grid"
+                                     t-att-style="'grid-template-columns: repeat(' + (dashboard.layout_config.columns or 12) + ', 1fr);'">
+                                    <t t-foreach="items" t-as="item">
+                                        <div class="o_dashboard_item_wrapper o_editor_item"
+                                             t-att-data-item-id="item.id"
+                                             t-att-data-x="item.pos_x"
+                                             t-att-data-y="item.pos_y"
+                                             t-att-data-w="item.width"
+                                             t-att-data-h="item.height"
+                                             t-att-data-locked="item.is_locked"
+                                             t-att-data-widget="item.widget_xml_id"
+                                             t-att-style="item.is_visible ? '' : 'display:none;'"
+                                             style="grid-column: span var(--w, 6); grid-row: span var(--h, 4);">
+                                            <div class="o_dashboard_item_card h-100 border">
+                                                <div class="o_dashboard_item_header d-flex justify-content-between align-items-center p-2 bg-light border-bottom">
+                                                    <span class="o_dashboard_item_title fw-bold small"><t t-out="item.widget_name"/></span>
+                                                    <div class="o_dashboard_item_controls">
+                                                        <button class="btn btn-sm btn-outline-secondary p-1" data-action="configure" title="Configure" aria-label="Configure widget">
+                                                            <i class="fa fa-cog"/>
+                                                        </button>
+                                                        <button class="btn btn-sm btn-outline-secondary p-1" data-action="lock" title="Lock Position" t-att-class="item.is_locked ? 'active' : ''" aria-label="Lock position" aria-pressed="false">
+                                                            <i class="fa fa-lock"/>
+                                                        </button>
+                                                        <button class="btn btn-sm btn-outline-secondary p-1" data-action="visibility" title="Toggle Visibility" t-att-class="item.is_visible ? '' : 'text-muted'" aria-label="Toggle visibility" aria-pressed="true">
+                                                            <i class="fa" t-att-class="item.is_visible ? 'fa-eye' : 'fa-eye-slash'"/>
+                                                        </button>
+                                                        <button class="btn btn-sm btn-outline-danger p-1" data-action="remove" title="Remove" aria-label="Remove widget">
+                                                            <i class="fa fa-trash"/>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <div class="o_dashboard_item_content p-2" t-att-data-widget-component="item.component_name">
+                                                    <div class="o_widget_editor_placeholder text-center text-muted py-4">
+                                                        <i t-attf-class="fa {{ item.widget_icon }} fa-2x mb-2" t-att-style="color: {{ item.widget_color }}"/>
+                                                        <div><t t-out="item.widget_name"/></div>
+                                                        <small>Drag to reposition, resize from corners</small>
+                                                    </div>
+                                                </div>
+                                                <div class="o_dashboard_item_resize_handles">
+                                                    <div class="resize-handle nw" data-dir="nw" aria-hidden="true"></div>
+                                                    <div class="resize-handle ne" data-dir="ne" aria-hidden="true"></div>
+                                                    <div class="resize-handle sw" data-dir="sw" aria-hidden="true"></div>
+                                                    <div class="resize-handle se" data-dir="se" aria-hidden="true"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </t>
+                                    <div class="o_dashboard_drop_zone text-center text-muted py-5 border dashed" id="drop-zone" t-if="not items" style="grid-column: 1 / -1;" role="region" aria-label="Drop zone for widgets">
+                                        <i class="fa fa-plus-circle fa-3x mb-2" style="color: #ccc;"/>
+                                        <h5>Drop widgets here</h5>
+                                        <p>Drag widgets from the sidebar to start building</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </main>
+                        
+                        <!-- Widget Configuration Sidebar -->
+                        <aside class="col-md-3 col-lg-2 p-0 border-start o_widget_config" id="widget-config" style="display: none;" role="complementary" aria-label="Widget Configuration">
+                            <div class="p-3 h-100 overflow-auto">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h5 class="mb-0">Widget Settings</h5>
+                                    <button class="btn btn-sm btn-outline-secondary" data-action="close-config" aria-label="Close configuration">
+                                        <i class="fa fa-times"/>
+                                    </button>
+                                </div>
+                                <div id="widget-config-content">
+                                    <p class="text-muted text-center py-4">Select a widget to configure</p>
+                                </div>
+                            </div>
+                        </aside>
+                    </div>
+                </div>
+                
+                <!-- Grid overlay for visual feedback -->
+                <div class="o_grid_overlay" id="grid-overlay" style="display: none;" aria-hidden="true">
+                    <div class="grid-lines"></div>
+                </div>
+            </div>
+        </template>
+
+        <!-- Widget Configuration Modal Template -->
+        <template id="WidgetConfigModal" name="Widget Configuration Modal">
+            <div class="modal fade" id="widget-config-modal" tabindex="-1" aria-labelledby="widget-config-modal-label" aria-hidden="true">
+                <div class="modal-dialog modal-lg modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="widget-config-modal-label">Configure Widget</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="widget-config-form" class="o_widget_config_form">
+                                <div id="widget-config-fields">
+                                    <div class="text-center text-muted py-4">
+                                        <i class="fa fa-cog fa-2x mb-2"/>
+                                        <p>Loading widget configuration...</p>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-primary" data-action="save-config">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <!-- Add Widget Modal Template -->
+        <template id="AddWidgetModal" name="Add Widget Modal">
+            <div class="modal fade" id="add-widget-modal" tabindex="-1" aria-labelledby="add-widget-modal-label" aria-hidden="true">
+                <div class="modal-dialog modal-xl modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="add-widget-modal-label">Add Widget</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row g-3" id="add-widget-content">
+                                <div class="col-12">
+                                    <input type="text" class="form-control" placeholder="Search widgets..." id="add-widget-search" aria-label="Search widgets"/>
+                                </div>
+                                <t t-foreach="widget_categories" t-as="category">
+                                    <div class="col-12">
+                                        <h6 class="text-uppercase text-muted small border-bottom pb-2"><t t-out="category.label"/></h6>
+                                        <div class="row g-2" t-att-data-category="category.key">
+                                            <t t-foreach="widgets_by_category[category.key]" t-as="widget">
+                                                <div class="col-6 col-md-4 col-lg-3">
+                                                    <button type="button" class="btn btn-outline-secondary w-100 p-3 text-start o_add_widget_option"
+                                                            t-att-data-widget-id="widget.id"
+                                                            t-att-data-widget-xml-id="widget.xml_id"
+                                                            t-att-data-component="widget.component_name"
+                                                            aria-label="Add <t t-out="widget.name"/> widget">
+                                                        <i t-attf-class="fa {{ widget.icon }} fa-2x mb-2 d-block" t-att-style="color: {{ widget.color }}"/>
+                                                        <strong><t t-out="widget.name"/></strong>
+                                                        <div class="small text-muted"><t t-out="widget.description or ''"/></div>
+                                                    </button>
+                                                </div>
+                                            </t>
+                                        </div>
+                                    </div>
+                                </t>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <!-- Shared Dashboard View Template -->
+        <template id="DashboardSharedView" name="Shared Dashboard View">
+            <t t-call="web.layout">
+                <t t-set="title"><t t-out="dashboard.name"/></t>
+                <div class="o_dashboard_shared_view container-fluid p-0" t-att-data-dashboard-id="dashboard.id">
+                    <header class="o_dashboard_shared_header bg-light border-bottom">
+                        <div class="container py-3">
+                            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                                <div>
+                                    <h1 class="mb-1"><t t-out="dashboard.name"/></h1>
+                                    <p class="text-muted mb-0" t-if="dashboard.description"><t t-out="dashboard.description"/></p>
+                                </div>
+                                <div class="o_dashboard_shared_actions">
+                                    <button class="btn btn-sm btn-outline-primary" data-action="fullscreen">
+                                        <i class="fa fa-expand me-1"/> Fullscreen
+                                    </button>
+                                    <a class="btn btn-sm btn-secondary ms-2" t-att-href="embed_url" target="_blank" rel="noopener">
+                                        <i class="fa fa-code me-1"/> Embed Code
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </header>
+                    <main class="o_dashboard_grid_container">
+                        <div class="o_dashboard_grid" id="shared-dashboard-grid"
+                             t-att-style="'grid-template-columns: repeat(' + (dashboard.layout_config.columns or 12) + ', 1fr);'">
+                            <t t-foreach="items" t-as="item">
+                                <div class="o_dashboard_item_wrapper"
+                                     t-att-data-item-id="item.id"
+                                     t-att-data-x="item.pos_x"
+                                     t-att-data-y="item.pos_y"
+                                     t-att-data-w="item.width"
+                                     t-att-data-h="item.height"
+                                     t-att-data-widget="item.widget_xml_id"
+                                     style="grid-column: span var(--w, 6); grid-row: span var(--h, 4);">
+                                    <div class="o_dashboard_item_card h-100">
+                                        <div class="o_dashboard_item_content p-2" t-att-data-widget-component="item.component_name">
+                                            <div class="o_widget_placeholder text-center text-muted py-4">
+                                                <i class="fa fa-spinner fa-spin fa-2x"/> Loading...
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </t>
+                        </div>
+                    </main>
+                </div>
+            </t>
+        </template>
+
+        <!-- Widget Preview Template -->
+        <template id="WidgetPreview" name="Widget Preview">
+            <div class="o_widget_preview_card h-100 border rounded p-3" t-att-data-widget-id="widget.id">
+                <div class="text-center mb-3">
+                    <i t-attf-class="fa {{ widget.icon }} fa-3x" t-att-style="color: {{ widget.color }}"/>
+                </div>
+                <h6 class="text-center mb-2"><t t-out="widget.name"/></h6>
+                <p class="small text-muted text-center"><t t-out="widget.description or ''"/></p>
+                <div class="text-center mt-3">
+                    <span class="badge bg-secondary"><t t-out="widget.category"/></span>
+                </div>
+            </div>
+        </template>
+
+        <!-- Loading/Error State Templates -->
+        <template id="WidgetLoading" name="Widget Loading State">
+            <div class="o_widget_loading d-flex flex-column align-items-center justify-content-center h-100 p-4">
+                <div class="spinner-border text-primary mb-2" role="status" aria-label="Loading">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <span class="text-muted">Loading widget...</span>
+            </div>
+        </template>
+
+        <template id="WidgetError" name="Widget Error State">
+            <div class="o_widget_error d-flex flex-column align-items-center justify-content-center h-100 p-4 text-danger">
+                <i class="fa fa-exclamation-triangle fa-3x mb-2"/>
+                <h6>Widget Error</h6>
+                <p class="small text-muted text-center o_error_message"></p>
+                <button class="btn btn-sm btn-outline-primary mt-2" data-action="retry">Retry</button>
+            </div>
+        </template>
+
+        <!-- Widget Templates for Owl Components -->
+        
+        <!-- KPI Card Widget Template -->
+        <template id="KpiCardWidget" name="KPI Card Widget">
+            <div class="o_kpi_card h-100" t-att-class="widget_data.color and 'border-start border-4' + ' ' + widget_data.color or ''">
+                <div class="o_kpi_label"><t t-out="widget_data.label"/></div>
+                <div class="o_kpi_value" t-att-class="widget_data.color"><t t-out="widget_data.formatted_value"/></div>
+                <div class="o_kpi_trend" t-if="widget_data.trend is not none">
+                    <i t-att-class="widget_data.trend_icon" aria-hidden="true"/>
+                    <span class="o_kpi_trend_text" t-att-class="widget_data.trend > 0 ? 'text-success' : (widget_data.trend < 0 ? 'text-danger' : 'text-muted')">
+                        <t t-out="widget_data.trend_formatted"/>
+                    </span>
+                    <span class="text-muted ms-2">vs previous period</span>
+                </div>
+                <div class="o_kpi_target" t-if="widget_data.target is not none and widget_data.target > 0">
+                    <span><t t-out="widget_data.target_label"/>: <t t-out="widget_data.target"/></span>
+                    <div class="progress" style="height: 6px;">
+                        <div class="progress-bar" t-att-style="'width: ' + (widget_data.target_progress or 0) + '%'" role="progressbar" t-att-aria-valuenow="widget_data.target_progress" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <!-- Bar Chart Widget Template -->
+        <template id="BarChartWidget" name="Bar Chart Widget">
+            <div class="o_chart_widget h-100">
+                <canvas class="o_chart_canvas"></canvas>
+            </div>
+        </template>
+
+        <!-- Line Chart Widget Template -->
+        <template id="LineChartWidget" name="Line Chart Widget">
+            <div class="o_chart_widget h-100">
+                <canvas class="o_chart_canvas"></canvas>
+            </div>
+        </template>
+
+        <!-- Pie Chart Widget Template -->
+        <template id="PieChartWidget" name="Pie Chart Widget">
+            <div class="o_chart_widget h-100">
+                <canvas class="o_chart_canvas"></canvas>
+            </div>
+        </template>
+
+        <!-- Table Widget Template -->
+        <template id="TableWidget" name="Table Widget">
+            <div class="o_table_widget_wrapper h-100">
+                <div class="o_search_wrapper" t-if="show_search">
+                    <div class="input-group input-group-sm">
+                        <span class="input-group-text bg-transparent border-end-0"><i class="fa fa-search"/></span>
+                        <input type="text" class="form-control form-control-sm o_search_input border-start-0" placeholder="Search..." aria-label="Search table">
+                    </div>
+                </div>
+                <div class="table-responsive" style="flex: 1; min-height: 0;">
+                    <table class="table table-hover o_table_widget mb-0">
+                        <!-- Rendered by JS -->
+                    </table>
+                </div>
+                <nav class="o_pagination" aria-label="Table pagination" t-if="show_pagination" style="display: none;">
+                    <ul class="pagination pagination-sm justify-content-center mb-0"></ul>
+                </nav>
+            </div>
+        </template>
+
+        <!-- Pivot Table Widget Template -->
+        <template id="PivotTableWidget" name="Pivot Table Widget">
+            <div class="o_pivot_widget h-100">
+                <div class="o_pivot_container" style="height: 100%; overflow: auto;">
+                    <table class="table table-sm table-bordered mb-0">
+                        <!-- Rendered by JS -->
+                    </table>
+                </div>
+            </div>
+        </template>
+
+        <!-- Gauge Widget Template -->
+        <template id="GaugeWidget" name="Gauge Widget">
+            <div class="o_gauge_widget h-100">
+                <canvas class="o_gauge_canvas" width="300" height="200" aria-label="Gauge chart"></canvas>
+                <div class="o_gauge_info">
+                    <div class="o_gauge_value">0</div>
+                    <div class="o_gauge_label"></div>
+                    <div class="o_gauge_zone"></div>
+                </div>
+            </div>
+        </template>
+
+        <!-- Progress Bar Widget Template -->
+        <template id="ProgressBarWidget" name="Progress Bar Widget">
+            <div class="o_progress_widget h-100">
+                <div class="o_progress_header">
+                    <span class="o_progress_label"></span>
+                    <span class="o_progress_percentage d-none">0%</span>
+                </div>
+                <div class="o_progress_bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                    <div class="o_progress_fill" style="width: 0%"></div>
+                </div>
+                <div class="o_progress_values d-none"></div>
+            </div>
+        </template>
+
+        <!-- HTML Widget Template -->
+        <template id="HtmlWidget" name="HTML Widget">
+            <div class="o_html_widget h-100">
+                <div class="o_html_content"></div>
+            </div>
+        </template>
+
+        <!-- Action Buttons Widget Template -->
+        <template id="ActionButtonsWidget" name="Action Buttons Widget">
+            <div class="o_action_buttons_widget h-100">
+                <t t-foreach="buttons" t-as="button" t-index="index">
+                    <button type="button" class="o_action_button" t-att-data-action-index="index" t-att-style="'background-color: ' + (button.color or '#3498db')" t-att-title="button.label">
+                        <i t-attf-class="fa {{ button.icon or 'fa fa-bolt' }}"></i>
+                        <span><t t-out="button.label"/></span>
+                    </button>
+                </t>
+            </div>
+        </template>
+
+        <!-- Calendar Widget Template -->
+        <template id="CalendarWidget" name="Calendar Widget">
+            <div class="o_calendar_widget h-100">
+                <div class="o_calendar_canvas" id="calendar-canvas"></div>
+            </div>
+        </template>
+
+        <!-- Editor Item Template (for dynamic adding) -->
+        <template id="EditorItem" name="Editor Item">
+            <div class="o_dashboard_item_wrapper o_editor_item"
+                 t-att-data-item-id="item.id"
+                 t-att-data-x="item.pos_x"
+                 t-att-data-y="item.pos_y"
+                 t-att-data-w="item.width"
+                 t-att-data-h="item.height"
+                 t-att-data-locked="item.is_locked"
+                 t-att-data-widget="item.widget_xml_id"
+                 style="grid-column: span var(--w, 6); grid-row: span var(--h, 4);">
+                <div class="o_dashboard_item_card h-100 border">
+                    <div class="o_dashboard_item_header d-flex justify-content-between align-items-center p-2 bg-light border-bottom">
+                        <span class="o_dashboard_item_title fw-bold small"><t t-out="item.widget_name"/></span>
+                        <div class="o_dashboard_item_controls">
+                            <button class="btn btn-sm btn-outline-secondary p-1" data-action="configure" title="Configure" aria-label="Configure widget">
+                                <i class="fa fa-cog"/>
+                            </button>
+                            <button class="btn btn-sm btn-outline-secondary p-1" data-action="lock" title="Lock Position" t-att-class="item.is_locked ? 'active' : ''" aria-label="Lock position" aria-pressed="false">
+                                <i class="fa fa-lock"/>
+                            </button>
+                            <button class="btn btn-sm btn-outline-secondary p-1" data-action="visibility" title="Toggle Visibility" t-att-class="item.is_visible ? '' : 'text-muted'" aria-label="Toggle visibility" aria-pressed="true">
+                                <i class="fa" t-att-class="item.is_visible ? 'fa-eye' : 'fa-eye-slash'"/>
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger p-1" data-action="remove" title="Remove" aria-label="Remove widget">
+                                <i class="fa fa-trash"/>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="o_dashboard_item_content p-2" t-att-data-widget-component="item.component_name">
+                        <div class="o_widget_editor_placeholder text-center text-muted py-4">
+                            <i t-attf-class="fa {{ item.widget_icon }} fa-2x mb-2" t-att-style="color: {{ item.widget_color }}"/>
+                            <div><t t-out="item.widget_name"/></div>
+                            <small>Drag to reposition, resize from corners</small>
+                        </div>
+                    </div>
+                    <div class="o_dashboard_item_resize_handles">
+                        <div class="resize-handle nw" data-dir="nw" aria-hidden="true"></div>
+                        <div class="resize-handle ne" data-dir="ne" aria-hidden="true"></div>
+                        <div class="resize-handle sw" data-dir="sw" aria-hidden="true"></div>
+                        <div class="resize-handle se" data-dir="se" aria-hidden="true"></div>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <!-- Dashboard Builder Widget Palette Item -->
+        <template id="WidgetPaletteItem" name="Widget Palette Item">
+            <div class="o_widget_palette_item p-2 mb-2 border rounded bg-white cursor-grab shadow-sm"
+                 t-att-data-widget-id="widget.id"
+                 t-att-data-widget-xml-id="widget.xml_id"
+                 t-att-data-component="widget.component_name"
+                 draggable="true"
+                 role="button"
+                 tabindex="0"
+                 t-att-aria-label="'Add ' + widget.name + ' widget'">
+                <div class="d-flex align-items-center">
+                    <i class="fa fa-grip-lines me-2 text-muted" title="Drag to dashboard" aria-hidden="true"/>
+                    <i t-attf-class="me-2 {{ widget.icon }}" t-att-style="color: {{ widget.color }}" aria-hidden="true"/>
+                    <span class="flex-grow-1 text-truncate"><t t-out="widget.name"/></span>
+                </div>
+                <small class="text-muted d-block mt-1"><t t-out="widget.description or ''"/></small>
+            </div>
+        </template>
+
+        <!-- Dashboard Builder Widget Config Form -->
+        <template id="WidgetConfigForm" name="Widget Config Form">
+            <div class="o_widget_config_form">
+                <t t-if="schema.properties">
+                    <t t-foreach="schema.properties" t-as="prop" t-key="prop.key">
+                        <div class="mb-3">
+                            <label class="form-label"><t t-out="prop.title or prop.key"/> <span class="text-danger" t-if="schema.required and prop.key in schema.required">*</span></label>
+                            <t t-if="prop.type == 'boolean'">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" t-att-name="prop.key" t-att-checked="config.get(prop.key, prop.default or False)"/>
+                                    <label class="form-check-label"><t t-out="prop.title or prop.key"/></label>
+                                </div>
+                            </t>
+                            <t t-elif="prop.type == 'string' and prop.format == 'textarea'">
+                                <textarea class="form-control" t-att-name="prop.key" rows="4"><t t-out="config.get(prop.key, prop.default or '')"/></textarea>
+                            </t>
+                            <t t-elif="prop.type == 'string' and prop.enum">
+                                <select class="form-select" t-att-name="prop.key">
+                                    <option value="">Select...</option>
+                                    <t t-foreach="prop.enum" t-as="opt">
+                                        <option t-att-value="opt" t-att-selected="config.get(prop.key) == opt"><t t-out="opt"/></option>
+                                    </t>
+                                </select>
+                            </t>
+                            <t t-elif="prop.type == 'integer' or prop.type == 'number'">
+                                <input type="number" class="form-control" t-att-name="prop.key" t-att-step="prop.type == 'integer' and '1' or 'any'" t-att-value="config.get(prop.key, prop.default or 0)"/>
+                            </t>
+                            <t t-elif="prop.type == 'array' or prop.type == 'object'">
+                                <div class="o_json_field" t-att-data-field="prop.key">
+                                    <textarea class="form-control font-monospace small" rows="6" t-att-name="prop.key"><t t-out="json.dumps(config.get(prop.key, prop.default or ({} if prop.type == 'object' else [])), indent=2)"/></textarea>
+                                    <small class="form-text text-muted">JSON <t t-out="prop.type"/></small>
+                                </div>
+                            </t>
+                            <t t-else="">
+                                <input type="text" class="form-control" t-att-name="prop.key" t-att-value="config.get(prop.key, prop.default or '')"/>
+                            </t>
+                            <small class="form-text text-muted" t-if="prop.description"><t t-out="prop.description"/></small>
+                        </div>
+                    </t>
+                </t>
+                <t t-if="not schema.properties">
+                    <div class="alert alert-info">No configuration schema defined for this widget.</div>
+                </t>
+            </div>
+        </template>
+
+        <!-- Grid Overlay Template -->
+        <template id="GridOverlay" name="Grid Overlay">
+            <div class="o_grid_overlay" aria-hidden="true">
+                <div class="grid-lines"></div>
+            </div>
+        </template>
+
+        <!-- Kanban Card Template for Dashboard Builder -->
+        <template id="card" name="Dashboard Builder Kanban Card">
+            <div class="o_dashboard_kanban_card o_kanban_card o_kanban_global_click">
+                <div class="o_kanban_card_header">
+                    <div class="o_kanban_card_title">
+                        <field name="name"/>
+                    </div>
+                </div>
+                <div class="o_kanban_card_body">
+                    <field name="description" widget="html" options="{'sanitize': true}"/>
+                </div>
+                <div class="o_kanban_card_footer">
+                    <field name="user_id" widget="many2one" options="{'no_open': True, 'no_create': True}"/>
+                    <span class="ms-2">|</span>
+                    <span class="ms-1"><i class="fa fa-cubes"/> <field name="item_count"/></span>
+                    <span class="ms-2" t-if="is_public"><i class="fa fa-globe"/> Public</span>
+                </div>
+            </div>
+        </template>
+    </data>
+</odoo>

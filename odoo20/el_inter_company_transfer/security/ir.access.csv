@@ -1,0 +1,5 @@
+id,name,model_id,group_id/id,operation,domain
+access_inter_company_transfer_request_user,Inter Company Transfer Request User,inter.company.transfer.request,stock.group_stock_user,crud,"['|', ('company_id', 'in', company_ids), ('dest_company_id', 'in', company_ids)]"
+access_inter_company_transfer_request_manager,Inter Company Transfer Request Manager,inter.company.transfer.request,stock.group_stock_manager,crud,
+access_inter_company_transfer_request_line_user,Inter Company Transfer Request Line User,inter.company.transfer.request.line,stock.group_stock_user,crud,"['|', ('request_id.company_id', 'in', company_ids), ('request_id.dest_company_id', 'in', company_ids)]"
+access_inter_company_transfer_request_line_manager,Inter Company Transfer Request Line Manager,inter.company.transfer.request.line,stock.group_stock_manager,crud,

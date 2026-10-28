@@ -1,0 +1,283 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+    <data noupdate="1">
+        <!-- Demo Dashboard 1: Sales Overview -->
+        <record id="demo_dashboard_sales" model="dashboard.builder">
+            <field name="name">Sales Overview</field>
+            <field name="description" type="html"><p>Executive dashboard showing key sales metrics and trends.</p></field>
+            <field name="is_public">True</field>
+            <field name="layout_config" eval="{'columns': 12, 'rowHeight': 100, 'margin': [10, 10], 'cols': {'lg': 12, 'md': 10, 'sm': 6, 'xs': 4, 'xxs': 2}}"/>
+            <field name="background_color">#f5f6f8</field>
+            <field name="refresh_interval">300</field>
+        </record>
+
+        <!-- Demo Dashboard 2: HR Analytics -->
+        <record id="demo_dashboard_hr" model="dashboard.builder">
+            <field name="name">HR Analytics</field>
+            <field name="description" type="html"><p>Human resources dashboard with attendance, leave, and employee metrics.</p></field>
+            <field name="is_public">True</field>
+            <field name="layout_config" eval="{'columns': 12, 'rowHeight': 100, 'margin': [10, 10], 'cols': {'lg': 12, 'md': 10, 'sm': 6, 'xs': 4, 'xxs': 2}}"/>
+            <field name="background_color">#f5f6f8</field>
+        </record>
+
+        <!-- Demo Dashboard 3: Inventory Management -->
+        <record id="demo_dashboard_inventory" model="dashboard.builder">
+            <field name="name">Inventory Management</field>
+            <field name="description" type="html"><p>Warehouse and inventory tracking dashboard.</p></field>
+            <field name="is_public">True</field>
+            <field name="layout_config" eval="{'columns': 12, 'rowHeight': 100, 'margin': [10, 10], 'cols': {'lg': 12, 'md': 10, 'sm': 6, 'xs': 4, 'xxs': 2}}"/>
+            <field name="background_color">#f5f6f8</field>
+        </record>
+
+        <!-- Demo Dashboard Items for Sales Overview -->
+        <record id="demo_item_total_revenue" model="dashboard.builder.item">
+            <field name="dashboard_id" ref="demo_dashboard_sales"/>
+            <field name="widget_id" ref="widget_kpi_card"/>
+            <field name="pos_x">0</field>
+            <field name="pos_y">0</field>
+            <field name="width">3</field>
+            <field name="height">4</field>
+            <field name="config" eval="{'model': 'sale.order', 'field': 'amount_total', 'aggregation': 'sum', 'label': 'Total Revenue', 'prefix': '$', 'precision': 0, 'domain': [['state', 'in', ['sale', 'done']]], 'target_value': 1000000, 'target_label': 'Annual Target'}"/>
+        </record>
+
+        <record id="demo_item_order_count" model="dashboard.builder.item">
+            <field name="dashboard_id" ref="demo_dashboard_sales"/>
+            <field name="widget_id" ref="widget_kpi_card"/>
+            <field name="pos_x">3</field>
+            <field name="pos_y">0</field>
+            <field name="width">3</field>
+            <field name="height">4</field>
+            <field name="config" eval="{'model': 'sale.order', 'field': 'id', 'aggregation': 'count', 'label': 'Orders', 'domain': [['state', 'in', ['sale', 'done']]], 'target_value': 500}"/>
+        </record>
+
+        <record id="demo_item_avg_order" model="dashboard.builder.item">
+            <field name="dashboard_id" ref="demo_dashboard_sales"/>
+            <field name="widget_id" ref="widget_kpi_card"/>
+            <field name="pos_x">6</field>
+            <field name="pos_y">0</field>
+            <field name="width">3</field>
+            <field name="height">4</field>
+            <field name="config" eval="{'model': 'sale.order', 'field': 'amount_total', 'aggregation': 'avg', 'label': 'Avg Order Value', 'prefix': '$', 'precision': 2, 'domain': [['state', 'in', ['sale', 'done']]]}"/>
+        </record>
+
+        <record id="demo_item_conversion" model="dashboard.builder.item">
+            <field name="dashboard_id" ref="demo_dashboard_sales"/>
+            <field name="widget_id" ref="widget_kpi_card"/>
+            <field name="pos_x">9</field>
+            <field name="pos_y">0</field>
+            <field name="width">3</field>
+            <field name="height">4</field>
+            <field name="config" eval="{'model': 'crm.lead', 'field': 'id', 'aggregation': 'count', 'label': 'Leads', 'domain': [['type', '=', 'opportunity']]}"/>
+        </record>
+
+        <record id="demo_item_revenue_trend" model="dashboard.builder.item">
+            <field name="dashboard_id" ref="demo_dashboard_sales"/>
+            <field name="widget_id" ref="widget_line_chart"/>
+            <field name="pos_x">0</field>
+            <field name="pos_y">4</field>
+            <field name="width">8</field>
+            <field name="height">6</field>
+            <field name="config" eval="{'model': 'sale.order', 'x_field': 'date_order', 'y_field': 'amount_total', 'aggregation': 'sum', 'domain': [['state', 'in', ['sale', 'done']]], 'time_granularity': 'month', 'group_by': 'team_id', 'y_axis_label': 'Revenue ($)', 'fill_area': True}"/>
+        </record>
+
+        <record id="demo_item_top_products" model="dashboard.builder.item">
+            <field name="dashboard_id" ref="demo_dashboard_sales"/>
+            <field name="widget_id" ref="widget_bar_chart"/>
+            <field name="pos_x">8</field>
+            <field name="pos_y">4</field>
+            <field name="width">4</field>
+            <field name="height">6</field>
+            <field name="config" eval="{'model': 'sale.order.line', 'x_field': 'product_id', 'y_field': 'price_subtotal', 'aggregation': 'sum', 'orientation': 'horizontal', 'limit': 10, 'y_axis_label': 'Revenue ($)'}"/>
+        </record>
+
+        <record id="demo_item_sales_by_team" model="dashboard.builder.item">
+            <field name="dashboard_id" ref="demo_dashboard_sales"/>
+            <field name="widget_id" ref="widget_pie_chart"/>
+            <field name="pos_x">0</field>
+            <field name="pos_y">10</field>
+            <field name="width">6</field>
+            <field name="height">5</field>
+            <field name="config" eval="{'model': 'sale.order', 'label_field': 'team_id', 'value_field': 'amount_total', 'aggregation': 'sum', 'domain': [['state', 'in', ['sale', 'done']]], 'chart_type': 'doughnut', 'label_format': 'both'}"/>
+        </record>
+
+        <record id="demo_item_recent_orders" model="dashboard.builder.item">
+            <field name="dashboard_id" ref="demo_dashboard_sales"/>
+            <field name="widget_id" ref="widget_table"/>
+            <field name="pos_x">6</field>
+            <field name="pos_y">10</field>
+            <field name="width">6</field>
+            <field name="height">6</field>
+            <field name="config" eval="{'model': 'sale.order', 'fields': [{'name': 'name', 'label': 'Order', 'width': 120}, {'name': 'partner_id', 'label': 'Customer', 'width': 200, 'format': 'many2one'}, {'name': 'date_order', 'label': 'Date', 'width': 120, 'format': 'date'}, {'name': 'amount_total', 'label': 'Amount', 'width': 120, 'format': 'currency'}, {'name': 'state', 'label': 'Status', 'width': 100, 'format': 'text'}], 'order': 'date_order desc', 'limit': 10, 'domain': [['state', 'in', ['sale', 'done']]]}"/>
+        </record>
+
+        <!-- Demo Dashboard Items for HR Analytics -->
+        <record id="demo_item_total_employees" model="dashboard.builder.item">
+            <field name="dashboard_id" ref="demo_dashboard_hr"/>
+            <field name="widget_id" ref="widget_kpi_card"/>
+            <field name="pos_x">0</field>
+            <field name="pos_y">0</field>
+            <field name="width">3</field>
+            <field name="height">4</field>
+            <field name="config">
+{"model": "hr.employee", "field": "id", "aggregation": "count", "label": "Total Employees", "domain": [["active", "=", True]]}
+</field>
+        </record>
+
+        <record id="demo_item_new_hires" model="dashboard.builder.item">
+            <field name="dashboard_id" ref="demo_dashboard_hr"/>
+            <field name="widget_id" ref="widget_kpi_card"/>
+            <field name="pos_x">3</field>
+            <field name="pos_y">0</field>
+            <field name="width">3</field>
+            <field name="height">4</field>
+            <field name="config" eval="{'model': 'hr.employee', 'field': 'id', 'aggregation': 'count', 'label': 'New Hires (30d)', 'domain': [['create_date', '&gt;=', &quot;(Date.today() - timedelta(days=30)).strftime('%Y-%m-%d')&quot;]]}"/>
+        </record>
+
+        <record id="demo_item_attendance_rate" model="dashboard.builder.item">
+            <field name="dashboard_id" ref="demo_dashboard_hr"/>
+            <field name="widget_id" ref="widget_gauge"/>
+            <field name="pos_x">6</field>
+            <field name="pos_y">0</field>
+            <field name="width">3</field>
+            <field name="height">5</field>
+            <field name="config" eval="{'model': 'hr.attendance', 'field': 'worked_hours', 'aggregation': 'avg', 'label': 'Avg Daily Hours', 'min_value': 0, 'max_value': 10, 'suffix': 'h', 'precision': 1, 'zones': [{'from': 0, 'to': 6, 'color': '#e74c3c', 'label': 'Low'}, {'from': 6, 'to': 8, 'color': '#f39c12', 'label': 'Normal'}, {'from': 8, 'to': 10, 'color': '#2ecc71', 'label': 'High'}]}"/>
+        </record>
+
+        <record id="demo_item_leave_balance" model="dashboard.builder.item">
+            <field name="dashboard_id" ref="demo_dashboard_hr"/>
+            <field name="widget_id" ref="widget_kpi_card_grouped"/>
+            <field name="pos_x">9</field>
+            <field name="pos_y">0</field>
+            <field name="width">3</field>
+            <field name="height">4</field>
+            <field name="config" eval="{'model': 'hr.leave', 'field': 'number_of_days', 'group_by': 'holiday_status_id', 'aggregation': 'sum', 'domain': [['state', '=', 'validate']], 'limit': 5}"/>
+        </record>
+
+        <record id="demo_item_attendance_trend" model="dashboard.builder.item">
+            <field name="dashboard_id" ref="demo_dashboard_hr"/>
+            <field name="widget_id" ref="widget_line_chart"/>
+            <field name="pos_x">0</field>
+            <field name="pos_y">4</field>
+            <field name="width">12</field>
+            <field name="height">6</field>
+            <field name="config" eval="{'model': 'hr.attendance', 'x_field': 'check_in', 'y_field': 'worked_hours', 'aggregation': 'avg', 'time_granularity': 'week', 'y_axis_label': 'Avg Hours', 'fill_area': True}"/>
+        </record>
+
+        <record id="demo_item_dept_distribution" model="dashboard.builder.item">
+            <field name="dashboard_id" ref="demo_dashboard_hr"/>
+            <field name="widget_id" ref="widget_pie_chart"/>
+            <field name="pos_x">0</field>
+            <field name="pos_y">10</field>
+            <field name="width">6</field>
+            <field name="height">5</field>
+            <field name="config">
+{"model": "hr.employee", "label_field": "department_id", "value_field": "id", "aggregation": "count", "domain": [["active", "=", True]]}
+</field>
+        </record>
+
+        <record id="demo_item_employee_table" model="dashboard.builder.item">
+            <field name="dashboard_id" ref="demo_dashboard_hr"/>
+            <field name="widget_id" ref="widget_table"/>
+            <field name="pos_x">6</field>
+            <field name="pos_y">10</field>
+            <field name="width">6</field>
+            <field name="height">6</field>
+            <field name="config" eval="{'model': 'hr.employee', 'fields': [{'name': 'name', 'label': 'Employee', 'width': 200}, {'name': 'job_id', 'label': 'Job Title', 'width': 200, 'format': 'many2one'}, {'name': 'department_id', 'label': 'Department', 'width': 150, 'format': 'many2one'}, {'name': 'work_email', 'label': 'Email', 'width': 200}], 'order': 'name', 'limit': 15}"/>
+        </record>
+
+        <!-- Demo Dashboard Items for Inventory -->
+        <record id="demo_item_stock_value" model="dashboard.builder.item">
+            <field name="dashboard_id" ref="demo_dashboard_inventory"/>
+            <field name="widget_id" ref="widget_kpi_card"/>
+            <field name="pos_x">0</field>
+            <field name="pos_y">0</field>
+            <field name="width">3</field>
+            <field name="height">4</field>
+            <field name="config" eval="{'model': 'stock.quant', 'field': 'inventory_value', 'aggregation': 'sum', 'label': 'Stock Value', 'prefix': '$', 'precision': 2}"/>
+        </record>
+
+        <record id="demo_item_low_stock" model="dashboard.builder.item">
+            <field name="dashboard_id" ref="demo_dashboard_inventory"/>
+            <field name="widget_id" ref="widget_kpi_card"/>
+            <field name="pos_x">3</field>
+            <field name="pos_y">0</field>
+            <field name="width">3</field>
+            <field name="height">4</field>
+            <field name="config" eval="{'model': 'product.product', 'field': 'id', 'aggregation': 'count', 'label': 'Low Stock Items', 'domain': [['qty_available', '&lt;=', '10'], ['type', '=', 'product']]}"/>
+        </record>
+
+        <record id="demo_item_turnover" model="dashboard.builder.item">
+            <field name="dashboard_id" ref="demo_dashboard_inventory"/>
+            <field name="widget_id" ref="widget_gauge"/>
+            <field name="pos_x">6</field>
+            <field name="pos_y">0</field>
+            <field name="width">3</field>
+            <field name="height">5</field>
+            <field name="config" eval="{'model': 'stock.move', 'field': 'product_qty', 'aggregation': 'sum', 'label': 'Monthly Moves', 'min_value': 0, 'max_value': 10000, 'zones': [{'from': 0, 'to': 3000, 'color': '#e74c3c', 'label': 'Low'}, {'from': 3000, 'to': 7000, 'color': '#f39c12', 'label': 'Normal'}, {'from': 7000, 'to': 10000, 'color': '#2ecc71', 'label': 'High'}]}"/>
+        </record>
+
+        <record id="demo_item_stock_moves" model="dashboard.builder.item">
+            <field name="dashboard_id" ref="demo_dashboard_inventory"/>
+            <field name="widget_id" ref="widget_line_chart"/>
+            <field name="pos_x">9</field>
+            <field name="pos_y">0</field>
+            <field name="width">3</field>
+            <field name="height">5</field>
+            <field name="config" eval="{'model': 'stock.move', 'x_field': 'date', 'y_field': 'product_qty', 'aggregation': 'sum', 'time_granularity': 'day', 'y_axis_label': 'Qty Moved'}"/>
+        </record>
+
+        <record id="demo_item_top_moving" model="dashboard.builder.item">
+            <field name="dashboard_id" ref="demo_dashboard_inventory"/>
+            <field name="widget_id" ref="widget_bar_chart"/>
+            <field name="pos_x">0</field>
+            <field name="pos_y">4</field>
+            <field name="width">12</field>
+            <field name="height">6</field>
+            <field name="config" eval="{'model': 'stock.move', 'x_field': 'product_id', 'y_field': 'product_qty', 'aggregation': 'sum', 'orientation': 'horizontal', 'limit': 15, 'y_axis_label': 'Quantity'}"/>
+        </record>
+
+        <record id="demo_item_stock_by_location" model="dashboard.builder.item">
+            <field name="dashboard_id" ref="demo_dashboard_inventory"/>
+            <field name="widget_id" ref="widget_pivot_table"/>
+            <field name="pos_x">0</field>
+            <field name="pos_y">10</field>
+            <field name="width">12</field>
+            <field name="height">7</field>
+            <field name="config" eval="{'model': 'stock.quant', 'row_fields': ['location_id', 'product_id'], 'col_fields': [], 'measure_fields': [{'field': 'quantity', 'aggregation': 'sum', 'label': 'Qty'}], 'limit': 50}"/>
+        </record>
+
+        <!-- Demo Tags -->
+        <record id="demo_tag_sales" model="dashboard.builder.tag">
+            <field name="name">Sales</field>
+            <field name="color">1</field>
+        </record>
+
+        <record id="demo_tag_hr" model="dashboard.builder.tag">
+            <field name="name">HR</field>
+            <field name="color">2</field>
+        </record>
+
+        <record id="demo_tag_inventory" model="dashboard.builder.tag">
+            <field name="name">Inventory</field>
+            <field name="color">3</field>
+        </record>
+
+        <record id="demo_tag_executive" model="dashboard.builder.tag">
+            <field name="name">Executive</field>
+            <field name="color">4</field>
+        </record>
+
+        <!-- Link tags to demo dashboards -->
+        <record id="demo_dashboard_sales" model="dashboard.builder">
+            <field name="tag_ids" eval="[(6, 0, [ref('demo_tag_sales'), ref('demo_tag_executive')])]"/>
+        </record>
+
+        <record id="demo_dashboard_hr" model="dashboard.builder">
+            <field name="tag_ids" eval="[(6, 0, [ref('demo_tag_hr')])]"/>
+        </record>
+
+        <record id="demo_dashboard_inventory" model="dashboard.builder">
+            <field name="tag_ids" eval="[(6, 0, [ref('demo_tag_inventory')])]"/>
+        </record>
+    </data>
+</odoo>

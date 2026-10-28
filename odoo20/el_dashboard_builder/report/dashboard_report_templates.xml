@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="action_report_dashboard" model="ir.actions.report">
+            <field name="name">Dashboard</field>
+            <field name="model">dashboard.builder</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">el_dashboard_builder.dashboard_pdf_report</field>
+            <field name="print_report_name">'Dashboard - %s' % object.name</field>
+            <field name="binding_model_id" ref="model_dashboard_builder"/>
+            <field name="binding_type">report</field>
+        </record>
+
+        <!-- Dashboard PDF Report Template -->
+        <template id="dashboard_pdf_report" name="Dashboard PDF Report">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="dashboard">
+                    <div class="page" style="padding: 20mm;">
+                        <div class="o_dashboard_pdf_header mb-4 pb-3 border-bottom">
+                            <h1 class="mb-1" style="font-size: 28px; font-weight: 700; color: #2c3e5e;"><t t-out="dashboard.name"/></h1>
+                            <p class="text-muted mb-0" t-if="dashboard.description"><t t-out="dashboard.description"/></p>
+                        </div>
+                        
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <table class="table table-sm table-borderless">
+                                    <tbody>
+                                        <tr><td class="text-muted" style="width: 150px;">Owner:</td><td><t t-out="dashboard.user_id.name"/></td></tr>
+                                        <tr><td class="text-muted">Company:</td><td><t t-out="dashboard.company_id.name"/></td></tr>
+                                        <tr><td class="text-muted">Created:</td><td><t t-out="dashboard.create_date.strftime('%Y-%m-%d %H:%M') if dashboard.create_date else ''"/></td></tr>
+                                        <tr><td class="text-muted">Last Viewed:</td><td><t t-out="dashboard.last_viewed.strftime('%Y-%m-%d %H:%M') if dashboard.last_viewed else 'Never'"/></td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-md-6">
+                                <table class="table table-sm table-borderless">
+                                    <tbody>
+                                        <tr><td class="text-muted" style="width: 150px;">View Count:</td><td><t t-out="dashboard.view_count"/></td></tr>
+                                        <tr><td class="text-muted">Public:</td><td><t t-out="dashboard.is_public and 'Yes' or 'No'"/></td></tr>
+                                        <tr><td class="text-muted">Refresh Interval:</td><td><t t-out="dashboard.refresh_interval and str(dashboard.refresh_interval) + 's' or 'Disabled'"/></td></tr>
+                                        <tr><td class="text-muted">Widgets:</td><td><t t-out="len(dashboard.item_ids)"/></td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        <h2 class="mt-4 mb-3" style="font-size: 20px; font-weight: 600; color: #2c3e5e;">Widgets</h2>
+                        
+                        <t t-foreach="dashboard.item_ids.filtered(lambda i: i.is_visible)" t-as="item">
+                            <div class="o_dashboard_pdf_widget mb-4 p-3 border rounded bg-light">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <h3 class="mb-0" style="font-size: 16px; font-weight: 600;"><t t-out="item.widget_id.name if item.widget_id else item.custom_widget_name"/></h3>
+                                    <small class="text-muted">
+                                        <t t-if="item.widget_id"><t t-out="item.widget_id.category"/> | </t>
+                                        Position: <t t-out="item.pos_x"/>,<t t-out="item.pos_y"/> | Size: <t t-out="item.width"/>x<t t-out="item.height"/>
+                                    </small>
+                                </div>
+                                <div class="o_widget_config_preview">
+                                    <pre class="small bg-white p-2 rounded border"><t t-out="json.dumps(item.config, indent=2)"/></pre>
+                                </div>
+                            </div>
+                        </t>
+                        
+                        <div class="o_dashboard_pdf_footer mt-5 pt-3 border-top text-center text-muted small">
+                            <p class="mb-0">Generated on <t t-out="datetime.now().strftime('%Y-%m-%d %H:%M')"/></p>
+                            <p class="mb-0">Dashboard Builder - Odoo 20 Enterprise</p>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

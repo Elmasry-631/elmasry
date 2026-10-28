@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Inter Company Transfer Request Views -->
+
+    <!-- List View -->
+    <record id="view_inter_company_transfer_request_tree" model="ir.ui.view">
+        <field name="name">inter.company.transfer.request.tree</field>
+        <field name="model">inter.company.transfer.request</field>
+        <field name="arch" type="xml">
+            <list string="Inter Company Transfer Requests" decoration-info="state == 'draft'" decoration-success="state == 'done'" decoration-danger="state == 'cancel'" decoration-warning="state == 'confirmed'">
+                <field name="name"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="source_warehouse_id"/>
+                <field name="dest_company_id" groups="base.group_multi_company"/>
+                <field name="dest_warehouse_id"/>
+                <field name="user_id"/>
+                <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-warning="state == 'confirmed'" decoration-success="state == 'done'" decoration-danger="state == 'cancel'"/>
+                <field name="confirmed_date"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_inter_company_transfer_request_form" model="ir.ui.view">
+        <field name="name">inter.company.transfer.request.form</field>
+        <field name="model">inter.company.transfer.request</field>
+        <field name="arch" type="xml">
+            <form string="Inter Company Transfer Request">
+                <header>
+                    <button name="action_confirm" string="Confirm" type="object" class="btn-primary" invisible="state != 'draft'" groups="stock.group_stock_user"/>
+                    <button name="action_done" string="Mark Done" type="object" class="btn-primary" invisible="state != 'confirmed'" groups="stock.group_stock_user"/>
+                    <button name="action_cancel" string="Cancel" type="object" invisible="state not in ('draft', 'confirmed')" groups="stock.group_stock_user"/>
+                    <button name="action_reset_to_draft" string="Reset to Draft" type="object" invisible="state != 'cancel'" groups="stock.group_stock_manager"/>
+                    <button name="action_view_picking" string="View Outgoing" type="object" invisible="not picking_id" class="btn-secondary" groups="stock.group_stock_user"/>
+                    <button name="action_view_incoming_picking" string="View Incoming" type="object" invisible="not incoming_picking_id" class="btn-secondary" groups="stock.group_stock_user"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,done,cancel" readonly="1"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_picking" type="object" class="oe_stat_button" icon="fa-truck" invisible="not picking_id" groups="stock.group_stock_user">
+                            <field name="picking_id" widget="statinfo" string="Outgoing"/>
+                        </button>
+                        <button name="action_view_incoming_picking" type="object" class="oe_stat_button" icon="fa-download" invisible="not incoming_picking_id" groups="stock.group_stock_user">
+                            <field name="incoming_picking_id" widget="statinfo" string="Incoming"/>
+                        </button>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-6">
+                            <field name="name" readonly="1"/>
+                        </div>
+                        <div class="col-6">
+                            <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-warning="state == 'confirmed'" decoration-success="state == 'done'" decoration-danger="state == 'cancel'" readonly="1"/>
+                        </div>
+                    </div>
+                    <group string="Request Information">
+                        <group string="Requesting Company (Goods Recipient)">
+                            <field name="company_id" readonly="1" groups="base.group_multi_company"/>
+                            <field name="source_warehouse_id" required="1" readonly="not is_draft" domain="[('company_id', '=', company_id)]"/>
+                        </group>
+                        <group string="Source Company (Stock Owner)">
+                            <field name="dest_company_id" required="1" readonly="not is_draft" domain="[('id', '!=', company_id)]"/>
+                            <field name="dest_warehouse_id" required="1" readonly="not is_draft" domain="[('company_id', '=', dest_company_id)]"/>
+                        </group>
+                    </group>
+                    <group string="Details">
+                        <field name="user_id" readonly="1"/>
+                        <field name="confirmed_by" readonly="1"/>
+                        <field name="confirmed_date" readonly="1"/>
+                    </group>
+                    <notebook>
+                        <page string="Products" name="products">
+                            <field name="line_ids" readonly="not is_draft">
+                                <list string="Products" editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="product_id" required="1"/>
+                                    <field name="product_uom_id" required="1"/>
+                                    <field name="product_qty" required="1" string="Requested Qty"/>
+                                    <field name="available_qty" readonly="1" string="Available in Source" optional="show"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Notes" name="notes">
+                            <field name="note" placeholder="Internal notes..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_inter_company_transfer_request_search" model="ir.ui.view">
+        <field name="name">inter.company.transfer.request.search</field>
+        <field name="model">inter.company.transfer.request</field>
+        <field name="arch" type="xml">
+            <search string="Inter Company Transfer Requests">
+                <field name="name" string="Reference"/>
+                <field name="company_id" string="Requesting Company"/>
+                <field name="dest_company_id" string="Source Company"/>
+                <field name="source_warehouse_id" string="Destination Warehouse"/>
+                <field name="dest_warehouse_id" string="Source Warehouse"/>
+                <field name="user_id" string="Requested By"/>
+                <filter name="draft" string="Draft" domain="[('state', '=', 'draft')]"/>
+                <filter name="confirmed" string="Confirmed" domain="[('state', '=', 'confirmed')]"/>
+                <filter name="done" string="Done" domain="[('state', '=', 'done')]"/>
+                <filter name="cancel" string="Cancelled" domain="[('state', '=', 'cancel')]"/>
+                <filter name="my_requests" string="My Requests" domain="[('user_id', '=', uid)]"/>
+                <group>
+                    <filter name="group_by_state" string="Status" context="{'group_by': 'state'}"/>
+                    <filter name="group_by_company" string="Requesting Company" context="{'group_by': 'company_id'}"/>
+                    <filter name="group_by_dest_company" string="Source Company" context="{'group_by': 'dest_company_id'}"/>
+                    <filter name="group_by_user" string="Requested By" context="{'group_by': 'user_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Kanban View -->
+    <record id="view_inter_company_transfer_request_kanban" model="ir.ui.view">
+        <field name="name">inter.company.transfer.request.kanban</field>
+        <field name="model">inter.company.transfer.request</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_card" default_group_by="state" sample="1">
+                <field name="name"/>
+                <field name="state"/>
+                <field name="company_id"/>
+                <field name="dest_company_id"/>
+                <field name="source_warehouse_id"/>
+                <field name="dest_warehouse_id"/>
+                <field name="user_id"/>
+                <templates>
+                    <t t-name="card">
+                        <div class="oe_kanban_global_click">
+                            <div class="oe_kanban_details">
+                                <strong class="o_kanban_record_title">
+                                    <field name="name"/>
+                                </strong>
+                                <div class="text-muted">
+                                    <field name="source_warehouse_id"/> ← <field name="dest_warehouse_id"/>
+                                </div>
+                                <div class="text-muted small">
+                                    <field name="company_id"/> ← <field name="dest_company_id"/>
+                                </div>
+                                <div class="mt-2">
+                                    <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-warning="state == 'confirmed'" decoration-success="state == 'done'" decoration-danger="state == 'cancel'"/>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_inter_company_transfer_request" model="ir.actions.act_window">
+        <field name="name">Inter Company Transfer Requests</field>
+        <field name="res_model">inter.company.transfer.request</field>
+        <field name="view_mode">kanban,list,form,search</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new inter-company transfer request
+            </p>
+            <p>
+                Request stock transfers between warehouses of different companies.
+            </p>
+        </field>
+    </record>
+
+</odoo>

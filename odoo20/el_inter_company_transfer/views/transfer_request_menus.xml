@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Menu Items for Inter Company Transfer Request -->
+
+    <menuitem id="menu_inter_company_transfer_root" name="Inter Company Transfers" sequence="10" web_icon="el_inter_company_transfer,static/description/icon.png"/>
+
+    <menuitem id="menu_inter_company_transfer_request" name="Transfer Requests" parent="menu_inter_company_transfer_root" sequence="10" action="action_inter_company_transfer_request"/>
+
+</odoo>

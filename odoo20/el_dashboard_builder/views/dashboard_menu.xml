@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Actions for submenus (defined first for forward references) -->
+        <record id="action_dashboard_builder_new" model="ir.actions.act_window">
+            <field name="name">New Dashboard</field>
+            <field name="res_model">dashboard.builder</field>
+            <field name="view_mode">form</field>
+            <field name="target">current</field>
+            <field name="context">{'default_user_id': uid}</field>
+        </record>
+
+        <record id="action_dashboard_builder_favorites" model="ir.actions.act_window">
+            <field name="name">Favorite Dashboards</field>
+            <field name="res_model">dashboard.builder</field>
+            <field name="view_mode">kanban,list,form</field>
+            <field name="domain">[('is_favorite', '=', True)]</field>
+            <field name="search_view_id" ref="view_dashboard_builder_search"/>
+        </record>
+
+        <!-- Dashboard Builder Main Menu -->
+        <menuitem id="menu_dashboard_builder_root"
+            name="Dashboard Builder"
+            sequence="50"/>
+
+        <menuitem id="menu_dashboard_builder_dashboards"
+            name="My Dashboards"
+            parent="menu_dashboard_builder_root"
+            action="action_dashboard_builder_list"
+            sequence="10"/>
+
+        <menuitem id="menu_dashboard_builder_new"
+            name="New Dashboard"
+            parent="menu_dashboard_builder_dashboards"
+            action="action_dashboard_builder_new"
+            sequence="5"/>
+
+        <menuitem id="menu_dashboard_builder_favorites"
+            name="Favorites"
+            parent="menu_dashboard_builder_dashboards"
+            action="action_dashboard_builder_favorites"
+            sequence="8"/>
+
+        <menuitem id="menu_dashboard_builder_all"
+            name="All Dashboards"
+            parent="menu_dashboard_builder_dashboards"
+            action="action_dashboard_builder_list"
+            sequence="10"/>
+
+        <menuitem id="menu_dashboard_builder_widgets"
+            name="Widget Library"
+            parent="menu_dashboard_builder_root"
+            action="action_dashboard_widget_list"
+            sequence="20"/>
+
+        <menuitem id="menu_dashboard_builder_shared"
+            name="Shared Dashboards"
+            parent="menu_dashboard_builder_root"
+            action="action_dashboard_builder_shared"
+            sequence="30"/>
+
+        <menuitem id="menu_dashboard_builder_config"
+            name="Configuration"
+            parent="menu_dashboard_builder_root"
+            sequence="90"/>
+
+        <menuitem id="menu_dashboard_builder_tags"
+            name="Tags"
+            parent="menu_dashboard_builder_config"
+            action="action_dashboard_tag_list"
+            sequence="10"/>
+    </data>
+</odoo>

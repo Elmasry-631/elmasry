@@ -1,0 +1,18 @@
+[    5658ms] Error: Error while loading "@el_dashboard_builder/js/compat/web_widget":
+Error: Error while loading "web.Widget":
+TypeError: core.Component.extend is not a function
+    at ModuleLoader.startModule (http://localhost:8071/web/assets/b3ccdb0/web.assets_web.min.js:42:186)
+    at ModuleLoader.startModules (http://localhost:8071/web/assets/b3ccdb0/web.assets_web.min.js:41:57)
+    at ModuleLoader.addJob (http://localhost:8071/web/assets/b3ccdb0/web.assets_web.min.js:5:39)
+    at ModuleLoader.define (http://localhost:8071/web/assets/b3ccdb0/web.assets_web.min.js:10:121)
+    at http://localhost:8071/web/assets/b3ccdb0/web.assets_web.min.js:26167:6
+[    5655ms] [ERROR] The following modules failed to load because of an error: [web.Widget, @el_dashboard_builder/js/compat/web_widget] @ http://localhost:8071/web/assets/b3ccdb0/web.assets_web.min.js:22
+[    6674ms] Error: Error while loading "@el_dashboard_builder/js/compat/web_widget":
+Error: Error while loading "web.Widget":
+TypeError: core.Component.extend is not a function
+    at ModuleLoader.startModule (http://localhost:8071/web/assets/b3ccdb0/web.assets_web.min.js:42:186)
+    at ModuleLoader.startModules (http://localhost:8071/web/assets/b3ccdb0/web.assets_web.min.js:41:57)
+    at ModuleLoader.addJob (http://localhost:8071/web/assets/b3ccdb0/web.assets_web.min.js:5:39)
+    at ModuleLoader.define (http://localhost:8071/web/assets/b3ccdb0/web.assets_web.min.js:10:121)
+    at http://localhost:8071/web/assets/b3ccdb0/web.assets_web.min.js:26167:6
+[    6668ms] [ERROR] The following modules failed to load because of an error: [web.Widget, @el_dashboard_builder/js/compat/web_widget] @ http://localhost:8071/web/assets/b3ccdb0/web.assets_web.min.js:22

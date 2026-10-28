@@ -1,0 +1,2 @@
+[     555ms] [ERROR] Failed to load resource: the server responded with a status of 404 (NOT FOUND) @ http://localhost:8071/web/assets/debug/web.assets_backend:0
+[    1114ms] [ERROR] Failed to load resource: the server responded with a status of 404 (NOT FOUND) @ http://localhost:8071/favicon.ico:0

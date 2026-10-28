@@ -1,0 +1,7 @@
+[   18066ms] [ERROR] Error: Missing 'card' template.
+    at CardArchParser.parse (http://127.0.0.1:8071/web/assets/20439c1/web.assets_web.min.js:8580:249)
+    at KanbanArchParser.parse (http://127.0.0.1:8071/web/assets/20439c1/web.assets_web.min.js:10466:665)
+    at Object.props (http://127.0.0.1:8071/web/assets/20439c1/web.assets_web.min.js:10730:1052)
+    at View.loadView (http://127.0.0.1:8071/web/assets/20439c1/web.assets_web.min.js:11319:382)
+    at async Promise.all (index 0)
+    at async ComponentNode.initiateRender (http://127.0.0.1:8071/web/assets/20439c1/web.assets_web.min.js:1039:169) @ http://127.0.0.1:8071/web/assets/20439c1/web.assets_web.min.js:2600

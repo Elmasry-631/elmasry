@@ -1,0 +1,26 @@
+[     848ms] [ERROR] The following modules are needed by other modules but have not been defined, they may not be present in the correct asset bundle: [@web/webclient/actions/action_hook] @ https://motabaqah-erp-stage-40357272.dev.odoo.com/web/assets/f8d3403/web.assets_web.min.js:23
+[     848ms] [ERROR] The following modules could not be loaded because they have unmet dependencies, this is a secondary error which is likely caused by one of the above problems: [@ks_dashboard_ninja/js/ks_ai_dash_action] @ https://motabaqah-erp-stage-40357272.dev.odoo.com/web/assets/f8d3403/web.assets_web.min.js:25
+[   15823ms] [ERROR] The following modules are needed by other modules but have not been defined, they may not be present in the correct asset bundle: [@web/webclient/actions/action_hook] @ https://motabaqah-erp-stage-40357272.dev.odoo.com/web/assets/f8d3403/web.assets_web.min.js:23
+[   15824ms] [ERROR] The following modules could not be loaded because they have unmet dependencies, this is a secondary error which is likely caused by one of the above problems: [@ks_dashboard_ninja/js/ks_ai_dash_action] @ https://motabaqah-erp-stage-40357272.dev.odoo.com/web/assets/f8d3403/web.assets_web.min.js:25
+[   23686ms] [ERROR] Error: "res.company"."tecfy_salla_merchant_id" field is undefined.
+    at Field.parseFieldNode (https://motabaqah-erp-stage-40357272.dev.odoo.com/web/assets/f8d3403/web.assets_web.min.js:8223:330)
+    at https://motabaqah-erp-stage-40357272.dev.odoo.com/web/assets/f8d3403/web.assets_web.min.js:9254:928
+    at visit (https://motabaqah-erp-stage-40357272.dev.odoo.com/web/assets/f8d3403/web.assets_web.min.js:5118:51)
+    at visitChildren (https://motabaqah-erp-stage-40357272.dev.odoo.com/web/assets/f8d3403/web.assets_web.min.js:5117:171)
+    at visit (https://motabaqah-erp-stage-40357272.dev.odoo.com/web/assets/f8d3403/web.assets_web.min.js:5118:129)
+    at visitChildren (https://motabaqah-erp-stage-40357272.dev.odoo.com/web/assets/f8d3403/web.assets_web.min.js:5117:171)
+    at visit (https://motabaqah-erp-stage-40357272.dev.odoo.com/web/assets/f8d3403/web.assets_web.min.js:5118:129)
+    at visitChildren (https://motabaqah-erp-stage-40357272.dev.odoo.com/web/assets/f8d3403/web.assets_web.min.js:5117:171)
+    at visit (https://motabaqah-erp-stage-40357272.dev.odoo.com/web/assets/f8d3403/web.assets_web.min.js:5118:129)
+    at visitChildren (https://motabaqah-erp-stage-40357272.dev.odoo.com/web/assets/f8d3403/web.assets_web.min.js:5117:171) @ https://motabaqah-erp-stage-40357272.dev.odoo.com/web/assets/f8d3403/web.assets_web.min.js:2567
+[  203323ms] [ERROR] Error: "res.company"."tecfy_salla_merchant_id" field is undefined.
+    at Field.parseFieldNode (https://motabaqah-erp-stage-40357272.dev.odoo.com/web/assets/f8d3403/web.assets_web.min.js:8223:330)
+    at https://motabaqah-erp-stage-40357272.dev.odoo.com/web/assets/f8d3403/web.assets_web.min.js:9254:928
+    at visit (https://motabaqah-erp-stage-40357272.dev.odoo.com/web/assets/f8d3403/web.assets_web.min.js:5118:51)
+    at visitChildren (https://motabaqah-erp-stage-40357272.dev.odoo.com/web/assets/f8d3403/web.assets_web.min.js:5117:171)
+    at visit (https://motabaqah-erp-stage-40357272.dev.odoo.com/web/assets/f8d3403/web.assets_web.min.js:5118:129)
+    at visitChildren (https://motabaqah-erp-stage-40357272.dev.odoo.com/web/assets/f8d3403/web.assets_web.min.js:5117:171)
+    at visit (https://motabaqah-erp-stage-40357272.dev.odoo.com/web/assets/f8d3403/web.assets_web.min.js:5118:129)
+    at visitChildren (https://motabaqah-erp-stage-40357272.dev.odoo.com/web/assets/f8d3403/web.assets_web.min.js:5117:171)
+    at visit (https://motabaqah-erp-stage-40357272.dev.odoo.com/web/assets/f8d3403/web.assets_web.min.js:5118:129)
+    at visitChildren (https://motabaqah-erp-stage-40357272.dev.odoo.com/web/assets/f8d3403/web.assets_web.min.js:5117:171) @ https://motabaqah-erp-stage-40357272.dev.odoo.com/web/assets/f8d3403/web.assets_web.min.js:2567

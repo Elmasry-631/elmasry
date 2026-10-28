@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Dashboard Builder Groups -->
+        <record id="group_dashboard_user" model="res.groups">
+            <field name="name">Dashboard User</field>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+            <field name="comment">Users who can view and create personal dashboards.</field>
+        </record>
+
+        <record id="group_dashboard_manager" model="res.groups">
+            <field name="name">Dashboard Manager</field>
+            <field name="implied_ids" eval="[(4, ref('el_dashboard_builder.group_dashboard_user'))]"/>
+            <field name="user_ids" eval="[(4, ref('base.user_root'))]"/>
+            <field name="comment">Users who can manage all dashboards, widgets, and sharing.</field>
+        </record>
+
+        <record id="group_dashboard_admin" model="res.groups">
+            <field name="name">Dashboard Administrator</field>
+            <field name="implied_ids" eval="[(4, ref('el_dashboard_builder.group_dashboard_manager'))]"/>
+            <field name="user_ids" eval="[(4, ref('base.user_root'))]"/>
+            <field name="comment">Full administrative access to dashboard builder settings.</field>
+        </record>
+
+        <!-- Access Rights (using ir.access in Odoo 20) -->
+        <!-- Permissions for dashboard.builder -->
+        <record id="access_dashboard_builder_user" model="ir.access">
+            <field name="name">dashboard.builder.user</field>
+            <field name="model_id" ref="model_dashboard_builder"/>
+            <field name="group_id" ref="base.group_user"/>
+            <field name="operation">crud</field>
+            <field name="domain">['|', ('user_id', '=', user.id), ('is_public', '=', True)]</field>
+        </record>
+
+        <record id="access_dashboard_builder_manager" model="ir.access">
+            <field name="name">dashboard.builder.manager</field>
+            <field name="model_id" ref="model_dashboard_builder"/>
+            <field name="group_id" ref="el_dashboard_builder.group_dashboard_manager"/>
+            <field name="operation">crud</field>
+        </record>
+
+        <record id="access_dashboard_builder_admin" model="ir.access">
+            <field name="name">dashboard.builder.admin</field>
+            <field name="model_id" ref="model_dashboard_builder"/>
+            <field name="group_id" ref="el_dashboard_builder.group_dashboard_admin"/>
+            <field name="operation">crud</field>
+        </record>
+
+        <!-- Global restriction for dashboard.builder (multi-company, etc.) -->
+        <record id="access_dashboard_builder_restriction" model="ir.access">
+            <field name="name">dashboard.builder.restriction</field>
+            <field name="model_id" ref="model_dashboard_builder"/>
+            <field name="operation">crud</field>
+            <field name="domain">['|', ('user_id', '=', user.id), ('is_public', '=', True)]</field>
+        </record>
+
+        <!-- Permissions for dashboard.builder.item -->
+        <record id="access_dashboard_item_user" model="ir.access">
+            <field name="name">dashboard.builder.item.user</field>
+            <field name="model_id" ref="model_dashboard_builder_item"/>
+            <field name="group_id" ref="base.group_user"/>
+            <field name="operation">crud</field>
+            <field name="domain">['|', ('dashboard_id.user_id', '=', user.id), ('dashboard_id.is_public', '=', True)]</field>
+        </record>
+
+        <record id="access_dashboard_item_manager" model="ir.access">
+            <field name="name">dashboard.builder.item.manager</field>
+            <field name="model_id" ref="model_dashboard_builder_item"/>
+            <field name="group_id" ref="el_dashboard_builder.group_dashboard_manager"/>
+            <field name="operation">crud</field>
+        </record>
+
+        <record id="access_dashboard_item_admin" model="ir.access">
+            <field name="name">dashboard.builder.item.admin</field>
+            <field name="model_id" ref="model_dashboard_builder_item"/>
+            <field name="group_id" ref="el_dashboard_builder.group_dashboard_admin"/>
+            <field name="operation">crud</field>
+        </record>
+
+        <!-- Global restriction for dashboard.builder.item -->
+        <record id="access_dashboard_item_restriction" model="ir.access">
+            <field name="name">dashboard.builder.item.restriction</field>
+            <field name="model_id" ref="model_dashboard_builder_item"/>
+            <field name="operation">crud</field>
+            <field name="domain">['|', ('dashboard_id.user_id', '=', user.id), ('dashboard_id.is_public', '=', True)]</field>
+        </record>
+
+        <!-- Permissions for dashboard.builder.widget -->
+        <record id="access_dashboard_widget_user" model="ir.access">
+            <field name="name">dashboard.builder.widget.user</field>
+            <field name="model_id" ref="model_dashboard_builder_widget"/>
+            <field name="group_id" ref="base.group_user"/>
+            <field name="operation">r</field>
+        </record>
+
+        <record id="access_dashboard_widget_manager" model="ir.access">
+            <field name="name">dashboard.builder.widget.manager</field>
+            <field name="model_id" ref="model_dashboard_builder_widget"/>
+            <field name="group_id" ref="el_dashboard_builder.group_dashboard_manager"/>
+            <field name="operation">crud</field>
+        </record>
+
+        <record id="access_dashboard_widget_admin" model="ir.access">
+            <field name="name">dashboard.builder.widget.admin</field>
+            <field name="model_id" ref="model_dashboard_builder_widget"/>
+            <field name="group_id" ref="el_dashboard_builder.group_dashboard_admin"/>
+            <field name="operation">crud</field>
+        </record>
+
+        <!-- Permissions for dashboard.builder.share -->
+        <record id="access_dashboard_share_user" model="ir.access">
+            <field name="name">dashboard.builder.share.user</field>
+            <field name="model_id" ref="model_dashboard_builder_share"/>
+            <field name="group_id" ref="base.group_user"/>
+            <field name="operation">crud</field>
+            <field name="domain">['|', ('dashboard_id.user_id', '=', user.id), ('dashboard_id.is_public', '=', True)]</field>
+        </record>
+
+        <record id="access_dashboard_share_manager" model="ir.access">
+            <field name="name">dashboard.builder.share.manager</field>
+            <field name="model_id" ref="model_dashboard_builder_share"/>
+            <field name="group_id" ref="el_dashboard_builder.group_dashboard_manager"/>
+            <field name="operation">crud</field>
+        </record>
+
+        <record id="access_dashboard_share_admin" model="ir.access">
+            <field name="name">dashboard.builder.share.admin</field>
+            <field name="model_id" ref="model_dashboard_builder_share"/>
+            <field name="group_id" ref="el_dashboard_builder.group_dashboard_admin"/>
+            <field name="operation">crud</field>
+        </record>
+
+        <!-- Global restriction for dashboard.builder.share -->
+        <record id="access_dashboard_share_restriction" model="ir.access">
+            <field name="name">dashboard.builder.share.restriction</field>
+            <field name="model_id" ref="model_dashboard_builder_share"/>
+            <field name="operation">crud</field>
+            <field name="domain">['|', ('dashboard_id.user_id', '=', user.id), ('dashboard_id.is_public', '=', True)]</field>
+        </record>
+
+        <!-- Permissions for dashboard.builder.tag -->
+        <record id="access_dashboard_tag_user" model="ir.access">
+            <field name="name">dashboard.builder.tag.user</field>
+            <field name="model_id" ref="model_dashboard_builder_tag"/>
+            <field name="group_id" ref="base.group_user"/>
+            <field name="operation">r</field>
+        </record>
+
+        <record id="access_dashboard_tag_manager" model="ir.access">
+            <field name="name">dashboard.builder.tag.manager</field>
+            <field name="model_id" ref="model_dashboard_builder_tag"/>
+            <field name="group_id" ref="el_dashboard_builder.group_dashboard_manager"/>
+            <field name="operation">crud</field>
+        </record>
+
+        <record id="access_dashboard_tag_admin" model="ir.access">
+            <field name="name">dashboard.builder.tag.admin</field>
+            <field name="model_id" ref="model_dashboard_builder_tag"/>
+            <field name="group_id" ref="el_dashboard_builder.group_dashboard_admin"/>
+            <field name="operation">crud</field>
+        </record>
+    </data>
+</odoo>

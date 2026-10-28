@@ -1,0 +1,888 @@
+/**
+ * Dashboard Builder - SCSS Styles
+ * 
+ * Modern styles with dark/light mode support for Odoo 20/21.
+ * Based on Odoo Apps Store Dashboard Builder design.
+ */
+
+// ============= Colors & Theming =============
+// Light mode (default)
+$dashboard-light: #f8f9fa;
+$dashboard-dark: #343a40;
+$dashboard-bg-light: #f5f6f8;
+$dashboard-bg-dark: #2d313a;
+$dashboard-card-bg-light: #ffffff;
+$dashboard-card-bg-dark: #212529;
+$dashboard-border-light: #e0e6ed;
+$dashboard-border-dark: #4a4e55;
+$dashboard-text-light: #2c3e5e;
+$dashboard-text-dark: #f8f9fa;
+$dashboard-text-muted-light: #6c757d;
+$dashboard-text-muted-dark: #a8aebd;
+
+// Color scheme variables (can be overridden)
+$dashboard-primary: #3498db;
+$dashboard-secondary: #2c3e5e;
+$dashboard-success: #2ecc71;
+$dashboard-warning: #f39c12;
+$dashboard-danger: #e74c3c;
+$dashboard-info: #17a2b8;
+
+// ============= Theme Mixin =============
+// Automatically sets light/dark colors based on $dashboard-theme-dark
+@mixin set-dashboard-colors($theme-dark: $dashboard-dark) {
+    $bg: if($theme-dark, $dashboard-bg-dark, $dashboard-bg-light);
+    $card: if($theme-dark, $dashboard-card-bg-dark, $dashboard-card-bg-light);
+    $border: if($theme-dark, $dashboard-border-dark, $dashboard-border-light);
+    $text: if($theme-dark, $dashboard-text-dark, $dashboard-text-light);
+    $text-muted: if($theme-dark, $dashboard-text-muted-dark, $dashboard-text-muted-light);
+    
+    background-color: $bg;
+    .o_dashboard_builder_view,
+    .o_dashboard_editor_body,
+    .o_dashboard_shared_view {
+        background-color: $bg !important;
+    }
+    .o_dashboard_card,
+    .o_dashboard_item_card,
+    .o_widget_preview_card {
+        background-color: $card !important;
+        border-color: $border !important;
+    }
+    .o_dashboard_title,
+    .o_dashboard_item_title,
+    .o_dashboard_shared_header h1,
+    .o_dashboard_editor_header h2 {
+        color: $text !important;
+    }
+    .o_dashboard_text,
+    .o_dashboard_text-muted,
+    .o_dashboard_item_title,
+    .o_dashboard_shared_actions .text-muted,
+    .o_dashboard_footer {
+        color: $text-muted !important;
+    }
+    .o_dashboard_badge,
+    .o_dashboard_badge-dark {
+        background-color: rgba(255,255,255,0.1) !important;
+        color: $text !important;
+    }
+}
+
+// ============= Dashboard View Base =============
+.o_dashboard_builder_view {
+    min-height: 100vh;
+    @include set-dashboard-colors();
+    
+    &.o_rtl {
+        direction: rtl;
+    }
+    
+    // Dark mode override
+    @media (prefers-color-scheme: dark) and (.o_dashboard_builder_view) {
+        @include set-dashboard-colors($dashboard-dark);
+    }
+}
+
+// ============= Dashboard Header =============
+.o_dashboard_header {
+    padding: 24px;
+    background: $dashboard-card-bg-light;
+    border-bottom: 1px solid $dashboard-border-light;
+    margin-bottom: 24px;
+    @include set-dashboard-colors();
+    
+    .o_dashboard_title {
+        margin: 0;
+        font-size: 1.75rem;
+        font-weight: 600;
+        color: $dashboard-text-light;
+    }
+    
+    .o_dashboard_description {
+        margin: 8px 0 0;
+        font-size: 0.95rem;
+        color: $dashboard-text-muted-light;
+    }
+    
+    .o_dashboard_actions {
+        .btn {
+            padding: 6px 12px;
+            font-size: 0.85rem;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+            
+            &:hover {
+                transform: translateY(-1px);
+            }
+        }
+        
+        .btn-primary {
+            background-color: $dashboard-primary;
+            border-color: $dashboard-primary;
+            color: #ffffff;
+            
+            &:hover {
+                background-color: darken($dashboard-primary, 10%);
+                border-color: darken($dashboard-primary, 10%);
+            }
+        }
+        
+        .btn-secondary {
+            background-color: transparent;
+            border: 1px solid $dashboard-border-light;
+            color: $dashboard-text-light;
+            
+            &:hover {
+                background-color: rgba(0,0,0,0.05);
+            }
+        }
+        
+        .btn-link {
+            padding: 0;
+            background: none;
+            border: none;
+            color: $dashboard-text-muted-light;
+            font-size: 0.9rem;
+            
+            &:hover {
+                color: $dashboard-primary;
+            }
+        }
+    }
+    
+    // Dark mode header
+    @media (prefers-color-scheme: dark) {
+        .o_dashboard_header {
+            background: $dashboard-card-bg-dark;
+            border-color: $dashboard-border-dark;
+        }
+        .o_dashboard_title {
+            color: $dashboard-text-dark;
+        }
+        .o_dashboard_text-muted,
+        .o_dashboard_description {
+            color: $dashboard-text-muted-dark;
+        }
+    }
+}
+
+// ============= Dashboard Filters =============
+.o_dashboard_filters {
+    background: $dashboard-card-bg-light;
+    border: 1px solid $dashboard-border-light;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 24px;
+    @include set-dashboard-colors();
+    
+    .form-select {
+        border-radius: 4px;
+        border: 1px solid $dashboard-border-light;
+        padding: 6px 12px;
+        font-size: 0.85rem;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath fill='%236c757d' d='M7.25 5.74a.75.75 0 01.63-.28l4.25 4.74a.75.75 0 11-1.06 1.06L8 6.81l-3.5 3.5a.75.75 0 01-1.07-.27z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position right 8px center;
+        &:focus {
+            border-color: $dashboard-primary;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.15);
+        }
+    }
+    
+    .btn-primary {
+        background-color: $dashboard-primary;
+        border-color: $dashboard-primary;
+        color: #ffffff;
+        padding: 6px 16px;
+        font-size: 0.85rem;
+        
+        &:hover {
+            background-color: darken($dashboard-primary, 10%);
+            border-color: darken($dashboard-primary, 10%);
+        }
+    }
+    
+    .btn-secondary {
+        background-color: transparent;
+        border: 1px solid $dashboard-border-light;
+        color: $dashboard-text-light;
+        padding: 6px 12px;
+        font-size: 0.85rem;
+        
+        &:hover {
+            background-color: rgba(0,0,0,0.05);
+        }
+    }
+    
+    // Dark mode filters
+    @media (prefers-color-scheme: dark) {
+        .o_dashboard_filters {
+            background: $dashboard-card-bg-dark;
+            border-color: $dashboard-border-dark;
+        }
+        .form-select {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath fill='%23a8aebd' d='M7.25 5.74a.75.75 0 01.63-.28l4.25 4.74a.75.75 0 11-1.06 1.06L8 6.81l-3.5 3.5a.75.75 0 01-1.07-.27z'/%3E%3C/svg%3E");
+            border-color: $dashboard-border-dark;
+        }
+        .form-select:focus {
+            border-color: $dashboard-primary;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.15);
+        }
+        .btn-primary {
+            background-color: $dashboard-primary;
+            border-color: $dashboard-primary;
+            color: #ffffff;
+        }
+        .btn-secondary {
+            border-color: $dashboard-border-dark;
+            color: $dashboard-text-dark;
+        }
+    }
+}
+
+// ============= Dashboard Grid =============
+.o_dashboard_grid_container {
+    padding: 0 24px 24px;
+}
+
+.o_dashboard_grid {
+    // CSS Grid fallback without GridStack
+    display: grid;
+    gap: 16px;
+    
+    // 12-column layout with responsive rows
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    grid-auto-rows: 100px;
+    
+    // Item styling when GridStack is not available
+    .o_dashboard_item_wrapper {
+        background: $dashboard-card-bg-light;
+        border-radius: 8px;
+        overflow: hidden;
+        transition: all 0.2s ease;
+        @include set-dashboard-colors();
+        
+        &:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        
+        &.o_editor_item_hover {
+            border: 2px solid $dashboard-primary;
+        }
+    }
+    
+    // Empty state
+    .o_dashboard_empty_state {
+        padding: 60px 20px;
+        text-align: center;
+        color: $dashboard-text-muted-light;
+        
+        i {
+            font-size: 3rem;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+        
+        h4 {
+            margin: 0 0 8px;
+            font-size: 1.25rem;
+            color: $dashboard-text-light;
+        }
+        
+        p {
+            margin: 0;
+            font-size: 0.9rem;
+        }
+        
+        .btn-primary {
+            margin-top: 16px;
+        }
+    }
+}
+
+// ============= Dashboard Items =============
+.o_dashboard_item_wrapper {
+    // GridStack will override positioning, this is fallback
+    background: $dashboard-card-bg-light;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all 0.2s ease;
+    @include set-dashboard-colors();
+    
+    // Selection state
+    &.selected {
+        border: 2px solid $dashboard-primary;
+        box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.1);
+    }
+    
+    // Hover state
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+    
+    // Locked state
+    &.locked {
+        opacity: 0.7;
+    }
+}
+
+// ============= Dashboard Item Header =============
+.o_dashboard_item_header {
+    padding: 12px 16px;
+    background: $dashboard-card-bg-light;
+    border-bottom: 1px solid $dashboard-border-light;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    @include set-dashboard-colors();
+    
+    .o_dashboard_item_title {
+        margin: 0;
+        font-size: 0.85rem;
+        font-weight: 500;
+        color: $dashboard-text-light;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 80%;
+    }
+    
+    .o_dashboard_item_controls {
+        display: flex;
+        gap: 4px;
+        
+        button {
+            padding: 4px 8px;
+            font-size: 0.7rem;
+            border-radius 4px;
+            border: 1px solid transparent;
+            background: transparent;
+            color: $dashboard-text-muted-light;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            
+            &:hover {
+                background: rgba(0,0,0,0.05);
+                color: $dashboard-text-light;
+            }
+            
+            &.btn-primary {
+                color: #ffffff;
+                background: $dashboard-primary;
+                border-color: $dashboard-primary;
+            }
+            
+            &.btn-danger {
+                color: $dashboard-danger;
+                border-color: $dashboard-danger;
+            }
+        }
+    }
+    
+    // Dark mode header
+    @media (prefers-color-scheme: dark) {
+        .o_dashboard_item_header {
+            background: $dashboard-card-bg-dark;
+            border-color: $dashboard-border-dark;
+        }
+        .o_dashboard_item_title {
+            color: $dashboard-text-dark;
+        }
+        .o_dashboard_item_controls button:hover {
+            background: rgba(0,0,0,0.2);
+        }
+    }
+}
+
+// ============= Dashboard Item Content =============
+.o_dashboard_item_content {
+    padding: 16px;
+    min-height: 80px;
+    @include set-dashboard-colors();
+}
+
+// ============= Dashboard Item Resize Handles =============
+.o_dashboard_item_resize_handles {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    pointer-events: none;
+    
+    .resize-handle {
+        position: absolute;
+        width: 7px;
+        height: 7px;
+        border: 2px solid $dashboard-card-bg-light;
+        background: $dashboard-primary;
+        opacity: 0;
+        transition: opacity 0.2s ease;
+        
+        &:hover {
+            opacity: 1;
+        }
+        
+        nw { cursor: nw-resize; top: 0; left: 0; }
+        ne { cursor: ne-resize; top: 0; right: 0; }
+        sw { cursor: sw-resize; bottom: 0; left: 0; }
+        se { cursor: se-resize; bottom: 0; right: 0; }
+    }
+    
+    &:hover .resize-handle {
+        opacity: 1;
+    }
+}
+
+// ============= Dashboard Footer =============
+.o_dashboard_footer {
+    padding: 12px 24px;
+    background: $dashboard-card-bg-light;
+    border-top: 1px solid $dashboard-border-light;
+    margin-top: 24px;
+    font-size: 0.8rem;
+    color: $dashboard-text-muted-light;
+    @include set-dashboard-colors();
+    
+    @media (prefers-color-scheme: dark) {
+        background: $dashboard-card-bg-dark;
+        border-color: $dashboard-border-dark;
+        color: $dashboard-text-muted-dark;
+    }
+}
+
+// ============= Dashboard Shared View =============
+.o_dashboard_shared_view {
+    min-height: 100vh;
+    @include set-dashboard-colors();
+    
+    .o_dashboard_shared_header {
+        padding: 24px;
+        background: $dashboard-card-bg-light;
+        border-bottom: 1px solid $dashboard-border-light;
+        @include set-dashboard-colors();
+        
+        @media (prefers-color-scheme: dark) {
+            background: $dashboard-card-bg-dark;
+            border-color: $dashboard-border-dark;
+        }
+        
+        h1 {
+            margin: 0;
+            font-size: 1.5rem;
+            color: $dashboard-text-light;
+        }
+        
+        .text-muted {
+            color: $dashboard-text-muted-light;
+        }
+    }
+    
+    @media (prefers-color-scheme: dark) {
+        .o_dashboard_shared_header h1 {
+            color: $dashboard-text-dark;
+        }
+        .text-muted {
+            color: $dashboard-text-muted-dark;
+        }
+    }
+}
+
+// ============= Dashboard Shared Actions =============
+.o_dashboard_shared_actions {
+    .btn {
+        padding: 6px 12px;
+        font-size: 0.85rem;
+        border-radius: 4px;
+        
+        &:hover {
+            transform: translateY(-1px);
+        }
+    }
+    
+    .btn-secondary {
+        background: transparent;
+        border: 1px solid $dashboard-border-light;
+        color: $dashboard-text-light;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+        .btn-secondary {
+            border-color: $dashboard-border-dark;
+            color: $dashboard-text-dark;
+        }
+    }
+}
+
+// ============= Widget Card Styles =============
+.o_kpi_widget {
+    background: $dashboard-card-bg-light;
+    border-radius: 8px;
+    padding: 20px 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    @include set-dashboard-colors();
+    
+    .o_kpi_label {
+        margin: 0 0 8px;
+        font-size: 0.75rem;
+        color: $dashboard-text-muted-light;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    .o_kpi_value {
+        margin: 0;
+        font-size: 2rem;
+        font-weight: 700;
+        color: $dashboard-primary;
+    }
+    
+    .o_kpi_target {
+        margin-top: 12px;
+        .progress {
+            height: 6px;
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: 4px;
+            
+            .progress-bar {
+                border-radius: 3px;
+                background-color: $dashboard-primary;
+                transition: width 0.3s ease;
+            }
+        }
+        
+        .small {
+            margin-top: 4px;
+            font-size: 0.75rem;
+            color: $dashboard-text-muted-light;
+        }
+    }
+    
+    @media (prefers-color-scheme: dark) {
+        background: $dashboard-card-bg-dark;
+    }
+}
+
+// ============= Chart Widget Container =============
+.o_chart_wrapper {
+    position: relative;
+    height: 100%;
+    min-height: 180px;
+    background: $dashboard-card-bg-light;
+    border-radius: 8px;
+    @include set-dashboard-colors();
+    
+    @media (prefers-color-scheme: dark) {
+        background: $dashboard-card-bg-dark;
+    }
+}
+
+// ============= Table Widget =============
+.o_table_widget {
+    background: $dashboard-card-bg-light;
+    border-radius: 8px;
+    overflow: hidden;
+    @include set-dashboard-colors();
+    
+    @media (prefers-color-scheme: dark) {
+        background: $dashboard-card-bg-dark;
+    }
+}
+
+// ============= Gauge Widget =============
+.o_gauge_widget {
+    position: relative;
+    height: 180px;
+    width: 180px;
+    margin: 0 auto;
+    
+    .gauge-canvas {
+        width: 100%;
+        height: 100%;
+    }
+    
+    .gauge-label {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        width: 100%;
+    }
+    
+    .gauge-value {
+        font-size: 2rem;
+        font-weight: 700;
+        color: $dashboard-primary;
+    }
+    
+    .gauge-target {
+        font-size: 0.85rem;
+        color: $dashboard-text-muted-light;
+        margin-top: 4px;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+        background: transparent;
+    }
+}
+
+// ============= Progress Bar Widget =============
+.o_progress_bar_widget {
+    height: 30px;
+    background: $dashboard-border-light;
+    border-radius: 4px;
+    overflow: hidden;
+    @include set-dashboard-colors();
+    
+    .progress-bar {
+        height: 100%;
+        background: $dashboard-success;
+        width: 0%;
+        transition: width 0.5s ease;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+        background: $dashboard-border-dark;
+    }
+}
+
+// ============= Modal Styles (for config) =============
+.o_config_modal .modal-content {
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    @include set-dashboard-colors();
+    
+    @media (prefers-color-scheme: dark) {
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+}
+
+.o_config_modal .modal-header {
+    border-radius: 12px 12px 0 0;
+    border-bottom: 1px solid $dashboard-border-light;
+    padding: 16px 20px;
+    background: $dashboard-card-bg-light;
+    @include set-dashboard-colors();
+    
+    @media (prefers-color-scheme: dark) {
+        background: $dashboard-card-bg-dark;
+        border-color: $dashboard-border-dark;
+    }
+}
+
+.o_config_modal .modal-body {
+    padding: 20px;
+    @include set-dashboard-colors();
+    
+    @media (prefers-color-scheme: dark) {
+        background: $dashboard-card-bg-dark;
+    }
+}
+
+.o_config_modal .modal-footer {
+    border-radius: 0 0 12px 12px;
+    border-top: 1px solid $dashboard-border-light;
+    padding: 12px 20px;
+    background: $dashboard-card-bg-light;
+    @include set-dashboard-colors();
+    
+    @media (prefers-color-scheme: dark) {
+        background: $dashboard-card-bg-dark;
+        border-color: $dashboard-border-dark;
+    }
+}
+
+// ============= Search Input =============
+.o_widget_search {
+    border: 1px solid $dashboard-border-light;
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 0.85rem;
+    background: $dashboard-card-bg-light url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath fill='%236c757d' d='M11.742 10.344a6.5 6.5 0 10-1.397 1.398h-.001q-.246-.246-.406-.39l-2.15 2.15a1 1 0 01-.178.11l-3.394-4.742a1 1 0 01.11-.178l2.094 2.093q.11.11.178.178l3.403-4.852a6.5 6.5 0 011.026 1.085m-.442 1.843 1.839 3.986m-3.871-3.986-1.839-3.986m-3.871-3.986 1.839-3.986H6.5a6.5 6.5 0 00-6.5 6.5v.001q.086.197.115.288l1.808 3.145m6.381 5.235l-2.15-2.15a1 1 0 01.11-.178l3.394 4.739a1 1 0 01-.178.11l-2.15 2.15a1 1 0 01-.178-.11l-3.394-4.739a6.5 6.5 0 11-1.026-1.085m.442-1.843-1.839 3.986m3.871 3.986 1.839-3.986m3.871 3.986-1.839 3.986H1.5a6.5 6.5 0 01-6.5-6.5v.001q-.086.197-.115.288l-1.808 3.145m-6.381-5.235 2.15 2.15a1 1 0 01-.11.178l-3.394 4.739a1 1 0 01.178.11l2.15-2.15a1 1 0 01.178-.11l3.394-4.739a6.5 6.5 0 111.026-1.085Zm-7.788 1.085a1 1 0 100-2.17 1 1 0 000 2.17Z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: 10px center;
+    background-size: 16px;
+    margin-bottom: 12px;
+    @include set-dashboard-colors();
+    
+    &::placeholder {
+        color: $dashboard-text-muted-light;
+    }
+    
+    &:focus {
+        border-color: $dashboard-primary;
+        box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.15);
+    }
+    
+    @media (prefers-color-scheme: dark) {
+        background-color: $dashboard-card-bg-dark;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath fill='%23a8aebd' d='M11.742 10.344a6.5 6.5 0 10-1.397 1.398h-.001q-.246-.246-.406-.39l-2.15 2.15a1 1 0 01-.178.11l-3.394-4.742a1 1 0 01.11-.178l2.094 2.093q.11.11.178.178l3.403-4.852a6.5 6.5 0 011.026 1.085m-.442 1.843 1.839 3.986m-3.871-3.986-1.839-3.986m-3.871-3.986 1.839-3.986H6.5a6.5 6.5 0 00-6.5 6.5v.001q.086.197.115.288l1.808 3.145m6.381 5.235l-2.15-2.15a1 1 0 01.11-.178l3.394 4.739a1 1 0 01-.178.11l-2.15 2.15a1 1 0 01-.178-.11l-3.394-4.739a6.5 6.5 0 11-1.026-1.085m.442-1.843-1.839 3.986m3.871 3.986 1.839-3.986m3.871 3.986-1.839 3.986H1.5a6.5 6.5 0 01-6.5-6.5v.001q-.086.197-.115.288l-1.808 3.145m-6.381-5.235 2.15 2.15a1 1 0 01-.11.178l-3.394 4.739a1 1 0 01.178.11l2.15-2.15a1 1 0 01.178-.11l3.394-4.739a6.5 6.5 0 111.026-1.085Zm-7.788 1.085a1 1 0 100-2.17 1 1 0 000 2.17Z'/%3E%3C/svg%3E");
+        border-color: $dashboard-border-dark;
+    }
+}
+
+// ============= Category Colors for Widget Palette =============
+.o_widget_category {
+    margin-bottom: 20px;
+    
+    h6 {
+        margin: 0 0 12px;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: $dashboard-text-muted-light;
+        font-weight: 600;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+        h6 {
+            color: $dashboard-text-muted-dark;
+        }
+    }
+}
+
+// ============= Widget Palette Items =============
+.o_widget_palette_item {
+    padding: 12px;
+    border: 1px solid $dashboard-border-light;
+    border-radius: 8px;
+    cursor: grab;
+    transition: all 0.2s ease;
+    background: $dashboard-card-bg-light;
+    @include set-dashboard-colors();
+    
+    &:hover {
+        cursor: grabbing;
+        border-color: $dashboard-primary;
+        background: rgba(52, 152, 219, 0.05);
+    }
+    
+    .o_widget_icon {
+        width: 32px;
+        height: 32px;
+        margin-bottom: 8px;
+        font-size: 1.5rem;
+    }
+    
+    .o_widget_name {
+        font-size: 0.85rem;
+        font-weight: 500;
+        color: $dashboard-text-light;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin-bottom: 4px;
+    }
+    
+    .o_widget_description {
+        font-size: 0.7rem;
+        color: $dashboard-text-muted-light;
+        line-height: 1.4;
+    }
+    
+    &.dragging {
+        opacity: 0.6;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+        background: $dashboard-card-bg-dark;
+        border-color: $dashboard-border-dark;
+        color-scheme: dark;
+        
+        &:hover {
+            border-color: $dashboard-primary;
+            background: rgba(52, 152, 219, 0.1);
+        }
+        
+        .o_widget_name {
+            color: $dashboard-text-dark;
+        }
+        
+        .o_widget_description {
+            color: $dashboard-text-muted-dark;
+        }
+    }
+}
+
+// ============= Widget Category Colors =============
+// Use the dashboard color scheme to color-code categories
+.o-widget-kpi,
+.o-widget-chart,
+.o-widget-table,
+.o-widget-gauge,
+.o-widget-custom,
+.o-widget-action,
+.o-widget-calendar {
+    // These classes are added via JavaScript to set category colors
+    // The colors are set dynamically based on the widget's color property
+}
+
+// ============= Responsive =============
+@media (max-width: 768px) {
+    .o_dashboard_header {
+        padding: 16px;
+    }
+    
+    .o_dashboard_filters {
+        padding: 12px;
+        margin-bottom: 16px;
+    }
+    
+    .o_dashboard_grid {
+        gap: 12px;
+    }
+    
+    .o_dashboard_item_header {
+        padding: 8px 12px;
+    }
+    
+    .o_dashboard_item_content {
+        padding: 12px;
+    }
+    
+    .o_dashboard_footer {
+        padding: 8px 16px;
+        font-size: 0.7rem;
+    }
+    
+    .o_dashboard_shared_header {
+        padding: 16px;
+    }
+}
+
+@media (max-width: 576px) {
+    .o_dashboard_header .o_dashboard_actions {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+    
+    .o_dashboard_footer {
+        font-size: 0.65rem;
+    }
+}
+
+// ============= Print Styles =============
+@media print {
+    .o_dashboard_builder_view,
+    .o_dashboard_editor_body,
+    .o_dashboard_shared_view {
+        background: transparent !important;
+    }
+    
+    .o_dashboard_item_wrapper {
+        box-shadow: none !important;
+        border: 1px solid #dee2e6 !important;
+    }
+    
+    .btn {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+}
