@@ -1,305 +1,160 @@
-from odoo.exceptions import UserError, AccessError
+# -*- coding: utf-8 -*-
+import base64
+import codecs
+import csv
+import io
+from datetime import date, datetime
+
+import openpyxl
+
+from odoo import Command
+from odoo.exceptions import UserError
 from odoo.tests import TransactionCase, tagged
+
+from odoo.addons.el_payroll_wps.wizard.wps_export_wizard import CSV_HEADERS, HEADERS
 
 
 @tagged('post_install', '-at_install')
 class TestWpsExport(TransactionCase):
-    """Test suite for el_payroll_wps — covers the x_others field, the
-    WPS export wizard, the CSV column layout, the discount sign (positive),
-    the filename (Salary_<Month>_<Year>.csv), the UTF-8 BOM, bank/account
-    extraction via primary_bank_account_id, address via private_state_id,
-    the menu parenting, Odoo 19 states (validated/paid), the HOUALLOW
-    housing rule code, and security."""
-
-    # ── Setup ──────────────────────────────────────────────────────────
 
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.HrPayslip = cls.env['hr.payslip']
-        cls.HrEmployee = cls.env['hr.employee']
-        cls.HrSalaryRule = cls.env['hr.salary.rule']
-        cls.HrSalaryRuleCategory = cls.env['hr.salary.rule.category']
-        cls.WpsWizard = cls.env['wps.export.wizard']
-
-        # Categories — ALW and DED are the codes used by the module
-        cls.cat_alw = cls.HrSalaryRuleCategory.create({
-            'name': 'Allowances', 'code': 'ALW',
+        ref = cls.env.ref
+        rule = lambda code, category, amount, seq: Command.create({  # noqa: E731
+            'name': code, 'code': code, 'sequence': seq, 'category_id': ref(category).id,
+            'condition_select': 'none', 'amount_select': 'fix', 'amount_fix': amount,
         })
-        cls.cat_ded = cls.HrSalaryRuleCategory.create({
-            'name': 'Deductions', 'code': 'DED',
+        cls.structure = cls.env['hr.payroll.structure'].create({
+            'name': 'WPS Test Structure',
+            'type_id': ref('hr.structure_type_employee').id,
+            'rule_ids': [
+                Command.clear(),
+                rule('BASIC', 'hr_payroll.BASIC', 5000.0, 1),
+                rule('HOUALLOW', 'hr_payroll.ALW', 1000.0, 10),
+                rule('TRANSP', 'hr_payroll.ALW', 300.0, 11),
+                rule('PENALTY', 'hr_payroll.DED', -200.0, 50),
+                Command.create({
+                    'name': 'Net', 'code': 'NET', 'sequence': 100, 'category_id': ref('hr_payroll.NET').id,
+                    'condition_select': 'none', 'amount_select': 'code',
+                    'amount_python_compute': "result = categories['BASIC'] + categories['ALW'] + categories['DED']",
+                }),
+            ],
         })
-        cls.cat_net = cls.HrSalaryRuleCategory.create({
-            'name': 'Net', 'code': 'NET',
-        })
-
-        # Salary rules — codes match what the wizard queries
-        cls.rule_basic = cls._make_rule('BASIC', 'BASIC', cls.cat_alw, 5000.0)
-        cls.rule_house = cls._make_rule('HOUALLOW', 'Housing', cls.cat_alw, 1000.0)
-        cls.rule_ded = cls._make_rule('DED1', 'DED1', cls.cat_ded, 200.0)
-        cls.rule_net = cls._make_rule('NET', 'NET', cls.cat_net, 0.0)
-
-        # Bank + bank account
-        bank = cls.env['res.bank'].create({'name': 'Test Bank'})
-        partner = cls.env.user.partner_id
-        cls.bank_account = cls.env['res.partner.bank'].create({
-            'acc_number': 'EG123456789',
-            'bank_id': bank.id,
-            'partner_id': partner.id,
-        })
-
-        # Employee — Odoo 19 uses primary_bank_account_id
-        employee_vals = {
-            'name': 'Test Employee',
-            'identification_id': '29101012345678',
-        }
-        if 'primary_bank_account_id' in cls.HrEmployee._fields:
-            employee_vals['primary_bank_account_id'] = cls.bank_account.id
-        elif 'bank_account_id' in cls.HrEmployee._fields:
-            employee_vals['bank_account_id'] = cls.bank_account.id
-        cls.employee = cls.HrEmployee.create(employee_vals)
+        if 'journal_id' in cls.structure._fields:
+            cls.structure.journal_id = False  # no accounting entry needed here
+        cls.bank = cls.env['res.bank'].create({'name': 'WPS Test Bank', 'bic': 'NCBKSAJE'})
+        cls.employee = cls._make_employee('WPS Employee One', 'WPS-ID-1', 'SA00WPS0000000000000001')
+        cls.employee.write({'private_street': 'King Fahd Road', 'private_city': 'Riyadh'})
 
     @classmethod
-    def _make_rule(cls, code, name, category, amount):
-        return cls.HrSalaryRule.create({
-            'name': name,
-            'code': code,
-            'category_id': category.id,
-            'sequence': 100,
-            'struct_id': cls.env.ref('hr_payroll.structure_base').id,
-            'amount_select': 'fix',
-            'amount_fix': amount,
-        })
+    def _make_employee(cls, name, identification, account=None):
+        employee = cls.env['hr.employee'].create({'name': name, 'identification_id': identification})
+        employee.write({'wage': 5000.0, 'structure_type_id': cls.env.ref('hr.structure_type_employee').id,
+                        'contract_date_start': date(2025, 1, 1)})
+        if account:
+            bank_account = cls.env['res.partner.bank'].create({
+                'acc_number': account, 'bank_id': cls.bank.id, 'partner_id': employee.work_contact_id.id,
+            })
+            employee.bank_account_ids = [Command.set(bank_account.ids)]
+        return employee
 
-    def _create_payslip(self, date_from, state='validated'):
-        slip = self.HrPayslip.create({
-            'employee_id': self.employee.id,
-            'date_from': date_from,
-            'date_to': date_from.replace(day=28),
-            'contract_id': False,
-            'struct_id': self.env.ref('hr_payroll.structure_base').id,
+    def _validated_slip(self, employee, date_from=date(2026, 1, 1), date_to=date(2026, 1, 31)):
+        slip = self.env['hr.payslip'].create({
+            'name': 'WPS slip', 'employee_id': employee.id, 'version_id': employee.version_id.id,
+            'struct_id': self.structure.id, 'date_from': date_from, 'date_to': date_to,
         })
         slip.compute_sheet()
-        if state in ('validated', 'paid'):
-            # Odoo 19: action_payslip_done → state='validated'
-            slip.action_payslip_done()
-            if state == 'paid':
-                slip.action_payslip_paid()
+        if 'approval_state' in slip._fields:  # one-level payroll approval, when installed
+            slip.sudo().action_submit_approval()
+            slip.sudo().action_approve_payslip()
+        slip.action_payslip_done()
+        self.assertEqual(slip.state, 'validated')
         return slip
 
-    def _run_wizard(self, month_date):
-        wizard = self.WpsWizard.create({'month': month_date})
-        return wizard.action_export()
+    def _wizard(self, month=date(2026, 1, 15)):
+        return self.env['wps.export.wizard'].create({'month': month})
 
-    def _attachment_from_action(self, action):
-        att_id = int(action['url'].split('/')[-1].split('?')[0])
-        return self.env['ir.attachment'].browse(att_id)
+    def _export(self, wizard):
+        wizard.action_export()
+        content = base64.b64decode(wizard.file_data)
+        return (openpyxl.load_workbook(io.BytesIO(content)).active,
+                openpyxl.load_workbook(io.BytesIO(content), data_only=True).active)
 
-    # ── 1. x_others field exists ───────────────────────────────────────
+    # -----------------------------------------------------------------
+    def test_others_field_is_the_other_allowances(self):
+        slip = self._validated_slip(self.employee)
+        self.assertEqual(slip.x_others, 300.0, "housing and deductions are not 'others'")
 
-    def test_01_others_field_exists(self):
-        """x_others field is present on hr.payslip after module install."""
-        slip = self.HrPayslip.create({
-            'employee_id': self.employee.id,
-            'date_from': '2026-07-01',
-            'date_to': '2026-07-28',
-            'struct_id': self.env.ref('hr_payroll.structure_base').id,
-        })
-        self.assertIn('x_others', slip._fields)
-        self.assertEqual(slip.x_others, 0.0)
+    def test_bank_file_has_the_template_layout_and_correct_amounts(self):
+        slip = self._validated_slip(self.employee)
+        wizard = self._wizard()
+        self.assertFalse(wizard.has_blocking_issue, wizard.issues)
+        self.assertEqual((wizard.payslip_count, wizard.employee_count), (1, 1))
+        sheet, values = self._export(wizard)
+        self.assertEqual([c.value for c in sheet[1]], HEADERS)
+        row = [c.value for c in sheet[2]]
+        self.assertEqual(row[0], 'NCBK')
+        self.assertEqual(row[1], 'SA00WPS0000000000000001')
+        self.assertEqual(row[2], '=H2+I2+J2-K2')
+        self.assertEqual(values['C2'].value, slip.net_wage)
+        self.assertEqual(row[3], datetime(2026, 1, 1))
+        self.assertEqual(sheet['D2'].number_format, 'mmm-yy')
+        self.assertEqual(row[4:7], ['WPS Employee One', 'WPS-ID-1', 'King Fahd Road, Riyadh'])
+        self.assertEqual(row[7:11], [5000, 1000, 300, 200])
+        self.assertEqual(5000 + 1000 + 300 - 200, slip.net_wage)
+        self.assertEqual(wizard.file_name, 'Bank_Salaries_2026_01.xlsx')
 
-    # ── 2. x_others auto-computed on compute_sheet ────────────────────
-
-    def test_02_others_auto_computed(self):
-        """compute_sheet() populates x_others."""
-        from odoo.fields import Date
-        slip = self._create_payslip(Date.to_date('2026-07-01'))
-        self.assertNotEqual(slip.x_others, 0.0, "x_others should have been computed")
-
-    # ── 3. x_others = Allowances − Deductions ─────────────────────────
-
-    def test_03_others_formula(self):
-        """x_others == ALW total − DED total."""
-        from odoo.fields import Date
-        slip = self._create_payslip(Date.to_date('2026-07-01'))
-        alw = slip._get_line_total_by_category('ALW')
-        ded = slip._get_line_total_by_category('DED')
-        self.assertAlmostEqual(slip.x_others, alw - ded, places=2)
-
-    # ── 4. x_others is manually editable ──────────────────────────────
-
-    def test_04_others_editable(self):
-        """User can write a manual value into x_others."""
-        from odoo.fields import Date
-        slip = self._create_payslip(Date.to_date('2026-07-01'))
-        slip.write({'x_others': 999.99})
-        self.assertEqual(slip.x_others, 999.99, "Manual edit should stick")
-
-    # ── 5. Wizard month field is required ─────────────────────────────
-
-    def test_05_wizard_month_required(self):
-        """Wizard raises if month is not set."""
-        with self.assertRaises(Exception):
-            self.WpsWizard.create({})
-
-    # ── 6. Wizard filters by month + state (validated/paid) ───────────
-
-    def test_06_wizard_filter(self):
-        """Wizard picks up only validated/paid payslips in the chosen month."""
-        from odoo.fields import Date
-        import base64 as _b64
-        slip_july = self._create_payslip(Date.to_date('2026-07-01'), state='validated')
-        slip_august = self._create_payslip(Date.to_date('2026-08-01'), state='validated')
-        action = self._run_wizard(Date.to_date('2026-07-15'))
-        attachment = self._attachment_from_action(action)
-        csv_text = _b64.b64decode(attachment.datas).decode('utf-8-sig')
-        self.assertIn('Test Employee', csv_text)
-        # Only July payslip should be in the CSV (count = 1, not 2)
-        self.assertEqual(csv_text.count('Test Employee'), 1)
-
-    # ── 7. Wizard raises if no payslips ───────────────────────────────
-
-    def test_07_no_payslips_raises(self):
-        """Wizard raises UserError when no validated payslips exist for the month."""
-        from odoo.fields import Date
+    def test_missing_bank_account_or_id_blocks_the_export(self):
+        self._validated_slip(self.employee)
+        other = self._make_employee('WPS Employee Two', False)
+        self._validated_slip(other)
+        wizard = self._wizard()
+        self.assertTrue(wizard.has_blocking_issue)
+        self.assertIn('WPS Employee Two: no bank account number', wizard.issues)
+        self.assertIn('WPS Employee Two: no identity / Iqama number', wizard.issues)
         with self.assertRaises(UserError):
-            self._run_wizard(Date.to_date('2025-01-15'))
+            wizard.action_export()
 
-    # ── 8. CSV has 11 columns in correct order ────────────────────────
+    def test_payslips_of_an_employee_in_the_month_are_added_together(self):
+        first = self._validated_slip(self.employee, date(2026, 1, 1), date(2026, 1, 15))
+        second = self._validated_slip(self.employee, date(2026, 1, 16), date(2026, 1, 31))
+        sheet, values = self._export(self._wizard())
+        self.assertEqual(sheet.max_row, 2, "one row per employee")
+        self.assertEqual(values['C2'].value, first.net_wage + second.net_wage)
 
-    def test_08_csv_columns_order(self):
-        """CSV header row contains exactly the 11 columns in the spec order."""
-        from odoo.fields import Date
-        import base64 as _b64
-        self._create_payslip(Date.to_date('2026-07-01'), state='validated')
-        action = self._run_wizard(Date.to_date('2026-07-15'))
-        attachment = self._attachment_from_action(action)
-        csv_text = _b64.b64decode(attachment.datas).decode('utf-8-sig')
-        header = csv_text.split('\n')[0].strip()
-        expected = 'Bank,Account,Salary(total),Notice(month),Name,ID number,address,wage,house,Others,discount'
-        self.assertEqual(header, expected)
-
-    # ── 9. CSV discount is POSITIVE (per corrected spec) ──────────────
-
-    def test_09_discount_positive(self):
-        """The 'discount' column is always a positive number (per corrected spec)."""
-        from odoo.fields import Date
-        import base64 as _b64
-        self._create_payslip(Date.to_date('2026-07-01'), state='validated')
-        action = self._run_wizard(Date.to_date('2026-07-15'))
-        attachment = self._attachment_from_action(action)
-        csv_text = _b64.b64decode(attachment.datas).decode('utf-8-sig')
-        lines = csv_text.strip().split('\n')
-        last_col = lines[1].split(',')[-1]
-        # Must NOT start with '-' (positive per corrected spec)
-        self.assertFalse(last_col.startswith('-'), f"Discount should be positive, got: {last_col}")
-
-    # ── 10. CSV filename = Salary_<Month>_<Year>.csv ──────────────────
-
-    def test_10_filename(self):
-        """Attachment filename follows Salary_<Month>_<Year>.csv pattern."""
-        from odoo.fields import Date
-        self._create_payslip(Date.to_date('2026-07-01'), state='validated')
-        action = self._run_wizard(Date.to_date('2026-07-15'))
-        attachment = self._attachment_from_action(action)
-        self.assertEqual(attachment.name, 'Salary_July_2026.csv')
-
-    # ── 11. CSV has UTF-8 BOM ─────────────────────────────────────────
-
-    def test_11_utf8_bom(self):
-        """CSV binary payload starts with UTF-8 BOM (EF BB BF)."""
-        from odoo.fields import Date
-        import base64 as _b64
-        self._create_payslip(Date.to_date('2026-07-01'), state='validated')
-        action = self._run_wizard(Date.to_date('2026-07-15'))
-        attachment = self._attachment_from_action(action)
-        raw_bytes = _b64.b64decode(attachment.datas)
-        self.assertTrue(raw_bytes.startswith(b'\xef\xbb\xbf'), "CSV must start with UTF-8 BOM")
-
-    # ── 12. Bank/Account extracted via primary_bank_account_id ───────
-
-    def test_12_bank_account(self):
-        """Bank name + account number pulled from primary_bank_account_id (O19)."""
-        from odoo.fields import Date
-        import base64 as _b64
-        self._create_payslip(Date.to_date('2026-07-01'), state='validated')
-        action = self._run_wizard(Date.to_date('2026-07-15'))
-        attachment = self._attachment_from_action(action)
-        csv_text = _b64.b64decode(attachment.datas).decode('utf-8-sig')
-        data_line = csv_text.strip().split('\n')[1]
-        self.assertIn('Test Bank', data_line)
-        self.assertIn('EG123456789', data_line)
-
-    # ── 13. Address uses private_state_id (Odoo 19) ───────────────────
-
-    def test_13_address_o19(self):
-        """Address helper uses private_state_id when available (Odoo 19+)."""
-        wizard = self.WpsWizard.create({'month': '2026-07-15'})
-        addr = wizard._get_employee_address(self.employee)
-        self.assertIsInstance(addr, str)
-
-    # ── 14. Menu parented under Payroll root ──────────────────────────
-
-    def test_14_menu_parented(self):
-        """menu_wps_export exists with correct name and parent."""
-        menu = self.env.ref('el_payroll_wps.menu_wps_export', raise_if_not_found=False)
-        self.assertTrue(menu, "WPS Export menu must exist")
-        self.assertEqual(menu.name, 'WPS Export')
-
-    # ── 15. Security: only Payroll User can run ───────────────────────
-
-    def test_15_security_access(self):
-        """User without hr_payroll group cannot access wps.export.wizard."""
-        no_hr_user = self.env['res.users'].create({
-            'name': 'No HR User',
-            'login': 'nohruser_wps',
-            'group_ids': [(6, 0, [self.env.ref('base.group_user').id])],
-        })
-        wizard_as_user = self.WpsWizard.with_user(no_hr_user)
-        with self.assertRaises(AccessError):
-            wizard_as_user.create({'month': '2026-07-15'})
-
-    # ── 16. Payslip states validated/paid (Odoo 19) ───────────────────
-
-    def test_16_o19_states(self):
-        """Wizard searches for state in ('validated', 'paid') — Odoo 19 states."""
-        # Create a draft payslip — should NOT be picked up by the wizard
-        from odoo.fields import Date
-        import base64 as _b64
-        slip_draft = self.HrPayslip.create({
-            'employee_id': self.employee.id,
-            'date_from': Date.to_date('2026-07-01'),
-            'date_to': Date.to_date('2026-07-28'),
-            'struct_id': self.env.ref('hr_payroll.structure_base').id,
-        })
-        slip_draft.compute_sheet()
-        # Draft state — wizard should raise UserError (no validated payslips)
+    def test_draft_payslips_and_other_months_are_not_exported(self):
+        self.env['hr.payslip'].create({
+            'name': 'Draft', 'employee_id': self.employee.id, 'version_id': self.employee.version_id.id,
+            'struct_id': self.structure.id, 'date_from': date(2026, 1, 1), 'date_to': date(2026, 1, 31),
+        }).compute_sheet()
+        self._validated_slip(self.employee, date(2026, 2, 1), date(2026, 2, 28))
+        wizard = self._wizard()
+        self.assertEqual(wizard.payslip_count, 0)
+        self.assertTrue(wizard.has_blocking_issue)
         with self.assertRaises(UserError):
-            self._run_wizard(Date.to_date('2026-07-15'))
+            wizard.action_export()
 
-    # ── 17. Housing rule code = HOUALLOW ──────────────────────────────
+    def test_csv_bank_file_has_the_bank_columns_and_correct_amounts(self):
+        slip = self._validated_slip(self.employee)
+        wizard = self._wizard()
+        wizard.action_export_csv()
+        self.assertEqual(wizard.file_name, 'Salary_January_2026.csv')
+        content = base64.b64decode(wizard.file_data)
+        self.assertTrue(content.startswith(codecs.BOM_UTF8), "UTF-8 with BOM, for Arabic names in Excel")
+        rows = list(csv.reader(io.StringIO(content.decode('utf-8-sig'))))
+        self.assertEqual(rows[0], CSV_HEADERS)
+        self.assertEqual(rows[1], [
+            'WPS Test Bank', 'SA00WPS0000000000000001', '6100.00', 'January', 'WPS Employee One',
+            'WPS-ID-1', 'King Fahd Road, Riyadh', '5000.00', '1000.00', '300.00', '200.00',
+        ])
+        self.assertEqual(float(rows[1][2]), slip.net_wage)
+        self.assertEqual(len(rows), 2, "one row per employee")
 
-    def test_17_houallow_code(self):
-        """The wizard queries payslip lines by code 'HOUALLOW' (Odoo 19)."""
-        from odoo.fields import Date
-        import base64 as _b64
-        slip = self._create_payslip(Date.to_date('2026-07-01'), state='validated')
-        # The HOUALLOW line total should be > 0 (we created a rule with amount_fix=1000)
-        houallow_total = slip._get_line_amount_by_code('HOUALLOW')
-        self.assertGreater(houallow_total, 0, "HOUALLOW line should have a positive total")
-
-    # ── 18. _get_line_amount_by_code returns 0 for missing code ───────
-
-    def test_18_missing_line_code(self):
-        """_get_line_amount_by_code returns 0.0 if no line matches the code."""
-        from odoo.fields import Date
-        slip = self._create_payslip(Date.to_date('2026-07-01'))
-        self.assertEqual(slip._get_line_amount_by_code('NONEXISTENT_CODE'), 0.0)
-
-    # ── 19. _get_line_total_by_category returns 0 for missing cat ─────
-
-    def test_19_missing_category(self):
-        """_get_line_total_by_category returns 0.0 if no line matches the category."""
-        from odoo.fields import Date
-        slip = self._create_payslip(Date.to_date('2026-07-01'))
-        self.assertEqual(slip._get_line_total_by_category('NONEXISTENT_CAT'), 0.0)
+    def test_csv_export_is_blocked_like_the_excel_one(self):
+        self._validated_slip(self.employee)
+        self._validated_slip(self._make_employee('WPS Employee Two', False))
+        wizard = self._wizard()
+        with self.assertRaises(UserError):
+            wizard.action_export_csv()
+        self.assertFalse(wizard.file_data)

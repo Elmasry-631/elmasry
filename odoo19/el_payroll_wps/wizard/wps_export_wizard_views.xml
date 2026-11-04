@@ -6,13 +6,34 @@
         <field name="model">wps.export.wizard</field>
         <field name="arch" type="xml">
             <form string="WPS Export">
-                <group>
-                    <field name="month"/>
+                <field name="state" invisible="1"/>
+                <field name="has_blocking_issue" invisible="1"/>
+                <group invisible="state == 'done'">
+                    <group>
+                        <field name="month"/>
+                        <field name="bank_code"/>
+                    </group>
+                    <group>
+                        <field name="payslip_count" string="Payslips"/>
+                        <field name="employee_count" string="Employees"/>
+                        <field name="total_net"/>
+                    </group>
                 </group>
+                <div invisible="state == 'done'">
+                    <label for="issues" string="Checks before export"/>
+                    <field name="issues" nolabel="1" readonly="1"/>
+                </div>
+                <div invisible="state != 'done'">
+                    <p>The bank salary file is ready:</p>
+                    <field name="file_name" invisible="1"/>
+                    <field name="file_data" filename="file_name" readonly="1"/>
+                </div>
                 <footer>
-                    <button name="action_export" type="object"
-                            string="Export CSV" class="btn-primary"/>
-                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    <button name="action_export" type="object" string="Export Bank File (Excel)"
+                            class="btn-primary" invisible="state == 'done' or has_blocking_issue"/>
+                    <button name="action_export_csv" type="object" string="Export Bank File (CSV)"
+                            class="btn-primary" invisible="state == 'done' or has_blocking_issue"/>
+                    <button string="Close" class="btn-secondary" special="cancel"/>
                 </footer>
             </form>
         </field>

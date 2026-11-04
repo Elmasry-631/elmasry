@@ -1,5 +1,7 @@
 from odoo import models, fields
 
+HOUSING_CODE = 'HOUALLOW'
+
 
 class HrPayslip(models.Model):
     _inherit = 'hr.payslip'
@@ -7,9 +9,10 @@ class HrPayslip(models.Model):
     x_others = fields.Float(
         string='Others',
         digits='Payroll',
-        help="Auto-calculated as Allowances minus Deductions when the payslip "
-             "is computed. You can edit it manually afterwards. It is purely "
-             "informational and has no effect on the Net Salary.",
+        help="Other allowances: the allowances of the payslip except the housing "
+             "allowance (rule HOUALLOW). Set when the payslip is computed; you can "
+             "edit it afterwards. Informational only: it does not change the Net "
+             "Salary, and the WPS export always reads the payslip lines.",
     )
 
     def _get_line_amount_by_code(self, line_code):
@@ -20,23 +23,40 @@ class HrPayslip(models.Model):
         return line[0].total if line else 0.0
 
     def _get_line_total_by_category(self, category_code):
-        """Sum payslip line totals for a given salary rule category code
-        (e.g. 'ALW' for Allowances, 'DED' for Deductions)."""
+        """Sum the payslip line totals of a salary rule category code, its
+        sub-categories included (e.g. 'ALW' for Allowances, 'DED' for
+        Deductions; deduction totals are negative)."""
         self.ensure_one()
         return sum(
             line.total for line in self.line_ids
-            if line.category_id.code == category_code
+            if category_code in (line.category_id.code, line.category_id.parent_id.code)
         )
 
+    def _wps_amounts(self):
+        """Amounts of the bank file columns. Basic + housing + other
+        allowances - deductions equals the net salary when the NET rule is
+        BASIC + ALW + DED (checked by the export)."""
+        self.ensure_one()
+        house = self._get_line_amount_by_code(HOUSING_CODE)
+        housing_lines = self.line_ids.filtered(lambda l: l.code == HOUSING_CODE)
+        house_in_alw = sum(
+            l.total for l in housing_lines
+            if 'ALW' in (l.category_id.code, l.category_id.parent_id.code)
+        )
+        return {
+            'basic': self.basic_wage,
+            'house': house,
+            'others': self._get_line_total_by_category('ALW') - house_in_alw,
+            'deductions': -self._get_line_total_by_category('DED'),
+            'net': self.net_wage,
+        }
+
     def _compute_x_others(self):
-        """Set Others = Allowances total - Deductions total.
-        Called once after the payslip lines are computed (see compute_sheet
-        override below). Not an @api.depends compute, so a manual edit made
-        afterwards is NOT overwritten until the sheet is recomputed again."""
+        """Others = other allowances (allowances except housing). Called once
+        after the payslip lines are computed (see compute_sheet below), so a
+        manual edit is kept until the sheet is computed again."""
         for slip in self:
-            allowances = slip._get_line_total_by_category('ALW')
-            deductions = slip._get_line_total_by_category('DED')
-            slip.x_others = allowances - deductions
+            slip.x_others = slip._wps_amounts()['others']
 
     def compute_sheet(self):
         res = super().compute_sheet()
