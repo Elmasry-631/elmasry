@@ -1,12 +1,16 @@
 # -*- coding: utf-8 -*-
+import ast
 import base64
 import datetime
 import decimal
 import json
+import logging
 
-from odoo import fields, http
+from odoo import _, fields, http
 from odoo.exceptions import AccessError
 from odoo.http import request
+
+_logger = logging.getLogger(__name__)
 
 
 class DashboardBuilderController(http.Controller):
@@ -96,7 +100,6 @@ class DashboardBuilderController(http.Controller):
     # ------------------------------------------------------------------
     # Pages
     # ------------------------------------------------------------------
-    @http.route('/dashboard/builder/<int:dashboard_id>', type='http', auth='user', website=False)
     def _get_dashboard_filters(self, dashboard, items):
         """Get global filters to apply to all widgets."""
         filters = []
@@ -104,7 +107,7 @@ class DashboardBuilderController(http.Controller):
         # Add filter_domain if set
         if dashboard.filter_domain:
             try:
-                domain = eval(dashboard.filter_domain) if isinstance(dashboard.filter_domain, str) else dashboard.filter_domain
+                domain = ast.literal_eval(dashboard.filter_domain) if isinstance(dashboard.filter_domain, str) else dashboard.filter_domain
                 filters.append({
                     'id': 'filter_domain',
                     'field_label': _('Global Domain Filter'),
@@ -125,6 +128,7 @@ class DashboardBuilderController(http.Controller):
         
         return filters
 
+    @http.route('/dashboard/builder/<int:dashboard_id>', type='http', auth='user', website=False)
     def dashboard_view(self, dashboard_id, **kwargs):
         dashboard = request.env['dashboard.builder'].browse(dashboard_id)
         if not dashboard.exists():
@@ -368,9 +372,13 @@ class DashboardBuilderController(http.Controller):
                 'data': self._json_safe(data),
                 'last_refreshed': fields.Datetime.now().isoformat(),
             }
-        except Exception as error:  # noqa: BLE001 - surfaced to the widget
-            item.sudo().write({'error_message': str(error)})
-            return {'error': str(error)}
+        except Exception:
+            _logger.exception(
+                "Dashboard widget data retrieval failed (item_id=%s)", item.id
+            )
+            message = _('Unable to load dashboard data. Check the server logs.')
+            item.sudo().write({'error_message': message})
+            return {'error': message}
 
     @http.route('/dashboard/builder/api/widgets/<int:widget_id>/data', type='json', auth='user')
     def get_widget_preview_data(self, widget_id, **kwargs):
@@ -391,8 +399,13 @@ class DashboardBuilderController(http.Controller):
         try:
             data = self._fetch_widget_data(_PreviewItem(widget))
             return {'data': self._json_safe(data)}
-        except Exception as error:  # noqa: BLE001 - surfaced to the widget
-            return {'error': str(error)}
+        except Exception:
+            _logger.exception(
+                "Dashboard widget preview failed (widget_id=%s)", widget.id
+            )
+            return {
+                'error': _('Unable to preview this widget. Check the server logs.')
+            }
 
     @http.route('/dashboard/builder/api/items/<int:item_id>/configure', type='json', auth='user')
     def configure_item(self, item_id, config, **kwargs):
@@ -509,14 +522,11 @@ class DashboardBuilderController(http.Controller):
         if not self._allowed(dashboard, 'unlink'):
             return {'error': 'Access denied'}
         dashboard.unlink()
-        return {'success': True, 'redirect': '/web#action=dashboard_builder.action_dashboard_builder'}
+        return {'success': True, 'redirect': '/web#action=el_dashboard_builder.action_dashboard_builder_list'}
 
     # ------------------------------------------------------------------
     # Data providers
     # ------------------------------------------------------------------
-    def _get_dashboard_filters(self, dashboard, items):
-        return []
-
     def _fetch_widget_data(self, item):
         component = item.widget_id.component_name if item.widget_id else 'DashboardHtml'
         handler = getattr(self, '_data_%s' % component, None)

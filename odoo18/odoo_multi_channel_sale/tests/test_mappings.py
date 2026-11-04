@@ -4,6 +4,7 @@
 # See LICENSE file for full copyright and licensing details.
 # License URL : <https://store.webkul.com/license.html/>
 ##############################################################################
+import ast
 from odoo.addons.odoo_multi_channel_sale.tests.common import TestMultiChannelCommon
 from odoo.tests import common
 # from odoo.exceptions import Warning
@@ -171,7 +172,7 @@ class TestMappingMultichannel(TestMultiChannelCommon):
         self.assertEqual(self.test_order_feed_A.channel_id.id, order_mapping.channel_id.id, msg="channel of order_feed  and order_mapping should be same")
 
         # test cases for taxes in order########################################
-        tax_rate = eval(self.test_order_feed_A.line_ids.line_taxes)[0]['rate']
+        tax_rate = ast.literal_eval(self.test_order_feed_A.line_ids.line_taxes)[0]['rate']
         tax_mappings = self.env['channel.account.mappings'].search(
             [
                 ('channel_id', '=', self.channel.id),

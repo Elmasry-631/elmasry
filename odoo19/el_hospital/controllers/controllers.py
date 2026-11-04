@@ -48,6 +48,6 @@ class HospitalController(http.Controller):
             return {'error': 'Permission denied'}
         try:
             return request.env['hospital.dashboard'].get_dashboard_data()
-        except Exception as exc:
+        except Exception:
             _logger.exception('[Hospital] get_dashboard_data failed: %s', exc)
-            return {'error': str(exc)}
+            return {'error': 'Unable to load hospital dashboard data.'}

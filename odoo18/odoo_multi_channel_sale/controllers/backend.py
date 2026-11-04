@@ -11,13 +11,27 @@ from odoo.http import request
 class WebsiteBackend(http.Controller):
     @http.route('/multichannel/fetch_dashboard_data', type='json', auth='user')
     def fetch_dashboard_data(self, obj, days, **kw):
-        
-        def _get_feed_error_count(instance, object):
-            request._cr.execute("""
-            SELECT COUNT(id)
-                    FROM {}
-                    WHERE state = 'error' AND channel_id = {}
-            """.format(object, instance.id))
+        try:
+            days = int(days)
+        except (TypeError, ValueError):
+            return {'error': 'Invalid dashboard date range.'}
+        if obj not in ('order', 'product', 'category', 'customer') or days not in (7, 30):
+            return {'error': 'Invalid dashboard filter.'}
+        allowed_company_ids = tuple(
+            request.env.companies.ids or [request.env.company.id]
+        )
+
+        def _get_feed_error_count(instance, feed_table):
+            allowed_tables = {
+                'category_feed', 'product_feed', 'order_feed', 'partner_feed',
+            }
+            if feed_table not in allowed_tables:
+                return 0
+            request._cr.execute(
+                f"SELECT COUNT(id) FROM {feed_table} "
+                "WHERE state = %s AND channel_id = %s",
+                ('error', instance.id),
+            )
             data = request._cr.dictfetchall()
             return data[-1].get('count')
             
@@ -27,46 +41,62 @@ class WebsiteBackend(http.Controller):
         request._cr.execute("""
             SELECT id,name,color
                 FROM multi_channel_sale
-                WHERE state != 'draft'
-        """)
+                WHERE state != 'draft' AND (company_id IS NULL OR company_id IN %s)
+        """, (allowed_company_ids,))
         data = request._cr.dictfetchall()
 
         if obj == 'order':
-            request._cr.execute(f"""
+            request._cr.execute("""
                 SELECT m.channel_id,to_char(o.date_order,'dd') as day,COUNT(o.id)
                     FROM channel_order_mappings m
                     LEFT JOIN sale_order o
                         On m.odoo_order_id = o.id
-                    WHERE to_char(o.date_order,'MM-YYYY') = '{today.strftime('%m-%Y')}'
+                    WHERE to_char(o.date_order,'MM-YYYY') = %s
+                        AND m.channel_id IN (
+                            SELECT id FROM multi_channel_sale
+                            WHERE company_id IS NULL OR company_id IN %s
+                        )
                     GROUP BY 1,2
-            """)
+            """, (today.strftime('%m-%Y'), allowed_company_ids))
         elif obj == 'product':
-            request._cr.execute(f"""
+            request._cr.execute("""
                 SELECT m.channel_id,to_char(p.create_date,'dd') as day,COUNT(p.id)
                     FROM channel_template_mappings m
                     LEFT JOIN product_template p
                         On m.template_name = p.id
-                    WHERE to_char(p.create_date,'MM-YYYY') = '{today.strftime('%m-%Y')}'
+                    WHERE to_char(p.create_date,'MM-YYYY') = %s
+                        AND m.channel_id IN (
+                            SELECT id FROM multi_channel_sale
+                            WHERE company_id IS NULL OR company_id IN %s
+                        )
                     GROUP BY 1,2
-            """)
+            """, (today.strftime('%m-%Y'), allowed_company_ids))
         elif obj == 'category':
-            request._cr.execute(f"""
+            request._cr.execute("""
                 SELECT m.channel_id,to_char(c.create_date,'dd') as day,COUNT(c.id)
                     FROM channel_category_mappings m
                     LEFT JOIN product_category c
                         On m.odoo_category_id = c.id
-                    WHERE to_char(c.create_date,'MM-YYYY') = '{today.strftime('%m-%Y')}'
+                    WHERE to_char(c.create_date,'MM-YYYY') = %s
+                        AND m.channel_id IN (
+                            SELECT id FROM multi_channel_sale
+                            WHERE company_id IS NULL OR company_id IN %s
+                        )
                     GROUP BY 1,2
-            """)
+            """, (today.strftime('%m-%Y'), allowed_company_ids))
         elif obj == 'customer':
-            request._cr.execute(f"""
+            request._cr.execute("""
                 SELECT m.channel_id,to_char(c.create_date,'dd') as day,COUNT(c.id)
                     FROM channel_partner_mappings m
                     LEFT JOIN res_partner c
                         On m.odoo_partner_id = c.id
-                    WHERE to_char(c.create_date,'MM-YYYY') = '{today.strftime('%m-%Y')}'
+                    WHERE to_char(c.create_date,'MM-YYYY') = %s
+                        AND m.channel_id IN (
+                            SELECT id FROM multi_channel_sale
+                            WHERE company_id IS NULL OR company_id IN %s
+                        )
                     GROUP BY 1,2
-            """)
+            """, (today.strftime('%m-%Y'), allowed_company_ids))
 
         counts = {}
         for obj in request._cr.dictfetchall():
@@ -85,7 +115,11 @@ class WebsiteBackend(http.Controller):
                 labels.append(date.strftime('%d'))
 
         instance_data = {}
-        for instance in request.env['multi.channel.sale'].search([('state', '!=', 'draft')]):
+        for instance in request.env['multi.channel.sale'].search([
+            ('state', '!=', 'draft'),
+            '|', ('company_id', '=', False),
+            ('company_id', 'in', allowed_company_ids),
+        ]):
             instance_data[instance.name] = {
                 'id': instance.id,
                 'blog_url': instance.blog_url or '#',
@@ -112,7 +146,11 @@ class WebsiteBackend(http.Controller):
     @http.route('/multichannel/fetch_dashboard_data/<int:channel_id>', type='json', auth='user')
     def fetch_instance_dashboard_data(self, channel_id, period, **kw):
         labels = []
-        instance = request.env['multi.channel.sale'].browse(channel_id)
+        instance = request.env['multi.channel.sale'].browse(channel_id).exists()
+        allowed_company_ids = request.env.companies.ids or [request.env.company.id]
+        if (not instance or (instance.company_id and
+                             instance.company_id.id not in allowed_company_ids)):
+            return {'error': 'Channel not found.'}
         data = {
             'id': channel_id,
             'name': instance.name,
@@ -139,48 +177,48 @@ class WebsiteBackend(http.Controller):
                 'September', 'October',
                 'November', 'December',
             ]
-            request._cr.execute(f"""
+            request._cr.execute("""
                 SELECT to_char(p.create_date,'Month') as month,COUNT(p.id)
                     FROM channel_template_mappings m
                     LEFT JOIN product_template p
                         ON m.template_name = p.id
-                    WHERE EXTRACT(YEAR FROM p.create_date) = {year}
-                        AND m.channel_id = {channel_id}
+                    WHERE EXTRACT(YEAR FROM p.create_date) = %s
+                        AND m.channel_id = %s
                     GROUP BY 1
-            """)
+            """, (year, channel_id))
             product_counts = {data['month'].strip(): data['count'] for data in request._cr.dictfetchall()}
 
-            request._cr.execute(f"""
+            request._cr.execute("""
                 SELECT to_char(o.date_order,'Month') as month,COUNT(o.id)
                     FROM channel_order_mappings m
                     LEFT JOIN sale_order o
                         ON m.odoo_order_id = o.id
-                    WHERE EXTRACT(YEAR FROM o.date_order) = {year}
-                        AND m.channel_id = {channel_id}
+                    WHERE EXTRACT(YEAR FROM o.date_order) = %s
+                        AND m.channel_id = %s
                     GROUP BY 1
-            """)
+            """, (year, channel_id))
             order_counts = {data['month'].strip(): data['count'] for data in request._cr.dictfetchall()}
 
-            request._cr.execute(f"""
+            request._cr.execute("""
                 SELECT to_char(c.create_date,'Month') as month,COUNT(c.id)
                     FROM channel_category_mappings m
                     LEFT JOIN product_category c
                         ON m.odoo_category_id = c.id
-                    WHERE EXTRACT(YEAR FROM c.create_date) = {year}
-                        AND m.channel_id = {channel_id}
+                    WHERE EXTRACT(YEAR FROM c.create_date) = %s
+                        AND m.channel_id = %s
                     GROUP BY 1
-            """)
+            """, (year, channel_id))
             category_counts = {data['month'].strip(): data['count'] for data in request._cr.dictfetchall()}
 
-            request._cr.execute(f"""
+            request._cr.execute("""
                 SELECT to_char(c.create_date,'Month') as month,COUNT(c.id)
                     FROM channel_partner_mappings m
                     LEFT JOIN res_partner c
                         ON m.odoo_partner_id = c.id
-                    WHERE EXTRACT(YEAR FROM c.create_date) = {year}
-                        AND m.channel_id = {channel_id}
+                    WHERE EXTRACT(YEAR FROM c.create_date) = %s
+                        AND m.channel_id = %s
                     GROUP BY 1
-            """)
+            """, (year, channel_id))
             customer_counts = {data['month'].strip(): data['count'] for data in request._cr.dictfetchall()}
 
             for month in labels:
@@ -189,48 +227,48 @@ class WebsiteBackend(http.Controller):
                 data['category_count'].append(category_counts.get(month, 0))
                 data['customer_count'].append(customer_counts.get(month, 0))
 
-        request._cr.execute(f"""
+        request._cr.execute("""
             SELECT COUNT(id) as to_export
                 FROM product_template
                 WHERE id NOT IN (
                     SELECT DISTINCT template_name
                         FROM channel_template_mappings
-                        WHERE channel_id = {channel_id}
+                        WHERE channel_id = %s
                 )
-        """)
+        """, (channel_id,))
         product_counts = request._cr.dictfetchall()[0]
-        request._cr.execute(f"""
+        request._cr.execute("""
             SELECT COUNT(need_sync) as mapped, COUNT(NULLIF('no',need_sync)) as to_update
                 FROM channel_template_mappings
-                WHERE channel_id = {channel_id}
-        """)
+                WHERE channel_id = %s
+        """, (channel_id,))
         product_counts.update(request._cr.dictfetchall()[0])
-        request._cr.execute(f"""
+        request._cr.execute("""
             SELECT type,COUNT(type)
                 FROM channel_template_mappings m
                 LEFT JOIN product_template p
                     On m.template_name = p.id
-                WHERE m.channel_id = {channel_id}
+                WHERE m.channel_id = %s
                 GROUP BY type
-        """)
+        """, (channel_id,))
         types = {'product': 'Product', 'service': 'Service'}
         for p in request._cr.dictfetchall():
             product_counts.setdefault('types', []).append(types.get(p['type']))
             product_counts.setdefault('counts', []).append(p['count'])
 
-        request._cr.execute(f"""
+        request._cr.execute("""
             SELECT COUNT(need_sync) as mapped
                 FROM channel_order_mappings
-                WHERE channel_id = {channel_id}
-        """)
+                WHERE channel_id = %s
+        """, (channel_id,))
         order_counts = request._cr.dictfetchall()[0]
-        request._cr.execute(f"""
+        request._cr.execute("""
             SELECT
                 COUNT(NULLIF(TRUE,is_delivered)) as to_deliver,
                 COUNT(NULLIF(TRUE,is_invoiced)) as to_invoice
                 FROM channel_order_mappings
-                WHERE channel_id = {channel_id}
-        """)
+                WHERE channel_id = %s
+        """, (channel_id,))
         order_counts.update(request._cr.dictfetchall()[0])
         states = {
             'draft': 'Quotation',
@@ -239,50 +277,50 @@ class WebsiteBackend(http.Controller):
             'done': 'Done',
             'cancel': 'Cancelled',
         }
-        request._cr.execute(f"""
+        request._cr.execute("""
             SELECT o.state,COUNT(o.state)
                 FROM channel_order_mappings m
                 LEFT JOIN sale_order o
                     On m.odoo_order_id = o.id
-                WHERE m.channel_id = {channel_id}
+                WHERE m.channel_id = %s
                 GROUP BY o.state
-        """)
+        """, (channel_id,))
         for o in request._cr.dictfetchall():
             order_counts.setdefault('types', []).append(states.get(o['state']))
             order_counts.setdefault('counts', []).append(o['count'])
 
-        request._cr.execute(f"""
+        request._cr.execute("""
             SELECT COUNT(id) as to_export
                 FROM product_category
                 WHERE id NOT IN (
                     SELECT DISTINCT odoo_category_id
                         FROM channel_category_mappings
-                        WHERE channel_id = {channel_id}
+                        WHERE channel_id = %s
                 )
-        """)
+        """, (channel_id,))
         category_counts = request._cr.dictfetchall()[0]
-        request._cr.execute(f"""
+        request._cr.execute("""
             SELECT COUNT(need_sync) as mapped, COUNT(NULLIF('no',need_sync)) as to_update
                 FROM channel_category_mappings
-                WHERE channel_id = {channel_id}
-        """)
+                WHERE channel_id = %s
+        """, (channel_id,))
         category_counts.update(request._cr.dictfetchall()[0])
 
-        request._cr.execute(f"""
+        request._cr.execute("""
             SELECT COUNT(id) as to_export
                 FROM res_partner
                 WHERE id NOT IN (
                     SELECT DISTINCT odoo_partner_id
                         FROM channel_partner_mappings
-                        WHERE channel_id = {channel_id}
+                        WHERE channel_id = %s
                 )
-        """)
+        """, (channel_id,))
         customer_counts = request._cr.dictfetchall()[0]
-        request._cr.execute(f"""
+        request._cr.execute("""
             SELECT COUNT(need_sync) as mapped, COUNT(NULLIF('no',need_sync)) as to_update
                 FROM channel_partner_mappings
-                WHERE channel_id = {channel_id}
-        """)
+                WHERE channel_id = %s
+        """, (channel_id,))
         customer_counts.update(request._cr.dictfetchall()[0])
         return {
             'labels': labels,

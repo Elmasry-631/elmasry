@@ -4,6 +4,7 @@
 # See LICENSE file for full copyright and licensing details.
 # License URL : <https://store.webkul.com/license.html/>
 ##############################################################################
+import ast
 from logging import getLogger
 _logger = getLogger(__name__)
 from odoo.addons.odoo_multi_channel_sale.tools import remove_tags
@@ -469,7 +470,7 @@ class FetchData:
             if not variant.name_value:
                 continue
             try:
-                name_values = eval(variant.name_value)
+                name_values = ast.literal_eval(variant.name_value)
             except Exception:
                 continue
             variant_attrs = frozenset(
@@ -513,12 +514,12 @@ class FetchData:
             if mappings:
                 template_id = mappings.template_name
                 if template_id and template_id.salla_product_attribute_options:
-                    options = eval(template_id.salla_product_attribute_options)
+                    options = ast.literal_eval(template_id.salla_product_attribute_options)
                     variant_id = options.get(value)
                     if variant_id:
                         return variant_id
             elif attribute_options:
-                variant_id = eval(attribute_options).get(value)
+                variant_id = ast.literal_eval(attribute_options).get(value)
                 if variant_id:
                     return variant_id
         variant_id = self._get_variant_id_by_option_names(order_line_product, store_product_id)

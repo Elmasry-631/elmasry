@@ -4,6 +4,7 @@
 # See LICENSE file for full copyright and licensing details.
 # License URL : <https://store.webkul.com/license.html/>
 ##############################################################################
+import ast
 import copy
 import json
 from logging import getLogger
@@ -274,7 +275,7 @@ class OrderFeed(models.Model):
             discount_line = order_line_feed.filtered(lambda line: line.line_source == 'discount')
             if channel_id.tax_on_discount_line and discount_line and not discount_line.line_taxes:
                 for line_id in order_line_feed.filtered(lambda line: line.line_source == 'product'):
-                    tax_lines = eval(line_id.line_taxes) if line_id.line_taxes else []
+                    tax_lines = ast.literal_eval(line_id.line_taxes) if line_id.line_taxes else []
                     if not tax_lines or (tax_list and len(tax_list) != len(tax_lines)):
                         apply_tax_on_discount_line = False
                         break
@@ -389,7 +390,7 @@ class OrderFeed(models.Model):
         if not taxes:
             return False
         tx_ids = []
-        for tax in eval(taxes):
+        for tax in ast.literal_eval(taxes):
             tax_rate = tax.get('rate', tax.get('tax_rate', tax.get('value')))
             if not tax_rate:
                 continue

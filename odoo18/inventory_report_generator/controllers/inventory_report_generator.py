@@ -19,9 +19,11 @@
 
 ###############################################################################
 import json
+import logging
+
 from odoo import http
 from odoo.http import content_disposition, request
-from odoo.tools import html_escape
+_logger = logging.getLogger(__name__)
 
 
 class InventoryReportGenerator(http.Controller):
@@ -46,28 +48,44 @@ class InventoryReportGenerator(http.Controller):
            dfr_data: Additional data for report generation.
            kw: Additional keyword arguments.
            return: An HTTP response containing the generated XLSX report."""
-        uid = request.session.uid
-        report_obj = request.env[model].with_user(uid)
         token = 'dummy-because-api-expects-one'
+        if model != 'dynamic.inventory.report':
+            return request.make_response(
+                json.dumps({'error': 'Invalid report model.'}),
+                headers=[('Content-Type', 'application/json')], status=400
+            )
+        if output_format != 'xlsx':
+            return request.make_response(
+                json.dumps({'error': 'Unsupported report format.'}),
+                headers=[('Content-Type', 'application/json')], status=400
+            )
+
         try:
-            if output_format == 'xlsx':
-                response = request.make_response(
-                    None,
-                    headers=[
-                        ('Content-Type', 'application/vnd.ms-excel'),
-                        ('Content-Disposition',
-                         content_disposition(report_name + '.xlsx'))
-                    ]
-                )
-                report_obj.get_inventory_xlsx_report(options, response,
-                                                     report_data, dfr_data)
+            report_obj = request.env[model]
+            response = request.make_response(
+                None,
+                headers=[
+                    ('Content-Type',
+                     'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'),
+                    ('Content-Disposition',
+                     content_disposition(str(report_name or 'Inventory Report')
+                                         + '.xlsx'))
+                ]
+            )
+            report_obj.get_inventory_xlsx_report(
+                options, response, report_data, dfr_data
+            )
             response.set_cookie('fileToken', token)
             return response
-        except Exception as e:
-            se = http.serialize_exception(e)
+        except Exception:
+            _logger.exception(
+                'Failed to generate the dynamic inventory XLSX report'
+            )
             error = {
-                'code': 200,
-                'message': 'Odoo Server Error',
-                'data': se
+                'code': 500,
+                'message': 'Unable to generate the inventory report.',
             }
-            return request.make_response(html_escape(json.dumps(error)))
+            return request.make_response(
+                json.dumps(error),
+                headers=[('Content-Type', 'application/json')], status=500
+            )

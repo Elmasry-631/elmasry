@@ -4,6 +4,7 @@
 # See LICENSE file for full copyright and licensing details.
 # License URL : <https://store.webkul.com/license.html/>
 ##############################################################################
+import ast
 from odoo.addons.odoo_multi_channel_sale.tests.common import TestMultiChannelCommon
 from odoo.tests import common
 # from odoo.exceptions import Warning
@@ -228,7 +229,7 @@ class TestFeedMultichannel(TestMultiChannelCommon):
 
         # To check whether amount in tax of line_item is same as tax ratepresent in line_item of  feed or not
         self.assertEqual(odoo_order_A.order_line.tax_id.amount,
-                         eval(self.test_order_feed_A.line_ids.line_taxes)[0].get('rate'), msg="tax rate should be same in line_item as imported in order feed")
+                         ast.literal_eval(self.test_order_feed_A.line_ids.line_taxes)[0].get('rate'), msg="tax rate should be same in line_item as imported in order feed")
 
         # confirm Order ##################################
         order_confirm = self.env['multi.channel.skeleton']._ConfirmOdooOrder(odoo_order_A, date_invoice=self.test_order_feed_A.date_invoice, confirmation_date=self.test_order_feed_A.confirmation_date)

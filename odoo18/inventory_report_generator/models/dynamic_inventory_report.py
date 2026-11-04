@@ -72,7 +72,6 @@ class DynamicInventoryReport(models.Model):
                 'date_to': report_values.date_to,
             })
         filters = self.get_filter(option)
-        self._get_report_values(data)
         lines = self._get_report_values(data).get('INVENTORY')
         return {
             'name': "Inventory Orders",
@@ -137,6 +136,24 @@ class DynamicInventoryReport(models.Model):
         res = super(DynamicInventoryReport, self).write(vals)
         return res
 
+    def _execute_company_scoped_query(self, query, company_clause,
+                                      date_field=None, data=None):
+        """Execute report SQL within the current user's allowed companies."""
+        company_ids = tuple(self.env.companies.ids or [self.env.company.id])
+        where_clauses = [company_clause]
+        params = [company_ids]
+        if date_field and data:
+            if data.get('date_from'):
+                where_clauses.append(f"{date_field} >= %s")
+                params.append(data['date_from'])
+            if data.get('date_to'):
+                where_clauses.append(f"{date_field} <= %s")
+                params.append(data['date_to'])
+        self._cr.execute(
+            f"{query} WHERE {' AND '.join(where_clauses)}", params
+        )
+        return self._cr.dictfetchall()
+
     def _get_report_sub_lines(self, data, report, date_from, date_to):
         """Get sub-lines of the inventory report.
             Args:
@@ -153,16 +170,9 @@ class DynamicInventoryReport(models.Model):
             res_company.name as company,l.id as id from stock_picking as l 
             left join res_partner on l.partner_id = res_partner.id left join 
             res_company on l.company_id = res_company.id'''
-            term = 'Where '
-            if data.get('date_from'):
-                query += " Where l.scheduled_date >= '%s' " % data.get(
-                    'date_from')
-                term = 'AND '
-            if data.get('date_to'):
-                query += term + " l.scheduled_date <= '%s' " % data.get(
-                    'date_to')
-            self._cr.execute(query)
-            report_by_order = self._cr.dictfetchall()
+            report_by_order = self._execute_company_scoped_query(
+                query, 'l.company_id IN %s', 'l.scheduled_date', data
+            )
             report_sub_lines.append(report_by_order)
         elif data.get('report_type') == 'report_by_categories':
             query = """
@@ -187,16 +197,10 @@ class DynamicInventoryReport(models.Model):
                 left join 
                     product_category on product_category.id = 
                     product_template.categ_id"""
-            term = ' Where '
-            if data.get('date_from'):
-                query += " Where stock_quant.create_date >= '%s' " % data.get(
-                    'date_from')
-                term = ' AND '
-            if data.get('date_to'):
-                query += term + " stock_quant.create_date <= '%s' " % data.get(
-                    'date_to')
-            self._cr.execute(query)
-            report_by_order_details = self._cr.dictfetchall()
+            report_by_order_details = self._execute_company_scoped_query(
+                query, '(stock_quant.company_id IS NULL OR stock_quant.company_id IN %s)',
+                'stock_quant.create_date', data
+            )
             report_sub_lines.append(report_by_order_details)
         elif data.get('report_type') == 'report_by_warehouse':
             query = '''select l.name,l.company_id,l.view_location_id,
@@ -206,28 +210,20 @@ class DynamicInventoryReport(models.Model):
             res_company.id = l.company_id left join stock_location on 
             stock_location.id = l.view_location_id left join stock_route on 
             stock_route.id = l.reception_route_id'''
-            term = ' Where '
-            if data.get('date_from'):
-                query += " Where l.write_date >= '%s' " % data.get('date_from')
-                term = 'AND '
-            if data.get('date_to'):
-                query += term + "l.write_date <= '%s' " % data.get('date_to')
-            self._cr.execute(query)
-            report_by_product = self._cr.dictfetchall()
+            report_by_product = self._execute_company_scoped_query(
+                query, 'l.company_id IN %s', 'l.write_date', data
+            )
             report_sub_lines.append(report_by_product)
         elif data.get('report_type') == 'report_by_location':
             query = '''select l.complete_name,l.usage as location_type,
             l.create_date,l.company_id,res_company.name as company from 
             stock_location as l left join res_company on res_company.id = 
             l.company_id'''
-            term = ' Where '
-            if data.get('date_from'):
-                query += " Where l.create_date >= '%s' " % data.get('date_from')
-                term = 'AND '
-            if data.get('date_to'):
-                query += term + "l.create_date <= '%s' " % data.get('date_to')
-            self._cr.execute(query)
-            report_by_categories = self._cr.dictfetchall()
+            report_by_categories = self._execute_company_scoped_query(
+                query,
+                '(l.company_id IS NULL OR l.company_id IN %s)',
+                'l.create_date', data
+            )
             report_sub_lines.append(report_by_categories)
         return report_sub_lines
 
@@ -304,7 +300,11 @@ class DynamicInventoryReport(models.Model):
         report_data_main = json.loads(report_data)
         output = io.BytesIO()
         filters = json.loads(data)
-        workbook = xlsxwriter.Workbook(output, {'in_memory': True})
+        workbook = xlsxwriter.Workbook(
+            output,
+            {'in_memory': True, 'strings_to_formulas': False,
+             'strings_to_urls': False}
+        )
         sheet = workbook.add_worksheet()
         head = workbook.add_format({'align': 'center', 'bold': True,
                                     'font_size': '20px'})

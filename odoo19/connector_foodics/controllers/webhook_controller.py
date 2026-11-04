@@ -28,11 +28,24 @@ class FoodicsWebhookController(http.Controller):
     def foodics_webhook_http(self, secret, **kwargs):
         try:
             payload = json.loads(request.httprequest.get_data(as_text=True) or "{}")
+            if not isinstance(payload, dict):
+                return request.make_json_response(
+                    {"status": "error", "message": "Webhook payload must be a JSON object."},
+                    status=400,
+                )
             result = self._handle(secret, payload)
             return request.make_json_response(result)
-        except Exception as exc:
+        except json.JSONDecodeError:
+            return request.make_json_response(
+                {"status": "error", "message": "Invalid JSON payload."},
+                status=400,
+            )
+        except Exception:
             _logger.exception("Foodics webhook processing failed")
-            return request.make_json_response({"status": "error", "message": str(exc)}, status=400)
+            return request.make_json_response(
+                {"status": "error", "message": "Unable to process webhook payload."},
+                status=500,
+            )
 
     def _handle(self, secret, payload):
         connection = request.env["foodics.connection"].sudo().search([

@@ -657,7 +657,7 @@ class MultiChannelSale(models.Model):
         mapping_model = model_dict.get('mapping')
         feed_model = model_dict.get('feed')
         for channel_mapping_obj in channel_mapping_objs:
-            channel_store_id = eval('channel_mapping_obj.{}'.format(model_dict.get('channel_field')))
+            channel_store_id = getattr(channel_mapping_obj, model_dict['channel_field'])
             feed_objs = self.env[feed_model].search([
                 ('store_id', '=', channel_store_id)
             ])

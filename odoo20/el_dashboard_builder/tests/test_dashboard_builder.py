@@ -19,7 +19,7 @@ class TestDashboardBuilder(TransactionCase):
             'name': 'Test Manager',
             'login': 'test_manager',
             'email': 'manager@example.com',
-            'groups_id': [(6, 0, [cls.env.ref('dashboard_builder.group_dashboard_manager').id])],
+            'groups_id': [(6, 0, [cls.env.ref('el_dashboard_builder.group_dashboard_manager').id])],
         })
         cls.company = cls.env.company
 
@@ -43,7 +43,7 @@ class TestDashboardBuilder(TransactionCase):
             'user_id': self.user.id,
         })
         # Add an item
-        widget = self.env.ref('dashboard_builder.widget_kpi_card')
+        widget = self.env.ref('el_dashboard_builder.widget_kpi_card')
         self.env['dashboard.builder.item'].create({
             'dashboard_id': dashboard.id,
             'widget_id': widget.id,
@@ -67,7 +67,7 @@ class TestDashboardBuilder(TransactionCase):
             'name': 'Test Dashboard',
             'user_id': self.user.id,
         })
-        widget = self.env.ref('dashboard_builder.widget_kpi_card')
+        widget = self.env.ref('el_dashboard_builder.widget_kpi_card')
         
         item = self.env['dashboard.builder.item'].create({
             'dashboard_id': dashboard.id,
@@ -90,7 +90,7 @@ class TestDashboardBuilder(TransactionCase):
             'name': 'Test Dashboard',
             'user_id': self.user.id,
         })
-        widget = self.env.ref('dashboard_builder.widget_kpi_card')
+        widget = self.env.ref('el_dashboard_builder.widget_kpi_card')
         
         # Test negative X position
         with self.assertRaises(ValidationError):
@@ -120,7 +120,7 @@ class TestDashboardBuilder(TransactionCase):
             'name': 'Test Dashboard',
             'user_id': self.user.id,
         })
-        widget = self.env.ref('dashboard_builder.widget_kpi_card')
+        widget = self.env.ref('el_dashboard_builder.widget_kpi_card')
         
         item = self.env['dashboard.builder.item'].new({
             'dashboard_id': dashboard.id,
@@ -284,7 +284,7 @@ class TestDashboardBuilder(TransactionCase):
             'background_color': '#ffffff',
             'refresh_interval': 60,
         })
-        widget = self.env.ref('dashboard_builder.widget_kpi_card')
+        widget = self.env.ref('el_dashboard_builder.widget_kpi_card')
         item = self.env['dashboard.builder.item'].create({
             'dashboard_id': dashboard.id,
             'widget_id': widget.id,
@@ -358,7 +358,7 @@ class TestDashboardBuilder(TransactionCase):
             'name': 'Config Test',
             'user_id': self.user.id,
         })
-        widget = self.env.ref('dashboard_builder.widget_kpi_card')
+        widget = self.env.ref('el_dashboard_builder.widget_kpi_card')
         item = self.env['dashboard.builder.item'].create({
             'dashboard_id': dashboard.id,
             'widget_id': widget.id,
@@ -414,7 +414,7 @@ class TestDashboardBuilderUI(TransactionCase):
 
     def test_widget_test_action(self):
         """Test widget test action."""
-        widget = self.env.ref('dashboard_builder.widget_kpi_card')
+        widget = self.env.ref('el_dashboard_builder.widget_kpi_card')
         action = widget.action_test_widget()
         self.assertEqual(action['type'], 'ir.actions.act_url')
         self.assertIn(f'/dashboard/builder/widget/test/{widget.id}', action['url'])

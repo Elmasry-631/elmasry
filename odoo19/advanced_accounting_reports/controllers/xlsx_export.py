@@ -1,8 +1,12 @@
 # -*- coding: utf-8 -*-
+import logging
+
 from odoo import http, _
 from odoo.http import request, content_disposition
 import io
 import xlsxwriter
+
+_logger = logging.getLogger(__name__)
 
 
 class XlsxExportController(http.Controller):
@@ -80,7 +84,11 @@ class XlsxExportController(http.Controller):
             sec_name = sec_currency.name or sec_symbol
 
             output = io.BytesIO()
-            workbook = xlsxwriter.Workbook(output, {'in_memory': True})
+            workbook = xlsxwriter.Workbook(
+                output,
+                {'in_memory': True, 'strings_to_formulas': False,
+                 'strings_to_urls': False}
+            )
             sheet = workbook.add_worksheet(_('General Ledger'))
             if is_rtl:
                 sheet.right_to_left()
@@ -271,12 +279,11 @@ class XlsxExportController(http.Controller):
                     ('Content-Disposition', content_disposition(filename)),
                 ]
             )
-        except Exception as e:
-            import traceback
-            error_msg = str(e) + "\n" + traceback.format_exc()
+        except Exception:
+            _logger.exception("General ledger XLSX export failed")
             return request.make_response(
-                error_msg.encode('utf-8'),
-                headers=[('Content-Type', 'text/plain')],
+                _("Unable to generate the General Ledger export.").encode('utf-8'),
+                headers=[('Content-Type', 'text/plain; charset=utf-8')],
                 status=500
             )
 
@@ -308,7 +315,11 @@ class XlsxExportController(http.Controller):
             sec_name = sec_currency.name or sec_symbol
 
             output = io.BytesIO()
-            workbook = xlsxwriter.Workbook(output, {'in_memory': True})
+            workbook = xlsxwriter.Workbook(
+                output,
+                {'in_memory': True, 'strings_to_formulas': False,
+                 'strings_to_urls': False}
+            )
             sheet = workbook.add_worksheet(_('Trial Balance'))
             if is_rtl:
                 sheet.right_to_left()
@@ -430,11 +441,10 @@ class XlsxExportController(http.Controller):
                     ('Content-Disposition', content_disposition(filename)),
                 ]
             )
-        except Exception as e:
-            import traceback
-            error_msg = str(e) + "\n" + traceback.format_exc()
+        except Exception:
+            _logger.exception("Trial balance XLSX export failed")
             return request.make_response(
-                error_msg.encode('utf-8'),
-                headers=[('Content-Type', 'text/plain')],
+                _("Unable to generate the Trial Balance export.").encode('utf-8'),
+                headers=[('Content-Type', 'text/plain; charset=utf-8')],
                 status=500
             )

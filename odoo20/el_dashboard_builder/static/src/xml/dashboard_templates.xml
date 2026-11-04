@@ -163,7 +163,7 @@
                                                          draggable="true"
                                                          role="button"
                                                          tabindex="0"
-                                                         aria-label="Add <t t-out="widget.name"/> widget">
+                                                         t-attf-aria-label="Add {{ widget.name }} widget">
                                                         <div class="d-flex align-items-center">
                                                             <i class="fa fa-grip-lines me-2 text-muted" title="Drag to dashboard" aria-hidden="true"/>
                                                             <i t-attf-class="me-2 {{ widget.icon }}" t-att-style="color: {{ widget.color }};" aria-hidden="true"/>
@@ -316,7 +316,7 @@
                                                             t-att-data-widget-id="widget.id"
                                                             t-att-data-widget-xml-id="widget.xml_id"
                                                             t-att-data-component="widget.component_name"
-                                                            aria-label="Add <t t-out="widget.name"/> widget">
+                                                            t-attf-aria-label="Add {{ widget.name }} widget">
                                                         <i t-attf-class="fa {{ widget.icon }} fa-2x mb-2 d-block" t-att-style="color: {{ widget.color }}"/>
                                                         <strong><t t-out="widget.name"/></strong>
                                                         <div class="small text-muted"><t t-out="widget.description or ''"/></div>
@@ -425,7 +425,7 @@
                 <div class="o_kpi_value" t-att-class="widget_data.color"><t t-out="widget_data.formatted_value"/></div>
                 <div class="o_kpi_trend" t-if="widget_data.trend is not none">
                     <i t-att-class="widget_data.trend_icon" aria-hidden="true"/>
-                    <span class="o_kpi_trend_text" t-att-class="widget_data.trend > 0 ? 'text-success' : (widget_data.trend < 0 ? 'text-danger' : 'text-muted')">
+                    <span class="o_kpi_trend_text" t-att-class="widget_data.trend > 0 ? 'text-success' : (widget_data.trend &lt; 0 ? 'text-danger' : 'text-muted')">
                         <t t-out="widget_data.trend_formatted"/>
                     </span>
                     <span class="text-muted ms-2">vs previous period</span>
@@ -466,7 +466,7 @@
                 <div class="o_search_wrapper" t-if="show_search">
                     <div class="input-group input-group-sm">
                         <span class="input-group-text bg-transparent border-end-0"><i class="fa fa-search"/></span>
-                        <input type="text" class="form-control form-control-sm o_search_input border-start-0" placeholder="Search..." aria-label="Search table">
+                        <input type="text" class="form-control form-control-sm o_search_input border-start-0" placeholder="Search..." aria-label="Search table"/>
                     </div>
                 </div>
                 <div class="table-responsive" style="flex: 1; min-height: 0;">
