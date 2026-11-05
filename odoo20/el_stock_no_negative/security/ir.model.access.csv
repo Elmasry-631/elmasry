@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_el_stock_no_negative_product_template,el_stock_no_negative.product.template,model_product_template,base.group_user,1,1,1,0
+access_el_stock_no_negative_product_category,el_stock_no_negative.product.category,model_product_category,base.group_user,1,1,1,0
+access_el_stock_no_negative_product_product,el_stock_no_negative.product.product,model_product_product,base.group_user,1,1,1,0
+access_el_stock_no_negative_stock_quant,el_stock_no_negative.stock.quant,model_stock_quant,base.group_user,1,1,1,0
+access_el_stock_no_negative_stock_move,el_stock_no_negative.stock.move,model_stock_move,base.group_user,1,1,1,0
+access_el_stock_no_negative_pos_order,el_stock_no_negative.pos.order,model_pos_order,base.group_user,1,1,1,0

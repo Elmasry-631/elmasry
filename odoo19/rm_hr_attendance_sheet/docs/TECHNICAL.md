@@ -1,0 +1,201 @@
+# HR Attendance Sheet and Policies
+
+- **المسار والإصدار:** `odoo19/rm_hr_attendance_sheet` — Odoo 19
+- **إصدار الحزمة:** `19.0.1.0.0`
+- **الترخيص المعلن:** `LGPL-3`
+- **الملخص المعلن:** Attendance sheets, policies, overtime, lateness, absence, and payroll links
+
+## المكونات المكتشفة
+
+- Python: 15 file(s)
+- XML: 13 file(s)
+
+### نماذج وامتدادات Odoo
+
+- HrPayslip: model _inherit
+- RmAttendanceSheet: model _name
+- RmAttendanceSheetLine: model _name
+- RmAttendancePolicy: model _name
+- ResourceCalendarLeaves: model _inherit
+- RmLatenessRule: model _name
+- RmLatenessStep: model _name
+- RmAbsenceRule: model _name
+- RmAbsenceStep: model _name
+- HrSalaryRule: model _inherit
+- HrVersion: model _inherit
+- RmOvertimeRule: model _name
+- RmAttendanceSheetChangeWizard: model _name
+- RmAttendanceSheetBatchWizard: model _name
+
+### الملفات المصدرية ذات الصلة
+
+- `views/hr_version_views.xml`
+- `views/rm_attendance_sheet_views.xml`
+- `views/resource_calendar_leaves_views.xml`
+- `views/hr_menu.xml`
+- `views/rm_absence_rule_views.xml`
+- `views/rm_lateness_rule_views.xml`
+- `views/rm_overtime_rule_views.xml`
+- `views/hr_payslip_views.xml`
+- `views/rm_attendance_policy_views.xml`
+- `models/hr_payslip.py`
+- `models/rm_attendance_sheet.py`
+- `models/rm_attendance_policy.py`
+- `models/resource_calendar_leaves.py`
+- `models/rm_lateness_rule.py`
+- `models/rm_absence_rule.py`
+- `models/hr_salary_rule.py`
+- `models/__init__.py`
+- `models/hr_version.py`
+- `models/rm_overtime_rule.py`
+- `security/groups.xml`
+- `security/ir.model.access.csv`
+
+### حقول معلنة
+
+- `attendance_sheet_id (Many2one)`
+- `name (Char)`
+- `employee_id (Many2one)`
+- `department_id (Many2one)`
+- `version_id (Many2one)`
+- `policy_id (Many2one)`
+- `date_from (Date)`
+- `date_to (Date)`
+- `state (Selection)`
+- `sheet_line_ids (One2many)`
+- `total_planned_hours (Float)`
+- `total_worked_hours (Float)`
+- `total_overtime (Float)`
+- `total_working_day_overtime (Float)`
+- `total_weekend_overtime (Float)`
+- `total_holiday_overtime (Float)`
+- `total_late_in (Float)`
+- `total_absence_days (Integer)`
+- `total_difference (Float)`
+- `total_leave_days (Float)`
+- `total_overtime_amount (Float)`
+- `total_late_penalty (Float)`
+- `total_absence_penalty (Float)`
+- `total_difference_amount (Float)`
+- `payslip_id (Many2one)`
+- `company_id (Many2one)`
+- `name (Char)`
+- `sheet_id (Many2one)`
+- `employee_id (Many2one)`
+- `date (Date)`
+- `day_name (Char)`
+- `day_type (Selection)`
+- `planned_hours (Float)`
+- `worked_hours (Float)`
+- `overtime_hours (Float)`
+- `overtime_type (Selection)`
+- `late_in_minutes (Float)`
+- `is_absent (Boolean)`
+- `is_leave (Boolean)`
+- `leave_id (Many2one)`
+- `public_holiday_id (Many2one)`
+- `difference_hours (Float)`
+- `overtime_amount (Float)`
+- `late_penalty (Float)`
+- `absence_penalty (Float)`
+- `difference_amount (Float)`
+- `change_note (Text)`
+- `changed_by (Many2one)`
+- `changed_date (Datetime)`
+- `name (Char)`
+- `effective_date (Date)`
+- `overtime_rule_ids (One2many)`
+- `lateness_rule_ids (One2many)`
+- `absence_rule_ids (One2many)`
+- `version_ids (One2many)`
+- `active (Boolean)`
+- `company_id (Many2one)`
+- `active_for_overtime (Boolean)`
+- `rm_public_holiday (Boolean)`
+- `employee_ids (Many2many)`
+- `department_ids (Many2many)`
+- `employee_category_ids (Many2many)`
+- `name (Char)`
+- `step_ids (One2many)`
+- `active (Boolean)`
+- `policy_id (Many2one)`
+- `company_id (Many2one)`
+- `rule_id (Many2one)`
+- `name (Char)`
+- `min_minutes (Integer)`
+- `max_minutes (Integer)`
+- `step_type (Selection)`
+- `rate_value (Float)`
+- `fixed_amount (Float)`
+- `penalty_calc (Selection)`
+- `active (Boolean)`
+- `name (Char)`
+- `step_ids (One2many)`
+- `active (Boolean)`
+- `policy_id (Many2one)`
+- `company_id (Many2one)`
+- `rule_id (Many2one)`
+- `name (Char)`
+- `min_days (Integer)`
+- `max_days (Integer)`
+- `step_type (Selection)`
+- `rate_value (Float)`
+- `fixed_amount (Float)`
+- `active (Boolean)`
+- `attendance_policy_id (Many2one)`
+- `name (Char)`
+- `ot_type (Selection)`
+- `apply_after (Float)`
+- `rate (Float)`
+- `active (Boolean)`
+- `policy_id (Many2one)`
+- `company_id (Many2one)`
+- `sheet_id (Many2one)`
+- `line_id (Many2one)`
+- `overtime_hours (Float)`
+
+### XML IDs
+
+- `views/hr_version_views.xml::view_hr_version_form_attendance_policy`
+- `views/rm_attendance_sheet_views.xml::view_rm_attendance_sheet_line_list`
+- `views/rm_attendance_sheet_views.xml::view_rm_attendance_sheet_list`
+- `views/rm_attendance_sheet_views.xml::view_rm_attendance_sheet_form`
+- `views/rm_attendance_sheet_views.xml::view_rm_attendance_sheet_search`
+- `views/rm_attendance_sheet_views.xml::action_rm_attendance_sheet`
+- `views/resource_calendar_leaves_views.xml::view_resource_calendar_leaves_form_attendance_policy`
+- `views/resource_calendar_leaves_views.xml::action_rm_public_holidays`
+- `views/hr_menu.xml::menu_rm_attendance_sheet_root`
+- `views/hr_menu.xml::menu_rm_attendance_sheet`
+- `views/hr_menu.xml::menu_rm_attendance_sheet_batch`
+- `views/hr_menu.xml::menu_rm_attendance_config`
+- `views/hr_menu.xml::menu_rm_attendance_policy`
+- `views/hr_menu.xml::menu_rm_overtime_rule`
+- `views/hr_menu.xml::menu_rm_lateness_rule`
+- `views/hr_menu.xml::menu_rm_absence_rule`
+- `views/hr_menu.xml::menu_rm_public_holidays`
+- `views/rm_absence_rule_views.xml::view_rm_absence_rule_list`
+- `views/rm_absence_rule_views.xml::view_rm_absence_rule_form`
+- `views/rm_absence_rule_views.xml::action_rm_absence_rule`
+- `views/rm_lateness_rule_views.xml::view_rm_lateness_rule_list`
+- `views/rm_lateness_rule_views.xml::view_rm_lateness_rule_form`
+- `views/rm_lateness_rule_views.xml::action_rm_lateness_rule`
+- `views/rm_overtime_rule_views.xml::view_rm_overtime_rule_list`
+- `views/rm_overtime_rule_views.xml::view_rm_overtime_rule_form`
+- `views/rm_overtime_rule_views.xml::action_rm_overtime_rule`
+- `views/hr_payslip_views.xml::view_hr_payslip_form_attendance_sheet`
+- `views/rm_attendance_policy_views.xml::view_rm_attendance_policy_list`
+- `views/rm_attendance_policy_views.xml::view_rm_attendance_policy_form`
+- `views/rm_attendance_policy_views.xml::action_rm_attendance_policy`
+- `data/hr_salary_rule_data.xml::structure_attendance_sheet`
+- `data/hr_salary_rule_data.xml::salary_rule_attendance_overtime`
+- `data/hr_salary_rule_data.xml::salary_rule_attendance_late`
+- `data/hr_salary_rule_data.xml::salary_rule_attendance_absence`
+- `data/hr_salary_rule_data.xml::salary_rule_attendance_difference`
+- `wizards/rm_attendance_sheet_batch_views.xml::view_rm_attendance_sheet_batch_wizard_form`
+- `wizards/rm_attendance_sheet_batch_views.xml::action_rm_attendance_sheet_batch`
+- `wizards/rm_attendance_sheet_change_views.xml::view_rm_attendance_sheet_change_wizard_form`
+- `security/groups.xml::res_groups_privilege_attendance_sheet`
+- `security/groups.xml::group_attendance_sheet_user`
+- `security/groups.xml::group_attendance_sheet_manager`
+- `security/groups.xml::rule_attendance_sheet_company`
+- `security/groups.xml::rule_attendance_sheet_line_company`

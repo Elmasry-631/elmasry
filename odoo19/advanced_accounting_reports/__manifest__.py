@@ -83,7 +83,6 @@ This module extends Odoo 19 Accounting with:
     'installable': True,
     'application': False,
     'auto_install': False,
-    'pre_init_hook': '_pre_init_hook',
     'post_init_hook': '_post_init_hook',
     'license': 'LGPL-3',
     'assets': {

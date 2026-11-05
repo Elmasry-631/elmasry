@@ -1,0 +1,55 @@
+# Translation file for el_stock_no_negative
+# Arabic translations
+
+msgid ""
+msgstr ""
+"Project-Id-Version: el_stock_no_negative\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-01-01 00:00+0000\n"
+"PO-Revision-Date: 2024-01-01 00:00+0000\n"
+"Last-Translator: Elmasry\n"
+"Language-Team: Arabic\n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
+
+msgid "Disallow Negative Stock (Elmasry)"
+msgstr "منع المخزون السالب (المصري)"
+
+msgid "Prevent Negative Stock in POS & Inventory"
+msgstr "منع المخزون السالب في نقطة البيع والمخزون"
+
+msgid "Allow Negative Stock"
+msgstr "السماح بالمخزون السالب"
+
+msgid "If checked, this product can have negative stock quantities. This overrides the global setting and category setting."
+msgstr "إذا تم تحديده، يمكن أن يكون لهذا المنتج كميات مخزون سالبة. يتجاوز الإعداد العام وإعداد الفئة."
+
+msgid "If checked, all products in this category can have negative stock quantities. This overrides the global setting."
+msgstr "إذا تم تحديده، يمكن لجميع المنتجات في هذه الفئة أن يكون لها كميات مخزون سالبة. يتجاوز الإعداد العام."
+
+msgid "If checked, this product variant can have negative stock quantities. This overrides the template, category, and global settings."
+msgstr "إذا تم تحديده، يمكن لهذا المتغير من المنتج أن يكون له كميات مخزون سالبة. يتجاوز إعداد القالب والفئة والإعدادات العامة."
+
+msgid "Allow Negative Stock Globally"
+msgstr "السماح بالمخزون السالب بشكل عام"
+
+msgid "If checked, negative stock will be allowed for all products, locations, and categories unless explicitly overridden at the product or category level."
+msgstr "إذا تم تحديده، سيتم السماح بالمخزون السالب لجميع المنتجات والمواقع والفئات ما لم يتم تجاوزه صراحةً على مستوى المنتج أو الفئة."
+
+msgid "Insufficient stock for product \"%s\" in location \"%s\". Available: %s, Requested: %s. Cannot complete operation as it would result in negative stock."
+msgstr "مخزون غير كافٍ للمنتج \"%s\" في الموقع \"%s\". المتاح: %s، المطلوب: %s. لا يمكن إكمال العملية لأنها ستؤدي إلى مخزون سالب."
+
+msgid "Insufficient stock for kit product \"%s\" components. Cannot complete operation as it would result in negative stock."
+msgstr "مخزون غير كافٍ لمكونات منتج الطقم \"%s\". لا يمكن إكمال العملية لأنها ستؤدي إلى مخزون سالب."
+
+msgid "Insufficient stock for kit product \"%s\" components in POS. Cannot complete sale as it would result in negative stock."
+msgstr "مخزون غير كافٍ لمكونات منتج الطقم \"%s\" في نقطة البيع. لا يمكن إكمال البيع لأنه سيؤدي إلى مخزون سالب."
+
+msgid "Insufficient stock for product \"%s\" in POS location \"%s\". Available: %s, Requested: %s. Cannot complete sale."
+msgstr "مخزون غير كافٍ للمنتج \"%s\" في موقع نقطة البيع \"%s\". المتاح: %s، المطلوب: %s. لا يمكن إكمال البيع."
+
+msgid "Insufficient stock for product \"%s\" in location \"%s\". Available: %s. Cannot validate transfer as it would result in negative stock."
+msgstr "مخزون غير كافٍ للمنتج \"%s\" في الموقع \"%s\". المتاح: %s. لا يمكن التحقق من النقل لأنه سيؤدي إلى مخزون سالب."

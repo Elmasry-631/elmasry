@@ -1,0 +1,194 @@
+# AI Finance V1
+
+- **المسار والإصدار:** `odoo19/test_AI_finance` — Odoo 19
+- **إصدار الحزمة:** `1.8`
+- **الترخيص المعلن:** `LGPL-3`
+- **الملخص المعلن:** Advanced AI Finance Module: Virtual CFO & OCR Engine
+
+## المكونات المكتشفة
+
+- Python: 14 file(s)
+- XML: 13 file(s)
+- JavaScript/TypeScript: 3 file(s)
+
+### نماذج وامتدادات Odoo
+
+- AccountBankStatementFix: model _inherit
+- BankStatement: model _name
+- BankStatementLine: model _name
+- AICredential: model _name
+- VendorStatement: model _name
+- VendorStatementLine: model _name
+- VendorStatementColumn: model _name
+- AIRefundTracking: model _name
+- AIFinanceDashboard: model _name
+- AIFinanceConfig: model _inherit
+- VirtualCFOAgent: model _name
+- CFOConversation: model _name
+- VendorBillWizard: model _name
+- VendorBillWizardLine: model _name
+- VendorBillWizardColumn: model _name
+- CFOQueryWizard: model _name
+
+### الملفات المصدرية ذات الصلة
+
+- `views/ai_finance_dashboard_action.xml`
+- `views/menu.xml`
+- `views/bank_statement_views.xml`
+- `views/ai_finance_dashboard_views.xml`
+- `views/ai_config_views.xml`
+- `views/virtual_cfo_views.xml`
+- `views/ai_credential_views.xml`
+- `views/vendor_statement_views.xml`
+- `models/account_bank_statement.py`
+- `models/bank_statement.py`
+- `models/ai_credential.py`
+- `models/vendor_statement.py`
+- `models/ai_refund_tracking.py`
+- `models/__init__.py`
+- `models/ai_finance_dashboard.py`
+- `models/ai_config.py`
+- `models/virtual_cfo_agent.py`
+- `security/ir.model.access.csv`
+
+### حقول معلنة
+
+- `journal_has_invalid_statements (Boolean)`
+- `name (Char)`
+- `bank_account_id (Many2one)`
+- `bank_name (Char)`
+- `account_number (Char)`
+- `date_from (Date)`
+- `date_to (Date)`
+- `opening_balance (Monetary)`
+- `closing_balance (Monetary)`
+- `odoo_balance (Monetary)`
+- `difference (Monetary)`
+- `currency_id (Many2one)`
+- `line_ids (One2many)`
+- `state (Selection)`
+- `ocr_raw_text (Text)`
+- `summary_total_lines (Integer)`
+- `summary_matched (Integer)`
+- `summary_discrepancy (Integer)`
+- `summary_missing_odoo (Integer)`
+- `summary_missing_bank (Integer)`
+- `summary_unresolved (Integer)`
+- `summary_match_rate (Float)`
+- `statement_id (Many2one)`
+- `date (Date)`
+- `description (Char)`
+- `debit (Float)`
+- `credit (Float)`
+- `balance (Float)`
+- `is_odoo_only (Boolean)`
+- `matched_move_line_id (Many2one)`
+- `candidate_move_line_ids (Many2many)`
+- `matched_partner_id (Many2one)`
+- `currency_id (Many2one)`
+- `match_status (Selection)`
+- `match_notes (Char)`
+- `name (Char)`
+- `provider (Selection)`
+- `api_key (Char)`
+- `api_base_url (Char)`
+- `anonymize_data (Boolean)`
+- `gemini_model (Selection)`
+- `openai_model (Selection)`
+- `groq_model (Selection)`
+- `deepseek_model (Selection)`
+- `claude_model (Selection)`
+- `xai_model (Selection)`
+- `mistral_model (Selection)`
+- `cohere_model (Selection)`
+- `custom_model_name (Char)`
+- `model_version (Selection)`
+- `last_tested_date (Datetime)`
+- `status (Selection)`
+- `name (Char)`
+- `partner_id (Many2one)`
+- `statement_date (Date)`
+- `currency_id (Many2one)`
+- `date_from (Date)`
+- `date_to (Date)`
+- `statement_total_due (Monetary)`
+- `odoo_total_due (Monetary)`
+- `difference_amount (Monetary)`
+- `line_ids (One2many)`
+- `state (Selection)`
+- `ocr_raw_text (Text)`
+- `statement_column_ids (One2many)`
+- `selected_column_id (Many2one)`
+- `extracted_columns (Char)`
+- `match_key_column (Selection)`
+- `summary_total_lines (Integer)`
+- `summary_matched (Integer)`
+- `summary_discrepancy (Integer)`
+- `summary_missing_odoo (Integer)`
+- `summary_missing_stmt (Integer)`
+- `summary_unresolved (Integer)`
+- `summary_match_rate (Float)`
+- `statement_id (Many2one)`
+- `date (Date)`
+- `name (Char)`
+- `voucher_number (Char)`
+- `amount (Monetary)`
+- `currency_id (Many2one)`
+- `matched_move_line_id (Many2one)`
+- `candidate_move_line_ids (Many2many)`
+- `matched_partner_id (Many2one)`
+- `odoo_amount_residual (Monetary)`
+- `match_status (Selection)`
+- `match_notes (Char)`
+- `is_odoo_only (Boolean)`
+- `statement_id (Many2one)`
+- `column_name (Char)`
+- `is_recommended (Boolean)`
+- `display_label (Char)`
+- `ticket_number (Char)`
+- `name (Char)`
+- `vendor_id (Many2one)`
+- `currency_id (Many2one)`
+- `refund_amount (Monetary)`
+- `state (Selection)`
+- `request_date (Date)`
+- `expected_credit_date (Date)`
+
+### XML IDs
+
+- `reports/reconciliation_report.xml::action_report_vendor_statement`
+- `reports/reconciliation_report.xml::report_vendor_statement`
+- `reports/reconciliation_report.xml::action_report_bank_statement`
+- `reports/reconciliation_report.xml::report_bank_statement`
+- `views/ai_finance_dashboard_action.xml::action_ai_finance_analytics`
+- `views/menu.xml::menu_ai_finance_root`
+- `views/menu.xml::menu_ai_finance_dashboard`
+- `views/menu.xml::menu_ai_finance_analytics`
+- `views/menu.xml::menu_ai_vendor_bill_ocr`
+- `views/menu.xml::menu_ai_cfo_chat`
+- `views/menu.xml::menu_ai_reconciliation`
+- `views/menu.xml::menu_ai_vendor_statement`
+- `views/menu.xml::menu_ai_bank_statement`
+- `views/menu.xml::menu_ai_finance_config`
+- `views/menu.xml::menu_ai_credential`
+- `views/menu.xml::menu_ai_finance_settings`
+- `views/bank_statement_views.xml::seq_bank_statement`
+- `views/bank_statement_views.xml::view_bank_statement_form`
+- `views/bank_statement_views.xml::view_bank_statement_tree`
+- `views/bank_statement_views.xml::action_bank_statement`
+- `views/ai_finance_dashboard_views.xml::view_ai_finance_dashboard_form`
+- `views/ai_finance_dashboard_views.xml::action_ai_finance_dashboard`
+- `views/ai_config_views.xml::res_config_settings_view_form_ai_finance`
+- `views/ai_config_views.xml::action_ai_finance_config_settings`
+- `views/virtual_cfo_views.xml::view_virtual_cfo_agent_form`
+- `views/virtual_cfo_views.xml::action_virtual_cfo_agent`
+- `views/virtual_cfo_views.xml::view_cfo_query_wizard_form`
+- `views/virtual_cfo_views.xml::action_virtual_cfo_chat`
+- `views/ai_credential_views.xml::view_ai_credential_form`
+- `views/ai_credential_views.xml::view_ai_credential_tree`
+- `views/ai_credential_views.xml::action_ai_credential`
+- `views/vendor_statement_views.xml::view_vendor_statement_form`
+- `views/vendor_statement_views.xml::view_vendor_statement_tree`
+- `views/vendor_statement_views.xml::action_vendor_statement_reconciliation`
+- `wizards/vendor_bill_wizard_views.xml::view_vendor_bill_wizard_form`
+- `wizards/vendor_bill_wizard_views.xml::action_vendor_bill_wizard`

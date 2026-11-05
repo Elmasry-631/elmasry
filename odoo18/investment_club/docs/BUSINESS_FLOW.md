@@ -1,0 +1,85 @@
+# Investment Clubs Management
+
+- **المسار والإصدار:** `odoo18/investment_club` — Odoo 18
+- **إصدار الحزمة:** `18.0.12.0.0`
+- **الترخيص المعلن:** `LGPL-3`
+- **الملخص المعلن:** Complete investment management system with Unified Return System
+
+## التدفق كما تكشفه نقاط الدخول
+
+- المستخدم يبدأ من قائمة: Reports
+- المستخدم يبدأ من قائمة: 1. Renewal Due
+- المستخدم يبدأ من قائمة: 2. Monthly Returns
+- المستخدم يبدأ من قائمة: 3. Investor Summary
+- المستخدم يبدأ من قائمة: 4. Active Investments
+- المستخدم يبدأ من قائمة: 5. All Investors
+- المستخدم يبدأ من قائمة: 6. Return Payments Summary
+- المستخدم يبدأ من قائمة: 7. Pending Return Payments
+- المستخدم يبدأ من قائمة: 8. Return Payment Ledger / Return payment ledger
+- المستخدم يبدأ من قائمة: 9. Investment Maturity / Investment Maturity
+- المستخدم يبدأ من قائمة: 10. Investor Statement / Investor investment statement
+- المستخدم يبدأ من قائمة: Investment
+- المستخدم يبدأ من قائمة: Dashboard
+- المستخدم يبدأ من قائمة: Clubs
+- المستخدم يبدأ من قائمة: Return Payments
+- النموذج/الامتداد المعني: ProjectSummaryReport: model _name
+- النموذج/الامتداد المعني: InvestorStatementReport: model _name
+- النموذج/الامتداد المعني: ProjectProfitReport: model _name
+- النموذج/الامتداد المعني: RenewalDueReport: model _name
+- النموذج/الامتداد المعني: ReturnPaymentLedgerReport: model _name
+- النموذج/الامتداد المعني: InvestorSummaryReport: model _name
+- النموذج/الامتداد المعني: InvestmentMaturityReport: model _name
+- النموذج/الامتداد المعني: MonthlyReturnsReport: model _name
+- النموذج/الامتداد المعني: InvestmentClub: model _name
+- النموذج/الامتداد المعني: TerminateReason: model _name
+- النموذج/الامتداد المعني: InvestmentActualReturn: model _name
+- النموذج/الامتداد المعني: InvestmentDashboard: model _name
+- النموذج/الامتداد المعني: CrmLead: model _inherit
+- النموذج/الامتداد المعني: ResConfigSettings: model _inherit
+- النموذج/الامتداد المعني: AccountMove: model _inherit
+- النموذج/الامتداد المعني: AccountFullReconcile: model _inherit
+- النموذج/الامتداد المعني: AccountPartialReconcile: model _inherit
+- النموذج/الامتداد المعني: MembershipRenewal: model _name
+- النموذج/الامتداد المعني: InvestmentProject: model _name
+- النموذج/الامتداد المعني: InvestmentSubscriptionRejectWizard: model _name
+- النموذج/الامتداد المعني: InvestmentActualReturn: model _name
+- النموذج/الامتداد المعني: SaleContract: model _inherit
+- النموذج/الامتداد المعني: SubscriptionTerminateWizard: model _name
+- النموذج/الامتداد المعني: InvestmentSubscription: model _name
+- العملية البرمجية المتاحة: `_compute_display_name_ar` في `models/investment_club.py`
+- العملية البرمجية المتاحة: `_compute_counts` في `models/investment_club.py`
+- العملية البرمجية المتاحة: `create` في `models/investment_club.py`
+- العملية البرمجية المتاحة: `_compute_expected_amount` في `models/actual_return.py`
+- العملية البرمجية المتاحة: `_compute_difference` في `models/actual_return.py`
+- العملية البرمجية المتاحة: `_compute_period_name` في `models/actual_return.py`
+- العملية البرمجية المتاحة: `create` في `models/actual_return.py`
+- العملية البرمجية المتاحة: `action_register_payment` في `models/actual_return.py`
+- العملية البرمجية المتاحة: `action_cancel` في `models/actual_return.py`
+- العملية البرمجية المتاحة: `create` في `models/dashboard.py`
+- العملية البرمجية المتاحة: `_compute_stats_vals` في `models/dashboard.py`
+- العملية البرمجية المتاحة: `action_refresh` في `models/dashboard.py`
+- العملية البرمجية المتاحة: `action_create_membership` في `models/crm_lead.py`
+- العملية البرمجية المتاحة: `action_view_investment_projects` في `models/crm_lead.py`
+- العملية البرمجية المتاحة: `create` في `models/account_move.py`
+- العملية البرمجية المتاحة: `create` في `models/account_move.py`
+- العملية البرمجية المتاحة: `_compute_active_investor_count` في `models/investment_project.py`
+- العملية البرمجية المتاحة: `_compute_grace_period` في `models/investment_project.py`
+- العملية البرمجية المتاحة: `_compute_return_percentage` في `models/investment_project.py`
+- العملية البرمجية المتاحة: `_compute_fixed_return` في `models/investment_project.py`
+- العملية البرمجية المتاحة: `create` في `models/investment_project.py`
+- العملية البرمجية المتاحة: `action_activate` في `models/investment_project.py`
+- العملية البرمجية المتاحة: `action_close` في `models/investment_project.py`
+- العملية البرمجية المتاحة: `action_confirm_rejection` في `models/investment_reject_wizard.py`
+- العملية البرمجية المتاحة: `action_process_return_payment` في `models/investment_actual_return_inherit.py`
+- العملية البرمجية المتاحة: `action_view_investment_subscription` في `models/sale_contract_inherit.py`
+- العملية البرمجية المتاحة: `action_view_investment_membership` في `models/sale_contract_inherit.py`
+- العملية البرمجية المتاحة: `_compute_period` في `models/subscription_terminate_wizard.py`
+- العملية البرمجية المتاحة: `_compute_refund` في `models/subscription_terminate_wizard.py`
+- العملية البرمجية المتاحة: `action_confirm_termination` في `models/subscription_terminate_wizard.py`
+- العملية البرمجية المتاحة: `_compute_amount` في `models/investment_subscription.py`
+- العملية البرمجية المتاحة: `_compute_return_dates` في `models/investment_subscription.py`
+- العملية البرمجية المتاحة: `_compute_grace_period_status` في `models/investment_subscription.py`
+- العملية البرمجية المتاحة: `_compute_total_returns` في `models/investment_subscription.py`
+- العملية البرمجية المتاحة: `_compute_last_return` في `models/investment_subscription.py`
+
+التسلسل أعلاه مستخرج من القوائم والنماذج ونقاط الدخول المعرّفة؛ راجع حالات الأعمال الفعلية قبل تفعيل سير عمل مالي أو مخزني حساس.

@@ -1,0 +1,79 @@
+# Hospital Management System
+
+- **المسار والإصدار:** `odoo19/el_hospital` — Odoo 19
+- **إصدار الحزمة:** `19.0.1.0.0`
+- **الترخيص المعلن:** `LGPL-3`
+- **الملخص المعلن:** Complete hospital management: patients, appointments, EMR, wards, lab, pharmacy, billing
+
+## التدفق كما تكشفه نقاط الدخول
+
+- المستخدم يبدأ من قائمة: Hospital
+- المستخدم يبدأ من قائمة: Dashboard
+- المستخدم يبدأ من قائمة: Patients
+- المستخدم يبدأ من قائمة: Patients
+- المستخدم يبدأ من قائمة: Appointments
+- المستخدم يبدأ من قائمة: Today's Appointments
+- المستخدم يبدأ من قائمة: Medical Records
+- المستخدم يبدأ من قائمة: Physicians
+- المستخدم يبدأ من قائمة: Inpatient
+- المستخدم يبدأ من قائمة: Admissions
+- المستخدم يبدأ من قائمة: Active Admissions
+- المستخدم يبدأ من قائمة: Wards
+- المستخدم يبدأ من قائمة: Beds
+- المستخدم يبدأ من قائمة: Laboratory
+- المستخدم يبدأ من قائمة: Lab Tests
+- النموذج/الامتداد المعني: HospitalMedicalRecord: model _name
+- النموذج/الامتداد المعني: HospitalAdmission: model _name
+- النموذج/الامتداد المعني: HospitalPrescriptionLine: model _name
+- النموذج/الامتداد المعني: HospitalPrescription: model _name
+- النموذج/الامتداد المعني: HospitalInvoiceBillingLine: model _name
+- النموذج/الامتداد المعني: HospitalInvoiceBilling: model _name
+- النموذج/الامتداد المعني: HospitalLabTest: model _name
+- النموذج/الامتداد المعني: HospitalWard: model _name
+- النموذج/الامتداد المعني: HospitalDashboard: model _name
+- النموذج/الامتداد المعني: HospitalDepartment: model _name
+- النموذج/الامتداد المعني: HospitalRadiologyOrder: model _name
+- النموذج/الامتداد المعني: HospitalAppointment: model _name
+- النموذج/الامتداد المعني: HospitalPatientAllergy: model _name
+- النموذج/الامتداد المعني: HospitalPatientDisease: model _name
+- النموذج/الامتداد المعني: HospitalPatient: model _name
+- النموذج/الامتداد المعني: HospitalMedicament: model _name
+- النموذج/الامتداد المعني: HospitalPhysician: model _name
+- النموذج/الامتداد المعني: HospitalBed: model _name
+- العملية البرمجية المتاحة: `test_01_create_admission` في `tests/test_hospital_admission.py`
+- العملية البرمجية المتاحة: `test_01_create_patient` في `tests/test_hospital_patient.py`
+- العملية البرمجية المتاحة: `test_07_smart_button_appointments` في `tests/test_hospital_patient.py`
+- العملية البرمجية المتاحة: `test_01_create_billing` في `tests/test_hospital_billing.py`
+- العملية البرمجية المتاحة: `test_05_create_invoice` في `tests/test_hospital_billing.py`
+- العملية البرمجية المتاحة: `test_01_create_appointment` في `tests/test_hospital_appointment.py`
+- العملية البرمجية المتاحة: `test_02_state_draft_to_confirmed` في `tests/test_hospital_appointment.py`
+- العملية البرمجية المتاحة: `test_03_state_confirmed_to_done` في `tests/test_hospital_appointment.py`
+- العملية البرمجية المتاحة: `test_04_done_creates_medical_record` في `tests/test_hospital_appointment.py`
+- العملية البرمجية المتاحة: `test_01_create_lab_test` في `tests/test_hospital_lab.py`
+- العملية البرمجية المتاحة: `test_06_create_radiology` في `tests/test_hospital_lab.py`
+- العملية البرمجية المتاحة: `_compute_counts` في `models/hospital_medical_record.py`
+- العملية البرمجية المتاحة: `create` في `models/hospital_medical_record.py`
+- العملية البرمجية المتاحة: `action_create_prescription` في `models/hospital_medical_record.py`
+- العملية البرمجية المتاحة: `action_open_lab_tests` في `models/hospital_medical_record.py`
+- العملية البرمجية المتاحة: `action_open_radiology` في `models/hospital_medical_record.py`
+- العملية البرمجية المتاحة: `_compute_days_count` في `models/hospital_admission.py`
+- العملية البرمجية المتاحة: `create` في `models/hospital_admission.py`
+- العملية البرمجية المتاحة: `action_admit` في `models/hospital_admission.py`
+- العملية البرمجية المتاحة: `action_discharge` في `models/hospital_admission.py`
+- العملية البرمجية المتاحة: `action_cancel` في `models/hospital_admission.py`
+- العملية البرمجية المتاحة: `action_draft` في `models/hospital_admission.py`
+- العملية البرمجية المتاحة: `create` في `models/hospital_prescription.py`
+- العملية البرمجية المتاحة: `action_done` في `models/hospital_prescription.py`
+- العملية البرمجية المتاحة: `action_draft` في `models/hospital_prescription.py`
+- العملية البرمجية المتاحة: `action_print` في `models/hospital_prescription.py`
+- العملية البرمجية المتاحة: `_compute_subtotal` في `models/hospital_billing.py`
+- العملية البرمجية المتاحة: `_compute_amount` في `models/hospital_billing.py`
+- العملية البرمجية المتاحة: `create` في `models/hospital_billing.py`
+- العملية البرمجية المتاحة: `action_create_invoice` في `models/hospital_billing.py`
+- العملية البرمجية المتاحة: `action_view_invoice` في `models/hospital_billing.py`
+- العملية البرمجية المتاحة: `action_print` في `models/hospital_billing.py`
+- العملية البرمجية المتاحة: `create` في `models/hospital_lab_test.py`
+- العملية البرمجية المتاحة: `action_start` في `models/hospital_lab_test.py`
+- العملية البرمجية المتاحة: `action_complete` في `models/hospital_lab_test.py`
+
+التسلسل أعلاه مستخرج من القوائم والنماذج ونقاط الدخول المعرّفة؛ راجع حالات الأعمال الفعلية قبل تفعيل سير عمل مالي أو مخزني حساس.

@@ -1,0 +1,18 @@
+# Kitchen Receipt from Quotation
+
+- **المسار والإصدار:** `odoo18/el_kitchen_receipt` — Odoo 18
+- **إصدار الحزمة:** `18.0.4.1.0`
+- **الترخيص المعلن:** `LGPL-3`
+- **الملخص المعلن:** Print kitchen receipt from sales quotation with customer delivery info auto-fill + pilot name sync with delivery
+
+## الحقول ونقاط الإعداد الموجودة في المصدر
+
+- لا توجد عناصر معلنة في ملفات الموديول.
+
+### إجراءات الإعداد
+
+- لا توجد عناصر معلنة في ملفات الموديول.
+
+### إعدادات النظام
+
+راجع `res.config.settings` وملفات XML/CSV المدرجة في manifest. لا توجد قيمة افتراضية مفترضة هنا؛ راجع الحقول المعرفة فعليًا واضبطها في نسخة الاختبار أولًا.

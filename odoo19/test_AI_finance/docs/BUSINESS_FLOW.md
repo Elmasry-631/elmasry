@@ -1,0 +1,73 @@
+# AI Finance V1
+
+- **المسار والإصدار:** `odoo19/test_AI_finance` — Odoo 19
+- **إصدار الحزمة:** `1.8`
+- **الترخيص المعلن:** `LGPL-3`
+- **الملخص المعلن:** Advanced AI Finance Module: Virtual CFO & OCR Engine
+
+## التدفق كما تكشفه نقاط الدخول
+
+- المستخدم يبدأ من قائمة: AI Finance V1
+- المستخدم يبدأ من قائمة: Dashboard
+- المستخدم يبدأ من قائمة: Analytics
+- المستخدم يبدأ من قائمة: OCR Engine
+- المستخدم يبدأ من قائمة: Virtual CFO (Chatbot)
+- المستخدم يبدأ من قائمة: Reconciliation
+- المستخدم يبدأ من قائمة: Partner Statements
+- المستخدم يبدأ من قائمة: Bank Statements
+- المستخدم يبدأ من قائمة: Configuration
+- المستخدم يبدأ من قائمة: AI Credentials
+- المستخدم يبدأ من قائمة: Settings
+- النموذج/الامتداد المعني: AccountBankStatementFix: model _inherit
+- النموذج/الامتداد المعني: BankStatement: model _name
+- النموذج/الامتداد المعني: BankStatementLine: model _name
+- النموذج/الامتداد المعني: AICredential: model _name
+- النموذج/الامتداد المعني: VendorStatement: model _name
+- النموذج/الامتداد المعني: VendorStatementLine: model _name
+- النموذج/الامتداد المعني: VendorStatementColumn: model _name
+- النموذج/الامتداد المعني: AIRefundTracking: model _name
+- النموذج/الامتداد المعني: AIFinanceDashboard: model _name
+- النموذج/الامتداد المعني: AIFinanceConfig: model _inherit
+- النموذج/الامتداد المعني: VirtualCFOAgent: model _name
+- النموذج/الامتداد المعني: CFOConversation: model _name
+- النموذج/الامتداد المعني: VendorBillWizard: model _name
+- النموذج/الامتداد المعني: VendorBillWizardLine: model _name
+- النموذج/الامتداد المعني: VendorBillWizardColumn: model _name
+- النموذج/الامتداد المعني: CFOQueryWizard: model _name
+- العملية البرمجية المتاحة: `_compute_journal_has_invalid_statements` في `models/account_bank_statement.py`
+- العملية البرمجية المتاحة: `_compute_summary` في `models/bank_statement.py`
+- العملية البرمجية المتاحة: `create` في `models/bank_statement.py`
+- العملية البرمجية المتاحة: `_compute_odoo_balance` في `models/bank_statement.py`
+- العملية البرمجية المتاحة: `_compute_difference` في `models/bank_statement.py`
+- العملية البرمجية المتاحة: `action_match_lines` في `models/bank_statement.py`
+- العملية البرمجية المتاحة: `action_confirm_matches` في `models/bank_statement.py`
+- العملية البرمجية المتاحة: `action_rematch` في `models/bank_statement.py`
+- العملية البرمجية المتاحة: `action_print_report` في `models/bank_statement.py`
+- العملية البرمجية المتاحة: `action_test_connection` في `models/ai_credential.py`
+- العملية البرمجية المتاحة: `_compute_summary` في `models/vendor_statement.py`
+- العملية البرمجية المتاحة: `create` في `models/vendor_statement.py`
+- العملية البرمجية المتاحة: `_compute_odoo_total` في `models/vendor_statement.py`
+- العملية البرمجية المتاحة: `_compute_difference` في `models/vendor_statement.py`
+- العملية البرمجية المتاحة: `action_match_lines` في `models/vendor_statement.py`
+- العملية البرمجية المتاحة: `action_confirm_matches` في `models/vendor_statement.py`
+- العملية البرمجية المتاحة: `action_rematch` في `models/vendor_statement.py`
+- العملية البرمجية المتاحة: `action_print_report` في `models/vendor_statement.py`
+- العملية البرمجية المتاحة: `_compute_display_label` في `models/vendor_statement.py`
+- العملية البرمجية المتاحة: `_compute_name` في `models/ai_refund_tracking.py`
+- العملية البرمجية المتاحة: `_compute_days_pending` في `models/ai_refund_tracking.py`
+- العملية البرمجية المتاحة: `action_request_refund` في `models/ai_refund_tracking.py`
+- العملية البرمجية المتاحة: `action_mark_approved` في `models/ai_refund_tracking.py`
+- العملية البرمجية المتاحة: `action_receive_credit_note` في `models/ai_refund_tracking.py`
+- العملية البرمجية المتاحة: `action_close` في `models/ai_refund_tracking.py`
+- العملية البرمجية المتاحة: `_compute_kpis` في `models/ai_finance_dashboard.py`
+- العملية البرمجية المتاحة: `_compute_capital_map` في `models/ai_finance_dashboard.py`
+- العملية البرمجية المتاحة: `_compute_trends` في `models/ai_finance_dashboard.py`
+- العملية البرمجية المتاحة: `_compute_module_stats` في `models/ai_finance_dashboard.py`
+- العملية البرمجية المتاحة: `action_refresh` في `models/ai_finance_dashboard.py`
+- العملية البرمجية المتاحة: `action_open_receivables` في `models/ai_finance_dashboard.py`
+- العملية البرمجية المتاحة: `action_open_payables` في `models/ai_finance_dashboard.py`
+- العملية البرمجية المتاحة: `action_open_overdue` في `models/ai_finance_dashboard.py`
+- العملية البرمجية المتاحة: `action_open_bank_journals` في `models/ai_finance_dashboard.py`
+- العملية البرمجية المتاحة: `action_open_dashboard` في `models/ai_finance_dashboard.py`
+
+التسلسل أعلاه مستخرج من القوائم والنماذج ونقاط الدخول المعرّفة؛ راجع حالات الأعمال الفعلية قبل تفعيل سير عمل مالي أو مخزني حساس.

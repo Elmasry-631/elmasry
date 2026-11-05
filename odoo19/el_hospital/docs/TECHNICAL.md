@@ -1,0 +1,276 @@
+# Hospital Management System
+
+- **المسار والإصدار:** `odoo19/el_hospital` — Odoo 19
+- **إصدار الحزمة:** `19.0.1.0.0`
+- **الترخيص المعلن:** `LGPL-3`
+- **الملخص المعلن:** Complete hospital management: patients, appointments, EMR, wards, lab, pharmacy, billing
+
+## المكونات المكتشفة
+
+- Python: 27 file(s)
+- XML: 23 file(s)
+- JavaScript/TypeScript: 1 file(s)
+
+### نماذج وامتدادات Odoo
+
+- HospitalMedicalRecord: model _name
+- HospitalAdmission: model _name
+- HospitalPrescriptionLine: model _name
+- HospitalPrescription: model _name
+- HospitalInvoiceBillingLine: model _name
+- HospitalInvoiceBilling: model _name
+- HospitalLabTest: model _name
+- HospitalWard: model _name
+- HospitalDashboard: model _name
+- HospitalDepartment: model _name
+- HospitalRadiologyOrder: model _name
+- HospitalAppointment: model _name
+- HospitalPatientAllergy: model _name
+- HospitalPatientDisease: model _name
+- HospitalPatient: model _name
+- HospitalMedicament: model _name
+- HospitalPhysician: model _name
+- HospitalBed: model _name
+
+### الملفات المصدرية ذات الصلة
+
+- `controllers/__init__.py`
+- `controllers/controllers.py`
+- `views/hospital_dashboard_views.xml`
+- `views/hospital_ward_views.xml`
+- `views/hospital_billing_views.xml`
+- `views/hospital_patient_views.xml`
+- `views/hospital_admission_views.xml`
+- `views/hospital_appointment_views.xml`
+- `views/hospital_prescription_views.xml`
+- `views/hospital_medicament_views.xml`
+- `views/hospital_department_views.xml`
+- `views/hospital_medical_record_views.xml`
+- `views/hospital_lab_test_views.xml`
+- `views/hospital_menus.xml`
+- `views/hospital_radiology_views.xml`
+- `views/hospital_bed_views.xml`
+- `views/hospital_physician_views.xml`
+- `models/hospital_medical_record.py`
+- `models/hospital_admission.py`
+- `models/hospital_prescription.py`
+- `models/hospital_billing.py`
+- `models/hospital_lab_test.py`
+- `models/hospital_ward.py`
+- `models/hospital_dashboard.py`
+- `models/hospital_department.py`
+- `models/hospital_radiology.py`
+- `models/hospital_appointment.py`
+- `models/hospital_patient.py`
+- `models/hospital_medicament.py`
+- `models/__init__.py`
+- `models/hospital_physician.py`
+- `models/hospital_bed.py`
+- `security/ir.model.access.csv`
+- `security/el_hospital_groups.xml`
+
+### حقول معلنة
+
+- `name (Char)`
+- `patient_id (Many2one)`
+- `physician_id (Many2one)`
+- `appointment_id (Many2one)`
+- `record_date (Datetime)`
+- `chief_complaint (Text)`
+- `diagnosis (Text)`
+- `treatment (Text)`
+- `notes (Text)`
+- `prescription_ids (One2many)`
+- `lab_test_ids (One2many)`
+- `radiology_order_ids (One2many)`
+- `prescription_count (Integer)`
+- `lab_test_count (Integer)`
+- `radiology_count (Integer)`
+- `company_id (Many2one)`
+- `name (Char)`
+- `patient_id (Many2one)`
+- `physician_id (Many2one)`
+- `department_id (Many2one)`
+- `ward_id (Many2one)`
+- `bed_id (Many2one)`
+- `admission_date (Datetime)`
+- `discharge_date (Datetime)`
+- `state (Selection)`
+- `reason (Text)`
+- `discharge_notes (Text)`
+- `days_count (Integer)`
+- `company_id (Many2one)`
+- `prescription_id (Many2one)`
+- `medicament_id (Many2one)`
+- `dosage (Char)`
+- `frequency (Char)`
+- `duration (Char)`
+- `quantity (Float)`
+- `instructions (Text)`
+- `company_id (Many2one)`
+- `name (Char)`
+- `patient_id (Many2one)`
+- `physician_id (Many2one)`
+- `medical_record_id (Many2one)`
+- `prescription_date (Datetime)`
+- `line_ids (One2many)`
+- `state (Selection)`
+- `notes (Text)`
+- `company_id (Many2one)`
+- `billing_id (Many2one)`
+- `name (Char)`
+- `service_type (Selection)`
+- `quantity (Float)`
+- `price_unit (Monetary)`
+- `price_subtotal (Monetary)`
+- `currency_id (Many2one)`
+- `name (Char)`
+- `patient_id (Many2one)`
+- `partner_id (Many2one)`
+- `physician_id (Many2one)`
+- `move_id (Many2one)`
+- `billing_date (Date)`
+- `line_ids (One2many)`
+- `amount_total (Monetary)`
+- `state (Selection)`
+- `currency_id (Many2one)`
+- `company_id (Many2one)`
+- `notes (Text)`
+- `name (Char)`
+- `patient_id (Many2one)`
+- `physician_id (Many2one)`
+- `medical_record_id (Many2one)`
+- `test_type (Selection)`
+- `test_name (Char)`
+- `request_date (Datetime)`
+- `result_date (Datetime)`
+- `state (Selection)`
+- `result (Text)`
+- `notes (Text)`
+- `company_id (Many2one)`
+- `name (Char)`
+- `code (Char)`
+- `display_name (Char)`
+- `department_id (Many2one)`
+- `ward_type (Selection)`
+- `floor (Char)`
+- `bed_capacity (Integer)`
+- `bed_count (Integer)`
+- `occupied_count (Integer)`
+- `available_count (Integer)`
+- `notes (Text)`
+- `company_id (Many2one)`
+- `active (Boolean)`
+- `total_patients (Integer)`
+- `total_physicians (Integer)`
+- `total_appointments_today (Integer)`
+- `total_active_admissions (Integer)`
+- `total_beds (Integer)`
+- `occupied_beds (Integer)`
+- `available_beds (Integer)`
+- `bed_occupancy_rate (Float)`
+- `pending_lab_tests (Integer)`
+- `pending_radiology (Integer)`
+
+### XML IDs
+
+- `reports/hospital_billing_report.xml::action_report_hospital_billing`
+- `reports/hospital_billing_report.xml::report_hospital_billing_document`
+- `reports/hospital_medical_record_report.xml::action_report_hospital_medical_record`
+- `reports/hospital_medical_record_report.xml::report_hospital_medical_record_document`
+- `reports/hospital_prescription_report.xml::action_report_hospital_prescription`
+- `reports/hospital_prescription_report.xml::report_hospital_prescription_document`
+- `views/hospital_dashboard_views.xml::action_hospital_dashboard`
+- `views/hospital_ward_views.xml::view_hospital_ward_list`
+- `views/hospital_ward_views.xml::view_hospital_ward_form`
+- `views/hospital_ward_views.xml::action_hospital_ward`
+- `views/hospital_billing_views.xml::view_hospital_billing_list`
+- `views/hospital_billing_views.xml::view_hospital_billing_form`
+- `views/hospital_billing_views.xml::action_hospital_billing`
+- `views/hospital_patient_views.xml::view_hospital_patient_list`
+- `views/hospital_patient_views.xml::view_hospital_patient_form`
+- `views/hospital_patient_views.xml::view_hospital_patient_search`
+- `views/hospital_patient_views.xml::action_hospital_patient`
+- `views/hospital_admission_views.xml::view_hospital_admission_list`
+- `views/hospital_admission_views.xml::view_hospital_admission_form`
+- `views/hospital_admission_views.xml::view_hospital_admission_search`
+- `views/hospital_admission_views.xml::action_hospital_admission`
+- `views/hospital_admission_views.xml::action_hospital_admission_active`
+- `views/hospital_appointment_views.xml::view_hospital_appointment_list`
+- `views/hospital_appointment_views.xml::view_hospital_appointment_form`
+- `views/hospital_appointment_views.xml::view_hospital_appointment_calendar`
+- `views/hospital_appointment_views.xml::view_hospital_appointment_search`
+- `views/hospital_appointment_views.xml::action_hospital_appointment`
+- `views/hospital_appointment_views.xml::action_hospital_appointment_today`
+- `views/hospital_prescription_views.xml::view_hospital_prescription_list`
+- `views/hospital_prescription_views.xml::view_hospital_prescription_form`
+- `views/hospital_prescription_views.xml::action_hospital_prescription`
+- `views/hospital_medicament_views.xml::view_hospital_medicament_list`
+- `views/hospital_medicament_views.xml::view_hospital_medicament_form`
+- `views/hospital_medicament_views.xml::action_hospital_medicament`
+- `views/hospital_department_views.xml::view_hospital_department_list`
+- `views/hospital_department_views.xml::view_hospital_department_form`
+- `views/hospital_department_views.xml::action_hospital_department`
+- `views/hospital_medical_record_views.xml::view_hospital_medical_record_list`
+- `views/hospital_medical_record_views.xml::view_hospital_medical_record_form`
+- `views/hospital_medical_record_views.xml::view_hospital_medical_record_search`
+- `views/hospital_medical_record_views.xml::action_hospital_medical_record`
+- `views/hospital_lab_test_views.xml::view_hospital_lab_test_list`
+- `views/hospital_lab_test_views.xml::view_hospital_lab_test_form`
+- `views/hospital_lab_test_views.xml::view_hospital_lab_test_search`
+- `views/hospital_lab_test_views.xml::action_hospital_lab_test`
+- `views/hospital_menus.xml::menu_hospital_root`
+- `views/hospital_menus.xml::menu_hospital_dashboard`
+- `views/hospital_menus.xml::menu_hospital_patients`
+- `views/hospital_menus.xml::menu_hospital_patient_list`
+- `views/hospital_menus.xml::menu_hospital_appointment`
+- `views/hospital_menus.xml::menu_hospital_appointment_today`
+- `views/hospital_menus.xml::menu_hospital_medical_record`
+- `views/hospital_menus.xml::menu_hospital_physicians`
+- `views/hospital_menus.xml::menu_hospital_inpatient`
+- `views/hospital_menus.xml::menu_hospital_admission`
+- `views/hospital_menus.xml::menu_hospital_admission_active`
+- `views/hospital_menus.xml::menu_hospital_ward`
+- `views/hospital_menus.xml::menu_hospital_bed`
+- `views/hospital_menus.xml::menu_hospital_lab`
+- `views/hospital_menus.xml::menu_hospital_lab_test`
+- `views/hospital_menus.xml::menu_hospital_radiology`
+- `views/hospital_menus.xml::menu_hospital_pharmacy`
+- `views/hospital_menus.xml::menu_hospital_medicament`
+- `views/hospital_menus.xml::menu_hospital_prescription`
+- `views/hospital_menus.xml::menu_hospital_billing`
+- `views/hospital_menus.xml::menu_hospital_config`
+- `views/hospital_menus.xml::menu_hospital_department`
+- `views/hospital_radiology_views.xml::view_hospital_radiology_list`
+- `views/hospital_radiology_views.xml::view_hospital_radiology_form`
+- `views/hospital_radiology_views.xml::action_hospital_radiology`
+- `views/hospital_bed_views.xml::view_hospital_bed_list`
+- `views/hospital_bed_views.xml::view_hospital_bed_form`
+- `views/hospital_bed_views.xml::view_hospital_bed_search`
+- `views/hospital_bed_views.xml::action_hospital_bed`
+- `views/hospital_physician_views.xml::view_hospital_physician_list`
+- `views/hospital_physician_views.xml::view_hospital_physician_form`
+- `views/hospital_physician_views.xml::view_hospital_physician_kanban`
+- `views/hospital_physician_views.xml::view_hospital_physician_search`
+- `views/hospital_physician_views.xml::action_hospital_physician`
+- `data/hospital_sequences.xml::seq_hospital_appointment`
+- `data/hospital_sequences.xml::seq_hospital_medical_record`
+- `data/hospital_sequences.xml::seq_hospital_prescription`
+- `data/hospital_sequences.xml::seq_hospital_admission`
+- `data/hospital_sequences.xml::seq_hospital_lab_test`
+- `data/hospital_sequences.xml::seq_hospital_radiology`
+- `data/hospital_sequences.xml::seq_hospital_billing`
+- `data/hospital_sequences.xml::seq_hospital_patient`
+- `data/hospital_data.xml::dept_cardiology`
+- `data/hospital_data.xml::dept_internal`
+- `data/hospital_data.xml::dept_pediatrics`
+- `data/hospital_data.xml::dept_surgery`
+- `data/hospital_data.xml::dept_emergency`
+- `data/hospital_mail_templates.xml::mail_template_appointment_confirmation`
+- `data/hospital_mail_templates.xml::mail_template_lab_result_ready`
+- `data/hospital_mail_templates.xml::mail_template_discharge_summary`
+- `security/el_hospital_groups.xml::module_category_hospital`
+- `security/el_hospital_groups.xml::privilege_hospital`
+- `security/el_hospital_groups.xml::group_hospital_user`
+- `security/el_hospital_groups.xml::group_hospital_reception`
+- `security/el_hospital_groups.xml::group_hospital_lab`

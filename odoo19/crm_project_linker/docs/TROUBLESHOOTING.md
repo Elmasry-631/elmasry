@@ -1,0 +1,19 @@
+# CRM Project Linker
+
+- **المسار والإصدار:** `odoo19/crm_project_linker` — Odoo 19
+- **إصدار الحزمة:** `1.0`
+- **الترخيص المعلن:** `LGPL-3`
+- **الملخص المعلن:** Create and link projects from CRM opportunities.
+
+## أعراض مرتبطة بتبعيات ومكونات هذا الموديول
+
+- خطأ تحميل dependency `base`: تأكد من إضافته إلى addons_path وتثبيته قبل `crm_project_linker`.
+- خطأ تحميل dependency `project`: تأكد من إضافته إلى addons_path وتثبيته قبل `crm_project_linker`.
+- خطأ تحميل dependency `crm`: تأكد من إضافته إلى addons_path وتثبيته قبل `crm_project_linker`.
+- خطأ تحميل dependency `sale_management`: تأكد من إضافته إلى addons_path وتثبيته قبل `crm_project_linker`.
+- غياب مورد views/crm_lead_view.xml: تحقق من ملفات manifest الموجودة تحت `data` و`assets` ومطابقتها لمسارات الملفات.
+- تعذر اختبار إصدار Odoo 19: استخدم نفس سلسلة الإصدار وراجع APIs التي يرثها الموديول.
+
+## تشخيص الصلاحيات
+
+راجع [SECURITY.md](SECURITY.md) وملفات `security/`؛ اختلاف المجموعة الفعالة أو الشركة النشطة قد يمنع الوصول. لا تعالج ذلك بإضافة `sudo()` قبل تحديد العملية والصلاحية المطلوبة.

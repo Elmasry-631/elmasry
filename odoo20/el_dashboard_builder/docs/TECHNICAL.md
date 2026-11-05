@@ -1,0 +1,231 @@
+# Dashboard Builder
+
+- **المسار والإصدار:** `odoo20/el_dashboard_builder` — Odoo 20
+- **إصدار الحزمة:** `20.0.1.0.0`
+- **الترخيص المعلن:** `LGPL-3`
+- **الملخص المعلن:** Drag-and-drop dashboard builder with customizable widgets
+
+## المكونات المكتشفة
+
+- Python: 12 file(s)
+- XML: 10 file(s)
+- JavaScript/TypeScript: 22 file(s)
+
+### نماذج وامتدادات Odoo
+
+- DashboardBuilderReport: model _name
+- DashboardExportWizard: model _name
+- Dashboard: model _name
+- DashboardTag: model _name
+- DashboardWidget: model _name
+- DashboardItem: model _name
+- DashboardShare: model _name
+- DashboardItemConfigWizard: model _name
+
+### الملفات المصدرية ذات الصلة
+
+- `report/dashboard_report_templates.xml`
+- `report/__init__.py`
+- `report/report.py`
+- `controllers/__init__.py`
+- `controllers/controllers.py`
+- `views/dashboard_templates.xml`
+- `views/dashboard_views.xml`
+- `views/dashboard_menu.xml`
+- `models/dashboard.py`
+- `models/__init__.py`
+- `security/dashboard_security.xml`
+- `security/ir.model.access.csv`
+- `wizard/item_config_wizard.py`
+- `wizard/__init__.py`
+- `wizard/item_config_wizard_views.xml`
+
+### حقول معلنة
+
+- `dashboard_id (Many2one)`
+- `export_format (Selection)`
+- `include_data (Boolean)`
+- `name (Char)`
+- `description (Html)`
+- `sequence (Integer)`
+- `active (Boolean)`
+- `company_id (Many2one)`
+- `user_id (Many2one)`
+- `is_public (Boolean)`
+- `group_ids (Many2many)`
+- `item_ids (One2many)`
+- `item_count (Integer)`
+- `last_viewed (Datetime)`
+- `view_count (Integer)`
+- `background_color (Char)`
+- `background_image (Binary)`
+- `custom_css (Text)`
+- `refresh_interval (Integer)`
+- `filter_domain (Char)`
+- `tag_ids (Many2many)`
+- `is_favorite (Boolean)`
+- `favorite_user_ids (Many2many)`
+- `share_ids (One2many)`
+- `name (Char)`
+- `sequence (Integer)`
+- `color (Integer)`
+- `dashboard_count (Integer)`
+- `name (Char)`
+- `xml_id (Char)`
+- `description (Html)`
+- `sequence (Integer)`
+- `category (Selection)`
+- `icon (Char)`
+- `color (Char)`
+- `component_name (Char)`
+- `default_width (Integer)`
+- `default_height (Integer)`
+- `min_width (Integer)`
+- `min_height (Integer)`
+- `max_width (Integer)`
+- `max_height (Integer)`
+- `supports_filters (Boolean)`
+- `supports_drill_down (Boolean)`
+- `supports_real_time (Boolean)`
+- `js_module (Char)`
+- `css_module (Char)`
+- `is_active (Boolean)`
+- `is_system (Boolean)`
+- `preview_image (Binary)`
+- `help_text (Html)`
+- `dashboard_id (Many2one)`
+- `widget_id (Many2one)`
+- `custom_widget_name (Char)`
+- `sequence (Integer)`
+- `pos_x (Integer)`
+- `pos_y (Integer)`
+- `width (Integer)`
+- `height (Integer)`
+- `min_width (Integer)`
+- `min_height (Integer)`
+- `is_locked (Boolean)`
+- `is_visible (Boolean)`
+- `drill_down_action (Char)`
+- `refresh_interval (Integer)`
+- `last_refreshed (Datetime)`
+- `error_message (Text)`
+- `loading (Boolean)`
+- `dashboard_id (Many2one)`
+- `name (Char)`
+- `share_type (Selection)`
+- `access_token (Char)`
+- `password (Char)`
+- `user_ids (Many2many)`
+- `group_ids (Many2many)`
+- `expiry_date (Date)`
+- `is_active (Boolean)`
+- `allow_export (Boolean)`
+- `view_count (Integer)`
+- `last_accessed (Datetime)`
+- `embed_width (Integer)`
+- `embed_height (Integer)`
+- `item_id (Many2one)`
+- `widget_id (Many2one)`
+
+### XML IDs
+
+- `report/dashboard_report_templates.xml::action_report_dashboard`
+- `report/dashboard_report_templates.xml::dashboard_pdf_report`
+- `views/dashboard_templates.xml::DashboardBuilderView`
+- `views/dashboard_templates.xml::o_dashboard_root`
+- `views/dashboard_templates.xml::dashboard-grid`
+- `views/dashboard_templates.xml::DashboardBuilderEditor`
+- `views/dashboard_templates.xml::o_dashboard_editor_root`
+- `views/dashboard_templates.xml::widget-palette`
+- `views/dashboard_templates.xml::widget-search`
+- `views/dashboard_templates.xml::widget-categories`
+- `views/dashboard_templates.xml::dashboard-canvas`
+- `views/dashboard_templates.xml::editor-grid`
+- `views/dashboard_templates.xml::drop-zone`
+- `views/dashboard_templates.xml::DashboardSharedView`
+- `views/dashboard_templates.xml::o_dashboard_root`
+- `views/dashboard_templates.xml::dashboard-grid`
+- `views/dashboard_templates.xml::DashboardSharedPassword`
+- `views/dashboard_templates.xml::DashboardSharedExpired`
+- `views/dashboard_templates.xml::WidgetTestView`
+- `views/dashboard_templates.xml::dashboard-grid`
+- `views/dashboard_templates.xml::WidgetPreview`
+- `views/dashboard_templates.xml::WidgetLoading`
+- `views/dashboard_templates.xml::WidgetError`
+- `views/dashboard_views.xml::view_dashboard_builder_list`
+- `views/dashboard_views.xml::view_dashboard_builder_kanban`
+- `views/dashboard_views.xml::view_dashboard_builder_form`
+- `views/dashboard_views.xml::view_dashboard_builder_search`
+- `views/dashboard_views.xml::action_dashboard_builder_list`
+- `views/dashboard_views.xml::view_dashboard_widget_list`
+- `views/dashboard_views.xml::view_dashboard_widget_form`
+- `views/dashboard_views.xml::view_dashboard_widget_search`
+- `views/dashboard_views.xml::action_dashboard_widget_list`
+- `views/dashboard_views.xml::view_dashboard_tag_list`
+- `views/dashboard_views.xml::view_dashboard_tag_form`
+- `views/dashboard_views.xml::action_dashboard_tag_list`
+- `views/dashboard_views.xml::view_dashboard_share_list`
+- `views/dashboard_views.xml::view_dashboard_share_form`
+- `views/dashboard_views.xml::action_dashboard_builder_shared`
+- `views/dashboard_menu.xml::action_dashboard_builder_new`
+- `views/dashboard_menu.xml::action_dashboard_builder_favorites`
+- `views/dashboard_menu.xml::menu_dashboard_builder_root`
+- `views/dashboard_menu.xml::menu_dashboard_builder_dashboards`
+- `views/dashboard_menu.xml::menu_dashboard_builder_new`
+- `views/dashboard_menu.xml::menu_dashboard_builder_favorites`
+- `views/dashboard_menu.xml::menu_dashboard_builder_all`
+- `views/dashboard_menu.xml::menu_dashboard_builder_widgets`
+- `views/dashboard_menu.xml::menu_dashboard_builder_shared`
+- `views/dashboard_menu.xml::menu_dashboard_builder_config`
+- `views/dashboard_menu.xml::menu_dashboard_builder_tags`
+- `data/dashboard_default_widgets.xml::widget_kpi_card`
+- `data/dashboard_default_widgets.xml::widget_bar_chart`
+- `data/dashboard_default_widgets.xml::widget_line_chart`
+- `data/dashboard_default_widgets.xml::widget_pie_chart`
+- `data/dashboard_default_widgets.xml::widget_table`
+- `data/dashboard_default_widgets.xml::widget_pivot_table`
+- `data/dashboard_default_widgets.xml::widget_gauge`
+- `data/dashboard_default_widgets.xml::widget_progress_bar`
+- `data/dashboard_default_widgets.xml::widget_html`
+- `data/dashboard_default_widgets.xml::widget_action_buttons`
+- `data/dashboard_default_widgets.xml::widget_calendar`
+- `data/dashboard_demo.xml::demo_dashboard_sales`
+- `data/dashboard_demo.xml::demo_dashboard_hr`
+- `data/dashboard_demo.xml::demo_dashboard_inventory`
+- `data/dashboard_demo.xml::demo_item_total_revenue`
+- `data/dashboard_demo.xml::demo_item_order_count`
+- `data/dashboard_demo.xml::demo_item_avg_order`
+- `data/dashboard_demo.xml::demo_item_conversion`
+- `data/dashboard_demo.xml::demo_item_revenue_trend`
+- `data/dashboard_demo.xml::demo_item_top_products`
+- `data/dashboard_demo.xml::demo_item_sales_by_team`
+- `data/dashboard_demo.xml::demo_item_recent_orders`
+- `data/dashboard_demo.xml::demo_item_total_employees`
+- `data/dashboard_demo.xml::demo_item_new_hires`
+- `data/dashboard_demo.xml::demo_item_attendance_rate`
+- `data/dashboard_demo.xml::demo_item_leave_balance`
+- `data/dashboard_demo.xml::demo_item_attendance_trend`
+- `data/dashboard_demo.xml::demo_item_dept_distribution`
+- `data/dashboard_demo.xml::demo_item_employee_table`
+- `data/dashboard_demo.xml::demo_item_stock_value`
+- `data/dashboard_demo.xml::demo_item_low_stock`
+- `data/dashboard_demo.xml::demo_item_turnover`
+- `data/dashboard_demo.xml::demo_item_stock_moves`
+- `data/dashboard_demo.xml::demo_item_top_moving`
+- `data/dashboard_demo.xml::demo_item_stock_by_location`
+- `data/dashboard_demo.xml::demo_tag_sales`
+- `data/dashboard_demo.xml::demo_tag_hr`
+- `data/dashboard_demo.xml::demo_tag_inventory`
+- `data/dashboard_demo.xml::demo_tag_executive`
+- `data/dashboard_demo.xml::demo_dashboard_sales`
+- `data/dashboard_demo.xml::demo_dashboard_hr`
+- `data/dashboard_demo.xml::demo_dashboard_inventory`
+- `data/ir_sequence_data.xml::seq_dashboard_builder`
+- `data/ir_sequence_data.xml::seq_dashboard_share`
+- `security/dashboard_security.xml::group_dashboard_user`
+- `security/dashboard_security.xml::group_dashboard_manager`
+- `security/dashboard_security.xml::group_dashboard_admin`
+- `security/dashboard_security.xml::access_dashboard_builder_user`
+- `security/dashboard_security.xml::access_dashboard_builder_manager`
+- `security/dashboard_security.xml::access_dashboard_builder_admin`
+- `security/dashboard_security.xml::access_dashboard_builder_restriction`

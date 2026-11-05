@@ -4316,3 +4316,140 @@ This appendix is generated from the delivered development-batch source archive. 
 
 ### Validation status
 The delivered batch report records successful static checks for Python AST parsing (1,140 files), XML parsing (706 files), manifest parsing (112 manifests), JavaScript syntax (89 files), and patch dry-run (15 changed files). No Odoo runtime installation, database migration, multi-company functional test, external-provider integration test, or browser end-to-end test is claimed.
+
+## فهرس صفحات الموديولات والتوثيق التفصيلي
+
+صفحات التوثيق أدناه مرتبطة بالموديول وإصدار Odoo المحدد، وروابط HTML تستخدم `static/description/index.html`.
+
+### Odoo 17
+
+| الموديول | صفحة HTML | التوثيق |
+|---|---|---|
+| `ie_costem_lead_form` — ie_costem_lead_form | [HTML](odoo17/ie_costem_lead_form/static/description/index.html) | [docs/](odoo17/ie_costem_lead_form/docs/OVERVIEW.md) |
+| `ie_crm_lead_pdf` — CRM Lead Print | [HTML](odoo17/ie_crm_lead_pdf/static/description/index.html) | [docs/](odoo17/ie_crm_lead_pdf/docs/OVERVIEW.md) |
+| `ie_print_document_linked_order` — IE Print Document Linked Order | [HTML](odoo17/ie_print_document_linked_order/static/description/index.html) | [docs/](odoo17/ie_print_document_linked_order/docs/OVERVIEW.md) |
+| `meno` — meno | [HTML](odoo17/meno/static/description/index.html) | [docs/](odoo17/meno/docs/OVERVIEW.md) |
+
+### Odoo 18
+
+| الموديول | صفحة HTML | التوثيق |
+|---|---|---|
+| `account_invoice_fixed_discount` — Account Fixed Discount | [HTML](odoo18/account_invoice_fixed_discount/static/description/index.html) | [docs/](odoo18/account_invoice_fixed_discount/docs/OVERVIEW.md) |
+| `archer_meta_lead_ads` — Meta Lead Ads | [HTML](odoo18/archer_meta_lead_ads/static/description/index.html) | [docs/](odoo18/archer_meta_lead_ads/docs/OVERVIEW.md) |
+| `bi_global_custom_fields` — All in one add custom fields -Global Custom Fields | لم يتغير محتوى الحزمة | مستثنى بسبب شروط الترخيص (`OPL-1`) |
+| `bi_health_care_center_management` — Health Care Center Management | لم يتغير محتوى الحزمة | مستثنى بسبب شروط الترخيص (`OPL-1`) |
+| `bi_so_product_quantity_limit` — Sale Order Product Quantity Limit | لم يتغير محتوى الحزمة | مستثنى بسبب شروط الترخيص (`OPL-1`) |
+| `bi_sport_center_management` — Sport Center Management | لم يتغير محتوى الحزمة | مستثنى بسبب شروط الترخيص (`OPL-1`) |
+| `delivery_return_reason` — Delivery Return Reasons | [HTML](odoo18/delivery_return_reason/static/description/index.html) | [docs/](odoo18/delivery_return_reason/docs/OVERVIEW.md) |
+| `el_barcode_price_display` — Barcode Price Display | [HTML](odoo18/el_barcode_price_display/static/description/index.html) | [docs/](odoo18/el_barcode_price_display/docs/OVERVIEW.md) |
+| `el_kitchen_receipt` — Kitchen Receipt from Quotation | [HTML](odoo18/el_kitchen_receipt/static/description/index.html) | [docs/](odoo18/el_kitchen_receipt/docs/OVERVIEW.md) |
+| `el_mobile_webhook` — Mobile Webhook | [HTML](odoo18/el_mobile_webhook/static/description/index.html) | [docs/](odoo18/el_mobile_webhook/docs/OVERVIEW.md) |
+| `el_pos_customer_payment_method` — POS Customer Payment Method | [HTML](odoo18/el_pos_customer_payment_method/static/description/index.html) | [docs/](odoo18/el_pos_customer_payment_method/docs/OVERVIEW.md) |
+| `el_product_traceability_dashboard` — Product Traceability Dashboard | [HTML](odoo18/el_product_traceability_dashboard/static/description/index.html) | [docs/](odoo18/el_product_traceability_dashboard/docs/OVERVIEW.md) |
+| `el_purchase_actual_qty` — Purchase Actual Quantity | [HTML](odoo18/el_purchase_actual_qty/static/description/index.html) | [docs/](odoo18/el_purchase_actual_qty/docs/OVERVIEW.md) |
+| `el_readonly_user` — EL Readonly User Access | [HTML](odoo18/el_readonly_user/static/description/index.html) | [docs/](odoo18/el_readonly_user/docs/OVERVIEW.md) |
+| `el_restrict_journal` — Restrict Journal for Users (Whitelist) | [HTML](odoo18/el_restrict_journal/static/description/index.html) | [docs/](odoo18/el_restrict_journal/docs/OVERVIEW.md) |
+| `el_sale_order_confirmation_user` — Sale Order Confirmation User | [HTML](odoo18/el_sale_order_confirmation_user/static/description/index.html) | [docs/](odoo18/el_sale_order_confirmation_user/docs/OVERVIEW.md) |
+| `el_warehouse_access` — Warehouse-Based Access Control | [HTML](odoo18/el_warehouse_access/static/description/index.html) | [docs/](odoo18/el_warehouse_access/docs/OVERVIEW.md) |
+| `ie_restrict_qty` — Ie Restrict Qty | [HTML](odoo18/ie_restrict_qty/static/description/index.html) | [docs/](odoo18/ie_restrict_qty/docs/OVERVIEW.md) |
+| `inventory_report_generator` — Inventory All In One Report Generator | [HTML](odoo18/inventory_report_generator/static/description/index.html) | [docs/](odoo18/inventory_report_generator/docs/OVERVIEW.md) |
+| `investment_club` — Investment Clubs Management | [HTML](odoo18/investment_club/static/description/index.html) | [docs/](odoo18/investment_club/docs/OVERVIEW.md) |
+| `invoice_stock_move` — Stock Picking From Invoice | [HTML](odoo18/invoice_stock_move/static/description/index.html) | [docs/](odoo18/invoice_stock_move/docs/OVERVIEW.md) |
+| `meno` — meno | [HTML](odoo18/meno/static/description/index.html) | [docs/](odoo18/meno/docs/OVERVIEW.md) |
+| `odoo_multi_channel_sale` — Odoo Multi-Channel Sale | لم يتغير محتوى الحزمة | مستثنى بسبب شروط الترخيص (`Other proprietary`) |
+| `odoo_salla_integration` — Salla Odoo Connector \| Odoo Multichannel | لم يتغير محتوى الحزمة | مستثنى بسبب شروط الترخيص (`Other proprietary`) |
+| `pdf_print_preview` — Pdf Print Preview | لم يتغير محتوى الحزمة | مستثنى بسبب شروط الترخيص (`OPL-1`) |
+| `pos_cashier_handover` — POS Cashier Handover Report | [HTML](odoo18/pos_cashier_handover/static/description/index.html) | [docs/](odoo18/pos_cashier_handover/docs/OVERVIEW.md) |
+| `pos_get_weight_button` — POS Get Weight Button | [HTML](odoo18/pos_get_weight_button/static/description/index.html) | [docs/](odoo18/pos_get_weight_button/docs/OVERVIEW.md) |
+| `pos_receipt_price_before_discount` — POS Receipt: Price Before Discount | [HTML](odoo18/pos_receipt_price_before_discount/static/description/index.html) | [docs/](odoo18/pos_receipt_price_before_discount/docs/OVERVIEW.md) |
+| `pos_refund_restriction` — POS Refund Restriction | [HTML](odoo18/pos_refund_restriction/static/description/index.html) | [docs/](odoo18/pos_refund_restriction/docs/OVERVIEW.md) |
+| `pos_restrict` — POS User Restrict | [HTML](odoo18/pos_restrict/static/description/index.html) | [docs/](odoo18/pos_restrict/docs/OVERVIEW.md) |
+| `product_movement_report` — Product Movement Lifecycle Report | [HTML](odoo18/product_movement_report/static/description/index.html) | [docs/](odoo18/product_movement_report/docs/OVERVIEW.md) |
+| `prt_report_attachment_preview` — Open PDF Reports and PDF Attachments in Browser | [HTML](odoo18/prt_report_attachment_preview/static/description/index.html) | [docs/](odoo18/prt_report_attachment_preview/docs/OVERVIEW.md) |
+| `sale_barcode_scanner` — Sale Order Barcode Scanner | [HTML](odoo18/sale_barcode_scanner/static/description/index.html) | [docs/](odoo18/sale_barcode_scanner/docs/OVERVIEW.md) |
+| `sale_contract_auto` — Sale Contract Auto | [HTML](odoo18/sale_contract_auto/static/description/index.html) | [docs/](odoo18/sale_contract_auto/docs/OVERVIEW.md) |
+| `sale_kitchen_receipt` — Kitchen Receipt from Quotation | [HTML](odoo18/sale_kitchen_receipt/static/description/index.html) | [docs/](odoo18/sale_kitchen_receipt/docs/OVERVIEW.md) |
+| `sale_order_automation` — Sale Order Automation | [HTML](odoo18/sale_order_automation/static/description/index.html) | [docs/](odoo18/sale_order_automation/docs/OVERVIEW.md) |
+| `sale_order_contract` — Sale Order Contract | [HTML](odoo18/sale_order_contract/static/description/index.html) | [docs/](odoo18/sale_order_contract/docs/OVERVIEW.md) |
+| `sale_order_contract_terms` — Sales Order Contract Terms (AR/EN) - 4 Pages | [HTML](odoo18/sale_order_contract_terms/static/description/index.html) | [docs/](odoo18/sale_order_contract_terms/docs/OVERVIEW.md) |
+| `sale_stock_restrict` — Sale Stock Restrict | [HTML](odoo18/sale_stock_restrict/static/description/index.html) | [docs/](odoo18/sale_stock_restrict/docs/OVERVIEW.md) |
+| `sales_credit_limit` — Customer Credit Limit with Due Amount Warning | لم يتغير محتوى الحزمة | مستثنى بسبب شروط الترخيص (`OPL-1`) |
+| `stock_move_invoice` — Invoice From Stock Picking | [HTML](odoo18/stock_move_invoice/static/description/index.html) | [docs/](odoo18/stock_move_invoice/docs/OVERVIEW.md) |
+| `stock_split_transfer` — Stock Split Transfer | [HTML](odoo18/stock_split_transfer/static/description/index.html) | [docs/](odoo18/stock_split_transfer/docs/OVERVIEW.md) |
+| `transfer_wizard` — trade_paints_wizard | [HTML](odoo18/transfer_wizard/static/description/index.html) | [docs/](odoo18/transfer_wizard/docs/OVERVIEW.md) |
+| `whatsapp_mail_messaging` — Odoo Whatsapp Connector | [HTML](odoo18/whatsapp_mail_messaging/static/description/index.html) | [docs/](odoo18/whatsapp_mail_messaging/docs/OVERVIEW.md) |
+| `wk_wizard_messages` — Webkul Message Wizard | لم يتغير محتوى الحزمة | مستثنى بسبب شروط الترخيص (`Other proprietary`) |
+| `wm_purchase_global_discount` — Purchase Order Global Discount (Same as Odoo Sales Discount) | لم يتغير محتوى الحزمة | مستثنى بسبب شروط الترخيص (`OPL-1`) |
+
+### Odoo 19
+
+| الموديول | صفحة HTML | التوثيق |
+|---|---|---|
+| `WPS` — WPS | [HTML](odoo19/WPS/static/description/index.html) | [docs/](odoo19/WPS/docs/OVERVIEW.md) |
+| `account_invoice_fixed_discount` — Account Fixed Discount | [HTML](odoo19/account_invoice_fixed_discount/static/description/index.html) | [docs/](odoo19/account_invoice_fixed_discount/docs/OVERVIEW.md) |
+| `advanced_accounting_reports` — Advanced Accounting Reports | [HTML](odoo19/advanced_accounting_reports/static/description/index.html) | [docs/](odoo19/advanced_accounting_reports/docs/OVERVIEW.md) |
+| `ai_finance_suite` — AI Finance | [HTML](odoo19/ai_finance_suite/static/description/index.html) | [docs/](odoo19/ai_finance_suite/docs/OVERVIEW.md) |
+| `archer_meta_lead_ads` — Meta Lead Ads | [HTML](odoo19/archer_meta_lead_ads/static/description/index.html) | [docs/](odoo19/archer_meta_lead_ads/docs/OVERVIEW.md) |
+| `auto_project_stages` — Project Task Visit Forms | [HTML](odoo19/auto_project_stages/static/description/index.html) | [docs/](odoo19/auto_project_stages/docs/OVERVIEW.md) |
+| `bi_employee_travel_managment` — HR Employee Travel Expense in Odoo | لم يتغير محتوى الحزمة | مستثنى بسبب شروط الترخيص (`OPL-1`) |
+| `bi_so_product_quantity_limit` — Sale Order Product Quantity Limit | لم يتغير محتوى الحزمة | مستثنى بسبب شروط الترخيص (`OPL-1`) |
+| `cheque_tracking` — Cheque Tracking | [HTML](odoo19/cheque_tracking/static/description/index.html) | [docs/](odoo19/cheque_tracking/docs/OVERVIEW.md) |
+| `cheque_tracking_endorsement` — Cheque Tracking Endorsement | [HTML](odoo19/cheque_tracking_endorsement/static/description/index.html) | [docs/](odoo19/cheque_tracking_endorsement/docs/OVERVIEW.md) |
+| `connector_foodics` — Foodics Connector | [HTML](odoo19/connector_foodics/static/description/index.html) | [docs/](odoo19/connector_foodics/docs/OVERVIEW.md) |
+| `crm_project_linker` — CRM Project Linker | [HTML](odoo19/crm_project_linker/static/description/index.html) | [docs/](odoo19/crm_project_linker/docs/OVERVIEW.md) |
+| `customer_classification` — Customer Classification & Credit Control | [HTML](odoo19/customer_classification/static/description/index.html) | [docs/](odoo19/customer_classification/docs/OVERVIEW.md) |
+| `deduction_management` — Deduction | لم يتغير محتوى الحزمة | مستثنى بسبب شروط الترخيص (`Other proprietary`) |
+| `direct_print_auto` — Direct Print Auto | [HTML](odoo19/direct_print_auto/static/description/index.html) | [docs/](odoo19/direct_print_auto/docs/OVERVIEW.md) |
+| `ebook_serial_delivery` — eBook Serial Delivery | [HTML](odoo19/ebook_serial_delivery/static/description/index.html) | [docs/](odoo19/ebook_serial_delivery/docs/OVERVIEW.md) |
+| `el_barcode_price_display` — Barcode Price Display | [HTML](odoo19/el_barcode_price_display/static/description/index.html) | [docs/](odoo19/el_barcode_price_display/docs/OVERVIEW.md) |
+| `el_button_access_control` — Button Access Control | [HTML](odoo19/el_button_access_control/static/description/index.html) | [docs/](odoo19/el_button_access_control/docs/OVERVIEW.md) |
+| `el_cheque_tracking` — EL Cheque Tracking | [HTML](odoo19/el_cheque_tracking/static/description/index.html) | [docs/](odoo19/el_cheque_tracking/docs/OVERVIEW.md) |
+| `el_commission_type` — Commission Types | [HTML](odoo19/el_commission_type/static/description/index.html) | [docs/](odoo19/el_commission_type/docs/OVERVIEW.md) |
+| `el_construction_management` — Construction Management | [HTML](odoo19/el_construction_management/static/description/index.html) | [docs/](odoo19/el_construction_management/docs/OVERVIEW.md) |
+| `el_construction_tender` — Construction Tendering | [HTML](odoo19/el_construction_tender/static/description/index.html) | [docs/](odoo19/el_construction_tender/docs/OVERVIEW.md) |
+| `el_ebook_store` — E-Book Store | [HTML](odoo19/el_ebook_store/static/description/index.html) | [docs/](odoo19/el_ebook_store/docs/OVERVIEW.md) |
+| `el_hospital` — Hospital Management System | [HTML](odoo19/el_hospital/static/description/index.html) | [docs/](odoo19/el_hospital/docs/OVERVIEW.md) |
+| `el_hr_attendance_sheet` — HR Attendance Sheet And Policies | [HTML](odoo19/el_hr_attendance_sheet/static/description/index.html) | [docs/](odoo19/el_hr_attendance_sheet/docs/OVERVIEW.md) |
+| `el_inter_company_transfer` — Inter Company Transfer | [HTML](odoo19/el_inter_company_transfer/static/description/index.html) | [docs/](odoo19/el_inter_company_transfer/docs/OVERVIEW.md) |
+| `el_nmo_classification` — El-Nmo - Customer Classification | [HTML](odoo19/el_nmo_classification/static/description/index.html) | [docs/](odoo19/el_nmo_classification/docs/OVERVIEW.md) |
+| `el_nmo_credit_approval` — El-Nmo - Credit Limit Approval Workflow | [HTML](odoo19/el_nmo_credit_approval/static/description/index.html) | [docs/](odoo19/el_nmo_credit_approval/docs/OVERVIEW.md) |
+| `el_nmo_sale_payment_gateway` — Sale Payment Gateway | [HTML](odoo19/el_nmo_sale_payment_gateway/static/description/index.html) | [docs/](odoo19/el_nmo_sale_payment_gateway/docs/OVERVIEW.md) |
+| `el_payroll_wps` — Payroll WPS Export | [HTML](odoo19/el_payroll_wps/static/description/index.html) | [docs/](odoo19/el_payroll_wps/docs/OVERVIEW.md) |
+| `el_pdf_print_preview` — PDF Print Preview | [HTML](odoo19/el_pdf_print_preview/static/description/index.html) | [docs/](odoo19/el_pdf_print_preview/docs/OVERVIEW.md) |
+| `el_pos_customer_payment_method` — POS Customer Payment Method | [HTML](odoo19/el_pos_customer_payment_method/static/description/index.html) | [docs/](odoo19/el_pos_customer_payment_method/docs/OVERVIEW.md) |
+| `el_prevent_negative_stock` — Prevent Negative Stock | [HTML](odoo19/el_prevent_negative_stock/static/description/index.html) | [docs/](odoo19/el_prevent_negative_stock/docs/OVERVIEW.md) |
+| `ie_stock_movement_report` — Stock Movement Report | [HTML](odoo19/ie_stock_movement_report/static/description/index.html) | [docs/](odoo19/ie_stock_movement_report/docs/OVERVIEW.md) |
+| `inventory_report_generator` — Inventory All In One Report Generator | [HTML](odoo19/inventory_report_generator/static/description/index.html) | [docs/](odoo19/inventory_report_generator/docs/OVERVIEW.md) |
+| `invoice_stock_move` — Stock Picking From Invoice | [HTML](odoo19/invoice_stock_move/static/description/index.html) | [docs/](odoo19/invoice_stock_move/docs/OVERVIEW.md) |
+| `invoice_tracking` — Invoice Tracking | [HTML](odoo19/invoice_tracking/static/description/index.html) | [docs/](odoo19/invoice_tracking/docs/OVERVIEW.md) |
+| `loan_management` — Loans Management | لم يتغير محتوى الحزمة | مستثنى بسبب شروط الترخيص (`Other proprietary`) |
+| `meno` — meno | [HTML](odoo19/meno/static/description/index.html) | [docs/](odoo19/meno/docs/OVERVIEW.md) |
+| `mrp_lock_lines` — MRP Lock Lines | [HTML](odoo19/mrp_lock_lines/static/description/index.html) | [docs/](odoo19/mrp_lock_lines/docs/OVERVIEW.md) |
+| `partner_balance_confirmation` — Balance Confirmation | [HTML](odoo19/partner_balance_confirmation/static/description/index.html) | [docs/](odoo19/partner_balance_confirmation/docs/OVERVIEW.md) |
+| `partner_request` — Partner Request | [HTML](odoo19/partner_request/static/description/index.html) | [docs/](odoo19/partner_request/docs/OVERVIEW.md) |
+| `payment_alrajhi_arb` — Al Rajhi Bank (ARB) Payment Gateway | [HTML](odoo19/payment_alrajhi_arb/static/description/index.html) | [docs/](odoo19/payment_alrajhi_arb/docs/OVERVIEW.md) |
+| `payment_applepay` — Hyperpay Payment Acquirer - Applepay | لم يتغير محتوى الحزمة | مستثنى بسبب شروط الترخيص (`Other proprietary`) |
+| `payment_hyperpay` — Hyperpay Payment Acquirer | لم يتغير محتوى الحزمة | مستثنى بسبب شروط الترخيص (`Other proprietary`) |
+| `pos_daily_sequence` — POS Daily Sequence | [HTML](odoo19/pos_daily_sequence/static/description/index.html) | [docs/](odoo19/pos_daily_sequence/docs/OVERVIEW.md) |
+| `pos_get_weight_button` — POS Get Weight Button | [HTML](odoo19/pos_get_weight_button/static/description/index.html) | [docs/](odoo19/pos_get_weight_button/docs/OVERVIEW.md) |
+| `rm_hr_attendance_sheet` — HR Attendance Sheet and Policies | [HTML](odoo19/rm_hr_attendance_sheet/static/description/index.html) | [docs/](odoo19/rm_hr_attendance_sheet/docs/OVERVIEW.md) |
+| `saudi_tax_invoice` — Saudi Tax Invoice | [HTML](odoo19/saudi_tax_invoice/static/description/index.html) | [docs/](odoo19/saudi_tax_invoice/docs/OVERVIEW.md) |
+| `smsa_express_delivery_carrier` — SMSA Express Shipping Integration | لم يتغير محتوى الحزمة | مستثنى بسبب شروط الترخيص (`Other proprietary`) |
+| `stock_intercompany_transfer` — Inter Company Stock Transfer | [HTML](odoo19/stock_intercompany_transfer/static/description/index.html) | [docs/](odoo19/stock_intercompany_transfer/docs/OVERVIEW.md) |
+| `test_AI_finance` — AI Finance V1 | [HTML](odoo19/test_AI_finance/static/description/index.html) | [docs/](odoo19/test_AI_finance/docs/OVERVIEW.md) |
+| `transaction_tracker` — Transaction Tracker | [HTML](odoo19/transaction_tracker/static/description/index.html) | [docs/](odoo19/transaction_tracker/docs/OVERVIEW.md) |
+| `vehicle_installment` — Vehicle Installment Management | [HTML](odoo19/vehicle_installment/static/description/index.html) | [docs/](odoo19/vehicle_installment/docs/OVERVIEW.md) |
+| `whatsapp_mail_messaging` — Odoo Whatsapp Connector | [HTML](odoo19/whatsapp_mail_messaging/static/description/index.html) | [docs/](odoo19/whatsapp_mail_messaging/docs/OVERVIEW.md) |
+| `wm_purchase_global_discount` — Purchase Order Global Discount (Same as Odoo Sales Discount) | لم يتغير محتوى الحزمة | مستثنى بسبب شروط الترخيص (`OPL-1`) |
+| `zk_attendance_integration_v19` — TechScope \| ZK Attendance Integration | [HTML](odoo19/zk_attendance_integration_v19/static/description/index.html) | [docs/](odoo19/zk_attendance_integration_v19/docs/OVERVIEW.md) |
+
+### Odoo 20
+
+| الموديول | صفحة HTML | التوثيق |
+|---|---|---|
+| `el_dashboard_builder` — Dashboard Builder | [HTML](odoo20/el_dashboard_builder/static/description/index.html) | [docs/](odoo20/el_dashboard_builder/docs/OVERVIEW.md) |
+| `el_hr_attendance_sheet` — HR Attendance Sheet And Policies | [HTML](odoo20/el_hr_attendance_sheet/static/description/index.html) | [docs/](odoo20/el_hr_attendance_sheet/docs/OVERVIEW.md) |
+| `el_inter_company_transfer` — Inter Company Internal Transfer | [HTML](odoo20/el_inter_company_transfer/static/description/index.html) | [docs/](odoo20/el_inter_company_transfer/docs/OVERVIEW.md) |
+| `el_pos_customer_payment_method` — POS Customer Payment Method | [HTML](odoo20/el_pos_customer_payment_method/static/description/index.html) | [docs/](odoo20/el_pos_customer_payment_method/docs/OVERVIEW.md) |
+| `meno` — meno | [HTML](odoo20/meno/static/description/index.html) | [docs/](odoo20/meno/docs/OVERVIEW.md) |
+

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_pos_config_form_inherit_el_stock_no_negative" model="ir.ui.view">
+        <field name="name">pos.config.form.inherit.el_stock_no_negative</field>
+        <field name="model">pos.config</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_config_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='stock_location_id']" position="after">
+                <field name="allow_negative_stock" invisible="1"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

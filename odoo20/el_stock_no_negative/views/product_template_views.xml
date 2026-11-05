@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_product_template_form_inherit_el_stock_no_negative" model="ir.ui.view">
+        <field name="name">product.template.form.inherit.el_stock_no_negative</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook/page[1]" position="inside">
+                <group string="Stock Settings" name="stock_settings_group">
+                    <field name="allow_negative_stock" widget="boolean_toggle"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_product_category_form_inherit_el_stock_no_negative" model="ir.ui.view">
+        <field name="name">product.category.form.inherit.el_stock_no_negative</field>
+        <field name="model">product.category</field>
+        <field name="inherit_id" ref="product.product_category_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="allow_negative_stock" widget="boolean_toggle"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_product_product_form_inherit_el_stock_no_negative" model="ir.ui.view">
+        <field name="name">product.product.form.inherit.el_stock_no_negative</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='product_tmpl_id']" position="after">
+                <field name="allow_negative_stock" widget="boolean_toggle"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

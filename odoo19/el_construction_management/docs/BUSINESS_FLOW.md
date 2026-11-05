@@ -1,0 +1,85 @@
+# Construction Management
+
+- **المسار والإصدار:** `odoo19/el_construction_management` — Odoo 19
+- **إصدار الحزمة:** `19.0.1.24.0`
+- **الترخيص المعلن:** `LGPL-3`
+- **الملخص المعلن:** Construction Management \| Job Costing \| BOQ \| Work Orders \| RA Billing \| Material Requisition \| Subcontracting \| Budget
+
+## التدفق كما تكشفه نقاط الدخول
+
+- المستخدم يبدأ من قائمة: Construction
+- المستخدم يبدأ من قائمة: Dashboard
+- المستخدم يبدأ من قائمة: Projects
+- المستخدم يبدأ من قائمة: Projects
+- المستخدم يبدأ من قائمة: Sub Projects
+- المستخدم يبدأ من قائمة: Planning & Execution
+- المستخدم يبدأ من قائمة: Phases / WBS
+- المستخدم يبدأ من قائمة: Tasks
+- المستخدم يبدأ من قائمة: Schedule
+- المستخدم يبدأ من قائمة: Work Orders
+- المستخدم يبدأ من قائمة: Commercial & Cost
+- المستخدم يبدأ من قائمة: Bill of Quantities
+- المستخدم يبدأ من قائمة: Budgets
+- المستخدم يبدأ من قائمة: Rate Analysis
+- المستخدم يبدأ من قائمة: Progress Billing
+- النموذج/الامتداد المعني: ConstructionBoqLine: model _name
+- النموذج/الامتداد المعني: ConstructionProject: model _name
+- النموذج/الامتداد المعني: ConstructionProjectImage: model _name
+- النموذج/الامتداد المعني: ConstructionQualityCheck: model _name
+- النموذج/الامتداد المعني: ConstructionMaterialIssue: model _name
+- النموذج/الامتداد المعني: ConstructionMaterialIssueLine: model _name
+- النموذج/الامتداد المعني: ConstructionExtraExpense: model _name
+- النموذج/الامتداد المعني: ConstructionProgressBillingLine: model _name
+- النموذج/الامتداد المعني: ConstructionWorkOrder: model _name
+- النموذج/الامتداد المعني: ConstructionWorkOrderLine: model _name
+- النموذج/الامتداد المعني: ConstructionConsumeOrder: model _name
+- النموذج/الامتداد المعني: ConstructionConsumeOrderLine: model _name
+- النموذج/الامتداد المعني: ConstructionVariationOrder: model _name
+- النموذج/الامتداد المعني: ConstructionVariationApproval: model _name
+- النموذج/الامتداد المعني: ConstructionVariationOrderLine: model _name
+- النموذج/الامتداد المعني: ConstructionPhase: model _name
+- النموذج/الامتداد المعني: ConstructionPhaseEntry: model _name
+- النموذج/الامتداد المعني: ConstructionQualityCheckLine: model _name
+- النموذج/الامتداد المعني: ConstructionQualityCheckImage: model _name
+- النموذج/الامتداد المعني: ConstructionApprovalMatrix: model _name
+- النموذج/الامتداد المعني: ConstructionBudget: model _name
+- النموذج/الامتداد المعني: ConstructionProgressBillingControls: model _inherit
+- النموذج/الامتداد المعني: ConstructionRaBillingLineControls: model _inherit
+- النموذج/الامتداد المعني: ConstructionRaCommercialControls: model _inherit
+- العملية البرمجية المتاحة: `test_running_timesheet_cannot_be_created_directly` في `tests/test_task.py`
+- العملية البرمجية المتاحة: `test_project_schedule_action` في `tests/test_task.py`
+- العملية البرمجية المتاحة: `test_fail_requires_failed_point_action_and_recheck_date` في `tests/test_quality_check.py`
+- العملية البرمجية المتاحة: `test_subcontract_lines_locked_after_confirmation` في `tests/test_hardening.py`
+- العملية البرمجية المتاحة: `create` في `models/construction_boq_lines.py`
+- العملية البرمجية المتاحة: `_compute_amount` في `models/construction_boq_lines.py`
+- العملية البرمجية المتاحة: `_compute_display_name` في `models/construction_boq_lines.py`
+- العملية البرمجية المتاحة: `create` في `models/construction_project.py`
+- العملية البرمجية المتاحة: `_compute_counts` في `models/construction_project.py`
+- العملية البرمجية المتاحة: `action_archive` في `models/construction_project.py`
+- العملية البرمجية المتاحة: `action_unarchive` في `models/construction_project.py`
+- العملية البرمجية المتاحة: `action_start` في `models/construction_project.py`
+- العملية البرمجية المتاحة: `action_complete` في `models/construction_project.py`
+- العملية البرمجية المتاحة: `action_short_close` في `models/construction_project.py`
+- العملية البرمجية المتاحة: `action_reset_draft` في `models/construction_project.py`
+- العملية البرمجية المتاحة: `action_view_sub_projects` في `models/construction_project.py`
+- العملية البرمجية المتاحة: `action_view_budgets` في `models/construction_project.py`
+- العملية البرمجية المتاحة: `action_view_work_orders` في `models/construction_project.py`
+- العملية البرمجية المتاحة: `action_view_mreq` في `models/construction_project.py`
+- العملية البرمجية المتاحة: `action_view_tasks` في `models/construction_project.py`
+- العملية البرمجية المتاحة: `action_view_task_planning` في `models/construction_project.py`
+- العملية البرمجية المتاحة: `action_view_phases` في `models/construction_project.py`
+- العملية البرمجية المتاحة: `action_view_expenses` في `models/construction_project.py`
+- العملية البرمجية المتاحة: `_compute_result_summary` في `models/construction_quality_check.py`
+- العملية البرمجية المتاحة: `create` في `models/construction_quality_check.py`
+- العملية البرمجية المتاحة: `_validate_ready_for_inspection` في `models/construction_quality_check.py`
+- العملية البرمجية المتاحة: `_validate_result` في `models/construction_quality_check.py`
+- العملية البرمجية المتاحة: `action_start` في `models/construction_quality_check.py`
+- العملية البرمجية المتاحة: `action_pass` في `models/construction_quality_check.py`
+- العملية البرمجية المتاحة: `action_fail` في `models/construction_quality_check.py`
+- العملية البرمجية المتاحة: `action_conditional` في `models/construction_quality_check.py`
+- العملية البرمجية المتاحة: `action_recheck` في `models/construction_quality_check.py`
+- العملية البرمجية المتاحة: `action_close` في `models/construction_quality_check.py`
+- العملية البرمجية المتاحة: `action_cancel` في `models/construction_quality_check.py`
+- العملية البرمجية المتاحة: `action_reset_draft` في `models/construction_quality_check.py`
+
+التسلسل أعلاه مستخرج من القوائم والنماذج ونقاط الدخول المعرّفة؛ راجع حالات الأعمال الفعلية قبل تفعيل سير عمل مالي أو مخزني حساس.

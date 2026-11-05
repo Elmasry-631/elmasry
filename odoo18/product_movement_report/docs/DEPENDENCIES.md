@@ -1,0 +1,20 @@
+# Product Movement Lifecycle Report
+
+- **المسار والإصدار:** `odoo18/product_movement_report` — Odoo 18
+- **إصدار الحزمة:** `18.0.1.0.0`
+- **الترخيص المعلن:** `LGPL-3`
+- **الملخص المعلن:** Full movement history of a product/lot from first receipt until fully sold
+
+## تبعيات Odoo
+
+- `stock`
+
+## تبعيات Python خارجية
+
+- لا توجد تبعيات Python خارجية معلنة في manifest.
+
+## تبعيات النظام
+
+- لا توجد تبعيات تنفيذية خارجية معلنة.
+
+إصدار Odoo المستهدف بحسب مجلد المصدر: **18**. تحقق من توفر addons المعتمدة في Community/Enterprise قبل التثبيت؛ وجود اسم dependency في manifest لا يثبت توفره في Community.

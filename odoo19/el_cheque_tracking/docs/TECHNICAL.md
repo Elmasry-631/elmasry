@@ -1,0 +1,241 @@
+# EL Cheque Tracking
+
+- **المسار والإصدار:** `odoo19/el_cheque_tracking` — Odoo 19
+- **إصدار الحزمة:** `19.0.1.0.0`
+- **الترخيص المعلن:** `LGPL-3`
+- **الملخص المعلن:** Track received and issued cheques with accounting lifecycle entries
+
+## المكونات المكتشفة
+
+- Python: 21 file(s)
+- XML: 21 file(s)
+
+### نماذج وامتدادات Odoo
+
+- AccountPaymentMethod: model _inherit
+- ResCompany: model _inherit
+- ResPartner: model _inherit
+- ChequeDeposit: model _name
+- ChequeReturn: model _name
+- ResConfigSettings: model _inherit
+- AccountMove: model _inherit
+- AccountPaymentRegister: model _inherit
+- ChequeReturnReason: model _name
+- ChequeCheque: model _name
+- AccountPayment: model _inherit
+- ChequeDepositWizard: model _name
+- ChequeReturnWizard: model _name
+- ChequePrintWizard: model _name
+
+### الملفات المصدرية ذات الصلة
+
+- `report/__init__.py`
+- `report/report_deposit_slip.xml`
+- `report/report_cheque_register.xml`
+- `report/report_cheque_print.xml`
+- `views/partner_views.xml`
+- `views/cheque_views.xml`
+- `views/res_config_settings_views.xml`
+- `views/return_reason_views.xml`
+- `views/menus.xml`
+- `views/account_payment_register_views.xml`
+- `views/deposit_views.xml`
+- `views/account_payment_views.xml`
+- `views/return_views.xml`
+- `models/account_payment_method.py`
+- `models/res_company.py`
+- `models/res_partner.py`
+- `models/deposit.py`
+- `models/cheque_return.py`
+- `models/res_config_settings.py`
+- `models/account_move.py`
+- `models/__init__.py`
+- `models/account_payment_register.py`
+- `models/return_reason.py`
+- `models/cheque.py`
+- `models/account_payment.py`
+- `security/groups.xml`
+- `security/ir.model.access.csv`
+- `security/ir.rule.xml`
+- `wizard/deposit_wizard.py`
+- `wizard/print_wizard_views.xml`
+- `wizard/return_wizard.py`
+- `wizard/deposit_wizard_views.xml`
+- `wizard/__init__.py`
+- `wizard/print_wizard.py`
+- `wizard/return_wizard_views.xml`
+
+### حقول معلنة
+
+- `cheque_tracking_enabled (Boolean)`
+- `cheque_received_account_id (Many2one)`
+- `cheque_under_collection_account_id (Many2one)`
+- `cheque_issued_account_id (Many2one)`
+- `cheque_penalty_income_account_id (Many2one)`
+- `cheque_bank_charges_account_id (Many2one)`
+- `cheque_stale_months (Integer)`
+- `cheque_pdc_reminder_days (Integer)`
+- `cheque_max_redeposits (Integer)`
+- `cheque_approval_threshold (Monetary)`
+- `received_cheque_count (Integer)`
+- `issued_cheque_count (Integer)`
+- `bounced_cheque_count (Integer)`
+- `total_cheque_received (Monetary)`
+- `total_cheque_issued (Monetary)`
+- `company_currency_id (Many2one)`
+- `name (Char)`
+- `deposit_date (Date)`
+- `bank_journal_id (Many2one)`
+- `cheque_ids (Many2many)`
+- `total_amount (Monetary)`
+- `currency_id (Many2one)`
+- `state (Selection)`
+- `notes (Text)`
+- `company_id (Many2one)`
+- `name (Char)`
+- `cheque_id (Many2one)`
+- `return_date (Date)`
+- `return_reason_id (Many2one)`
+- `bank_charges (Monetary)`
+- `penalty_amount (Monetary)`
+- `currency_id (Many2one)`
+- `company_id (Many2one)`
+- `notes (Text)`
+- `move_ids (One2many)`
+- `cheque_received_account_id (Many2one)`
+- `cheque_under_collection_account_id (Many2one)`
+- `cheque_issued_account_id (Many2one)`
+- `cheque_penalty_income_account_id (Many2one)`
+- `cheque_bank_charges_account_id (Many2one)`
+- `cheque_stale_months (Integer)`
+- `cheque_pdc_reminder_days (Integer)`
+- `cheque_max_redeposits (Integer)`
+- `cheque_approval_threshold (Monetary)`
+- `company_currency_id (Many2one)`
+- `cheque_id (Many2one)`
+- `cheque_return_id (Many2one)`
+- `cheque_stage (Selection)`
+- `cheque_id (Many2one)`
+- `name (Char)`
+- `code (Char)`
+- `sequence (Integer)`
+- `active (Boolean)`
+- `default_penalty (Monetary)`
+- `currency_id (Many2one)`
+- `company_id (Many2one)`
+- `name (Char)`
+- `cheque_type (Selection)`
+- `cheque_number (Char)`
+- `cheque_date (Date)`
+- `due_date (Date)`
+- `payee_name (Char)`
+- `amount (Monetary)`
+- `currency_id (Many2one)`
+- `company_currency_id (Many2one)`
+- `amount_company_currency (Monetary)`
+- `exchange_rate (Float)`
+- `partner_id (Many2one)`
+- `bank_id (Many2one)`
+- `bank_branch_id (Many2one)`
+- `bank_account_id (Many2one)`
+- `deposit_account_id (Many2one)`
+- `invoice_ids (Many2many)`
+- `deposit_id (Many2one)`
+- `journal_entry_id (Many2one)`
+- `move_ids (One2many)`
+- `move_count (Integer)`
+- `payment_ids (One2many)`
+- `payment_count (Integer)`
+- `return_ids (One2many)`
+- `return_count (Integer)`
+- `last_return_date (Date)`
+- `responsible_id (Many2one)`
+- `handover_date (Date)`
+- `handover_recipient (Char)`
+- `expected_clearing_date (Date)`
+- `state_changed_date (Datetime)`
+- `state (Selection)`
+- `is_post_dated (Boolean)`
+- `is_stale (Boolean)`
+- `days_until_due (Integer)`
+- `days_in_state (Integer)`
+- `notes (Text)`
+- `company_id (Many2one)`
+- `cheque_id (Many2one)`
+- `deposit_date (Date)`
+- `bank_journal_id (Many2one)`
+- `cheque_ids (Many2many)`
+- `company_id (Many2one)`
+- `cheque_id (Many2one)`
+
+### XML IDs
+
+- `report/report_deposit_slip.xml::action_report_deposit_slip`
+- `report/report_deposit_slip.xml::report_deposit_slip_document`
+- `report/report_cheque_register.xml::action_report_cheque_register`
+- `report/report_cheque_register.xml::report_cheque_register_document`
+- `report/report_cheque_print.xml::action_report_cheque_print`
+- `report/report_cheque_print.xml::report_cheque_print_document`
+- `views/partner_views.xml::res_partner_cheque_stat_buttons`
+- `views/cheque_views.xml::cheque_cheque_list`
+- `views/cheque_views.xml::cheque_cheque_form`
+- `views/cheque_views.xml::cheque_cheque_kanban`
+- `views/cheque_views.xml::cheque_cheque_calendar`
+- `views/cheque_views.xml::cheque_cheque_pivot`
+- `views/cheque_views.xml::cheque_cheque_graph`
+- `views/cheque_views.xml::cheque_cheque_search`
+- `views/cheque_views.xml::action_cheque_received`
+- `views/cheque_views.xml::action_cheque_issued`
+- `views/cheque_views.xml::action_cheque_all`
+- `views/res_config_settings_views.xml::res_config_settings_view_form`
+- `views/res_config_settings_views.xml::cheque_tracking_settings`
+- `views/return_reason_views.xml::cheque_return_reason_list`
+- `views/return_reason_views.xml::cheque_return_reason_form`
+- `views/return_reason_views.xml::action_cheque_return_reason`
+- `views/menus.xml::menu_cheque_tracking_root`
+- `views/menus.xml::menu_cheque_received`
+- `views/menus.xml::menu_cheque_received_list`
+- `views/menus.xml::menu_cheque_deposit_list`
+- `views/menus.xml::menu_cheque_issued`
+- `views/menus.xml::menu_cheque_issued_list`
+- `views/menus.xml::menu_cheque_operations`
+- `views/menus.xml::menu_cheque_all_list`
+- `views/menus.xml::menu_cheque_return_list`
+- `views/menus.xml::menu_cheque_config`
+- `views/menus.xml::menu_cheque_return_reason`
+- `views/account_payment_register_views.xml::account_payment_register_form_cheque`
+- `views/deposit_views.xml::cheque_deposit_list`
+- `views/deposit_views.xml::cheque_deposit_form`
+- `views/deposit_views.xml::cheque_deposit_search`
+- `views/deposit_views.xml::action_cheque_deposit`
+- `views/account_payment_views.xml::account_payment_form_cheque`
+- `views/return_views.xml::cheque_return_list`
+- `views/return_views.xml::cheque_return_form`
+- `views/return_views.xml::cheque_return_search`
+- `views/return_views.xml::action_cheque_return`
+- `data/account_payment_method_data.xml::cheque_payment_method_inbound`
+- `data/account_payment_method_data.xml::cheque_payment_method_outbound`
+- `data/sequence_data.xml::seq_cheque_cheque`
+- `data/sequence_data.xml::seq_cheque_deposit`
+- `data/sequence_data.xml::seq_cheque_return`
+- `data/return_reason_data.xml::return_reason_nsf`
+- `data/return_reason_data.xml::return_reason_stale`
+- `data/return_reason_data.xml::return_reason_damaged`
+- `data/return_reason_data.xml::return_reason_other`
+- `data/ir_cron_data.xml::cron_pdc_maturity_reminder`
+- `data/ir_cron_data.xml::cron_stale_cheque_detection`
+- `security/groups.xml::res_groups_privilege_cheque_tracking`
+- `security/groups.xml::group_cheque_user`
+- `security/groups.xml::group_cheque_manager`
+- `security/groups.xml::group_cheque_admin`
+- `security/ir.rule.xml::cheque_cheque_company_rule`
+- `security/ir.rule.xml::cheque_deposit_company_rule`
+- `security/ir.rule.xml::cheque_return_company_rule`
+- `security/ir.rule.xml::cheque_return_reason_company_rule`
+- `security/ir.rule.xml::cheque_return_reason_user_rule`
+- `wizard/print_wizard_views.xml::cheque_print_wizard_form`
+- `wizard/print_wizard_views.xml::action_cheque_print_wizard`
+- `wizard/deposit_wizard_views.xml::cheque_deposit_wizard_form`
+- `wizard/deposit_wizard_views.xml::action_cheque_deposit_wizard`
+- `wizard/return_wizard_views.xml::cheque_return_wizard_form`
+- `wizard/return_wizard_views.xml::action_cheque_return_wizard`

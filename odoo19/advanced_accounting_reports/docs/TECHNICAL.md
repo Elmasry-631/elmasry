@@ -1,0 +1,192 @@
+# Advanced Accounting Reports
+
+- **المسار والإصدار:** `odoo19/advanced_accounting_reports` — Odoo 19
+- **إصدار الحزمة:** `1.20.0`
+- **الترخيص المعلن:** `LGPL-3`
+- **الملخص المعلن:** Advanced General Ledger, Trial Balance with Analytic Dimensions & Multi-Currency
+
+## المكونات المكتشفة
+
+- Python: 22 file(s)
+- XML: 17 file(s)
+- JavaScript/TypeScript: 1 file(s)
+
+### نماذج وامتدادات Odoo
+
+- TrialBalanceReport: model _name
+- GeneralLedgerReport: model _name
+- ResCompany: model _inherit
+- AccountFeature: model _name
+- AccountMove: model _inherit
+- AccountPatchNumber: model _name
+- AccountMoveLine: model _inherit
+- AccountCostCenter: model _name
+- TrialBalanceWizard: model _name
+- GeneralLedgerWizard: model _name
+
+### الملفات المصدرية ذات الصلة
+
+- `report/trial_balance_report.py`
+- `report/__init__.py`
+- `report/report_general_ledger.xml`
+- `report/report_trial_balance.xml`
+- `report/general_ledger_report.py`
+- `report/report_actions.xml`
+- `controllers/main.py`
+- `controllers/xlsx_export.py`
+- `controllers/__init__.py`
+- `views/account_cost_center_views.xml`
+- `views/report_trial_balance_views.xml`
+- `views/account_feature_views.xml`
+- `views/account_move_line_views.xml`
+- `views/menus.xml`
+- `views/account_patch_number_views.xml`
+- `views/account_move_views.xml`
+- `views/report_search_views.xml`
+- `views/report_general_ledger_views.xml`
+- `models/res_company.py`
+- `models/account_feature.py`
+- `models/account_move.py`
+- `models/account_patch_number.py`
+- `models/__init__.py`
+- `models/account_move_line.py`
+- `models/account_cost_center.py`
+- `security/security.xml`
+- `security/ir.model.access.csv`
+- `wizard/general_ledger_wizard_views.xml`
+- `wizard/trial_balance_wizard.py`
+- `wizard/general_ledger_wizard.py`
+- `wizard/__init__.py`
+- `wizard/trial_balance_wizard_views.xml`
+
+### حقول معلنة
+
+- `secondary_currency_id (Many2one)`
+- `name (Char)`
+- `code (Char)`
+- `parent_id (Many2one)`
+- `parent_path (Char)`
+- `company_id (Many2one)`
+- `active (Boolean)`
+- `notes (Text)`
+- `child_ids (One2many)`
+- `debit (Monetary)`
+- `credit (Monetary)`
+- `balance (Monetary)`
+- `currency_id (Many2one)`
+- `secondary_debit (Monetary)`
+- `secondary_credit (Monetary)`
+- `secondary_balance (Monetary)`
+- `secondary_currency_id (Many2one)`
+- `avg_rate (Float)`
+- `secondary_currency_id (Many2one)`
+- `manual_rate (Float)`
+- `use_manual_rate (Boolean)`
+- `secondary_debit_total (Monetary)`
+- `secondary_credit_total (Monetary)`
+- `secondary_balance_total (Monetary)`
+- `patch_number_id (Many2one)`
+- `name (Char)`
+- `description (Text)`
+- `status (Selection)`
+- `company_id (Many2one)`
+- `active (Boolean)`
+- `feature_ids (Many2many)`
+- `cost_center_ids (Many2many)`
+- `secondary_debit (Monetary)`
+- `secondary_credit (Monetary)`
+- `secondary_balance (Monetary)`
+- `secondary_currency_id (Many2one)`
+- `manual_rate (Float)`
+- `patch_number_id (Many2one)`
+- `secondary_currency_name (Char)`
+- `name (Char)`
+- `code (Char)`
+- `parent_id (Many2one)`
+- `parent_path (Char)`
+- `company_id (Many2one)`
+- `active (Boolean)`
+- `child_ids (One2many)`
+- `debit (Monetary)`
+- `credit (Monetary)`
+- `balance (Monetary)`
+- `currency_id (Many2one)`
+- `secondary_debit (Monetary)`
+- `secondary_credit (Monetary)`
+- `secondary_balance (Monetary)`
+- `secondary_currency_id (Many2one)`
+- `avg_rate (Float)`
+- `date_from (Date)`
+- `date_to (Date)`
+- `journal_ids (Many2many)`
+- `account_ids (Many2many)`
+- `feature_ids (Many2many)`
+- `cost_center_ids (Many2many)`
+- `target_move (Selection)`
+- `company_id (Many2one)`
+- `show_secondary_currency (Boolean)`
+- `opening_balance (Monetary)`
+- `ending_balance (Monetary)`
+- `currency_id (Many2one)`
+- `date_from (Date)`
+- `date_to (Date)`
+- `journal_ids (Many2many)`
+- `account_ids (Many2many)`
+- `partner_ids (Many2many)`
+- `feature_ids (Many2many)`
+- `cost_center_ids (Many2many)`
+- `target_move (Selection)`
+- `company_id (Many2one)`
+- `show_secondary_currency (Boolean)`
+- `opening_balance (Monetary)`
+- `ending_balance (Monetary)`
+- `currency_id (Many2one)`
+
+### XML IDs
+
+- `demo/demo_data.xml::demo_feature_1`
+- `demo/demo_data.xml::demo_feature_2`
+- `demo/demo_data.xml::demo_cost_center_1`
+- `demo/demo_data.xml::demo_cost_center_2`
+- `demo/demo_data.xml::demo_patch_1`
+- `report/report_general_ledger.xml::report_general_ledger`
+- `report/report_trial_balance.xml::report_trial_balance`
+- `report/report_actions.xml::view_general_ledger_report_search`
+- `report/report_actions.xml::view_trial_balance_report_search`
+- `report/report_actions.xml::action_report_general_ledger_pdf`
+- `report/report_actions.xml::action_report_trial_balance_pdf`
+- `report/report_actions.xml::action_general_ledger_report`
+- `report/report_actions.xml::action_trial_balance_report`
+- `views/account_cost_center_views.xml::view_account_cost_center_list`
+- `views/account_cost_center_views.xml::view_account_cost_center_form`
+- `views/account_cost_center_views.xml::view_account_cost_center_search`
+- `views/account_cost_center_views.xml::action_account_cost_center`
+- `views/report_trial_balance_views.xml::view_trial_balance_report_list`
+- `views/account_feature_views.xml::view_account_feature_list`
+- `views/account_feature_views.xml::view_account_feature_form`
+- `views/account_feature_views.xml::view_account_feature_search`
+- `views/account_feature_views.xml::action_account_feature`
+- `views/account_move_line_views.xml::view_move_form_line_list_inherit_advanced`
+- `views/account_move_line_views.xml::view_move_form_line_form_inherit_advanced`
+- `views/menus.xml::menu_advanced_accounting_root`
+- `views/menus.xml::menu_account_feature`
+- `views/menus.xml::menu_account_cost_center`
+- `views/menus.xml::menu_account_patch_number`
+- `views/menus.xml::menu_general_ledger_wizard`
+- `views/menus.xml::menu_trial_balance_wizard`
+- `views/account_patch_number_views.xml::view_account_patch_number_list`
+- `views/account_patch_number_views.xml::view_account_patch_number_form`
+- `views/account_patch_number_views.xml::view_account_patch_number_search`
+- `views/account_patch_number_views.xml::action_account_patch_number`
+- `views/account_move_views.xml::view_move_form_inherit_advanced`
+- `views/account_move_views.xml::view_move_tree_inherit_advanced`
+- `views/report_search_views.xml::view_general_ledger_report_search`
+- `views/report_search_views.xml::view_trial_balance_report_search`
+- `views/report_general_ledger_views.xml::view_general_ledger_report_list`
+- `security/security.xml::rule_account_feature_multi_company`
+- `security/security.xml::rule_account_cost_center_multi_company`
+- `security/security.xml::rule_account_patch_number_multi_company`
+- `wizard/general_ledger_wizard_views.xml::view_general_ledger_wizard_form`
+- `wizard/general_ledger_wizard_views.xml::action_general_ledger_wizard`
+- `wizard/trial_balance_wizard_views.xml::view_trial_balance_wizard_form`
+- `wizard/trial_balance_wizard_views.xml::action_trial_balance_wizard`

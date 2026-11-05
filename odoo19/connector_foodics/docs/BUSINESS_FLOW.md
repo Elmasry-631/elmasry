@@ -1,0 +1,72 @@
+# Foodics Connector
+
+- **المسار والإصدار:** `odoo19/connector_foodics` — Odoo 19
+- **إصدار الحزمة:** `19.0.1.0.0`
+- **الترخيص المعلن:** `LGPL-3`
+- **الملخص المعلن:** Bidirectional synchronization bridge between Odoo and Foodics POS
+
+## التدفق كما تكشفه نقاط الدخول
+
+- المستخدم يبدأ من قائمة: Reports
+- المستخدم يبدأ من قائمة: Stock Reconciliation
+- المستخدم يبدأ من قائمة: Monitoring
+- المستخدم يبدأ من قائمة: Sync Logs
+- المستخدم يبدأ من قائمة: Customers
+- المستخدم يبدأ من قائمة: Dashboard
+- المستخدم يبدأ من قائمة: Webhook Events
+- المستخدم يبدأ من قائمة: Webhook Logs
+- المستخدم يبدأ من قائمة: Synchronized Data
+- المستخدم يبدأ من قائمة: Products
+- المستخدم يبدأ من قائمة: Field Mappings
+- المستخدم يبدأ من قائمة: Foodics Connector
+- المستخدم يبدأ من قائمة: Configuration
+- المستخدم يبدأ من قائمة: Connections
+- المستخدم يبدأ من قائمة: Full Resync
+- النموذج/الامتداد المعني: ResPartner: model _inherit
+- النموذج/الامتداد المعني: FoodicsBaseAdapter: model _name
+- النموذج/الامتداد المعني: FoodicsProductAdapter: model _name
+- النموذج/الامتداد المعني: FoodicsCategoryAdapter: model _name
+- النموذج/الامتداد المعني: FoodicsCustomerAdapter: model _name
+- النموذج/الامتداد المعني: FoodicsOrderAdapter: model _name
+- النموذج/الامتداد المعني: FoodicsInventoryAdapter: model _name
+- النموذج/الامتداد المعني: FoodicsTaxAdapter: model _name
+- النموذج/الامتداد المعني: ProductCategory: model _inherit
+- النموذج/الامتداد المعني: ProductProduct: model _inherit
+- النموذج/الامتداد المعني: ProductTemplate: model _inherit
+- النموذج/الامتداد المعني: FoodicsMapping: model _name
+- النموذج/الامتداد المعني: FoodicsBranchMapping: model _name
+- النموذج/الامتداد المعني: FoodicsWebhookEvent: model _name
+- النموذج/الامتداد المعني: FoodicsWebhookLog: model _name
+- النموذج/الامتداد المعني: FoodicsSyncLog: model _name
+- النموذج/الامتداد المعني: AccountTax: model _inherit
+- النموذج/الامتداد المعني: FoodicsConnection: model _name
+- النموذج/الامتداد المعني: FoodicsApiClient: model _name
+- النموذج/الامتداد المعني: FoodicsTestConnectionWizard: model _name
+- النموذج/الامتداد المعني: FoodicsResyncWizard: model _name
+- العملية البرمجية المتاحة: `test_connection_generates_webhook_url` في `tests/test_foodics_models.py`
+- العملية البرمجية المتاحة: `test_sync_log_serializes_payloads` في `tests/test_foodics_models.py`
+- العملية البرمجية المتاحة: `action_foodics_sync_now` في `models/product_product.py`
+- العملية البرمجية المتاحة: `_compute_name` في `models/foodics_mapping.py`
+- العملية البرمجية المتاحة: `create_from_request` في `models/foodics_webhook.py`
+- العملية البرمجية المتاحة: `process` في `models/foodics_webhook.py`
+- العملية البرمجية المتاحة: `_compute_name` في `models/foodics_sync_log.py`
+- العملية البرمجية المتاحة: `create` في `models/foodics_sync_log.py`
+- العملية البرمجية المتاحة: `action_retry` في `models/foodics_sync_log.py`
+- العملية البرمجية المتاحة: `cron_retry_failed` في `models/foodics_sync_log.py`
+- العملية البرمجية المتاحة: `action_view_odoo_record` في `models/foodics_sync_log.py`
+- العملية البرمجية المتاحة: `_compute_counts` في `models/foodics_connection.py`
+- العملية البرمجية المتاحة: `_compute_webhook_url` في `models/foodics_connection.py`
+- العملية البرمجية المتاحة: `action_generate_webhook_secret` في `models/foodics_connection.py`
+- العملية البرمجية المتاحة: `action_open_sync_logs` في `models/foodics_connection.py`
+- العملية البرمجية المتاحة: `action_open_failed_sync_logs` في `models/foodics_connection.py`
+- العملية البرمجية المتاحة: `action_test_connection` في `models/foodics_connection.py`
+- العملية البرمجية المتاحة: `cron_sync_products` في `models/foodics_connection.py`
+- العملية البرمجية المتاحة: `cron_sync_categories` في `models/foodics_connection.py`
+- العملية البرمجية المتاحة: `cron_sync_customers` في `models/foodics_connection.py`
+- العملية البرمجية المتاحة: `cron_sync_orders` في `models/foodics_connection.py`
+- العملية البرمجية المتاحة: `cron_sync_inventory` في `models/foodics_connection.py`
+- العملية البرمجية المتاحة: `cron_sync_taxes` في `models/foodics_connection.py`
+- العملية البرمجية المتاحة: `action_test` في `wizards/wizard_test_connection.py`
+- العملية البرمجية المتاحة: `action_resync` في `wizards/wizard_resync.py`
+
+التسلسل أعلاه مستخرج من القوائم والنماذج ونقاط الدخول المعرّفة؛ راجع حالات الأعمال الفعلية قبل تفعيل سير عمل مالي أو مخزني حساس.

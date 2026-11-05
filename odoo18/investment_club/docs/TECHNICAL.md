@@ -1,0 +1,296 @@
+# Investment Clubs Management
+
+- **المسار والإصدار:** `odoo18/investment_club` — Odoo 18
+- **إصدار الحزمة:** `18.0.12.0.0`
+- **الترخيص المعلن:** `LGPL-3`
+- **الملخص المعلن:** Complete investment management system with Unified Return System
+
+## المكونات المكتشفة
+
+- Python: 35 file(s)
+- XML: 29 file(s)
+- JavaScript/TypeScript: 1 file(s)
+
+### نماذج وامتدادات Odoo
+
+- ProjectSummaryReport: model _name
+- InvestorStatementReport: model _name
+- ProjectProfitReport: model _name
+- RenewalDueReport: model _name
+- ReturnPaymentLedgerReport: model _name
+- InvestorSummaryReport: model _name
+- InvestmentMaturityReport: model _name
+- MonthlyReturnsReport: model _name
+- InvestmentClub: model _name
+- TerminateReason: model _name
+- InvestmentActualReturn: model _name
+- InvestmentDashboard: model _name
+- CrmLead: model _inherit
+- ResConfigSettings: model _inherit
+- AccountMove: model _inherit
+- AccountFullReconcile: model _inherit
+- AccountPartialReconcile: model _inherit
+- MembershipRenewal: model _name
+- InvestmentProject: model _name
+- InvestmentSubscriptionRejectWizard: model _name
+- InvestmentActualReturn: model _name
+- SaleContract: model _inherit
+- SubscriptionTerminateWizard: model _name
+- InvestmentSubscription: model _name
+- InvestmentContact: model _inherit
+- InvestmentMembership: model _name
+- Contact: model _inherit
+- InvestmentProject: model _name
+- AccountPayment: model _inherit
+- InvestorDeathWizard: model _name
+- MembershipTerminateWizard: model _name
+
+### الملفات المصدرية ذات الصلة
+
+- `controllers/dashboard.py`
+- `controllers/__init__.py`
+- `views/menu.xml`
+- `views/dashboard_views.xml`
+- `views/res_config_settings_views.xml`
+- `views/terminate_wizards_views.xml`
+- `views/investment_project_views.xml`
+- `views/actual_return_views.xml`
+- `views/sale_contract_inherit_views.xml`
+- `views/investment_club_views.xml`
+- `views/investment_subscription_views.xml`
+- `views/contact_view.xml`
+- `views/membership_views.xml`
+- `views/account_payment_inherit_views.xml`
+- `views/crm_lead_views.xml`
+- `views/contact_codes_view.xml`
+- `models/investment_club.py`
+- `models/terminate_reason.py`
+- `models/actual_return.py`
+- `models/dashboard.py`
+- `models/crm_lead.py`
+- `models/res_config_settings.py`
+- `models/account_move.py`
+- `models/membership_renewal.py`
+- `models/investment_project.py`
+- `models/investment_reject_wizard.py`
+- `models/investment_actual_return_inherit.py`
+- `models/__init__.py`
+- `models/sale_contract_inherit.py`
+- `models/subscription_terminate_wizard.py`
+- `models/investment_subscription.py`
+- `models/contact_codes.py`
+- `models/membership.py`
+- `models/contact.py`
+- `models/investment_project_inherit.py`
+- `models/account_payment_inherit.py`
+- `models/investor_death_wizard.py`
+- `models/membership_terminate_wizard.py`
+- `security/investment_club_security.xml`
+- `security/security.xml`
+- `security/ir.model.access.csv`
+
+### حقول معلنة
+
+- `name_ar (Char)`
+- `name_en (Char)`
+- `name (Char)`
+- `display_name (Char)`
+- `code (Char)`
+- `is_active (Boolean)`
+- `active (Boolean)`
+- `administrative_fees (Float)`
+- `max_members (Integer)`
+- `current_members_count (Integer)`
+- `terms_conditions (Text)`
+- `project_ids (One2many)`
+- `member_ids (One2many)`
+- `active_members_count (Integer)`
+- `company_id (Many2one)`
+- `notes (Text)`
+- `name (Char)`
+- `type (Selection)`
+- `active (Boolean)`
+- `sequence (Integer)`
+- `name (Char)`
+- `subscription_id (Many2one)`
+- `membership_id (Many2one)`
+- `partner_id (Many2one)`
+- `project_id (Many2one)`
+- `return_type (Selection)`
+- `period_name (Char)`
+- `date_from (Date)`
+- `date_to (Date)`
+- `expected_amount (Float)`
+- `actual_amount (Float)`
+- `difference (Float)`
+- `payment_journal_id (Many2one)`
+- `payment_id (Many2one)`
+- `state (Selection)`
+- `notes (Text)`
+- `company_id (Many2one)`
+- `total_clubs (Integer)`
+- `total_projects (Integer)`
+- `total_memberships (Integer)`
+- `active_memberships (Integer)`
+- `terminated_memberships (Integer)`
+- `expired_memberships (Integer)`
+- `total_subscriptions (Integer)`
+- `active_subscriptions (Integer)`
+- `terminated_subscriptions (Integer)`
+- `total_returns (Integer)`
+- `paid_returns (Integer)`
+- `due_returns (Integer)`
+- `total_invested (Float)`
+- `overdue_renewals (Integer)`
+- `interested_project_id (Many2one)`
+- `club_id (Many2one)`
+- `membership_product_id (Many2one)`
+- `subscription_product_id (Many2one)`
+- `admin_fees_product_id (Many2one)`
+- `subscription_period (Selection)`
+- `auto_renewal_days (Integer)`
+- `payment_journal_id (Many2one)`
+- `return_payment_journal_id (Many2one)`
+- `auto_activate_projects (Boolean)`
+- `grace_period_months (Integer)`
+- `enable_renewal_notifications (Boolean)`
+- `enable_payment_notifications (Boolean)`
+- `restrict_project_creation (Boolean)`
+- `require_approval_for_investment (Boolean)`
+- `module_access_enabled (Boolean)`
+- `invoice_prefix (Char)`
+- `termination_allowed_months (Integer)`
+- `termination_deduction_amount (Float)`
+- `termination_client_share_pct (Float)`
+- `termination_company_share_pct (Float)`
+- `death_case_allow_transfer (Boolean)`
+- `death_case_allow_terminate (Boolean)`
+- `death_case_deduction_pct (Float)`
+- `death_case_require_inheritance_doc (Boolean)`
+- `report_company_header (Boolean)`
+- `report_show_currency (Boolean)`
+- `investor_code_id (Many2one)`
+- `investor_code (Char)`
+- `membership_id (Many2one)`
+- `partner_id (Many2one)`
+- `club_id (Many2one)`
+- `renewal_date (Date)`
+- `amount (Float)`
+- `period (Selection)`
+- `old_expiry_date (Date)`
+- `new_expiry_date (Date)`
+- `invoice_id (Many2one)`
+- `state (Selection)`
+- `notes (Text)`
+- `company_id (Many2one)`
+- `name (Char)`
+- `code (Char)`
+- `club_id (Many2one)`
+- `analytic_account_id (Many2one)`
+- `share_value (Float)`
+- `contract_start_date (Date)`
+- `contract_end_date (Date)`
+- `max_shares_per_investor (Integer)`
+
+### XML IDs
+
+- `reports/returns_report.xml::action_monthly_returns_pdf`
+- `reports/returns_report.xml::monthly_returns`
+- `reports/investor_report.xml::action_investor_summary_pdf`
+- `reports/investor_report.xml::investor_summary`
+- `reports/project_profit_report.xml::action_project_profit_pdf`
+- `reports/project_profit_report.xml::project_profit`
+- `reports/renewal_due_report.xml::action_renewal_due_pdf`
+- `reports/renewal_due_report.xml::renewal_due`
+- `reports/investment_maturity_report.xml::action_investment_maturity_pdf`
+- `reports/investment_maturity_report.xml::investment_maturity`
+- `reports/project_report.xml::action_project_summary_report`
+- `reports/project_report.xml::project_summary`
+- `reports/investor_statement_report.xml::action_investor_statement_pdf`
+- `reports/investor_statement_report.xml::investor_statement`
+- `reports/reports_menu.xml::view_renewal_due_report_list`
+- `reports/reports_menu.xml::view_monthly_returns_report_list`
+- `reports/reports_menu.xml::view_investor_summary_report_list`
+- `reports/reports_menu.xml::view_active_investments_report_list`
+- `reports/reports_menu.xml::view_all_investors_report_list`
+- `reports/reports_menu.xml::view_return_payments_summary_report_list`
+- `reports/reports_menu.xml::view_pending_returns_report_list`
+- `reports/reports_menu.xml::action_renewal_due_window`
+- `reports/reports_menu.xml::action_monthly_returns_window`
+- `reports/reports_menu.xml::action_investor_summary_window`
+- `reports/reports_menu.xml::action_active_investments_window`
+- `reports/reports_menu.xml::action_all_investors_window`
+- `reports/reports_menu.xml::action_return_payments_summary_window`
+- `reports/reports_menu.xml::action_draft_returns_window`
+- `reports/reports_menu.xml::view_return_payment_ledger_list`
+- `reports/reports_menu.xml::view_investment_maturity_list`
+- `reports/reports_menu.xml::view_investor_statement_list`
+- `reports/reports_menu.xml::action_return_payment_ledger_window`
+- `reports/reports_menu.xml::action_investment_maturity_window`
+- `reports/reports_menu.xml::action_investor_statement_window`
+- `reports/reports_menu.xml::menu_reports_root`
+- `reports/reports_menu.xml::menu_renewal_due_report`
+- `reports/reports_menu.xml::menu_monthly_returns_report`
+- `reports/reports_menu.xml::menu_investor_summary_report`
+- `reports/reports_menu.xml::menu_active_investments_report`
+- `reports/reports_menu.xml::menu_all_investors_report`
+- `reports/reports_menu.xml::menu_return_payments_summary_report`
+- `reports/reports_menu.xml::menu_draft_returns_report`
+- `reports/reports_menu.xml::menu_return_payment_ledger_report`
+- `reports/reports_menu.xml::menu_investment_maturity_report`
+- `reports/reports_menu.xml::menu_investor_statement_report`
+- `reports/return_payment_ledger_report.xml::action_return_payment_ledger_pdf`
+- `reports/return_payment_ledger_report.xml::return_payment_ledger`
+- `views/menu.xml::menu_investment_root`
+- `views/menu.xml::menu_investment_dashboard`
+- `views/menu.xml::menu_investment_club`
+- `views/menu.xml::menu_actual_return`
+- `views/menu.xml::menu_investment_project`
+- `views/menu.xml::menu_investment_subscription`
+- `views/menu.xml::menu_investment_membership`
+- `views/menu.xml::action_terminated_memberships`
+- `views/menu.xml::action_terminated_subscriptions`
+- `views/menu.xml::menu_investment_termination`
+- `views/menu.xml::menu_terminated_memberships`
+- `views/menu.xml::menu_terminated_subscriptions`
+- `views/menu.xml::action_terminate_reasons`
+- `views/menu.xml::menu_investment_configuration`
+- `views/menu.xml::menu_investment_settings`
+- `views/menu.xml::menu_terminate_reasons`
+- `views/dashboard_views.xml::client_action_investment_dashboard`
+- `views/res_config_settings_views.xml::res_config_settings_view_form_investment`
+- `views/res_config_settings_views.xml::membership_settings`
+- `views/res_config_settings_views.xml::membership_product`
+- `views/res_config_settings_views.xml::subscription_product`
+- `views/res_config_settings_views.xml::admin_fees_product`
+- `views/res_config_settings_views.xml::sub_period`
+- `views/res_config_settings_views.xml::auto_renewal`
+- `views/res_config_settings_views.xml::financial_settings`
+- `views/res_config_settings_views.xml::payment_journal`
+- `views/res_config_settings_views.xml::return_journal`
+- `views/res_config_settings_views.xml::invoice_prefix`
+- `views/res_config_settings_views.xml::project_settings`
+- `views/res_config_settings_views.xml::auto_activate`
+- `views/res_config_settings_views.xml::grace_period`
+- `views/res_config_settings_views.xml::security_settings`
+- `views/res_config_settings_views.xml::restrict_project`
+- `views/res_config_settings_views.xml::require_approval`
+- `views/res_config_settings_views.xml::module_access`
+- `views/res_config_settings_views.xml::notification_settings`
+- `views/res_config_settings_views.xml::renewal_notif`
+- `views/res_config_settings_views.xml::payment_notif`
+- `views/res_config_settings_views.xml::termination_settings`
+- `views/res_config_settings_views.xml::term_allowed_months`
+- `views/res_config_settings_views.xml::term_deduction_amount`
+- `views/res_config_settings_views.xml::term_client_share`
+- `views/res_config_settings_views.xml::term_company_share`
+- `views/res_config_settings_views.xml::death_allow_transfer`
+- `views/res_config_settings_views.xml::death_allow_terminate`
+- `views/res_config_settings_views.xml::death_deduction_pct`
+- `views/res_config_settings_views.xml::death_require_doc`
+- `views/res_config_settings_views.xml::report_settings`
+- `views/res_config_settings_views.xml::report_header`
+- `views/res_config_settings_views.xml::report_currency`
+- `views/res_config_settings_views.xml::action_investment_config_settings`
+- `views/terminate_wizards_views.xml::membership_terminate_wizard_form`
+- `views/terminate_wizards_views.xml::subscription_terminate_wizard_form`

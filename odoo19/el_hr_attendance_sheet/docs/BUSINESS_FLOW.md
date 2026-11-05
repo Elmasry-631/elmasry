@@ -1,0 +1,78 @@
+# HR Attendance Sheet And Policies
+
+- **المسار والإصدار:** `odoo19/el_hr_attendance_sheet` — Odoo 19
+- **إصدار الحزمة:** `19.0.1.1.0`
+- **الترخيص المعلن:** `LGPL-3`
+- **الملخص المعلن:** Calculate overtime, lateness, absence from attendance and feed payslip
+
+## التدفق كما تكشفه نقاط الدخول
+
+- المستخدم يبدأ من قائمة: Attendance Sheets
+- المستخدم يبدأ من قائمة: Attendance Sheets
+- المستخدم يبدأ من قائمة: Batches
+- المستخدم يبدأ من قائمة: Configuration
+- المستخدم يبدأ من قائمة: Public Holidays
+- المستخدم يبدأ من قائمة: Rules
+- المستخدم يبدأ من قائمة: Overtime Rules
+- المستخدم يبدأ من قائمة: Lateness Rules
+- المستخدم يبدأ من قائمة: Absence Rules
+- المستخدم يبدأ من قائمة: Attendance Policies
+- النموذج/الامتداد المعني: HrAttendanceSheetReport: model _name
+- النموذج/الامتداد المعني: HrPayrollStructure: model _inherit
+- النموذج/الامتداد المعني: HrAttendanceSheetBatch: model _name
+- النموذج/الامتداد المعني: HrAttendanceSheetBatchLine: model _name
+- النموذج/الامتداد المعني: HrPayslip: model _inherit
+- النموذج/الامتداد المعني: HrAttendancePublicHoliday: model _name
+- النموذج/الامتداد المعني: HrAttendancePublicHolidayLine: model _name
+- النموذج/الامتداد المعني: HrContract: model _inherit
+- النموذج/الامتداد المعني: HrEmployee: model _inherit
+- النموذج/الامتداد المعني: HrAttendancePolicy: model _name
+- النموذج/الامتداد المعني: HrAttendanceRuleOvertime: model _name
+- النموذج/الامتداد المعني: HrAttendanceRuleLateness: model _name
+- النموذج/الامتداد المعني: HrAttendanceRuleLatenessTier: model _name
+- النموذج/الامتداد المعني: HrAttendanceRuleLatenessStep: model _name
+- النموذج/الامتداد المعني: HrAttendanceRuleAbsence: model _name
+- النموذج/الامتداد المعني: HrAttendanceRuleAbsenceTier: model _name
+- النموذج/الامتداد المعني: HrAttendanceRuleAbsenceStep: model _name
+- النموذج/الامتداد المعني: HrAttendanceSheet: model _name
+- النموذج/الامتداد المعني: HrAttendanceSheetLine: model _name
+- النموذج/الامتداد المعني: HrAttendanceSheetBatchWizard: model _name
+- النموذج/الامتداد المعني: HrAttendanceChangeDataWizard: model _name
+- النموذج/الامتداد المعني: HrAttendanceCreatePayslipWizard: model _name
+- العملية البرمجية المتاحة: `test_16_attendance_structure_created_without_inherited_rules` في `tests/test_hr_attendance_sheet.py`
+- العملية البرمجية المتاحة: `test_21_action_link_attendance_sheet` في `tests/test_hr_attendance_sheet.py`
+- العملية البرمجية المتاحة: `test_26_server_action_runs_the_propagation` في `tests/test_hr_attendance_sheet.py`
+- العملية البرمجية المتاحة: `create` في `models/hr_payroll_structure.py`
+- العملية البرمجية المتاحة: `action_clean_inherited_rules` في `models/hr_payroll_structure.py`
+- العملية البرمجية المتاحة: `action_propagate_attendance_rules` في `models/hr_payroll_structure.py`
+- العملية البرمجية المتاحة: `_compute_date_to` في `models/hr_attendance_sheet_batch.py`
+- العملية البرمجية المتاحة: `create` في `models/hr_attendance_sheet_batch.py`
+- العملية البرمجية المتاحة: `action_generate_sheets` في `models/hr_attendance_sheet_batch.py`
+- العملية البرمجية المتاحة: `action_confirm` في `models/hr_attendance_sheet_batch.py`
+- العملية البرمجية المتاحة: `action_done` في `models/hr_attendance_sheet_batch.py`
+- العملية البرمجية المتاحة: `action_cancel` في `models/hr_attendance_sheet_batch.py`
+- العملية البرمجية المتاحة: `action_draft` في `models/hr_attendance_sheet_batch.py`
+- العملية البرمجية المتاحة: `_compute_attendance_data` في `models/hr_payslip.py`
+- العملية البرمجية المتاحة: `_compute_no_attendance_sheet` في `models/hr_payslip.py`
+- العملية البرمجية المتاحة: `action_link_attendance_sheet` في `models/hr_payslip.py`
+- العملية البرمجية المتاحة: `action_open_attendance_sheet` في `models/hr_payslip.py`
+- العملية البرمجية المتاحة: `create` في `models/hr_payslip.py`
+- العملية البرمجية المتاحة: `action_activate` في `models/hr_attendance_public_holiday.py`
+- العملية البرمجية المتاحة: `action_cancel` في `models/hr_attendance_public_holiday.py`
+- العملية البرمجية المتاحة: `action_draft` في `models/hr_attendance_public_holiday.py`
+- العملية البرمجية المتاحة: `_compute_step_count` في `models/hr_attendance_rule.py`
+- العملية البرمجية المتاحة: `action_open_rule` في `models/hr_attendance_rule.py`
+- العملية البرمجية المتاحة: `action_open_tier` في `models/hr_attendance_rule.py`
+- العملية البرمجية المتاحة: `_compute_hour_range` في `models/hr_attendance_rule.py`
+- العملية البرمجية المتاحة: `_compute_step_count` في `models/hr_attendance_rule.py`
+- العملية البرمجية المتاحة: `action_open_rule` في `models/hr_attendance_rule.py`
+- العملية البرمجية المتاحة: `action_open_tier` في `models/hr_attendance_rule.py`
+- العملية البرمجية المتاحة: `compute_deduction_days` في `models/hr_attendance_rule.py`
+- العملية البرمجية المتاحة: `_compute_date_to` في `models/hr_attendance_sheet.py`
+- العملية البرمجية المتاحة: `_compute_contract` في `models/hr_attendance_sheet.py`
+- العملية البرمجية المتاحة: `_compute_totals` في `models/hr_attendance_sheet.py`
+- العملية البرمجية المتاحة: `create` في `models/hr_attendance_sheet.py`
+- العملية البرمجية المتاحة: `action_compute` في `models/hr_attendance_sheet.py`
+- العملية البرمجية المتاحة: `action_approve` في `models/hr_attendance_sheet.py`
+
+التسلسل أعلاه مستخرج من القوائم والنماذج ونقاط الدخول المعرّفة؛ راجع حالات الأعمال الفعلية قبل تفعيل سير عمل مالي أو مخزني حساس.

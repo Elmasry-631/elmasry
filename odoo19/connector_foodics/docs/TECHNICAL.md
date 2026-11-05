@@ -1,0 +1,228 @@
+# Foodics Connector
+
+- **المسار والإصدار:** `odoo19/connector_foodics` — Odoo 19
+- **إصدار الحزمة:** `19.0.1.0.0`
+- **الترخيص المعلن:** `LGPL-3`
+- **الملخص المعلن:** Bidirectional synchronization bridge between Odoo and Foodics POS
+
+## المكونات المكتشفة
+
+- Python: 21 file(s)
+- XML: 14 file(s)
+
+### نماذج وامتدادات Odoo
+
+- ResPartner: model _inherit
+- FoodicsBaseAdapter: model _name
+- FoodicsProductAdapter: model _name
+- FoodicsCategoryAdapter: model _name
+- FoodicsCustomerAdapter: model _name
+- FoodicsOrderAdapter: model _name
+- FoodicsInventoryAdapter: model _name
+- FoodicsTaxAdapter: model _name
+- ProductCategory: model _inherit
+- ProductProduct: model _inherit
+- ProductTemplate: model _inherit
+- FoodicsMapping: model _name
+- FoodicsBranchMapping: model _name
+- FoodicsWebhookEvent: model _name
+- FoodicsWebhookLog: model _name
+- FoodicsSyncLog: model _name
+- AccountTax: model _inherit
+- FoodicsConnection: model _name
+- FoodicsApiClient: model _name
+- FoodicsTestConnectionWizard: model _name
+- FoodicsResyncWizard: model _name
+
+### الملفات المصدرية ذات الصلة
+
+- `report/reconciliation_report.xml`
+- `controllers/webhook_controller.py`
+- `controllers/__init__.py`
+- `views/foodics_sync_log_views.xml`
+- `views/partner_views.xml`
+- `views/dashboard_views.xml`
+- `views/foodics_webhook_views.xml`
+- `views/product_views.xml`
+- `views/foodics_mapping_views.xml`
+- `views/foodics_connection_views.xml`
+- `models/res_partner.py`
+- `models/foodics_adapters.py`
+- `models/product_category.py`
+- `models/product_product.py`
+- `models/__init__.py`
+- `models/foodics_mapping.py`
+- `models/foodics_webhook.py`
+- `models/foodics_sync_log.py`
+- `models/account_tax.py`
+- `models/foodics_connection.py`
+- `models/foodics_api.py`
+- `security/groups.xml`
+- `security/ir.model.access.csv`
+
+### حقول معلنة
+
+- `foodics_id (Char)`
+- `foodics_loyalty_points (Float)`
+- `foodics_sync_enabled (Boolean)`
+- `foodics_last_sync_date (Datetime)`
+- `foodics_id (Char)`
+- `foodics_sync_enabled (Boolean)`
+- `foodics_last_sync_date (Datetime)`
+- `foodics_id (Char)`
+- `foodics_sync_enabled (Boolean)`
+- `foodics_last_sync_date (Datetime)`
+- `foodics_sync_enabled (Boolean)`
+- `sequence (Integer)`
+- `connection_id (Many2one)`
+- `name (Char)`
+- `odoo_model (Char)`
+- `foodics_resource (Char)`
+- `odoo_field (Char)`
+- `foodics_field (Char)`
+- `mapping_type (Selection)`
+- `default_value (Char)`
+- `transform_function (Char)`
+- `active (Boolean)`
+- `connection_id (Many2one)`
+- `name (Char)`
+- `foodics_branch_id (Char)`
+- `warehouse_id (Many2one)`
+- `location_id (Many2one)`
+- `pos_config_id (Many2one)`
+- `company_id (Many2one)`
+- `active (Boolean)`
+- `notes (Text)`
+- `connection_id (Many2one)`
+- `name (Char)`
+- `event_type (Char)`
+- `active (Boolean)`
+- `connection_id (Many2one)`
+- `event_type (Char)`
+- `event_id (Char)`
+- `payload (Text)`
+- `received_at (Datetime)`
+- `processed (Boolean)`
+- `processing_date (Datetime)`
+- `status (Selection)`
+- `error_message (Text)`
+- `sync_log_id (Many2one)`
+- `name (Char)`
+- `connection_id (Many2one)`
+- `company_id (Many2one)`
+- `sync_type (Selection)`
+- `direction (Selection)`
+- `foodics_resource (Char)`
+- `foodics_record_id (Char)`
+- `odoo_model (Char)`
+- `odoo_record_id (Integer)`
+- `status (Selection)`
+- `error_message (Text)`
+- `retry_count (Integer)`
+- `max_retries (Integer)`
+- `next_retry_date (Datetime)`
+- `execution_time (Float)`
+- `request_payload (Text)`
+- `response_data (Text)`
+- `foodics_id (Char)`
+- `foodics_sync_enabled (Boolean)`
+- `foodics_last_sync_date (Datetime)`
+- `name (Char)`
+- `sequence (Integer)`
+- `business_id (Char)`
+- `api_key (Char)`
+- `api_secret (Char)`
+- `token (Char)`
+- `token_expires_at (Datetime)`
+- `base_url (Char)`
+- `test_mode (Boolean)`
+- `active (Boolean)`
+- `state (Selection)`
+- `last_successful_call (Datetime)`
+- `last_sync_date (Datetime)`
+- `last_error (Text)`
+- `webhook_secret (Char)`
+- `webhook_url (Char)`
+- `company_id (Many2one)`
+- `sync_products (Boolean)`
+- `sync_categories (Boolean)`
+- `sync_customers (Boolean)`
+- `sync_orders (Boolean)`
+- `sync_inventory (Boolean)`
+- `sync_taxes (Boolean)`
+- `sync_mode (Selection)`
+- `product_sync_interval (Integer)`
+- `order_sync_interval (Integer)`
+- `inventory_sync_interval (Integer)`
+- `customer_sync_interval (Integer)`
+- `max_retries (Integer)`
+- `rate_limit (Integer)`
+- `default_customer_id (Many2one)`
+- `order_journal_id (Many2one)`
+- `order_import_mode (Selection)`
+- `order_prefix (Char)`
+- `mapping_ids (One2many)`
+
+### XML IDs
+
+- `report/reconciliation_report.xml::action_foodics_stock_reconciliation`
+- `report/reconciliation_report.xml::menu_foodics_reports`
+- `report/reconciliation_report.xml::menu_foodics_stock_reconciliation`
+- `views/foodics_sync_log_views.xml::view_foodics_sync_log_list`
+- `views/foodics_sync_log_views.xml::view_foodics_sync_log_form`
+- `views/foodics_sync_log_views.xml::view_foodics_sync_log_search`
+- `views/foodics_sync_log_views.xml::action_foodics_sync_log`
+- `views/foodics_sync_log_views.xml::menu_foodics_monitoring`
+- `views/foodics_sync_log_views.xml::menu_foodics_sync_logs`
+- `views/partner_views.xml::view_foodics_partner_list`
+- `views/partner_views.xml::action_foodics_customers`
+- `views/partner_views.xml::menu_foodics_customers`
+- `views/dashboard_views.xml::view_foodics_dashboard_kanban`
+- `views/dashboard_views.xml::action_foodics_dashboard`
+- `views/dashboard_views.xml::menu_foodics_dashboard`
+- `views/foodics_webhook_views.xml::view_foodics_webhook_event_list`
+- `views/foodics_webhook_views.xml::view_foodics_webhook_log_list`
+- `views/foodics_webhook_views.xml::view_foodics_webhook_log_form`
+- `views/foodics_webhook_views.xml::action_foodics_webhook_event`
+- `views/foodics_webhook_views.xml::action_foodics_webhook_log`
+- `views/foodics_webhook_views.xml::menu_foodics_webhook_events`
+- `views/foodics_webhook_views.xml::menu_foodics_webhook_logs`
+- `views/product_views.xml::view_foodics_product_list`
+- `views/product_views.xml::view_foodics_product_form`
+- `views/product_views.xml::action_foodics_products`
+- `views/product_views.xml::menu_foodics_data`
+- `views/product_views.xml::menu_foodics_products`
+- `views/foodics_mapping_views.xml::view_foodics_mapping_list`
+- `views/foodics_mapping_views.xml::view_foodics_mapping_form`
+- `views/foodics_mapping_views.xml::action_foodics_mapping`
+- `views/foodics_mapping_views.xml::menu_foodics_mappings`
+- `views/foodics_connection_views.xml::view_foodics_connection_list`
+- `views/foodics_connection_views.xml::view_foodics_connection_form`
+- `views/foodics_connection_views.xml::view_foodics_connection_search`
+- `views/foodics_connection_views.xml::action_foodics_connection`
+- `views/foodics_connection_views.xml::menu_foodics_root`
+- `views/foodics_connection_views.xml::menu_foodics_configuration`
+- `views/foodics_connection_views.xml::menu_foodics_connections`
+- `data/default_mappings.xml::mapping_product_name`
+- `data/default_mappings.xml::mapping_product_sku`
+- `data/default_mappings.xml::mapping_product_price`
+- `data/default_mappings.xml::mapping_partner_name`
+- `data/default_mappings.xml::mapping_partner_phone`
+- `data/foodics_webhook_events.xml::webhook_event_order_created`
+- `data/foodics_webhook_events.xml::webhook_event_order_updated`
+- `data/foodics_webhook_events.xml::webhook_event_product_updated`
+- `data/foodics_webhook_events.xml::webhook_event_stock_updated`
+- `data/cron_data.xml::ir_cron_foodics_product_sync`
+- `data/cron_data.xml::ir_cron_foodics_order_sync`
+- `data/cron_data.xml::ir_cron_foodics_customer_sync`
+- `data/cron_data.xml::ir_cron_foodics_inventory_sync`
+- `data/cron_data.xml::ir_cron_foodics_retry_failed`
+- `wizards/wizard_resync_views.xml::view_foodics_resync_wizard_form`
+- `wizards/wizard_resync_views.xml::action_foodics_resync_wizard`
+- `wizards/wizard_resync_views.xml::menu_foodics_full_resync`
+- `wizards/wizard_test_connection_views.xml::view_foodics_test_connection_wizard_form`
+- `wizards/wizard_test_connection_views.xml::action_foodics_test_connection_wizard`
+- `security/groups.xml::module_category_foodics_connector`
+- `security/groups.xml::res_groups_privilege_foodics_connector`
+- `security/groups.xml::group_foodics_operator`
+- `security/groups.xml::group_foodics_admin`

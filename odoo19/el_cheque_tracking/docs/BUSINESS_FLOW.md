@@ -1,0 +1,71 @@
+# EL Cheque Tracking
+
+- **المسار والإصدار:** `odoo19/el_cheque_tracking` — Odoo 19
+- **إصدار الحزمة:** `19.0.1.0.0`
+- **الترخيص المعلن:** `LGPL-3`
+- **الملخص المعلن:** Track received and issued cheques with accounting lifecycle entries
+
+## التدفق كما تكشفه نقاط الدخول
+
+- المستخدم يبدأ من قائمة: Cheque Tracking
+- المستخدم يبدأ من قائمة: Received
+- المستخدم يبدأ من قائمة: Received Cheques
+- المستخدم يبدأ من قائمة: Deposits
+- المستخدم يبدأ من قائمة: Issued
+- المستخدم يبدأ من قائمة: Issued Cheques
+- المستخدم يبدأ من قائمة: Operations
+- المستخدم يبدأ من قائمة: All Cheques
+- المستخدم يبدأ من قائمة: Returns
+- المستخدم يبدأ من قائمة: Configuration
+- المستخدم يبدأ من قائمة: Return Reasons
+- النموذج/الامتداد المعني: AccountPaymentMethod: model _inherit
+- النموذج/الامتداد المعني: ResCompany: model _inherit
+- النموذج/الامتداد المعني: ResPartner: model _inherit
+- النموذج/الامتداد المعني: ChequeDeposit: model _name
+- النموذج/الامتداد المعني: ChequeReturn: model _name
+- النموذج/الامتداد المعني: ResConfigSettings: model _inherit
+- النموذج/الامتداد المعني: AccountMove: model _inherit
+- النموذج/الامتداد المعني: AccountPaymentRegister: model _inherit
+- النموذج/الامتداد المعني: ChequeReturnReason: model _name
+- النموذج/الامتداد المعني: ChequeCheque: model _name
+- النموذج/الامتداد المعني: AccountPayment: model _inherit
+- النموذج/الامتداد المعني: ChequeDepositWizard: model _name
+- النموذج/الامتداد المعني: ChequeReturnWizard: model _name
+- النموذج/الامتداد المعني: ChequePrintWizard: model _name
+- العملية البرمجية المتاحة: `test_01_create_received_cheque_draft_state` في `tests/test_cheque_lifecycle.py`
+- العملية البرمجية المتاحة: `test_02_create_issued_cheque_draft_state` في `tests/test_cheque_lifecycle.py`
+- العملية البرمجية المتاحة: `test_12_partner_cheque_stats_computed` في `tests/test_cheque_lifecycle.py`
+- العملية البرمجية المتاحة: `test_20_deposit_wizard_creates_deposit_and_posts_entries` في `tests/test_cheque_lifecycle.py`
+- العملية البرمجية المتاحة: `test_21_return_wizard_creates_return_and_posts_entries` في `tests/test_cheque_lifecycle.py`
+- العملية البرمجية المتاحة: `test_22_print_wizard_returns_report_action` في `tests/test_cheque_lifecycle.py`
+- العملية البرمجية المتاحة: `_compute_company_currency_id` في `models/res_partner.py`
+- العملية البرمجية المتاحة: `_compute_cheque_stats` في `models/res_partner.py`
+- العملية البرمجية المتاحة: `action_view_received_cheques` في `models/res_partner.py`
+- العملية البرمجية المتاحة: `action_view_issued_cheques` في `models/res_partner.py`
+- العملية البرمجية المتاحة: `_action_view_cheques` في `models/res_partner.py`
+- العملية البرمجية المتاحة: `_compute_total_amount` في `models/deposit.py`
+- العملية البرمجية المتاحة: `create` في `models/deposit.py`
+- العملية البرمجية المتاحة: `action_confirm` في `models/deposit.py`
+- العملية البرمجية المتاحة: `action_cancel` في `models/deposit.py`
+- العملية البرمجية المتاحة: `action_print_slip` في `models/deposit.py`
+- العملية البرمجية المتاحة: `_create_payment_vals_from_wizard` في `models/account_payment_register.py`
+- العملية البرمجية المتاحة: `create` في `models/cheque.py`
+- العملية البرمجية المتاحة: `_compute_amount_company_currency` في `models/cheque.py`
+- العملية البرمجية المتاحة: `_compute_date_flags` في `models/cheque.py`
+- العملية البرمجية المتاحة: `_compute_days` في `models/cheque.py`
+- العملية البرمجية المتاحة: `_compute_move_count` في `models/cheque.py`
+- العملية البرمجية المتاحة: `_compute_payment_count` في `models/cheque.py`
+- العملية البرمجية المتاحة: `_compute_return_info` في `models/cheque.py`
+- العملية البرمجية المتاحة: `_create_high_value_activity` في `models/cheque.py`
+- العملية البرمجية المتاحة: `action_receive` في `models/cheque.py`
+- العملية البرمجية المتاحة: `action_deposit` في `models/cheque.py`
+- العملية البرمجية المتاحة: `action_clear` في `models/cheque.py`
+- العملية البرمجية المتاحة: `action_approve` في `models/cheque.py`
+- العملية البرمجية المتاحة: `action_hand_over` في `models/cheque.py`
+- العملية البرمجية المتاحة: `action_cash` في `models/cheque.py`
+- العملية البرمجية المتاحة: `action_return` في `models/cheque.py`
+- العملية البرمجية المتاحة: `action_void` في `models/cheque.py`
+- العملية البرمجية المتاحة: `action_cancel` في `models/cheque.py`
+- العملية البرمجية المتاحة: `action_reset_to_draft` في `models/cheque.py`
+
+التسلسل أعلاه مستخرج من القوائم والنماذج ونقاط الدخول المعرّفة؛ راجع حالات الأعمال الفعلية قبل تفعيل سير عمل مالي أو مخزني حساس.

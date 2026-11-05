@@ -1,0 +1,355 @@
+# Construction Management
+
+- **المسار والإصدار:** `odoo19/el_construction_management` — Odoo 19
+- **إصدار الحزمة:** `19.0.1.24.0`
+- **الترخيص المعلن:** `LGPL-3`
+- **الملخص المعلن:** Construction Management \| Job Costing \| BOQ \| Work Orders \| RA Billing \| Material Requisition \| Subcontracting \| Budget
+
+## المكونات المكتشفة
+
+- Python: 58 file(s)
+- XML: 26 file(s)
+- JavaScript/TypeScript: 1 file(s)
+
+### نماذج وامتدادات Odoo
+
+- ConstructionBoqLine: model _name
+- ConstructionProject: model _name
+- ConstructionProjectImage: model _name
+- ConstructionQualityCheck: model _name
+- ConstructionMaterialIssue: model _name
+- ConstructionMaterialIssueLine: model _name
+- ConstructionExtraExpense: model _name
+- ConstructionProgressBillingLine: model _name
+- ConstructionWorkOrder: model _name
+- ConstructionWorkOrderLine: model _name
+- ConstructionConsumeOrder: model _name
+- ConstructionConsumeOrderLine: model _name
+- ConstructionVariationOrder: model _name
+- ConstructionVariationApproval: model _name
+- ConstructionVariationOrderLine: model _name
+- ConstructionPhase: model _name
+- ConstructionPhaseEntry: model _name
+- ConstructionQualityCheckLine: model _name
+- ConstructionQualityCheckImage: model _name
+- ConstructionApprovalMatrix: model _name
+- ConstructionBudget: model _name
+- ConstructionProgressBillingControls: model _inherit
+- ConstructionRaBillingLineControls: model _inherit
+- ConstructionRaCommercialControls: model _inherit
+- ConstructionTaskControls: model _inherit
+- ConstructionTask: model _name
+- ConstructionTimesheet: model _name
+- ConstructionSubProjectDocument: model _name
+- ConstructionReportWizard: model _name
+- ConstructionReportMenuWizard: model _name
+- ConstructionMaterialRequisitionLineInventory: model _inherit
+- ConstructionBudgetLine: model _name
+- ConstructionNCR: model _name
+- ConstructionCAPA: model _name
+- ConstructionSubProject: model _name
+- ConstructionCostEntry: model _name
+- ConstructionBOQRevision: model _name
+- ConstructionBOQRevisionLine: model _name
+- ConstructionBudgetRevision: model _name
+- ConstructionBudgetRevisionLine: model _name
+- ConstructionTaskBaselineRevision: model _name
+- ConstructionTaskBaselineRevisionLine: model _name
+- ConstructionBOQRevisionActions: model _inherit
+- ConstructionBudgetRevisionActions: model _inherit
+- ConstructionProgressBilling: model _name
+- ConstructionProjectControls: model _inherit
+- ConstructionWorkType: model _name
+- ConstructionWorkSubType: model _name
+- ConstructionRaBilling: model _name
+- ConstructionRaBillingLine: model _name
+- ConstructionSubcontract: model _name
+- ConstructionSubcontractLine: model _name
+- ConstructionMaterialRequisitionControls: model _inherit
+- ConstructionMaterialRequisition: model _name
+- ConstructionMaterialRequisitionLine: model _name
+- ConstructionRateAnalysis: model _name
+- ConstructionRateAnalysisLine: model _name
+- ConstructionQualityPoint: model _name
+- ConstructionQualityCheckQualityPointExtension: model _inherit
+- ConstructionPermit: model _name
+- ConstructionBoq: model _name
+- PurchaseOrder: model _inherit
+- PurchaseOrderLine: model _inherit
+- ConstructionStockMove: model _inherit
+- ConstructionStockPicking: model _inherit
+- ConstructionStockScrap: model _inherit
+- AccountMove: model _inherit
+
+### الملفات المصدرية ذات الصلة
+
+- `views/construction_budget_views.xml`
+- `views/construction_quality_check_views.xml`
+- `views/dashboard_views.xml`
+- `views/construction_project_views.xml`
+- `views/construction_work_order_views.xml`
+- `views/construction_task_views.xml`
+- `views/construction_subcontract_views.xml`
+- `views/construction_controls_views.xml`
+- `views/construction_report_wizard_views.xml`
+- `views/construction_boq_views.xml`
+- `views/construction_material_inventory_views.xml`
+- `views/construction_quality_point_views.xml`
+- `views/construction_progress_billing_views.xml`
+- `views/construction_phase_views.xml`
+- `views/construction_material_requisition_views.xml`
+- `views/construction_configuration_views.xml`
+- `views/menu_views.xml`
+- `views/construction_rate_analysis_views.xml`
+- `views/construction_sub_project_views.xml`
+- `views/construction_extra_expense_views.xml`
+- `views/construction_report_menu_actions.xml`
+- `models/construction_boq_lines.py`
+- `models/construction_project.py`
+- `models/construction_quality_check.py`
+- `models/construction_material_issue.py`
+- `models/construction_extra_expense.py`
+- `models/construction_progress_billing_lines.py`
+- `models/workflow_mixin.py`
+- `models/construction_work_order.py`
+- `models/construction_consume_order.py`
+- `models/construction_variation.py`
+- `models/construction_phase.py`
+- `models/construction_quality_check_lines.py`
+- `models/construction_approval.py`
+- `models/construction_budget.py`
+- `models/construction_billing_controls.py`
+- `models/construction_task_controls.py`
+- `models/construction_task.py`
+- `models/construction_sub_project_documents.py`
+- `models/construction_report_wizard.py`
+- `models/construction_material_inventory_controls.py`
+- `models/construction_budget_lines.py`
+- `models/construction_quality_controls.py`
+- `models/__init__.py`
+- `models/construction_sub_project.py`
+- `models/construction_cost.py`
+- `models/construction_revisions.py`
+- `models/construction_progress_billing.py`
+- `models/construction_project_controls.py`
+- `models/construction_configuration.py`
+- `models/construction_ra_billing.py`
+- `models/construction_subcontract.py`
+- `models/construction_material_controls.py`
+- `models/construction_material_requisition.py`
+- `models/construction_rate_analysis.py`
+- `models/construction_quality_point.py`
+- `models/construction_permit.py`
+- `models/construction_boq.py`
+- `security/construction_security.xml`
+- `security/ir.model.access.csv`
+- `models/integrations/purchase.py`
+- `models/integrations/stock.py`
+- `models/integrations/account.py`
+- `models/integrations/__init__.py`
+
+### حقول معلنة
+
+- `boq_id (Many2one)`
+- `budget_line_ids (One2many)`
+- `product_id (Many2one)`
+- `description (Char)`
+- `quantity (Float)`
+- `uom_id (Many2one)`
+- `unit_price (Float)`
+- `amount (Float)`
+- `name (Char)`
+- `reference (Char)`
+- `warehouse_id (Many2one)`
+- `company_id (Many2one)`
+- `street (Char)`
+- `street2 (Char)`
+- `city (Char)`
+- `state_id (Many2one)`
+- `zip (Char)`
+- `country_id (Many2one)`
+- `date_start (Date)`
+- `date_end (Date)`
+- `longitude (Float)`
+- `latitude (Float)`
+- `phone (Char)`
+- `mobile (Char)`
+- `email (Char)`
+- `active (Boolean)`
+- `state (Selection)`
+- `sub_project_ids (One2many)`
+- `image_ids (One2many)`
+- `boq_ids (One2many)`
+- `budget_ids (One2many)`
+- `phase_ids (One2many)`
+- `work_order_ids (One2many)`
+- `material_requisition_ids (One2many)`
+- `task_ids (One2many)`
+- `extra_expense_ids (One2many)`
+- `sub_project_count (Integer)`
+- `budget_count (Integer)`
+- `work_order_count (Integer)`
+- `mreq_count (Integer)`
+- `task_count (Integer)`
+- `phase_count (Integer)`
+- `expense_count (Integer)`
+- `permit_ids (One2many)`
+- `quality_point_ids (One2many)`
+- `project_id (Many2one)`
+- `name (Char)`
+- `image (Binary)`
+- `name (Char)`
+- `project_id (Many2one)`
+- `sub_project_id (Many2one)`
+- `phase_id (Many2one)`
+- `work_order_id (Many2one)`
+- `company_id (Many2one)`
+- `date (Date)`
+- `inspector_id (Many2one)`
+- `inspection_method (Selection)`
+- `check_type (Selection)`
+- `state (Selection)`
+- `check_line_ids (One2many)`
+- `result_notes (Text)`
+- `corrective_action (Text)`
+- `recheck_date (Date)`
+- `closed_date (Date)`
+- `closed_by_id (Many2one)`
+- `document (Binary)`
+- `document_name (Char)`
+- `image_ids (One2many)`
+- `total_check_points (Integer)`
+- `passed_check_points (Integer)`
+- `failed_check_points (Integer)`
+- `pending_check_points (Integer)`
+- `completion_percent (Float)`
+- `name (Char)`
+- `issue_type (Selection)`
+- `state (Selection)`
+- `project_id (Many2one)`
+- `sub_project_id (Many2one)`
+- `work_order_id (Many2one)`
+- `task_id (Many2one)`
+- `material_requisition_id (Many2one)`
+- `warehouse_id (Many2one)`
+- `source_location_id (Many2one)`
+- `destination_location_id (Many2one)`
+- `picking_id (Many2one)`
+- `scrap_id (Many2one)`
+- `company_id (Many2one)`
+- `date (Date)`
+- `notes (Text)`
+- `actual_cost (Monetary)`
+- `company_currency_id (Many2one)`
+- `line_ids (One2many)`
+- `issue_id (Many2one)`
+- `material_requisition_line_id (Many2one)`
+- `stock_move_id (Many2one)`
+- `scrap_id (Many2one)`
+- `product_id (Many2one)`
+- `description (Char)`
+- `quantity (Float)`
+- `uom_id (Many2one)`
+
+### XML IDs
+
+- `reports/construction_reports.xml::paperformat_construction_portrait`
+- `reports/construction_reports.xml::paperformat_construction_landscape`
+- `reports/construction_reports.xml::report_construction_styles`
+- `reports/construction_reports.xml::report_project_document`
+- `reports/construction_reports.xml::report_project`
+- `reports/construction_reports.xml::report_sub_project_document`
+- `reports/construction_reports.xml::report_sub_project`
+- `reports/construction_reports.xml::report_boq_document`
+- `reports/construction_reports.xml::report_boq`
+- `reports/construction_reports.xml::report_rate_analysis_document`
+- `reports/construction_reports.xml::report_rate_analysis`
+- `reports/construction_reports.xml::report_budget_document`
+- `reports/construction_reports.xml::report_budget`
+- `reports/construction_reports.xml::report_phase_document`
+- `reports/construction_reports.xml::report_phase`
+- `reports/construction_reports.xml::report_work_order_document`
+- `reports/construction_reports.xml::report_work_order`
+- `reports/construction_reports.xml::report_material_requisition_document`
+- `reports/construction_reports.xml::report_material_requisition`
+- `reports/construction_reports.xml::report_subcontract_document`
+- `reports/construction_reports.xml::report_subcontract`
+- `reports/construction_reports.xml::report_consume_order_document`
+- `reports/construction_reports.xml::report_consume_order`
+- `reports/construction_reports.xml::report_ra_billing_document`
+- `reports/construction_reports.xml::report_ra_billing`
+- `reports/construction_reports.xml::report_progress_billing_document`
+- `reports/construction_reports.xml::report_progress_billing`
+- `reports/construction_reports.xml::report_quality_check_document`
+- `reports/construction_reports.xml::report_quality_check`
+- `reports/construction_reports.xml::report_task_document`
+- `reports/construction_reports.xml::report_task`
+- `reports/construction_reports.xml::report_extra_expense_document`
+- `reports/construction_reports.xml::report_extra_expense`
+- `reports/construction_reports.xml::report_permit_document`
+- `reports/construction_reports.xml::report_permit`
+- `reports/construction_reports.xml::report_timesheet_document`
+- `reports/construction_reports.xml::report_timesheet`
+- `reports/construction_reports.xml::action_report_project`
+- `reports/construction_reports.xml::action_report_sub_project`
+- `reports/construction_reports.xml::action_report_boq`
+- `reports/construction_reports.xml::action_report_rate_analysis`
+- `reports/construction_reports.xml::action_report_budget`
+- `reports/construction_reports.xml::action_report_phase`
+- `reports/construction_reports.xml::action_report_work_order`
+- `reports/construction_reports.xml::action_report_material_requisition`
+- `reports/construction_reports.xml::action_report_subcontract`
+- `reports/construction_reports.xml::action_report_consume_order`
+- `reports/construction_reports.xml::action_report_ra_billing`
+- `reports/construction_reports.xml::action_report_progress_billing`
+- `reports/construction_reports.xml::action_report_quality_check`
+- `reports/construction_reports.xml::action_report_task`
+- `reports/construction_reports.xml::action_report_extra_expense`
+- `reports/construction_reports.xml::action_report_permit`
+- `reports/construction_reports.xml::action_report_timesheet`
+- `views/construction_budget_views.xml::view_construction_budget_list`
+- `views/construction_budget_views.xml::view_construction_budget_form`
+- `views/construction_budget_views.xml::view_construction_budget_search`
+- `views/construction_budget_views.xml::action_construction_budget`
+- `views/construction_quality_check_views.xml::view_construction_quality_check_list`
+- `views/construction_quality_check_views.xml::view_construction_quality_check_form`
+- `views/construction_quality_check_views.xml::view_construction_quality_check_search`
+- `views/construction_quality_check_views.xml::action_construction_quality_check`
+- `views/dashboard_views.xml::action_construction_dashboard`
+- `views/construction_project_views.xml::view_construction_project_list`
+- `views/construction_project_views.xml::view_construction_project_form`
+- `views/construction_project_views.xml::view_construction_project_search`
+- `views/construction_project_views.xml::action_construction_project`
+- `views/construction_work_order_views.xml::view_construction_work_order_list`
+- `views/construction_work_order_views.xml::view_construction_work_order_form`
+- `views/construction_work_order_views.xml::view_construction_work_order_search`
+- `views/construction_work_order_views.xml::action_construction_work_order`
+- `views/construction_task_views.xml::view_construction_task_list`
+- `views/construction_task_views.xml::view_construction_task_gantt`
+- `views/construction_task_views.xml::view_construction_task_form`
+- `views/construction_task_views.xml::view_construction_task_kanban`
+- `views/construction_task_views.xml::view_construction_task_search`
+- `views/construction_task_views.xml::action_construction_task`
+- `views/construction_task_views.xml::action_construction_task_gantt`
+- `views/construction_task_views.xml::action_construction_task_schedule_control`
+- `views/construction_subcontract_views.xml::view_construction_subcontract_list`
+- `views/construction_subcontract_views.xml::view_construction_subcontract_form`
+- `views/construction_subcontract_views.xml::view_construction_subcontract_search`
+- `views/construction_subcontract_views.xml::action_construction_subcontract`
+- `views/construction_subcontract_views.xml::view_construction_consume_order_list`
+- `views/construction_subcontract_views.xml::view_construction_consume_order_form`
+- `views/construction_subcontract_views.xml::action_construction_consume_order`
+- `views/construction_subcontract_views.xml::view_construction_ra_billing_list`
+- `views/construction_subcontract_views.xml::view_construction_ra_billing_form`
+- `views/construction_subcontract_views.xml::action_construction_ra_billing`
+- `views/construction_controls_views.xml::view_construction_variation_order_list`
+- `views/construction_controls_views.xml::view_construction_variation_order_form`
+- `views/construction_controls_views.xml::action_construction_variation_orders`
+- `views/construction_controls_views.xml::view_construction_ncr_list`
+- `views/construction_controls_views.xml::view_construction_ncr_form`
+- `views/construction_controls_views.xml::action_construction_ncr`
+- `views/construction_controls_views.xml::view_construction_cost_entry_list`
+- `views/construction_controls_views.xml::view_construction_cost_entry_form`
+- `views/construction_controls_views.xml::action_construction_cost_entries`
+- `views/construction_controls_views.xml::view_construction_approval_matrix_list`
+- `views/construction_controls_views.xml::view_construction_approval_matrix_form`
